@@ -81,7 +81,7 @@
     { id: "draco", name: T("Draco", "Draco", "Draco"), price: 4000, power: 0.22, heat: 10, rank: 2 },
   ];
   const GUN_AGE = 16;
-  const gunIcon = (w) => { const sw = w.att && w.att.trigger && w.att.trigger.id === "switch" ? w.att.trigger.color || "red" : null; return sw ? `guns/switch-${sw}.png?v=2` : `guns/${w.id}.png?v=2`; };
+  const gunIcon = (w) => { const sw = w.att && w.att.trigger && w.att.trigger.id === "switch" ? w.att.trigger.color || "red" : null; return sw ? `guns/switch-${sw}.png?v=3` : `guns/${w.id}.png?v=3`; };
   const weaponDef = (id) => WEAPONS.find((w) => w.id === id);
   // el arma que llevas encima (o null)
   const carried = (g) => (g.guns && g.carry != null && g.guns[g.carry] ? g.guns[g.carry] : null);
@@ -726,7 +726,7 @@
     };
     if (!window.FL_ARMS) {
       const el = document.createElement("script");
-      el.src = "arms.js?v=8";
+      el.src = "arms.js?v=10";
       document.head.append(el);
     }
   }

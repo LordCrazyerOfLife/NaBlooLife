@@ -15,8 +15,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
-MODS_VERSION = "14"
-LOADER_VERSION = "15"
+MODS_VERSION = "16"
+LOADER_VERSION = "17"
 
 # archivos que viven en la raíz del repo FreeLife / NaBlooLife
 FILES = [
@@ -25,6 +25,10 @@ FILES = [
     "gang.js",
     "arms.js",
     "politician.js",
+    "femboy.js",
+    "special-life.js",
+    "elite-life.js",
+    "vip.js",
     "melon.js",
     "cheat.js",
     "chess.js",
@@ -38,10 +42,17 @@ ASSETS = [
     "special/gangbang.png",
     "special/politician.png",
     "emoji/265f-fe0f.png",
+    "emoji/1f485.png",
+    "emoji/1f4dd.png",
+    "emoji/1f3ce-fe0f.png",
+    "emoji/2696-fe0f.png",
+    "emoji/1f3a8.png",
+    "emoji/1f58d-fe0f.png",
+    "emoji/1f46e.png",
 ]
 
-# se copia entera: incluye la Glock, la Draco, los switches y las piezas nuevas
-ASSET_DIRS = ["guns"]
+# se copian enteras: armas nuevas y vehículos de Elite Life
+ASSET_DIRS = ["guns", "boats", "aircraft"]
 
 
 def copy_file(src: Path, dst: Path) -> bool:
@@ -86,6 +97,12 @@ def hook_game_html(target_dir: Path) -> bool:
         content,
         flags=re.IGNORECASE,
     )
+    content = re.sub(
+        r'[ \t]*<script\s+src="(?:elite-life|vip)\.js(?:\?[^"]*)?"></script>[ \t]*\r?\n?',
+        "",
+        content,
+        flags=re.IGNORECASE,
+    )
 
     if "</body>" not in content:
         print(f"  ERROR: {path} no tiene </body>")
@@ -100,11 +117,17 @@ def hook_game_html(target_dir: Path) -> bool:
             rf'\1modloader.js?v={LOADER_VERSION}\2',
             content,
         )
-        tags = f'    <script src="mods.js?v={MODS_VERSION}"></script>\n'
-        detail = f"mods.js v{MODS_VERSION} + inyección dinámica v{LOADER_VERSION}"
+        tags = (
+            f'    <script src="mods.js?v={MODS_VERSION}"></script>\n'
+            '    <script src="elite-life.js?v=2"></script>\n'
+            '    <script src="vip.js?v=2"></script>\n'
+        )
+        detail = f"mods.js v{MODS_VERSION} + elite/vip + inyección dinámica v{LOADER_VERSION}"
     else:
         tags = (
             f'    <script src="mods.js?v={MODS_VERSION}"></script>\n'
+            '    <script src="elite-life.js?v=2"></script>\n'
+            '    <script src="vip.js?v=2"></script>\n'
             f'    <script src="modloader.js?v={LOADER_VERSION}"></script>\n'
         )
         detail = f"mods.js v{MODS_VERSION} + modloader.js v{LOADER_VERSION}"

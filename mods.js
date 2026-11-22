@@ -1,13 +1,6 @@
 /*! Copyright (c) 2026 Free Life. All rights reserved. Unauthorized copying, re-hosting or redistribution of this code is prohibited. */
 (() => {
   const e = {
-      // [mod] carrera de ajedrez (chess.js)
-      64646464: {
-        name: "Chess Career",
-        icon: "emoji/265f-fe0f.png",
-        desc: "Play chess from childhood to the World Championship: FIDE rating, titles from CM to GM, norms, tournaments, coaches, lessons and the Pawnder site. Find it in Occupation, Special Careers.",
-        src: "chess.js?v=5",
-      },
       "06061944": {
         name: "Military Expanded",
         icon: "mil/x-combat-helmet.png",
@@ -55,7 +48,7 @@
         name: "Gang Bang",
         icon: "special/gangbang.png",
         desc: "A new special career: join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
-        src: "gang.js?v=8",
+        src: "gang.js?v=11",
       },
       // [mod] carrera política (politician.js)
       17760704: {
@@ -63,6 +56,13 @@
         icon: "special/politician.png",
         desc: "Run for office from School Board to President: ranks, powers, campaigns, elections, scandals and the full political ladder. Find it in Occupation, Special Careers.",
         src: "politician.js?v=4",
+      },
+      // [mod] femboy journey (femboy.js)
+      14141414: {
+        name: "Femboy Journey",
+        icon: "emoji/1f485.png",
+        desc: "Help an adult male friend explore his feminine side: clothes, a new name, coming out, transition, and a few very direct attempts to seduce you. Find it on an adult male friend in Relationships.",
+        src: "femboy.js?v=2",
       },
       // [mod] test mod (test-mod.js) - diagnostic only, confirms mod loading works
       99990000: {
@@ -76,7 +76,7 @@
         name: "Mod Loader",
         icon: "ui/gear.png",
         desc: "Loads extra mod scripts from a simple list in modloader.js, no 8-digit code needed per mod. Also on by default via Settings -> Mod Workshop -> Mods.",
-        src: "modloader.js?v=15",
+        src: "modloader.js?v=17",
       },
     },
     t = "bitlifepp-ported",

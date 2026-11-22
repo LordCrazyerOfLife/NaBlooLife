@@ -12853,21 +12853,25 @@
         return (t.width = t.height = 250), drawTwin(t.getContext("2d"), (t) => t.drawImage(e, 0, 0)), t;
       }
       if (((state.look = randomLook(PG(), 0)), PICK && PICK.look)) {
-        const m = state.look.hairCut,
-          f = PICK.look;
-        Object.assign(state.look, f, { beard: 0 }),
-          (state.lookLater = {
-            hairCut: f.hairCut,
-            xHair: f.xHair || null,
-            tats: f.tats || null,
-            faceTat: f.faceTat || null,
-            scar: f.scar || 0,
-            patch: f.patch || 0,
-          }),
-          (state.look.hairCut = m),
-          delete state.look.xHair,
-          delete state.look.tats,
-          delete state.look.faceTat;
+        const f = PICK.look;
+        if (PICK.heir) {
+          Object.assign(state.look, f);
+        } else {
+          const m = state.look.hairCut;
+          Object.assign(state.look, f, { beard: 0 }),
+            (state.lookLater = {
+              hairCut: f.hairCut,
+              xHair: f.xHair || null,
+              tats: f.tats || null,
+              faceTat: f.faceTat || null,
+              scar: f.scar || 0,
+              patch: f.patch || 0,
+            }),
+            (state.look.hairCut = m),
+            delete state.look.xHair,
+            delete state.look.tats,
+            delete state.look.faceTat;
+        }
       }
       function applyLookLater() {
         const e = state.lookLater;
@@ -21259,6 +21263,7 @@
                 }),
             },
           );
+        window.FL_FEMBOY && window.FL_FEMBOY.decorate(t, e, () => openFriend(e));
       }
       function hookUpWith(e, t, a, o, n) {
         e.sexuality ??= chance(0.85) ? "Straight" : pickR(["Gay", "Bisexual"]);
@@ -23495,6 +23500,17 @@
               : t >= 70 && "Retired" !== e.prof.job && !e.royal && chance(0.4) && (e.prof.job = "Retired"),
             e.prof
           );
+        if (!e.prof && e.job) {
+          const knownJob = "object" == typeof e.job ? e.job.t : e.job;
+          e.prof = {
+            money: startMoney(t),
+            relig: rint(0, 100),
+            gen: rint(0, 100),
+            edu: e.edu || eduFor(t),
+            job: knownJob,
+            marital: e.marital || (t < 18 ? "Single" : state.spouse === e ? "Married" : "Single"),
+          };
+        }
         if (!e.prof) {
           const a = "f" === (e.gender || e.g) ? "m" : "f";
           e.prof = {
@@ -23756,30 +23772,63 @@
         (state.heirlooms || []).reduce((e, t) => e + t.value, 0);
       function willCard() {
         if (state.age < 18) return notice("Will & Testament", "You're too young to write a will.", null, !0);
-        const e = [
+        const children = (state.family || []).filter((e) => "child" === e.kind && !e.dead),
+          people = [
             ...(state.spouse && !state.spouse.dead
               ? [`${state.spouse.first} ${state.spouse.last} (Spouse)`]
               : []),
-            ...(state.family || [])
-              .filter((e) => "child" === e.kind && !e.dead)
-              .map((e) => `${e.first} ${e.last} (${"m" === e.g ? "Son" : "Daughter"})`),
+            ...children.map((e) => `${e.first} ${e.last} (${"m" === e.g ? "Son" : "Daughter"})`),
           ],
-          t = ["Charity", ...e],
+          options = [
+            ["none", "Nobody (the state takes it)"],
+            ["split", "Split evenly among my children"],
+            ["charity", "Charity"],
+            ["animal", "Animal Shelter"],
+            ["university", "University"],
+            ["church", "Church"],
+            ...people.map((e) => [`p:${e.replace(/ \(.*\)$/, "")}`, e]),
+          ],
+          current = state.willPlan
+            ? state.willPlan.key
+            : "Charity" === state.will
+              ? "charity"
+              : state.will
+                ? `p:${state.will.replace(/ \(.*\)$/, "")}`
+                : "none",
           a = document.getElementById("pname").textContent;
-        (ev.innerHTML = `\n      <div class="jm-x" id="propX" style="left:-14px;top:-14px">${CARD_X}</div>\n      <div class="jm-tag" style="margin-top:12px">Legal</div>\n      <h4><img src="act/will.png" alt=""><span>Will &amp; Testament</span></h4>\n      <div class="lead">${e.length ? "Who would you like to leave your estate to?" : "You have no eligible inheritors."}</div>\n      <table><tbody><tr><td style="text-align:center;padding-left:0"><b>Name:</b> ${a}</td></tr>\n        <tr><td style="text-align:center;padding-left:0"><b>Net Worth:</b> ${usd(netWorth())}</td></tr></tbody></table>\n      <label class="hr-lab">Pick your beneficiaries:</label>\n      <div class="hr-sel"><select id="willWho">${t.map((e, t) => `<option value="${t}"${state.will === e ? " selected" : ""}>${e}</option>`).join("")}</select></div>\n      <button class="jm-apply ev-btn" id="willGo">Execute will</button>`),
+        (ev.innerHTML = `\n      <div class="jm-x" id="propX" style="left:-14px;top:-14px">${CARD_X}</div>\n      <div class="jm-tag" style="margin-top:12px">Legal</div>\n      <h4><img src="act/will.png" alt=""><span>Will &amp; Testament</span></h4>\n      <div class="lead">Leave your money and property to family, charity, an organization, split it, or leave it to nobody.</div>\n      <table><tbody><tr><td style="text-align:center;padding-left:0"><b>Name:</b> ${a}</td></tr>\n        <tr><td style="text-align:center;padding-left:0"><b>Net Worth:</b> ${usd(netWorth())}</td></tr></tbody></table>\n      <label class="hr-lab">Pick your beneficiaries:</label>\n      <div class="hr-sel"><select id="willWho">${options.map(([e, t]) => `<option value="${e}"${current === e ? " selected" : ""}>${t}</option>`).join("")}</select></div>\n      <button class="jm-apply ev-btn" id="willGo">Execute will</button>`),
           (ev.style.overflow = "visible");
         const o = () => {
           evWrap.classList.remove("open"), (ev.style.overflow = "");
         };
         (document.getElementById("propX").onclick = o),
           (document.getElementById("willGo").onclick = () => {
-            const e = t[+document.getElementById("willWho").value];
-            o(), (state.will = e);
-            const a = "Charity" === e ? "charity" : e.replace(/ \(.*\)$/, "");
-            say(`I executed my will, leaving my estate to ${a}.`),
+            const key = document.getElementById("willWho").value;
+            let plan;
+            if ("none" === key) plan = { mode: "none", key, label: "nobody" };
+            else if ("split" === key) {
+              if (!children.length)
+                return notice("No children", "You don't have any children to split your estate between.", null, !0);
+              plan = {
+                mode: "split",
+                key,
+                label: "my children, split evenly",
+                heirs: children.map((e) => `${e.first} ${e.last}`),
+              };
+            } else if (key.startsWith("p:")) {
+              const name = key.slice(2);
+              plan = { mode: "one", key, name, label: name };
+            } else
+              plan = {
+                mode: "charity",
+                key,
+                label: { charity: "charity", animal: "the animal shelter", university: "the university", church: "the church" }[key] || key,
+              };
+            o(), (state.willPlan = plan), (state.will = "one" === plan.mode ? plan.name : plan.label);
+            say(`I executed my will, leaving my estate to ${plan.label}.`),
               notice(
                 "Will & Testament",
-                `You executed your will. When you die, your estate will go to ${a}.`,
+                `You executed your will. When you die, your estate will go to ${plan.label}.`,
               );
           }),
           evWrap.classList.add("open");
@@ -46043,7 +46092,7 @@
             love: 14,
             salon: 14,
             licenses: driveAge(),
-            adoption: 18,
+            adoption: 21,
             emigrate: 18,
             fertility: 18,
             fight: 18,
@@ -46064,7 +46113,7 @@
           },
           t = [
             ["accessories", "Accessories", "Accessorize yourself"],
-            ["adoption", "Adoption", "Adopt a child", 1],
+            ["adoption", "Adoption", "Adopt a child (21+)", 1],
             ["crime", "Crime", "Commit a crime"],
             ["doctor", "Doctor", "Visit the doctor"],
             ["emigrate", "Emigrate", "Move to another country", 1],
@@ -46130,6 +46179,9 @@
         const o = {
           crime: () => {
             play("choice"), openCrime();
+          },
+          adoption: () => {
+            play("choice"), openAdoption();
           },
           accessories: openAccessories,
           horse: openHorseRaces,
@@ -46233,32 +46285,133 @@
             .filter((e) => e !== state.country)
             .sort((e, t) => COUNTRIES[e][0].localeCompare(COUNTRIES[t][0])),
           o = document.createElement("div");
-        (o.className = "nl-page"),
-          (o.innerHTML =
-            `<button class="nl-back nl-x" data-close>${X_ICON}</button>\n      <div class="nl-head"><h2><img class="nl-ico" src="act/emigrate.png" alt="">Emigrate</h2><p>Use your golden passport!</p></div>` +
-            a
-              .map(
-                (e, t) =>
-                  `<button class="nl-btn c-${NL_COLS[t % NL_COLS.length]}" data-c="${e}"><img class="nl-ico" src="flags/${e}.png" alt="">${COUNTRIES[e][0]}</button>`,
-              )
-              .join("")),
+        (o.className = "nl-page");
+        let mode = "legal";
+        const hasGold = () =>
+            state.goldenPassport ||
+            (typeof mktOwned === "function" && mktOwned().includes("passport")),
+          legalCost = localPrice(2500),
+          illegalCost = localPrice(800),
+          goldCost = localPrice(150000);
+        (o.innerHTML =
+          `<button class="nl-back nl-x" data-close>${X_ICON}</button>\n      <div class="nl-head"><h2><img class="nl-ico" src="act/emigrate.png" alt="">Emigrate</h2><p>Leave legally, illegally, or with a golden passport.</p></div>\n      <div class="lead" id="emgInfo" style="font-size:12px;min-height:48px"></div>\n      <div class="sec">Route</div>\n      <button class="nl-btn c-green" data-mode="legal">Legal route — ${usd(legalCost)}</button>\n      <button class="nl-btn c-orange" data-mode="illegal">Illegal route — ${usd(illegalCost)}</button>\n      <button class="nl-btn c-yellow" data-mode="golden">${hasGold() ? "Golden Passport — ready" : `Buy Golden Passport — ${usd(goldCost)}`}</button>\n      <div class="sec">Destination</div>` +
+          a
+            .map(
+              (e, t) =>
+                `<button class="nl-btn c-${NL_COLS[t % NL_COLS.length]}" data-c="${e}"><img class="nl-ico" src="flags/${e}.png" alt="">${COUNTRIES[e][0]}</button>`,
+            )
+            .join("")),
           e.append(o),
           (o.querySelector("[data-close]").onclick = () => {
             play("dismiss"), t();
-          }),
+          });
+        const info = () => {
+            const el = document.getElementById("emgInfo");
+            el &&
+              (el.innerHTML =
+                "legal" === mode
+                  ? `Legal route: pay ${usd(legalCost)} and apply. About 75% of applications are approved. If denied, the fee is not refunded.`
+                  : "illegal" === mode
+                    ? `Illegal route: pay ${usd(illegalCost)} and sneak in. About 55% succeed. If caught, you are fined and get a criminal record.`
+                    : hasGold()
+                      ? "Golden Passport: guaranteed entry to any country, no questions asked."
+                      : `Buy a Golden Passport for ${usd(goldCost)} and emigrate anywhere with guaranteed entry.`);
+          },
+          update = () => {
+            o.querySelectorAll("[data-mode]").forEach((e) => {
+              const t = e.dataset.mode === mode;
+              (e.style.outline = t ? "2px solid #4da3ff" : ""),
+                (e.style.opacity = t ? "1" : ".72");
+            }),
+              info();
+          };
+        o.querySelectorAll("[data-mode]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              const m = b.dataset.mode;
+              if ("golden" === m && !hasGold()) {
+                if (state.money < goldCost)
+                  return notice("Flat broke", `You can't afford a Golden Passport.`, null, !1, brokeRows(goldCost));
+                (state.money -= goldCost),
+                  (state.goldenPassport = !0),
+                  renderStats(),
+                  play("choice"),
+                  say("I bought a Golden Passport."),
+                  notice(
+                    "Golden Passport",
+                    "You now have a Golden Passport. You can emigrate to any country with guaranteed entry.",
+                    null,
+                    !0,
+                  ),
+                  (b.textContent = "Golden Passport — ready");
+              }
+              (mode = m), play("choice"), update();
+            }),
+        ),
+          update(),
           o.querySelectorAll("[data-c]").forEach(
-            (e) =>
-              (e.onclick = () => {
+            (c) =>
+              (c.onclick = () => {
                 play("choice");
-                const a = e.dataset.c,
-                  o = (window.CITIES && CITIES[a]) || [COUNTRIES[a][1]];
+                const a = c.dataset.c,
+                  dest = (window.CITIES && CITIES[a]) || [COUNTRIES[a][1]],
+                  fromCountry = state.country;
+                if ("legal" === mode) {
+                  if (state.money < legalCost)
+                    return notice("Flat broke", `You can't afford the legal emigration fee.`, null, !1, brokeRows(legalCost));
+                  (state.money -= legalCost), renderStats();
+                  if (!chance(0.75))
+                    return (
+                      t(),
+                      screen.classList.remove("open"),
+                      say(`My application to emigrate to ${COUNTRIES[a][0]} was denied.`),
+                      notice(
+                        "Application denied",
+                        `Your legal emigration application to ${COUNTRIES[a][0]} was denied. The fee was not refunded.`,
+                        null,
+                        !0,
+                      ),
+                      "function" == typeof saveLife && saveLife()
+                    );
+                } else if ("illegal" === mode) {
+                  if (state.money < illegalCost)
+                    return notice("Flat broke", `You can't afford the illegal route.`, null, !1, brokeRows(illegalCost));
+                  (state.money -= illegalCost), renderStats();
+                  if (!chance(0.55)) {
+                    const fine = localPrice(5000);
+                    return (
+                      (state.money = Math.max(0, state.money - fine)),
+                      (state.record = (state.record || 0) + 1),
+                      renderStats(),
+                      t(),
+                      screen.classList.remove("open"),
+                      say(`I was caught trying to enter ${COUNTRIES[a][0]} illegally and fined ${usd(fine)}.`),
+                      notice(
+                        "Caught at the border",
+                        `You were caught trying to enter ${COUNTRIES[a][0]} illegally. You were fined ${usd(fine)} and now have a criminal record.`,
+                        null,
+                        !1,
+                      ),
+                      "function" == typeof saveLife && saveLife()
+                    );
+                  }
+                } else if (!hasGold())
+                  return notice(
+                    "Golden Passport required",
+                    "Buy a Golden Passport to use this route.",
+                    null,
+                    !0,
+                  );
                 leaveCountry(keepHousehold),
                   (state.country = a),
-                  (state.city = o[Math.floor(Math.random() * o.length)]);
+                  (state.city = dest[Math.floor(Math.random() * dest.length)]),
+                  (state.immigration = { method: mode, from: fromCountry, to: a, at: state.age });
                 const n = document.querySelector(".phone > .profile .pflag");
                 (n.src = `flags/${a}.png`),
                   (n.alt = COUNTRIES[a][0]),
-                  say(`I emigrated to ${state.city}, ${COUNTRIES[a][0]} using my golden passport.`),
+                  say(
+                    `I emigrated to ${state.city}, ${COUNTRIES[a][0]} ${"golden" === mode ? "using my golden passport" : "legal" === mode ? "through the legal route" : "illegally"}.`,
+                  ),
                   state.job &&
                     (say(
                       `I lost my job as ${/^[aeiou]/i.test(state.job.t) ? "an" : "a"} ${state.job.t} when I moved away.`,
@@ -46735,8 +46888,8 @@
               }),
           );
       }
-      const LOTTO_TEN = 0.05,
-        LOTTO_ONE = 1 - (1 - LOTTO_TEN) ** 0.1,
+      const LOTTO_TEN = 0.01,
+        LOTTO_ONE = 0.005,
         lottoPot = () => (
           (state.lotto && state.lotto.age === state.age) ||
             (state.lotto = { age: state.age, pot: localPrice(1e6 * rint(15, 80) + rint(0, 999999)) }),
@@ -46745,8 +46898,10 @@
       function openLottery() {
         const e = localPrice(5),
           t = lottoPot();
+        state.lottoYear !== state.age && ((state.lottoYear = state.age), (state.lottoBought = 0));
+        const bought = () => state.lottoBought || 0;
         ev.classList.remove("death18"),
-          (ev.innerHTML = `<div class="jcw"><div class="jm-x" id="ltX" style="left:-14px;top:-14px">${ID_X}</div><div class="jm-tag" style="margin-top:12px">Leisure</div>\n      <h4><img src="emoji/1f4b0.png" alt=""><span>Lottery</span></h4>\n      <div class="lead">Buy a lottery ticket today!</div>\n      <table class="jc"><tbody><tr><td><b>Ticket Cost:</b> ${usd(e)}</td></tr><tr><td><b>Jackpot:</b> ${usd(t)}</td></tr></tbody></table>\n      <button class="jm-apply ev-btn" data-n="1">Buy a ticket</button><button class="jm-apply ev-btn" data-n="10">Buy 10 tickets</button></div>`),
+          (ev.innerHTML = `<div class="jcw"><div class="jm-x" id="ltX" style="left:-14px;top:-14px">${ID_X}</div><div class="jm-tag" style="margin-top:12px">Leisure</div>\n      <h4><img src="emoji/1f4b0.png" alt=""><span>Lottery</span></h4>\n      <div class="lead">Buy a lottery ticket today! The jackpot is life-changing, but the odds are tiny.</div>\n      <table class="jc"><tbody><tr><td><b>Ticket Cost:</b> ${usd(e)}</td></tr><tr><td><b>Jackpot:</b> ${usd(t)}</td></tr><tr><td><b>Tickets this year:</b> ${bought()} / 1000</td></tr></tbody></table>\n      <div class="lead" style="font-size:12px">Odds: 1 ticket = 0.5%, 10+ tickets = 1%. Maximum 1,000 tickets per year.</div>\n      <button class="jm-apply ev-btn" data-n="1">Buy 1 ticket</button><button class="jm-apply ev-btn" data-n="10">Buy 10 tickets</button><button class="jm-apply ev-btn" data-n="50">Buy 50 tickets</button><button class="jm-apply ev-btn" data-n="100">Buy 100 tickets</button></div>`),
           (ev.style.overflow = "visible");
         const a = () => {
           evWrap.classList.remove("open"), (ev.style.overflow = "");
@@ -46758,7 +46913,18 @@
             (o) =>
               (o.onclick = () => {
                 const n = +o.dataset.n,
-                  s = e * n;
+                  s = e * n,
+                  remaining = 1000 - bought();
+                if (n > remaining)
+                  return (
+                    a(),
+                    notice(
+                      "Annual limit",
+                      `You can only buy ${remaining} more ticket${1 === remaining ? "" : "s"} this year.`,
+                      null,
+                      !0,
+                    )
+                  );
                 return (
                   a(),
                   state.money < s
@@ -46770,12 +46936,14 @@
                         brokeRows(s),
                       )
                     : ((state.money -= s),
+                      (state.lottoBought = bought() + n),
                       renderStats(),
                       screen.classList.remove("open"),
                       say(1 === n ? "I bought a lottery ticket." : `I bought ${n} lottery tickets.`),
-                      chance(10 === n ? LOTTO_TEN : LOTTO_ONE)
+                      chance(n >= 10 ? LOTTO_TEN : LOTTO_ONE)
                         ? ((state.money += t),
                           (state.lotto = null),
+                          (state.lottoWins = (state.lottoWins || 0) + 1),
                           renderStats(),
                           new Audio("sounds/a16_sndCasinoWin1.wav").play().catch(() => {}),
                           say(`I won the ${usd(t)} lottery jackpot!`),
@@ -46785,6 +46953,106 @@
               }),
           ),
           evWrap.classList.add("open");
+      }
+      function openAdoption() {
+        if (state.age < 21)
+          return notice("Too young", "You must be at least 21 years old to adopt a child.", null, !0);
+        const costOf = (age) => localPrice(12000 + age * 800);
+        let gender = "f" === PG() ? "f" : "m",
+          age = 6,
+          selected = 0,
+          picks = [],
+          name = uname(gender);
+        const newPicks = () => {
+          picks = [0, 1, 2].map(() => randomLook(gender, age));
+          selected = 0;
+        };
+        const close = () => {
+          evWrap.classList.remove("open"), (ev.style.overflow = "");
+        };
+        const draw = () => {
+          ev.classList.remove("death18"),
+            (ev.innerHTML = `<div class="jcw"><div class="jm-x" id="adX" style="left:-14px;top:-14px">${ID_X}</div><div class="jm-tag" style="margin-top:12px">Family</div>\n      <h4><img src="act/adoption.png" alt=""><span>Adoption</span></h4>\n      <div class="lead">Choose a child to welcome into your family. You can adopt at any age from 0 to 18.</div>\n      <table class="jc"><tbody><tr><td><b>Adoption Cost:</b> ${usd(costOf(age))}</td></tr><tr><td><b>Your Age:</b> ${state.age}</td></tr></tbody></table>\n      <label class="hr-lab">Age</label><div class="hr-sel"><select id="adAge">${Array.from({ length: 19 }, (_, i) => `<option value="${i}"${i === age ? " selected" : ""}>${i} year${1 === i ? "" : "s"} old (${i < 3 ? "Baby" : i < 13 ? "Child" : i < 18 ? "Teen" : "Adult"})</option>`).join("")}</select></div>\n      <label class="hr-lab">Gender</label><div class="hr-sel"><select id="adGender"><option value="f"${gender === "f" ? " selected" : ""}>Girl</option><option value="m"${gender === "m" ? " selected" : ""}>Boy</option></select></div>\n      <label class="hr-lab">Name</label><input class="pet-name-in" id="adName" maxlength="20" value="${name}"><div class="bb-rand" id="adRand">Pick Random</div>\n      <label class="hr-lab">Last Name</label><div class="hr-sel"><select id="adLast"><option>${SURNAME}</option><option>${ulast()}</option><option>${ulast()}</option></select></div>\n      <label class="hr-lab" style="margin-top:14px">Appearance</label><div class="bb-rand" id="adLook">New looks</div>\n      <div class="adopt-faces" style="display:flex;gap:8px;justify-content:center;margin:6px 0 12px">${picks.map((e, t) => `<div class="adopt-face" data-k="${t}" style="cursor:pointer;padding:4px;border:2px solid ${t === selected ? "#4da3ff" : "transparent"};border-radius:12px;background:${t === selected ? "rgba(77,163,255,.18)" : "transparent"}"></div>`).join("")}</div>\n      <button class="jm-apply ev-btn" id="adGo">Adopt ${name}</button></div>`);
+          ev.querySelectorAll(".adopt-face").forEach((el, i) => {
+            el.replaceWith(npcFace(picks[i], gender, age, "happy", "ev-av"));
+            el.dataset && el.classList.add("adopt-face");
+          });
+          ev.querySelectorAll(".ev-av").forEach((el, i) => {
+            (el.dataset.k = i),
+              (el.style.cursor = "pointer"),
+              (el.style.padding = "4px"),
+              (el.style.borderRadius = "12px"),
+              (el.style.border = `2px solid ${i === selected ? "#4da3ff" : "transparent"}`),
+              (el.onclick = () => {
+                selected = i;
+                const n = document.getElementById("adName").value;
+                draw();
+                document.getElementById("adName").value = n;
+              });
+          });
+          (document.getElementById("adX").onclick = () => {
+            play("dismiss"), close();
+          }),
+            (document.getElementById("adAge").onchange = (e) => {
+              age = +e.target.value;
+              newPicks();
+              draw();
+            }),
+            (document.getElementById("adGender").onchange = (e) => {
+              gender = e.target.value;
+              name = uname(gender);
+              newPicks();
+              draw();
+            }),
+            (document.getElementById("adRand").onclick = () => {
+              document.getElementById("adName").value = uname(gender);
+            }),
+            (document.getElementById("adLook").onclick = () => {
+              newPicks();
+              draw();
+            }),
+            (document.getElementById("adGo").onclick = () => {
+              const first =
+                  (document.getElementById("adName").value || "")
+                    .replace(/[<>"&]/g, "")
+                    .trim()
+                    .slice(0, 20) || uname(gender),
+                last = document.getElementById("adLast").value || SURNAME,
+                cost = costOf(age);
+              if (state.money < cost)
+                return notice("Flat broke", `You can't afford the ${usd(cost)} adoption fee.`, null, !1, brokeRows(cost));
+              (state.money -= cost),
+                state.family.push({
+                  kind: "child",
+                  g: gender,
+                  first,
+                  last,
+                  ageOffset: age - state.age,
+                  look: { ...picks[selected] },
+                  rel: rint(70, 100),
+                  otherParent: state.spouse ? `${state.spouse.first} ${state.spouse.last}` : "Adoption agency",
+                  smarts: rint(20, 100),
+                  looks: rint(20, 100),
+                  adopted: !0,
+                  adoptedAge: age,
+                  adoptedAt: state.age,
+                }),
+                (state.stats.Happiness = clamp(state.stats.Happiness + 12)),
+                play("baby"),
+                renderStats(),
+                close(),
+                screen.classList.remove("open"),
+                say(`I adopted a ${age}-year-old ${gender === "f" ? "girl" : "boy"} named ${first} ${last}.`),
+                notice(
+                  "A new family member",
+                  `You adopted ${first} ${last}, age ${age}. ${first} is now part of your family.`,
+                  null,
+                  !0,
+                ),
+                "function" == typeof saveLife && saveLife();
+            });
+        };
+        newPicks(), (ev.style.overflow = "visible"), draw(), evWrap.classList.add("open");
       }
       function openFightBetting() {
         const e = localPrice(100),
@@ -50804,8 +51072,10 @@
           evWrap.classList.add("open");
       }
       function hackGame(e) {
+        e.__stages = hackStages(e);
+        e.__stage = 1;
         ev.innerHTML =
-          '<div class="jm-tag" style="margin-top:12px">Crime</div>\n      <h4><span>Hack</span></h4>\n      <div class="lead">You have encountered a firewall!<br><br>Reconfigure the computer\'s logic pathways to bypass it before the system kicks you out.</div>\n      <div class="hk-time" id="hkTime">Time remaining: 15 seconds</div>\n      <canvas class="hk-board" id="hkBoard" width="1010" height="1010"></canvas>';
+          `<div class="jm-tag" style="margin-top:12px">Crime</div>\n      <h4><span>Hack</span></h4>\n      <div class="lead">You have encountered a firewall!<br><br>Reconfigure the computer\'s logic pathways to bypass it before the system kicks you out.<br><br><b>Stage 1 of ${e.__stages}</b></div>\n      <div class="hk-time" id="hkTime">Time remaining: 15 seconds</div>\n      <canvas class="hk-board" id="hkBoard" width="1010" height="1010"></canvas>`;
         const t = document.getElementById("hkBoard"),
           a = t.getContext("2d"),
           o = document.getElementById("hkTime"),
@@ -50886,29 +51156,8 @@
         };
         function g(t) {
           (l = !0), clearInterval(d), m(), hackSnd(t ? "FirewallBreachSuccess" : "FirewallBreachFailure");
-          const a = e.random ? "" : e.name.split(" ")[0],
-            o = e.random ? `${e.name[0].toLowerCase() + e.name.slice(1)}'s` : `${e.rel}, ${a}'s,`,
-            n = o.replace(/^your /, "my ");
-          setTimeout(() => {
-            if ((evWrap.classList.remove("open"), t)) {
-              const t = rint(...e.range);
-              (state.money += t),
-                renderStats(),
-                say(`I hacked into ${n} bank account and stole ${usd(t)}.`),
-                hackSnd("ComputerAccessSuccess"),
-                notice(
-                  "Access Granted",
-                  `You successfully hacked into ${o} bank account and stole ${usd(t)}.`,
-                );
-            } else
-              say(`I tried to hack into ${n} bank account, but the firewall kicked me out.`),
-                hackSnd("ComputerAccessFailure"),
-                notice(
-                  "Access Denied",
-                  `The system kicked you out before you could get into ${o} bank account.`,
-                ),
-                chance(0.3) && busted("hacking", 2);
-          }, 700);
+          if (!t) return finishHack(e, false);
+          hackNextStage(e);
         }
         const y = (e) => {
           const a = t.getBoundingClientRect(),
@@ -50987,6 +51236,174 @@
               u = -1;
             }),
           evWrap.classList.add("open");
+      }
+      function hackStages(e) {
+        const max = Number(e && e.range && e.range[1]) || 0;
+        return max >= 50000 ? 3 : max >= 12000 ? 2 : 1;
+      }
+      function hackNextStage(e) {
+        if (!e || e.__stage >= e.__stages) return finishHack(e, true);
+        e.__stage++;
+        evWrap.classList.remove("open");
+        setTimeout(() => {
+          if (e.__stage === 2) hackDots(e);
+          else hackQuestion(e);
+        }, 260);
+      }
+      function finishHack(e, ok) {
+        if (!e) return;
+        const a = e.random ? "" : e.name.split(" ")[0],
+          o = e.random ? `${e.name[0].toLowerCase() + e.name.slice(1)}'s` : `${e.rel}, ${a}'s,`,
+          n = o.replace(/^your /, "my ");
+        setTimeout(() => {
+          evWrap.classList.remove("open");
+          if (ok) {
+            const stages = Math.max(1, Number(e.__stages) || 1);
+            const t = Math.round(rint(...e.range) * (1 + 0.35 * (stages - 1)));
+            state.money += t;
+            renderStats();
+            say(`I hacked into ${n} bank account and stole ${usd(t)}.`);
+            hackSnd("ComputerAccessSuccess");
+            notice("Access Granted", `You successfully hacked into ${o} bank account and stole ${usd(t)}.`);
+          } else {
+            say(`I tried to hack into ${n} bank account, but the firewall kicked me out.`);
+            hackSnd("ComputerAccessFailure");
+            notice("Access Denied", `The system kicked you out before you could get into ${o} bank account.`);
+            chance(0.3) && busted("hacking", 2);
+          }
+        }, 700);
+      }
+      function hackDots(e) {
+        ev.innerHTML =
+          `<div class="jm-tag" style="margin-top:12px">Crime</div>\n      <h4><span>Hack</span></h4>\n      <div class="lead">The firewall has a second lock.<br><br>Connect the dots in order, from 1 to ${8}, before the trace completes.<br><br><b>Stage ${e.__stage} of ${e.__stages}</b></div>\n      <div class="hk-time" id="hkDotsTime">Time remaining: 12 seconds</div>\n      <canvas id="hkDots" width="640" height="420" style="display:block;width:100%;max-width:620px;margin:8px auto;border:2px solid #2b2f36;border-radius:8px;background:#16171b;touch-action:none"></canvas>`;
+        const cv = document.getElementById("hkDots"),
+          g = cv.getContext("2d"),
+          tm = document.getElementById("hkDotsTime"),
+          pts = [
+            [80, 330],
+            [165, 120],
+            [295, 235],
+            [395, 80],
+            [545, 175],
+            [455, 330],
+            [320, 365],
+            [225, 255],
+          ];
+        let at = 0,
+          left = 12,
+          timer = null,
+          done = false;
+        const paint = () => {
+          g.fillStyle = "#16171b";
+          g.fillRect(0, 0, cv.width, cv.height);
+          g.strokeStyle = "#5d6673";
+          g.lineWidth = 1;
+          for (let x = 40; x < cv.width; x += 40) {
+            g.beginPath();
+            g.moveTo(x, 0);
+            g.lineTo(x, cv.height);
+            g.stroke();
+          }
+          for (let y = 40; y < cv.height; y += 40) {
+            g.beginPath();
+            g.moveTo(0, y);
+            g.lineTo(cv.width, y);
+            g.stroke();
+          }
+          g.strokeStyle = "#37d67a";
+          g.lineWidth = 4;
+          g.beginPath();
+          pts.slice(0, at).forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
+          g.stroke();
+          pts.forEach(([x, y], i) => {
+            g.beginPath();
+            g.arc(x, y, i === at ? 17 : 11, 0, Math.PI * 2);
+            g.fillStyle = i < at ? "#37d67a" : i === at ? "#ffd45a" : "#4186f5";
+            g.fill();
+            g.strokeStyle = "#fff";
+            g.lineWidth = 2;
+            g.stroke();
+            g.fillStyle = "#fff";
+            g.font = '800 14px "Avenir Next", Mulish, sans-serif';
+            g.textAlign = "center";
+            g.textBaseline = "middle";
+            g.fillText(String(i + 1), x, y + 1);
+          });
+          tm.textContent = `Time remaining: ${left} second${left === 1 ? "" : "s"}`;
+        };
+        const fail = () => {
+          if (done) return;
+          done = true;
+          clearInterval(timer);
+          finishHack(e, false);
+        };
+        paint();
+        evWrap.classList.add("open");
+        timer = setInterval(() => {
+          left--;
+          paint();
+          if (left <= 0) fail();
+        }, 1000);
+        cv.onpointerdown = (evt) => {
+          if (done) return;
+          const r = cv.getBoundingClientRect(),
+            x = ((evt.clientX - r.left) / r.width) * cv.width,
+            y = ((evt.clientY - r.top) / r.height) * cv.height;
+          const hit = pts.findIndex(([px, py]) => (px - x) ** 2 + (py - y) ** 2 < 38 ** 2);
+          if (hit < 0) return;
+          if (hit !== at) {
+            left = Math.max(0, left - 2);
+            hackSnd("NumberlinkGameLineBroken");
+            paint();
+            if (left <= 0) fail();
+            return;
+          }
+          at++;
+          hackSnd("NumberlinkGameLineCompleted");
+          paint();
+          if (at >= pts.length) {
+            done = true;
+            clearInterval(timer);
+            hackSnd("ComputerAccessSuccess");
+            hackNextStage(e);
+          }
+        };
+      }
+      function hackQuestion(e) {
+        const bank = [
+          { q: "Which protocol encrypts traffic between a browser and a website?", a: ["HTTPS", "FTP", "SMTP"], ok: 0 },
+          { q: "What does 2FA stand for?", a: ["Two-Factor Authentication", "Second Firewall Access", "Two-File Archive"], ok: 0 },
+          { q: "Which port is used by HTTPS by default?", a: ["21", "443", "8080"], ok: 1 },
+          { q: "What is the safest way to store a password?", a: ["On a sticky note", "In a password manager", "In a group chat"], ok: 1 },
+          { q: "What does a firewall do?", a: ["Filters network traffic", "Makes the CPU faster", "Backs up files"], ok: 0 },
+        ];
+        const q = bank[Math.floor(Math.random() * bank.length)];
+        ev.innerHTML =
+          `<div class="jm-tag" style="margin-top:12px">Crime</div>\n      <h4><span>Hack</span></h4>\n      <div class="lead">The last lock is a security question.<br><br><b>${q.q}</b><br><br><b>Stage ${e.__stage} of ${e.__stages}</b></div>\n      <div class="hk-time" id="hkQTime">Time remaining: 12 seconds</div>\n      <div id="hkAnswers" style="display:flex;flex-direction:column;gap:8px;margin:12px 0">${q.a.map((a, i) => `<button class="jm-apply ev-btn gy" data-hkq="${i}">${a}</button>`).join("")}</div>`;
+        let left = 12,
+          done = false;
+        const tm = document.getElementById("hkQTime");
+        const timer = setInterval(() => {
+          left--;
+          tm.textContent = `Time remaining: ${left} second${left === 1 ? "" : "s"}`;
+          if (left <= 0) {
+            done = true;
+            clearInterval(timer);
+            finishHack(e, false);
+          }
+        }, 1000);
+        ev.querySelectorAll("[data-hkq]").forEach((b) => {
+          b.onclick = () => {
+            if (done) return;
+            done = true;
+            clearInterval(timer);
+            if (Number(b.dataset.hkq) === q.ok) {
+              hackSnd("ComputerAccessSuccess");
+              hackNextStage(e);
+            } else finishHack(e, false);
+          };
+        });
+        evWrap.classList.add("open");
       }
       const GTA_WITNESSES = [
           "a construction worker",
@@ -55708,6 +56125,15 @@
             setTimeout(() => die(`complications from ${/^[aeiou]/i.test(e.name) ? "an" : "a"} ${a}`), 300)
           );
         if (chance(o.success)) {
+          if (e.identity) {
+            const from = state.gender;
+            (state.birthGender ||= from),
+              (state.gender = "f" === from ? "m" : "f"),
+              (state.genderId = `Transgender ${"f" === state.gender ? "Female" : "Male"}`),
+              (state.look.beard = 0),
+              (faceKey = ""),
+              renderAvatar();
+          }
           LifeEvents.applyEffects(state, {
             looks: rint(...e.gain),
             happiness: rint(e.identity ? 10 : 0, e.identity ? 20 : 8),
@@ -69417,7 +69843,7 @@
       if (mods.modLoader && !window.__modLoaderInjected) {
         window.__modLoaderInjected = !0;
         const _ml = document.createElement("script");
-        (_ml.src = "modloader.js?v=15"), document.body.appendChild(_ml);
+        (_ml.src = "modloader.js?v=17"), document.body.appendChild(_ml);
       }
       const saveMods = () => {
         try {
@@ -71148,18 +71574,7 @@
             lovers: (state.lovers || []).length + (state.exes || []).length,
           };
         });
-      const lookOf = (e) =>
-        e
-          ? {
-              skin: e.skin,
-              eyes: e.eyes,
-              hair: e.hair,
-              seed: e.seed,
-              hairCut: e.hairCut,
-              brow: e.brow,
-              eye2: e.eye2,
-            }
-          : null;
+      const lookOf = (e) => (e ? { ...e } : null);
       function relationOf(e) {
         return state.parents.includes(e)
           ? "parent"
@@ -71206,11 +71621,41 @@
             off: relAge(e) - t,
             look: e.look,
             rel: rint(50, 85),
+            job: e.job || (e.prof && e.prof.job),
+            edu: e.edu,
+            prof: e.prof ? { ...e.prof } : null,
           }),
           m = (e) =>
             [state.spouse, ...(state.lovers || []), ...(state.exes || [])].find(
               (t) => t && `${t.first} ${t.last}` === e,
-            );
+            ),
+          myJob = () =>
+            state.job
+              ? state.job.t
+              : state.age >= 65
+                ? "Retired"
+                : state.age >= 18
+                  ? "Unemployed"
+                  : "Student",
+          myProf = () => ({
+            job: myJob(),
+            money: state.money,
+            edu: state.edu,
+            marital: state.spouse ? "Married" : "Single",
+          });
+        t >= 18 &&
+          (h.friends = Array.from({ length: rint(3, 6) }, () => {
+            const e = chance(0.5) ? "m" : "f",
+              a = Math.max(18, t + rint(-5, 5));
+            return {
+              first: uname(e),
+              last: ulast(),
+              g: e,
+              age: a,
+              look: randomLook(e, a),
+              rel: rint(55, 90),
+            };
+          }));
         if ("child" === n) {
           const n = m(e.otherParent),
             s = n ? n.g : "f" === r ? "m" : "f",
@@ -71228,6 +71673,15 @@
               ageAtBirth: o - t,
               rel: e.rel ?? 80,
               dead: a,
+              job: state.job ? state.job.t : null,
+              prof: state.job
+                ? {
+                    job: state.job.t,
+                    money: state.money,
+                    edu: state.edu,
+                    marital: state.spouse ? "Married" : "Single",
+                  }
+                : null,
             },
             {
               first: l,
@@ -71237,12 +71691,15 @@
               ageAtBirth: null != d ? Math.max(16, d - t) : o - t,
               rel: rint(60, 90),
               dead: !(!n || !n.dead),
+              job: n && (n.job || (n.prof && n.prof.job)),
+              prof: n && n.prof ? { ...n.prof } : null,
             },
           ]),
             (h.sibs = state.family
               .filter((t) => "child" === t.kind && !t.dead && t !== e)
               .map((e) => p(e, SURNAME))),
             (h.parents[0].past = pastLifeOf(a)),
+            (h.parents[0].job = h.parents[0].past.job),
             (h.grand = state.parents.map((e) => ({
               first: e.first,
               last: SURNAME,
@@ -71252,6 +71709,9 @@
               rel: e.rel ?? 60,
               dead: !!e.dead,
               diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+              job: e.job || (e.prof && e.prof.job),
+              edu: e.edu,
+              prof: e.prof ? { ...e.prof } : null,
             }))),
             (h.aunts = state.family
               .filter((e) => "sibling" === e.kind)
@@ -71264,6 +71724,24 @@
                 rel: rint(40, 75),
                 dead: !!e.dead,
                 diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
+              }))),
+            (h.cousins = state.family
+              .filter((e) => ["cousin", "cousinkid", "nibling"].includes(e.kind))
+              .map((e) => ({
+                first: e.first,
+                last: e.last || SURNAME,
+                g: e.g || e.gender,
+                look: lookOf(e.look),
+                age: relAge(e),
+                rel: e.rel ?? 50,
+                dead: !!e.dead,
+                diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
               })));
         } else if ("sibling" === n)
           (h.parents = state.parents.map((e) => ({
@@ -71275,13 +71753,84 @@
             rel: e.rel,
             dead: !!e.dead,
             diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+            job: e.job || (e.prof && e.prof.job),
+            edu: e.edu,
+            prof: e.prof ? { ...e.prof } : null,
           }))),
             (h.sibs = [
-              { g: r, first: state.first, last: SURNAME, off: o - t, look: i, rel: e.rel ?? 60 },
+              {
+                g: r,
+                first: state.first,
+                last: SURNAME,
+                off: o - t,
+                look: i,
+                rel: e.rel ?? 60,
+                job: myJob(),
+              },
               ...state.family
                 .filter((t) => "sibling" === t.kind && !t.dead && t !== e)
                 .map((e) => p(e, SURNAME)),
-            ]);
+            ]),
+            (h.grand = state.family
+              .filter((e) => "grandparent" === e.kind)
+              .map((e) => ({
+                first: e.first,
+                last: e.last || SURNAME,
+                g: e.g || e.gender,
+                look: lookOf(e.look),
+                age: relAge(e),
+                rel: e.rel ?? 55,
+                dead: !!e.dead,
+                diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
+              }))),
+            (h.aunts = state.family
+              .filter((e) => "auntuncle" === e.kind)
+              .map((e) => ({
+                first: e.first,
+                last: e.last || SURNAME,
+                g: e.g || e.gender,
+                look: lookOf(e.look),
+                age: relAge(e),
+                rel: e.rel ?? 50,
+                dead: !!e.dead,
+                diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
+              }))),
+            (h.cousins = state.family
+              .filter((e) => ["cousin", "cousinkid"].includes(e.kind))
+              .map((e) => ({
+                first: e.first,
+                last: e.last || SURNAME,
+                g: e.g || e.gender,
+                look: lookOf(e.look),
+                age: relAge(e),
+                rel: e.rel ?? 50,
+                dead: !!e.dead,
+                diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
+              }))),
+            (h.nibs = state.family
+              .filter((e) => "nibling" === e.kind)
+              .map((e) => ({
+                first: e.first,
+                last: e.last || SURNAME,
+                g: e.g || e.gender,
+                look: lookOf(e.look),
+                age: relAge(e),
+                rel: e.rel ?? 50,
+                dead: !!e.dead,
+                diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
+              })));
         else if ("parent" === n) {
           const a = state.family.filter((e) => "grandparent" === e.kind),
             n =
@@ -71298,6 +71847,9 @@
                 rel: e.rel ?? 60,
                 dead: !!e.dead,
                 diedAgo: e.dead ? o - (e.diedAt ?? o) : 0,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
               })));
           const s = state.parents.find((t) => t !== e),
             l = state.pm && "divorced" === state.pm.status;
@@ -71312,10 +71864,22 @@
               age: s.ageAtBirth + o,
               rel: rint(55, 90),
               married: !0,
+              job: s.job || (s.prof && s.prof.job),
+              edu: s.edu,
+              prof: s.prof ? { ...s.prof } : null,
             });
           const c = s ? `${s.first} ${SURNAME}` : "";
           h.kids = [
-            { g: r, first: state.first, last: SURNAME, age: o, look: i, rel: e.rel ?? 70, otherParent: c },
+            {
+              g: r,
+              first: state.first,
+              last: SURNAME,
+              age: o,
+              look: i,
+              rel: e.rel ?? 70,
+              otherParent: c,
+              job: myJob(),
+            },
             ...state.family
               .filter((e) => "sibling" === e.kind && !e.dead)
               .map((e) => ({
@@ -71326,8 +71890,24 @@
                 look: e.look,
                 rel: e.rel ?? 70,
                 otherParent: c,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
               })),
-          ];
+          ],
+            (h.sibs = state.family
+              .filter((e) => "auntuncle" === e.kind && !e.dead)
+              .map((e) => ({
+                g: e.g || e.gender,
+                first: e.first,
+                last: e.last || SURNAME,
+                off: relAge(e) - t,
+                look: e.look,
+                rel: e.rel ?? 50,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
+              })));
         } else
           "partner" === n &&
             ((h.spouse = {
@@ -71338,6 +71918,8 @@
               age: o,
               rel: e.rel ?? 60,
               married: !!e.married,
+              job: myJob(),
+              prof: myProf(),
             }),
             (h.kids = state.family
               .filter((e) => "child" === e.kind && !e.dead && e.otherParent === u)
@@ -71349,6 +71931,9 @@
                 look: e.look,
                 rel: rint(60, 95),
                 otherParent: s,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
               }))));
         if (t >= 18 && !a)
           try {
@@ -71423,21 +72008,46 @@
           a)
         ) {
           const e = "f" === r ? "mother" : "father",
-            t = !!state.will && state.will.replace(/ \(.*\)$/, "") === u;
-          (h.money = t ? Math.max(0, Math.round(netWorth())) : 0),
+            plan = state.willPlan,
+            split = !!plan && "split" === plan.mode,
+            heirIndex = split ? (plan.heirs || []).indexOf(u) : -1,
+            heir = plan
+              ? "split" === plan.mode
+                ? heirIndex >= 0
+                : "one" === plan.mode
+                  ? plan.name === u
+                  : !1
+              : !!state.will && state.will.replace(/ \(.*\)$/, "") === u,
+            inheritsAssets = heir || (!plan && !state.will),
+            propValue = (state.props || []).reduce(
+              (e, t) => e + Math.round(t.price * (0.8 + t.cond / 250)),
+              0,
+            ),
+            splitCount = split ? Math.max(1, (plan.heirs || []).length) : 1,
+            share = split
+              ? Math.round(Math.max(0, netWorth() - propValue) / splitCount)
+              : Math.max(0, Math.round(netWorth()));
+          (h.money = heir ? share : 0),
             (h.grief = !0),
             addictions().includes("alcohol") && (h.alcParent = state.first);
           const a = ((state.mine || {}).caves || []).filter((e) => e.claim);
-          (state.ore || []).length && (h.ore = state.ore),
-            a.length && (h.claims = a.map((e) => ({ ...e, workers: 0 }))),
-            state.farm && (h.farm = { ...state.farm, hands: 0 }),
-            (state.metals || []).length && (h.metals = state.metals),
-            (state.biz || []).length && (h.biz = state.biz.map((e) => ({ ...e, over: null }))),
-            ((state.invent || {}).patents || []).length && (h.patents = state.invent.patents);
+          inheritsAssets && (state.ore || []).length && (h.ore = state.ore),
+            inheritsAssets && a.length && (h.claims = a.map((e) => ({ ...e, workers: 0 }))),
+            inheritsAssets && state.farm && (h.farm = { ...state.farm, hands: 0 }),
+            inheritsAssets && (state.metals || []).length && (h.metals = state.metals),
+            inheritsAssets &&
+              (state.biz || []).length &&
+              (h.biz = state.biz.map((e) => ({ ...e, over: null }))),
+            inheritsAssets &&
+              ((state.invent || {}).patents || []).length &&
+              (h.patents = state.invent.patents);
           const o = (state.props || []).filter((e) => e.old && !e.royal);
-          o.length &&
-            ((h.homes = o.map((e) => ({ ...e, forSale: null }))),
-            t &&
+          o.length && inheritsAssets &&
+            ((h.homes = (split ? o.filter((e, t) => t % splitCount === heirIndex) : o).map((e) => ({
+              ...e,
+              forSale: null,
+            }))),
+            (split || !heir) ||
               (h.money = Math.max(
                 0,
                 h.money - o.reduce((e, t) => e + Math.round(t.price * (0.8 + t.cond / 250)), 0),
@@ -71446,9 +72056,11 @@
               `My ${e}, ${s}, passed away. I'm carrying on the family story.`,
               h.money
                 ? `I inherited ${usd(h.money)} from my ${e}'s will.`
-                : state.will
-                  ? `My ${e}'s will left me nothing.`
-                  : `My ${e} never wrote a will, so I didn't inherit any${h.ore || h.claims || h.homes || h.farm || h.metals || h.biz || h.patents ? " money" : "thing"}.`,
+                : plan
+                  ? `My ${e}'s will left everything to ${plan.label}.`
+                  : state.will
+                    ? `My ${e}'s will left me nothing.`
+                    : `My ${e} never wrote a will, so I didn't inherit any${h.ore || h.claims || h.homes || h.farm || h.metals || h.biz || h.patents ? " money" : "thing"}.`,
               ...(h.ore || h.claims
                 ? [
                     `The family's ${[h.ore ? "ore and minerals" : "", h.claims ? "mining claim" + (h.claims.length > 1 ? "s" : "") : ""].filter(Boolean).join(" and ")} passed down to me.`,
@@ -71477,9 +72089,11 @@
               `You are now ${u}, the ${"f" === c ? "daughter" : "son"} of ${s}.<br><br>` +
                 (h.money
                   ? `Your ${e} left you ${usd(h.money)} in the will!`
-                  : state.will
-                    ? `Your ${e}'s will left you nothing.`
-                    : `Your ${e} didn't write a will, so you didn't inherit anything.`),
+                  : plan
+                    ? `Your ${e}'s will left everything to ${plan.label}.`
+                    : state.will
+                      ? `Your ${e}'s will left you nothing.`
+                      : `Your ${e} didn't write a will, so you didn't inherit anything.`),
             ]);
         } else {
           const t = {
@@ -71503,6 +72117,11 @@
           first: e.first,
           last: d,
           look: lookOf(e.look),
+          genes: Array.isArray(state.genes) ? state.genes.slice() : null,
+          genesNone: Array.isArray(state.genes) && !state.genes.length,
+          species: state.species,
+          birthYear: state.birthYear + o - t,
+          stats: { Smarts: e.smarts, Looks: e.looks },
           country: state.country,
           city: state.city,
           heir: h,
@@ -72667,6 +73286,7 @@
                 !0,
               );
           });
+        window.FL_VIP && FL_VIP.decorateMarket && FL_VIP.decorateMarket();
       }
       function lifeLoading(e) {
         if (document.getElementById("lifeLoad")) return;
@@ -73351,6 +73971,7 @@
       function ftRollCelebs() {
         if (state.celebRolled) return;
         state.celebRolled = !0;
+        if (PICK && PICK.heir) return;
         const e = !(!PICK || !PICK.famous);
         if ((e && (state.famousStart = !0), e || chance(0.2))) {
           if (chance(e ? 0.25 : 0.05)) {
@@ -83790,6 +84411,9 @@
               look: { ...randomLook(e.g, 30), ...(e.look || {}) },
               ageAtBirth: e.ageAtBirth,
               rel: e.rel,
+              ...(e.prof ? { prof: { ...e.prof } } : {}),
+              ...(e.job ? { job: e.job } : {}),
+              ...(e.edu ? { edu: e.edu } : {}),
               ...(e.past
                 ? { past: e.past, ...(e.past.city ? { city: e.past.city } : {}), job: e.past.job }
                 : {}),
@@ -83797,7 +84421,11 @@
             };
           })),
             (state.family = state.family.filter(
-              (e) => !["sibling", "grandparent", "auntuncle", "cousin", "cousinkid"].includes(e.kind),
+              (e) =>
+                !(e.kind === "child" && e.first === PICK.first && e.last === PICK.last) &&
+                !["sibling", "grandparent", "auntuncle", "cousin", "cousinkid", "nibling"].includes(
+                  e.kind,
+                ),
             ));
           const Se = (e, t) => ({
             kind: e,
@@ -83807,12 +84435,17 @@
             ageOffset: t.age - ke.age,
             look: { ...randomLook(t.g, Math.max(1, t.age)), ...(t.look || {}) },
             rel: t.rel,
+            job: t.job || (t.prof && t.prof.job),
+            edu: t.edu,
+            prof: t.prof ? { ...t.prof } : null,
             ...(t.dead
               ? { dead: !0, diedAt: ke.age - (t.diedAgo || 0), diedAge: t.age - (t.diedAgo || 0) }
               : {}),
           });
           (ke.grand || []).forEach((e) => state.family.push(Se("grandparent", e))),
-            (ke.aunts || []).forEach((e) => state.family.push(Se("auntuncle", e)));
+            (ke.aunts || []).forEach((e) => state.family.push(Se("auntuncle", e))),
+            (ke.cousins || []).forEach((e) => state.family.push(Se("cousin", e))),
+            (ke.nibs || []).forEach((e) => state.family.push(Se("nibling", e)));
         }
         if (
           (ke.sibs &&
@@ -83826,6 +84459,9 @@
                 ageOffset: e.off,
                 look: e.look,
                 rel: e.rel,
+                job: e.job || (e.prof && e.prof.job),
+                edu: e.edu,
+                prof: e.prof ? { ...e.prof } : null,
               })),
             ]),
           ke.spouse)
@@ -83840,6 +84476,9 @@
             ageOffset: xe.age - ke.age,
             look: { ...Ce.look, ...(xe.look || {}) },
             rel: xe.rel,
+            job: xe.job || (xe.prof && xe.prof.job),
+            edu: xe.edu,
+            prof: xe.prof ? { ...xe.prof } : null,
             since: ke.age,
             main: !0,
             intimate: !0,
@@ -83847,7 +84486,18 @@
             xe.married && ((Ce.married = Ce.wasMarried = !0), (state.spouse = Ce)),
             state.lovers.push(Ce);
         }
-        ke.kids &&
+        ke.friends &&
+          ke.friends.forEach((e) =>
+            (state.friends ||= []).push({
+              first: e.first,
+              last: e.last,
+              g: e.g,
+              look: e.look,
+              ageOffset: e.age - ke.age,
+              rel: e.rel,
+            }),
+          ),
+          ke.kids &&
           ke.kids.forEach((e) =>
             state.family.push({
               kind: "child",
@@ -83858,8 +84508,11 @@
               look: e.look,
               rel: e.rel,
               otherParent: e.otherParent,
-              smarts: rint(10, 100),
-              looks: rint(10, 100),
+              smarts: null != e.smarts ? e.smarts : rint(10, 100),
+              looks: null != e.looks ? e.looks : rint(10, 100),
+              job: e.job || (e.prof && e.prof.job),
+              edu: e.edu,
+              prof: e.prof ? { ...e.prof } : null,
             }),
           );
         const $e = (e, t, a) => {
@@ -88497,7 +89150,9 @@
     <script src="smuggling.js?v=9"></script>
     <script src="cartel.js?v=13"></script>
     <script src="drugs.js?v=9"></script>
-    <script src="mods.js?v=14"></script>
+    <script src="mods.js?v=16"></script>
+    <script src="elite-life.js?v=2"></script>
+    <script src="vip.js?v=2"></script>
     <script src="basketball.js?v=25"></script>
     <script src="fighter.js?v=7"></script>
     <script src="vampire.js?v=8"></script>

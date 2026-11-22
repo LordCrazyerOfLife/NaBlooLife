@@ -6,6 +6,11 @@
 (() => {
   "use strict";
 
+  // Puede cargarse desde mods.js o desde modloader.js. El guard evita que se
+  // enganche dos veces y duplique la fila de Chess Career.
+  if (window.FL_CHESS || window.__FL_CHESS_LOADING) return;
+  window.__FL_CHESS_LOADING = true;
+
   // ---------------------------------------------------------------- utilidades
   const rnd = Math.random;
   const ri = (a, b) => a + Math.floor(rnd() * (b - a + 1));

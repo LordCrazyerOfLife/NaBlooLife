@@ -2,7 +2,7 @@
  *
  * Instalación: copiar este archivo a la raíz del juego (junto a game.html). NaBlooLife
  * lo inyecta solo desde game.html cuando el Mod Loader está activo; en builds viejos
- * también se puede agregar <script src="modloader.js?v=15"></script> después de mods.js.
+ * también se puede agregar <script src="modloader.js?v=17"></script> después de mods.js.
  * No hace falta ningún código de 8 dígitos: los mods se cargan solos y se pueden apagar
  * desde Settings → Mod Loader.
  *
@@ -23,7 +23,7 @@
       id: "chess-career",
       name: "Chess Career",
       icon: "emoji/265f-fe0f.png",
-      src: "chess.js?v=5",
+      src: "chess.js?v=6",
       deps: ["chess-engine.js?v=2", "chess-puzzles.js?v=2", "chess-events.js?v=2"],
       desc: "Play chess from childhood to the World Championship: FIDE rating, titles from CM to GM, norms, tournaments, coaches, lessons, puzzles and the Pawnder site. Find it in Occupation, Special Careers.",
     },
@@ -31,8 +31,22 @@
       id: "gang-bang",
       name: "Gang Bang",
       icon: "special/gangbang.png",
-      src: "gang.js?v=8",
+      src: "gang.js?v=11",
       desc: "Join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
+    },
+    {
+      id: "femboy",
+      name: "Femboy Journey",
+      icon: "emoji/1f485.png",
+      src: "femboy.js?v=2",
+      desc: "Help an adult male friend explore his feminine side: clothes, a new name, coming out, transition, and a few very direct attempts to seduce you. Find it on an adult male friend in Relationships.",
+    },
+    {
+      id: "special-life",
+      name: "Special Life: Racer, Judge & Artist",
+      icon: "emoji/1f3ce-fe0f.png",
+      src: "special-life.js?v=1",
+      desc: "Three special careers: illegal street racer with nationwide police heat and an underground exotic-car auction, judge with evidence, sentences, bribes and revenge, and artist with a real drawing canvas whose pieces persist in localStorage.",
     },
     {
       id: "political-career",

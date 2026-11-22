@@ -55,7 +55,7 @@
   // grp = familia de cargadores/accesorios: glock | ak (Draco)
   const GUNS = {
     // ---- legales (tienda)
-    g19: { n: T("Glock 19", "Glock 19", "Glock 19"), cat: "pistol", price: 550, power: 0.06, grp: "glock", icon: "guns/glock.png?v=2", age: 21 },
+    g19: { n: T("Glock 19", "Glock 19", "Glock 19"), cat: "pistol", price: 550, power: 0.06, grp: "glock", icon: "guns/glock.png?v=3", age: 21 },
     rev: { n: T("Revolver .38", "Revólver .38", "Revólver .38"), cat: "pistol", price: 400, power: 0.05, icon: E("1f52b"), age: 21 },
     p45: { n: T(".45 Pistol", "Pistola .45", "Pistola .45"), cat: "pistol", price: 650, power: 0.07, icon: E("1f52b"), age: 21 },
     pump: { n: T("Pump Shotgun", "Escopeta de bombeo", "Escopeta pump"), cat: "shotgun", price: 450, power: 0.12, icon: ICONS.shotgun, age: 18, hunt: 1 },
@@ -65,9 +65,9 @@
     deer: { n: T("Deer Rifle .308", "Rifle de venado .308", "Rifle de veado .308"), cat: "hunting", price: 700, power: 0.1, icon: ICONS.rifle, age: 18, hunt: 2 },
     bow: { n: T("Hunting Bow", "Arco de caza", "Arco de caça"), cat: "hunting", price: 300, power: 0.03, icon: ICONS.bow, age: 16, hunt: 1 },
     // ---- ilegales (calle)
-    sg19: { n: T("Street Glock", "Glock de la calle", "Glock da rua"), price: 900, power: 0.08, heat: 4, illegal: 1, grp: "glock", icon: "guns/glock.png?v=2" },
-    draco: { n: T("Draco", "Draco", "Draco"), price: 4000, power: 0.2, heat: 9, illegal: 1, grp: "ak", icon: "guns/draco.png?v=2" },
-    mdraco: { n: T("Mini Draco", "Mini Draco", "Mini Draco"), price: 3200, power: 0.17, heat: 8, illegal: 1, grp: "ak", mini: 1, icon: "guns/draco.png?v=2" },
+    sg19: { n: T("Street Glock", "Glock de la calle", "Glock da rua"), price: 900, power: 0.08, heat: 4, illegal: 1, grp: "glock", icon: "guns/glock.png?v=3" },
+    draco: { n: T("Draco", "Draco", "Draco"), price: 4000, power: 0.2, heat: 9, illegal: 1, grp: "ak", icon: "guns/draco.png?v=3" },
+    mdraco: { n: T("Mini Draco", "Mini Draco", "Mini Draco"), price: 3200, power: 0.17, heat: 8, illegal: 1, grp: "ak", mini: 1, icon: "guns/draco.png?v=3" },
     // ARP retirada del catálogo: solo quedan la Glock y la Draco nuevas
     // Mini ARP retirada del catálogo
   };
@@ -111,7 +111,7 @@
   const PARTS = {
     reddot: { n: T("Red Dot Sight", "Mira de punto rojo", "Mira de ponto vermelho"), slot: "optic", grps: ALL, price: 150, power: 0.02, heat: 0, icon: "guns/attachments/red-dot.png?v=2" },
     supp: { n: T("Suppressor", "Silenciador", "Silenciador"), slot: "muzzle", grps: ALL, price: 900, power: 0, heat: -4, illegal: 1, icon: "guns/attachments/suppressor.png?v=2" },
-    switch: { n: T("Switch", "Switch", "Switch"), slot: "trigger", grps: ["glock"], price: 600, power: 0.12, heat: 6, illegal: 1, auto: 1, color: 1, icon: "guns/switch-red.png?v=2" },
+    switch: { n: T("Switch", "Switch", "Switch"), slot: "trigger", grps: ["glock"], price: 600, power: 0.12, heat: 6, illegal: 1, auto: 1, color: 1, icon: "guns/switch-red.png?v=3" },
     sear: { n: T("Auto Sear", "Auto sear", "Auto sear"), slot: "trigger", grps: ["ak"], price: 1100, power: 0.12, heat: 7, illegal: 1, auto: 1, icon: "guns/glock-parts/control-part-04.png?v=2" },
   };
   const COLORS = [
@@ -120,7 +120,7 @@
     ["orange", T("Orange", "Naranja", "Laranja")], ["white", T("White", "Blanco", "Branco")],
   ];
   const colorName = (id) => (COLORS.find((c) => c[0] === id) || COLORS[0])[1];
-  const partIcon = (p) => (p.id === "switch" ? `guns/switch-${p.color || "red"}.png?v=2` : PARTS[p.id].icon);
+  const partIcon = (p) => (p.id === "switch" ? `guns/switch-${p.color || "red"}.png?v=3` : PARTS[p.id].icon);
 
   // ---------------------------------------------------------------- ícono compuesto: el arma con lo que le instalaste
   // ---------------------------------------------------------------- icono del arma (solo PNG nuevo)
@@ -129,7 +129,7 @@
   function pic(gun) {
     const d = GUNS[gun.id];
     const t = (gun.att || {}).trigger;
-    if (t && t.id === "switch") return `guns/switch-${t.color || "red"}.png?v=2`;
+    if (t && t.id === "switch") return `guns/switch-${t.color || "red"}.png?v=3`;
     return d.icon;
   }
 
@@ -271,7 +271,7 @@
   function openShop(id) {
     const d = DEALERS[id];
     const a = A();
-    frame(d.n, openArms);
+    frame(d.n, () => openArms(origin));
     const pr = premium(d);
     let html = "";
     if (pr > 1) html += `<div class="sec">${T("He doesn't know you. Prices are 40% higher.", "No te conoce. Los precios están 40% más altos.", "Ele não te conhece. Os preços estão 40% mais altos.")}</div>`;
@@ -396,7 +396,7 @@
     if (!gun) return openArms();
     const d = gunDef(gun);
     const s = stats(gun);
-    frame(gunName(gun), openArms);
+    frame(gunName(gun), () => openArms(origin));
     const on = a.carry === uid;
     let html = `<div class="sec">${gunName(gun)}</div>`;
     html += `<div style="text-align:center;padding:6px 0 2px"><img src="${pic(gun)}" alt="" style="width:200px;height:180px;object-fit:contain;margin:0"></div>`;
@@ -521,7 +521,7 @@
 
   function openStock() {
     const a = A();
-    frame(T("Magazines & Parts", "Cargadores y piezas", "Pentes e peças"), openArms);
+    frame(T("Magazines & Parts", "Cargadores y piezas", "Pentes e peças"), () => openArms(origin));
     let html = `<div class="sec">${T("Magazines", "Cargadores", "Pentes")}</div>`;
     const mk = Object.keys(a.mags).filter((k) => a.mags[k] > 0);
     html += mk.length ? mk.map((k) => row(`sM_${k}`, MAGS[k].icon, MAGS[k].n, `${PIECE(`×${a.mags[k]}`)}`, true)).join("") : row("sM0", E("1f4e6"), T("No magazines", "Sin cargadores", "Sem pentes"), T("Buy some from a dealer", "Cómpralos con un dealer", "Compre com um dealer"), true);
