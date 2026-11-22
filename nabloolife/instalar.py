@@ -1,128 +1,155 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Instalador idempotente para el Mod Loader de NaBlooLife.
-Copia los archivos del loader y engancha game.html.
-Soy idempotente: correrme varias veces no duplica nada.
+Instalador idempotente del Mod Loader de NaBlooLife.
+
+Copia el loader, los mods y sus assets desde este repo al juego de NaBlooLife,
+y engancha game.html. Correrlo varias veces no duplica archivos ni etiquetas.
 """
 
-import sys
-import os
 import re
 import shutil
+import sys
 from pathlib import Path
 
-def main():
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+
+MODS_VERSION = "14"
+LOADER_VERSION = "15"
+
+# archivos que viven en la raíz del repo FreeLife / NaBlooLife
+FILES = [
+    "modloader.js",
+    "mods.js",
+    "gang.js",
+    "arms.js",
+    "politician.js",
+    "melon.js",
+    "cheat.js",
+    "chess.js",
+    "chess-engine.js",
+    "chess-events.js",
+    "chess-puzzles.js",
+]
+
+# assets propios que no vienen en el juego base
+ASSETS = [
+    "special/gangbang.png",
+    "special/politician.png",
+    "emoji/265f-fe0f.png",
+]
+
+# se copia entera: incluye la Glock, la Draco, los switches y las piezas nuevas
+ASSET_DIRS = ["guns"]
+
+
+def copy_file(src: Path, dst: Path) -> bool:
+    if not src.is_file():
+        print(f"  ERROR: no existe {src}")
+        return False
+    dst.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(src, dst)
+    print(f"  Copiado: {dst}")
+    return True
+
+
+def copy_asset_dir(src: Path, dst: Path) -> bool:
+    if not src.is_dir():
+        print(f"  ERROR: no existe {src}")
+        return False
+    dst.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(src, dst, dirs_exist_ok=True)
+    print(f"  Copiado: {dst} (carpeta completa)")
+    return True
+
+
+def hook_game_html(target_dir: Path) -> bool:
+    """Quita las etiquetas viejas y las vuelve a poner al final del body."""
+    path = target_dir / "game.html"
+    if not path.is_file():
+        print(f"  ERROR: no existe {path}")
+        return False
+
+    content = path.read_text(encoding="utf-8")
+
+    # idempotencia: fuera las etiquetas anteriores, con cualquier versión
+    content = re.sub(
+        r'[ \t]*<script\s+src="mods\.js(?:\?[^"]*)?"></script>[ \t]*\r?\n?',
+        "",
+        content,
+        flags=re.IGNORECASE,
+    )
+    content = re.sub(
+        r'[ \t]*<script\s+src="modloader\.js(?:\?[^"]*)?"></script>[ \t]*\r?\n?',
+        "",
+        content,
+        flags=re.IGNORECASE,
+    )
+
+    if "</body>" not in content:
+        print(f"  ERROR: {path} no tiene </body>")
+        return False
+
+    # NaBlooLife nuevo inyecta el loader solo desde game.html; solo hay que
+    # actualizar esa versión. En builds viejos se agrega la etiqueta estática.
+    dynamic = re.search(r'(_ml\.src\s*=\s*")modloader\.js\?[^"]*(")', content)
+    if dynamic:
+        content = re.sub(
+            r'(_ml\.src\s*=\s*")modloader\.js\?[^"]*(")',
+            rf'\1modloader.js?v={LOADER_VERSION}\2',
+            content,
+        )
+        tags = f'    <script src="mods.js?v={MODS_VERSION}"></script>\n'
+        detail = f"mods.js v{MODS_VERSION} + inyección dinámica v{LOADER_VERSION}"
+    else:
+        tags = (
+            f'    <script src="mods.js?v={MODS_VERSION}"></script>\n'
+            f'    <script src="modloader.js?v={LOADER_VERSION}"></script>\n'
+        )
+        detail = f"mods.js v{MODS_VERSION} + modloader.js v{LOADER_VERSION}"
+
+    content = content.replace("</body>", tags + "</body>", 1)
+    path.write_text(content, encoding="utf-8")
+    print(f"  Enganchado: {detail}")
+    return True
+
+
+def main() -> int:
     if len(sys.argv) < 2:
-        print("Uso: python instalar.py <ruta_naabloolife>")
-        sys.exit(1)
-    
-    target_dir = Path(sys.argv[1]).resolve()
+        print("Uso: python nabloolife/instalar.py <ruta_NaBlooLife>")
+        return 1
+
+    target_dir = Path(sys.argv[1]).expanduser().resolve()
     if not target_dir.is_dir():
         print(f"Error: {target_dir} no es un directorio válido")
-        sys.exit(1)
-    
-    # Archivos a copiar (origen -> destino)
-    # Estos archivos viven en el repo FreeLife, y los copiamos a NaBlooLife
-    files_to_copy = [
-        ("modloader.js", target_dir / "modloader.js"),
-        ("gang.js", target_dir / "gang.js"),
-        ("chess.js", target_dir / "chess.js"),
-        ("mods.js", target_dir / "mods.js"),
-        ("chess-events.js", target_dir / "chess-events.js"),
-        ("chess-engine.js", target_dir / "chess-engine.js"),
-        ("chess-puzzles.js", target_dir / "chess-puzzles.js"),
-    ]
-    
-    print("=== Mod Loader Instalar ===")
-    
-    # 1. Copiar archivos (sobreescribir si ya existen)
-    for src_name, dst in files_to_copy:
-        src = Path(__file__).parent / src_name
-        if not src.is_file():
-            print(f"Advertencia: {src} no encontrado, omitiendo")
-            continue
-        
-        shutil.copy2(str(src), str(dst))
-        print(f"  Copiado: {dst.name}")
-    
-    # 2. Enganchar game.html: agregar <script src="modloader.js?v=12"> después de mods.js
-    game_html = target_dir / "game.html"
-    if not game_html.is_file():
-        print(f"Error: {game_html} no encontrado")
-        sys.exit(1)
-    
-    with open(game_html, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    # Verificar si ya está instalado (idempotencia)
-    if 'src="modloader.js?v=12"' in content and 'src="mods.js?v=11"' in content:
-        # Verificar que el orden sea correcto: mods.js antes que modloader.js
-        mods_pos = content.find('src="mods.js"')
-        loader_pos = content.find('src="modloader.js"')
-        if mods_pos != -1 and loader_pos != -1 and mods_pos < loader_pos:
-            print("  Ya instalado (idempotente: orden correcto ya existente)")
-            # No hacer nada, ya está instalado
-        else:
-            # Reordenar si es necesario
-            print("  Reorganizando orden en game.html...")
-            # Elimina etiquetas viejas y las vuelve a agregar en orden
-            content = re.sub(r'<script src="mods\.js[^"]*">[^<]*</script>', '', content)
-            content = re.sub(r'<script src="modloader\.js[^"]*">[^<]*</script>', '', content)
-            # Agregar mods.js primero (si no está)
-            if 'src="mods.js?v=11"' not in content:
-                # Insertar después del script de Chess Career si existe, o al final antes de </body>
-                pass
-            print("  Orden ya correcto")
-    else:
-        # Agregar el tag modloader.js después de mods.js
-        # Buscar la línea con mods.js y agregar modloader.js después
-        original = content
-        # Patrón: encontrar <script src="mods.js ..."> y agregar después
-        mods_match = re.search(r'(<script src="mods\.js[^"]*>.*?</script>)', content, re.DOTALL)
-        loader_match = re.search(r'(<script src="modloader\.js[^"]*>.*?</script>)', content, re.DOTALL)
-        
-        if mods_match:
-            # Insertar modloader.js después de mods.js
-            after_mods = mods_match.group(1) + '\n    <script src="modloader.js?v=12"></script>\n'
-            content = content.replace(mods_match.group(1), after_mods)
-            print(f"  Enganchado: modloader.js después de mods.js")
-        else:
-            # Agregar al final antes de </body> si no hay mods.js
-            content = content.replace("</body>", '<script src="mods.js?v=11"></script>\n    <script src="modloader.js?v=12"></script>\n</body>')
-            print("  Agregado mods.js y modloader.js al final")
-        
-        if content != original:
-            with open(game_html, "w", encoding="utf-8") as f:
-                f.write(content)
-            print("  game.html actualizado")
-    
-    # 3. Agregar entrada chess a mods.js si no existe (código 64646464)
-    mods_js = target_dir / "mods.js"
-    if mods_js.is_file():
-        with open(mods_js, "r", encoding="utf-8") as f:
-            mcontent = f.read()
-        
-        # Verificar si ya tiene la entrada chess con 64646464
-        if '64646464:' in mcontent and 'chess.js' in mcontent:
-            print("  mods.js ya tiene entrada chess (idempotente)")
-        else:
-            # Agregar entrada chess al final del objeto MODS o al principio
-            # Buscar el patrón de entradas y agregar chess
-            chess_entry = '  64646464: {\n    path: "chess.js?v=5",\n    version: 5\n  },'
-            if '64646464:' not in mcontent:
-                # Agregar después del último entry, antes del cierre
-                mcontent = mcontent.rstrip() + '\n' + chess_entry + '\n'
-                with open(mods_js, "w", encoding="utf-8") as f:
-                    f.write(mcontent)
-                print("  Agregada entrada chess a mods.js con código 64646464")
-    
-    print("\n=== Instalación completa ===")
-    print("Ejecuta nuevamente sin miedo: los cambios son idempotentes.")
-    
-    # Reconfigure UTF-8 para consola Windows
-    if hasattr(sys.stdout, 'reconfigure'):
-        sys.stdout.reconfigure(encoding='utf-8')
+        return 1
+
+    print("=== Mod Loader NaBlooLife ===")
+    print(f"Origen:  {ROOT}")
+    print(f"Destino: {target_dir}")
+
+    ok = True
+    print("\n-- Archivos JS --")
+    for name in FILES:
+        ok = copy_file(ROOT / name, target_dir / name) and ok
+
+    print("\n-- Assets --")
+    for rel in ASSETS:
+        # los assets faltantes no rompen la instalación de los mods
+        copy_file(ROOT / rel, target_dir / rel)
+    for rel in ASSET_DIRS:
+        ok = copy_asset_dir(ROOT / rel, target_dir / rel) and ok
+
+    print("\n-- game.html --")
+    ok = hook_game_html(target_dir) and ok
+
+    print("\n=== Instalación completa ===" if ok else "\n=== Instalación con errores ===")
+    print("Puedes volver a correrlo sin miedo: es idempotente.")
+    return 0 if ok else 1
+
 
 if __name__ == "__main__":
-    main()
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    raise SystemExit(main())

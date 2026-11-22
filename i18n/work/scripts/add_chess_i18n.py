@@ -246,13 +246,32 @@ RULES += r"""
 ^Bond (\d+)$	Confianza $1	Confiança $1
 ^(\d+) members$	$1 miembros	$1 membros
 ^Buy · (.+)$	Comprar · $1	Comprar · $1
+^Term (\d+)–(\d+) · Election in (\d+) years?$	Mandato $1–$2 · Elección en $3 años	Mandato $1–$2 · Eleição em $3 anos
+^(\d{4})–(\d{4}) · Election in 1 year$	$1–$2 · Elección en 1 año	$1–$2 · Eleição em 1 ano
+^(\d{4})–(\d{4}) · Election in (\d+) years?$	$1–$2 · Elección en $3 años	$1–$2 · Eleição em $3 anos
+^(\d{4})–(\d{4}) · Election this year$	$1–$2 · Elección este año	$1–$2 · Eleição este ano
+^(\d{4}) · (\d+) years?$	$1 · $2 años	$1 · $2 anos
+^Term (\d+)–(\d+) · Election this year$	Mandato $1–$2 · Elección este año	Mandato $1–$2 · Eleição este ano
+^Campaign Actions \((\d+) left\)$	Acciones de campaña ($1 restantes)	Ações de campanha ($1 restantes)
+^Actions \((\d+) left\)$	Acciones ($1 restantes)	Ações ($1 restantes)
+^Election in 1 year$	Elección en 1 año	Eleção em 1 ano
+^Election in (\d+) years?$	Elección en $1 años	Eleição em $1 anos
+^(.+) · Approval (\d+)%$	$1 · Aprobación $2%	$1 · Aprovação $2%
+^Candidate for (.+)$	Candidato a $1	Candidato a $1
+^Running for (.+)$	Candidato a $1	Candidato a $1
+^Run for (.+)$	Postúlate a $1	Candidate-se a $1
+^Term (\d+) years$	Mandato de $1 años	Mandato de $1 anos
+^(.+)/year$	$1/año	$1/ano
+^Your share (\d+)%$	Tu porcentaje $1%	Sua porcentagem $1%
+^Opponent share (\d+)%$	Porcentaje del rival $1%	Porcentagem do rival $1%
+^Personal money: (.+)$	Dinero personal: $1	Dinheiro pessoal: $1
 """
 
 
 def from_events():
     # Saca los T("en", "es", "pt") de los mods: chess-events.js (eventos de ajedrez) y gang.js (Gang Bang).
     import re
-    src = "".join(open(rf"C:\Users\Mxzzy\Downloads\FreeLife\{f}", encoding="utf-8").read() for f in ("chess-events.js", "gang.js", "arms.js"))
+    src = "".join(open(rf"C:\Users\Mxzzy\Downloads\FreeLife\{f}", encoding="utf-8").read() for f in ("chess-events.js", "gang.js", "arms.js", "politician.js"))
     s = r'"((?:[^"\\]|\\.)*)"'
     rows = re.findall(r"T\(\s*" + s + r"\s*,\s*" + s + r"\s*,\s*" + s + r"\s*\)", src)
     un = lambda x: x.replace('\\"', '"').replace("\\\\", "\\")
