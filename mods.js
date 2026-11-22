@@ -1,6 +1,13 @@
 /*! Copyright (c) 2026 Free Life. All rights reserved. Unauthorized copying, re-hosting or redistribution of this code is prohibited. */
 (() => {
   const e = {
+      // [mod] carrera de ajedrez (chess.js)
+      64646464: {
+        name: "Chess Career",
+        icon: "emoji/265f-fe0f.png",
+        desc: "Play chess from childhood to the World Championship: FIDE rating, titles from CM to GM, norms, tournaments, coaches, lessons and the Pawnder site. Find it in Occupation, Special Careers.",
+        src: "chess.js?v=5",
+      },
       "06061944": {
         name: "Military Expanded",
         icon: "mil/x-combat-helmet.png",
@@ -48,7 +55,7 @@
         name: "Gang Bang",
         icon: "special/gangbang.png",
         desc: "A new special career: join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
-        src: "gang.js?v=4",
+        src: "gang.js?v=5",
       },
       // [mod] test mod (test-mod.js) - diagnostic only, confirms mod loading works
       99990000: {
@@ -62,7 +69,7 @@
         name: "Mod Loader",
         icon: "ui/gear.png",
         desc: "Loads extra mod scripts from a simple list in modloader.js, no 8-digit code needed per mod. Also on by default via Settings -> Mod Workshop -> Mods.",
-        src: "modloader.js?v=11",
+        src: "modloader.js?v=12",
       },
     },
     t = "bitlifepp-ported",

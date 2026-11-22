@@ -17,6 +17,10 @@
     return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
   };
   const pick = (a) => a[Math.floor(rnd() * a.length)];
+  const ord = (n) => {
+    const s = ["th", "st", "nd", "rd"], v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  };
   const money = (n) => (typeof usd === "function" ? usd(n) : "$" + Math.round(n).toLocaleString("en-US"));
   // localPrice() del juego tiene un mínimo de $5, así que el 0 se maneja aparte
   const price = (n) => (!n ? 0 : typeof localPrice === "function" ? localPrice(n) : n);
@@ -343,13 +347,11 @@
     }
     if (!c.best || place < c.best.place || (place === c.best.place && t.pool > c.best.pool))
       c.best = { name: t.name, place, pool: t.pool, age: state.age };
+    if (place === 1) c.wins = (c.wins || 0) + 1;
+    c.recent = (c.recent || []).concat([{ name: t.name, place, score, rounds: t.rounds, age: state.age }]).slice(-6);
     if (t.id === "candidates" && place === 1) c.candWin = state.age;
     typeof renderStats === "function" && renderStats();
 
-    const ord = (n) => {
-      const s = ["th", "st", "nd", "rd"], v = n % 100;
-      return n + (s[(v - 20) % 10] || s[v] || s[0]);
-    };
     const delta = before == null ? (after == null ? "Still unrated" : `First rating: ${after}`) : `${before} → ${after} (${after - before >= 0 ? "+" : ""}${after - before})`;
     say(
       `I played the ${t.name} and scored ${score}/${t.rounds}, finishing ${ord(place)}.` +
@@ -427,7 +429,13 @@
       const prize = price(200000 * st.wins + (won ? 600000 : 500000));
       state.money += prize;
       c.earned += prize;
-      if (won) c.champion = true;
+      if (won) {
+        c.champion = true;
+        c.wins = (c.wins || 0) + 1;
+      }
+      c.recent = (c.recent || [])
+        .concat([{ name: "World Championship", place: won ? 1 : 2, score: st.me, rounds: st.g, age: state.age }])
+        .slice(-6);
       typeof chaChing === "function" && chaChing();
       typeof renderStats === "function" && renderStats();
       say(won ? `I became the World Chess Champion${tb}! I earned ${money(prize)}.` : `I lost the World Championship match${tb}. I still earned ${money(prize)}.`);
@@ -528,7 +536,7 @@
       "practiced calculation",
     ]);
     say(`I ${what}.`);
-    notice("Study session", `You ${what.replace("my", "your")}. Your chess is improving.`, null, !0);
+    notice("Study session", `You ${what.replace("my", "your")}. Your chess is improving.`, openChess, !0);
   }
 
   function coachMenu() {
@@ -542,6 +550,14 @@
       opts: COACH.map((k, i) => `${k.name}${k.fee ? ` (${money(price(k.fee))}/yr)` : ""}${i === c.coach ? " (current)" : ""}`),
       btn: "Confirm",
       onGo: (i) => {
+        const fee = price(COACH[i].fee);
+        if (fee && state.money < fee)
+          return notice(
+            "Not enough money",
+            `You need ${money(fee)} a year to hire a chess coach. You have ${money(state.money)}.`,
+            null,
+            !0,
+          );
         c.coach = i;
         say(i ? `I hired a new chess coach (${COACH[i].name}).` : "I stopped working with my chess coach.");
       },
@@ -1141,13 +1157,38 @@
     return `<div class="row ${cls}" id="${id}"><img src="${icon}"><div class="t"><b>${title}</b><span>${sub}</span></div>${/\bdis\b/.test(cls) ? "" : tail}</div>`;
   }
 
+  function chessProfile() {
+    const c = C();
+    const rows = [
+      ["Rating", ratingTxt(c) + (c.peak && c.peak !== c.fide ? ` · peak ${c.peak}` : "")],
+      ["Title", [c.title, c.wtitle].filter(Boolean).join(" ") || "None"],
+      ["Rated games", String(c.rgames)],
+      ["Tournaments", String(c.events)],
+      ["Titles won", String(c.wins || 0)],
+      ["Best result", c.best ? `${c.best.name} · ${ord(c.best.place)} (age ${c.best.age})` : "None"],
+      ["Prize money", money(c.earned)],
+    ];
+    if (c.norms.IM || c.norms.GM) rows.push(["Norms", `IM ${c.norms.IM}/3 · GM ${c.norms.GM}/3`]);
+    if (c.online) rows.push([SITE, `Bullet ${c.online.bullet} · Blitz ${c.online.blitz} · Rapid ${c.online.rapid}`]);
+    for (const r of (c.recent || []).slice().reverse())
+      rows.push([`Age ${r.age}`, `${r.name} · ${ord(r.place)} · ${r.score}/${r.rounds}`]);
+    jCard({
+      tag: "Chess",
+      iconSrc: ICON.chart,
+      title: `${titleTag(c) ? titleTag(c) + " " : ""}${state.first || "My chess"}`.trim(),
+      lead: c.recent && c.recent.length ? "Your recent results." : "No tournaments played yet.",
+      rows,
+      choices: [["OK", openChess]],
+    });
+  }
+
   function openChess() {
     const c = C();
     typeof syncProfile === "function" && syncProfile();
     sTitle.textContent = "CHESS";
     sSub.style.display = "none";
     sBack.innerHTML = typeof BACK_ICON !== "undefined" ? BACK_ICON : "‹";
-    sBack.onclick = () => openActivities();
+    sBack.onclick = () => openSpecialCareers();
     const tt = titleTag(c);
     const head =
       '<div class="sec">My Chess</div>' +
@@ -1166,7 +1207,7 @@
           .map((p) => `<em style="font-style:normal">${p}</em>`)
           .join(" · "),
         "",
-        "",
+        typeof CHEV !== "undefined" ? CHEV : "",
       ) +
       row("chAuto", ICON.clock, "Final Rounds", c.autoSim ? "Always simulate" : "Ask me to play them");
     const learn =
@@ -1213,6 +1254,7 @@
       const el = document.getElementById(id);
       el && !el.classList.contains("dis") && (el.onclick = () => (typeof play === "function" && play("choice"), fn()));
     };
+    on("chStat", chessProfile);
     on("chTrain", train);
     on("chPuzzle", startPuzzle);
     on("chLive", pawnderLive);
@@ -1356,7 +1398,12 @@
     if (!c || !c.v || state.dead) return;
     const last = c.yr || { train: 0, tourneys: 0, online: 0, lessons: 0 };
     const activity =
-      last.train * 0.15 + last.tourneys * 0.12 + last.online * 0.05 + Math.min(last.puzzles || 0, 30) * 0.01 + Math.min(last.live || 0, 10) * 0.02;
+      last.train * 0.15 +
+      last.tourneys * 0.12 +
+      last.online * 0.05 +
+      Math.min(last.puzzles || 0, 30) * 0.01 +
+      Math.min(last.live || 0, 10) * 0.02 +
+      (last.stream || 0) * 0.05;
     // Potencial: el techo de cada uno. Talento promedio (~0.86) ≈ 2050; GM pide talento alto + coach;
     // la élite (2750+) solo con talento máximo, coach GM y dedicación completa.
     const potential = 1000 + c.talent * 1200 + c.coach * 60;
@@ -1403,6 +1450,10 @@
     }
     typeof renderStats === "function" && renderStats();
     rollEvent(c, last);
+    // yearTick no pasa por C(), que era el único que reiniciaba el contador del año. Sin esto
+    // `c.yr` quedaba congelado en el último año con actividad y los eventos seguían disparándose
+    // para siempre (torneos, stream, clases) aunque no hicieras nada.
+    c.yr = { age: state.age, train: 0, tourneys: 0, online: 0, lessons: 0, stream: 0, puzzles: 0, live: 0 };
   }
 
   // ---------------------------------------------------------------- arranque
@@ -1434,26 +1485,28 @@
   }
 
   function boot() {
-    if (typeof openActivities !== "function" || !document.getElementById("ageBtn") || typeof sList === "undefined")
+    if (typeof openSpecialCareers !== "function" || !document.getElementById("ageBtn") || typeof sList === "undefined")
       return setTimeout(boot, 50);
-    const orig = openActivities;
-    openActivities = function () {
+    const orig = openSpecialCareers;
+    openSpecialCareers = function () {
       const r = orig.apply(this, arguments);
       try {
         const c = state.chess && state.chess.v ? state.chess : null;
-        const sub = c ? `${titleTag(c) ? titleTag(c) + " · " : ""}FIDE ${ratingTxt(c)}` : "Play, train and compete";
-        const html = '<div class="sec">Chess</div>' + row("actChess", ICON.pawn, "Chess", sub, state.age < 6 ? "dis" : "", typeof CHEV !== "undefined" ? CHEV : "");
-        const all = [...sList.querySelectorAll(".sec")].find((e) => "All" === e.textContent.trim());
-        all ? all.insertAdjacentHTML("beforebegin", html) : sList.insertAdjacentHTML("afterbegin", html);
-        const el = document.getElementById("actChess");
+        const sub = state.age < 6
+          ? "Available from age 6"
+          : c
+            ? `${titleTag(c) ? titleTag(c) + " · " : ""}FIDE ${ratingTxt(c)}`
+            : "Play, train and compete";
+        const html = `<div class="row sp-pack${state.age < 6 ? " dis" : ""}" id="spChess"><img src="${ICON.pawn}" alt=""><div class="t"><b>Chess Career</b><span>${sub}</span></div>${typeof CHEV !== "undefined" ? CHEV : ""}</div>`;
+        const first = sList.querySelector(".sp-pack");
+        first ? first.insertAdjacentHTML("beforebegin", html) : sList.insertAdjacentHTML("beforeend", html);
+        const el = document.getElementById("spChess");
         if (el && state.age >= 6) el.onclick = () => (typeof play === "function" && play("choice"), openChess());
       } catch (e) {
         console.warn("[chess] menu", e);
       }
       return r;
     };
-    const tab = document.querySelector('.tab[data-tab="Activities"]');
-    tab && (tab.onclick = () => openActivities());
     document.getElementById("ageBtn").addEventListener("click", () =>
       setTimeout(() => {
         try {

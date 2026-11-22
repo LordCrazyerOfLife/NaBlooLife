@@ -74,11 +74,6 @@
   const MAX_ACTS = 4;
 
   // ---------------------------------------------------------------- armas (íconos propios en guns/)
-  const SWITCH_COLORS = [
-    ["red", T("Red", "Rojo", "Vermelho")], ["blue", T("Blue", "Azul", "Azul")], ["green", T("Green", "Verde", "Verde")],
-    ["gold", T("Gold", "Dorado", "Dourado")], ["pink", T("Pink", "Rosado", "Rosa")], ["purple", T("Purple", "Morado", "Roxo")],
-    ["orange", T("Orange", "Naranja", "Laranja")], ["white", T("White", "Blanco", "Branco")],
-  ];
   const WEAPONS = [
     { id: "glock", name: T("Glock with Extended Mag", "Glock con cargador extendido", "Glock com pente estendido"), price: 1200, power: 0.08, heat: 3, rank: 0 },
     { id: "switch", name: T("Glock with Switch", "Glock con switch", "Glock com switch"), price: 2500, power: 0.14, heat: 6, rank: 0 },
@@ -86,7 +81,7 @@
     { id: "draco", name: T("Draco", "Draco", "Draco"), price: 4000, power: 0.22, heat: 10, rank: 2 },
   ];
   const GUN_AGE = 16;
-  const gunIcon = (w) => (w.id === "switch" ? `guns/switch-${w.color || "red"}.png` : `guns/${w.id}.png`);
+  const gunIcon = (w) => (w.id === "switch" ? "glock-switch-120.png" : `guns/${w.id}.png`);
   const weaponDef = (id) => WEAPONS.find((w) => w.id === id);
   // el arma que llevas encima (o null)
   const carried = (g) => (g.guns && g.carry != null && g.guns[g.carry] ? g.guns[g.carry] : null);
@@ -381,7 +376,7 @@
               : lockedRank
                 ? `${T("Requires rank", "Requiere rango", "Requer patente")}: ${RANKS[w.rank].t}`
                 : `${T("Buy", "Comprar", "Comprar")} · ${money(price(w.price))}`;
-        const icon = own ? gunIcon(g.guns[idx]) : gunIcon({ id: w.id, color: "red" });
+        const icon = own ? gunIcon(g.guns[idx]) : gunIcon({ id: w.id });
         return row(`gW_${w.id}`, icon, w.name, sub, !own && (young || lockedRank));
       }).join("") +
       row("gDealers", E("1f3ea"), T("Gun Dealers", "Vendedores de armas", "Vendedores de armas"), T("Legal store, street dealers, attachments and mags", "Tienda legal, dealers de la calle, accesorios y cargadores", "Loja legal, dealers da rua, acessórios e pentes"), false, typeof CHEV !== "undefined" ? CHEV : "") +
@@ -428,9 +423,9 @@
     }
     const cost = price(w.price);
     if (state.money < cost) return notice(CAREER, T("You don't have enough money for that.", "No te alcanza para eso.", "Você não tem dinheiro para isso."), null, !0);
-    const buy = (color) => {
+    const buy = () => {
       state.money -= cost;
-      g.guns.push(color ? { id: w.id, color } : { id: w.id });
+      g.guns.push({ id: w.id });
       g.carry = g.guns.length - 1;
       typeof renderStats === "function" && renderStats();
       say(T("I bought a gun on the street.", "Compré un arma en la calle.", "Comprei uma arma na rua."));
@@ -443,17 +438,7 @@
         choices: [["OK", openGang]],
       });
     };
-    if (w.id !== "switch") return buy(null);
-    socSelCard({
-      tag: CAREER,
-      icon: "guns/switch-red.png",
-      title: w.name,
-      lead: T("Pick the color of the switch.", "Elige el color del switch.", "Escolha a cor do switch."),
-      label: T("Color:", "Color:", "Cor:"),
-      opts: SWITCH_COLORS.map((c) => c[1]),
-      btn: `${T("Buy", "Comprar", "Comprar")} · ${money(cost)}`,
-      onGo: (i) => buy(SWITCH_COLORS[i][0]),
-    });
+    buy();
   }
 
   // ---------------------------------------------------------------- la gente
@@ -694,6 +679,10 @@
         );
       }
     }
+    // yearTick no pasa por G(), que era el único que reiniciaba el contador del año: sin esto
+    // `g.yr.acts` quedaba congelado en el último año con movidas, el evento salía con la
+    // probabilidad alta para siempre y la reputación nunca bajaba por inactividad.
+    g.yr = { age: state.age, acts: 0 };
   }
 
   // ---------------------------------------------------------------- arranque
@@ -730,7 +719,7 @@
     };
     if (!window.FL_ARMS) {
       const el = document.createElement("script");
-      el.src = "arms.js?v=3";
+      el.src = "arms.js?v=5";
       document.head.append(el);
     }
   }

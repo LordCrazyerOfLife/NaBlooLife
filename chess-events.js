@@ -319,7 +319,8 @@
     // 23
     {
       id: "trolls", icon: "emoji/1f47a.png",
-      when: (X) => X.c.followers >= 1500,
+      // es sobre el chat de tu stream: hace falta haber streameado este año
+      when: (X) => X.c.followers >= 1500 && X.yr.stream > 0,
       title: T("Stream Trolls", "Trolls en el stream", "Trolls na live"),
       lead: T("Trolls are spamming your stream chat and calling you a fraud.", "Unos trolls están llenando el chat de tu stream y diciendo que eres un fraude.", "Uns trolls estão lotando o chat da sua live e te chamando de fraude."),
       choices: [
