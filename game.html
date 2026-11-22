@@ -14575,6 +14575,7 @@
             ? spawnUS
             : codes[Math.floor(Math.random() * codes.length)]),
         PICK && PICK.city && PICK.country === state.country && (state.city = PICK.city);
+      state.species = PICK && PICK.species && "human" !== PICK.species ? PICK.species : "human";
       const [countryName, capital] = COUNTRIES[state.country],
         city = state.city || capital;
       (document.querySelector(".phone > .profile .pflag").src = `flags/${state.country}.png`),
@@ -71606,6 +71607,7 @@
             last: ulast(c),
             look: s(r),
             genes: [],
+            species: "human",
             country: c,
             city: i(c),
             talent: null,
@@ -71696,6 +71698,7 @@
                 country: d.country,
                 city: d.city,
                 talent: d.talent,
+                species: d.species || "human",
                 birthYear: d.year || null,
                 stats: t
                   ? { Happiness: t.Happiness, Health: t.Health, Smarts: t.Smarts, Looks: t.Looks }
@@ -71769,7 +71772,7 @@
                 : `${d.genes.length} traits`
               : "None";
             v(
-              `${e ? `<button class="nl-back nl-x" data-close>${X_ICON}</button>` : ""}\n        <button class="nl-reroll" data-reroll aria-label="Random name"></button>\n        ${g("New Life", "Start a new life!", "splash/seedling.png")}\n        ${y('data-go="start"', "green", `Start ${m(d.first)}'s life!`)}\n        <button class="nl-btn nl-million" data-go="million">Start with $1,000,000!</button>\n        <button class="nl-btn nl-million nl-famous" data-go="famous"><img src="freelife/apple/2b50.png" alt="">Start famous</button>\n        <hr class="nl-line">\n        ${$("name", `${m(d.first)} ${m(d.last)}`, "Name")}\n        ${$("gender", `<span class="nl-sym">${"f" === d.g ? "&#9792;" : "&#9794;"}</span>${"f" === d.g ? "Female" : "Male"}`, "Gender")}\n        ${$("country", `${p(`flags/${d.country}.png`)}${m(COUNTRIES[d.country][0])}`, "Country")}\n        ${$("city", `${p(`flags/${d.country}.png`)}${m(d.city)}`, "City")}\n        ${$("year", `${p(d.year && d.year < 1900 ? "emoji/1f3a9.png" : "emoji/1f4c5.png")}${d.year || "Random"}`, "Birth Year")}\n        ${ROYAL_LANDS.includes(d.country) ? `<button class="nl-btn c-purple nl-two" data-go="royal"><b>${p(d.royal ? ROY_RANKS[d.royal].ico : "royal/broom.png")}${d.royal ? royWord(d.royal, d.g) : "Commoner"}<img class="nl-god nl-god-w" src="royal/godmode.png" alt="God Mode"></b><small>Royal Status</small></button>` : ""}\n        ${mods.birthTraits ? y('data-go="genes"', "yellow", `${p("emoji/1f9e0.png")}Genetic trait: ${m(a)}`) : ""}\n        ${y('data-go="talent"', "orange", d.talent ? `${p(TALENTS[d.talent].ico)}${TALENTS[d.talent].name}` : "Select your special talent")}\n        ${y('data-go="look"', "yellow", `${S}Select your appearance`)}\n        ${y('data-go="attrs"', "yellow", `${S}Select your attributes`)}`,
+              `${e ? `<button class="nl-back nl-x" data-close>${X_ICON}</button>` : ""}\n        <button class="nl-reroll" data-reroll aria-label="Random name"></button>\n        ${g("New Life", "Start a new life!", "splash/seedling.png")}\n        ${y('data-go="start"', "green", `Start ${m(d.first)}'s life!`)}\n        <button class="nl-btn nl-million" data-go="million">Start with $1,000,000!</button>\n        <button class="nl-btn nl-million nl-famous" data-go="famous"><img src="freelife/apple/2b50.png" alt="">Start famous</button>\n        <hr class="nl-line">\n        ${$("name", `${m(d.first)} ${m(d.last)}`, "Name")}\n        ${$("gender", `<span class="nl-sym">${"f" === d.g ? "&#9792;" : "&#9794;"}</span>${"f" === d.g ? "Female" : "Male"}`, "Gender")}\n        ${$("species", d.species && "human" !== d.species ? `${d.species} Hybrid` : "Human", "Species")}\n        ${$("country", `${p(`flags/${d.country}.png`)}${m(COUNTRIES[d.country][0])}`, "Country")}\n        ${$("city", `${p(`flags/${d.country}.png`)}${m(d.city)}`, "City")}\n        ${$("year", `${p(d.year && d.year < 1900 ? "emoji/1f3a9.png" : "emoji/1f4c5.png")}${d.year || "Random"}`, "Birth Year")}\n        ${ROYAL_LANDS.includes(d.country) ? `<button class="nl-btn c-purple nl-two" data-go="royal"><b>${p(d.royal ? ROY_RANKS[d.royal].ico : "royal/broom.png")}${d.royal ? royWord(d.royal, d.g) : "Commoner"}<img class="nl-god nl-god-w" src="royal/godmode.png" alt="God Mode"></b><small>Royal Status</small></button>` : ""}\n        ${mods.birthTraits ? y('data-go="genes"', "yellow", `${p("emoji/1f9e0.png")}Genetic trait: ${m(a)}`) : ""}\n        ${y('data-go="talent"', "orange", d.talent ? `${p(TALENTS[d.talent].ico)}${TALENTS[d.talent].name}` : "Select your special talent")}\n        ${y('data-go="look"', "yellow", `${S}Select your appearance`)}\n        ${y('data-go="attrs"', "yellow", `${S}Select your attributes`)}`,
               null,
               t,
             );
@@ -71785,6 +71788,7 @@
               attrs: H,
               name: R,
               gender: B,
+              species: SP,
               royal: M,
               year: C,
             };
@@ -72176,6 +72180,39 @@
               w("[data-gd]", (e) => {
                 const t = e.dataset.gd;
                 t !== d.g && ((d.g = t), d.typed || (d.first = uname(t, d.country)), (d.look = s(t))), x(-1);
+              });
+          },
+          SP = (e = 0) => {
+            const SPECIES_OPTS = [
+              "human",
+              "Wolf",
+              "Red Fox",
+              "Fennec Fox",
+              "Lion",
+              "Bengal Tiger",
+              "Jaguar",
+              "Leopard",
+              "Cheetah",
+              "Panda Bear",
+              "Grizzly Bear",
+              "Hyena",
+              "Lynx",
+              "Snow Leopard",
+              "Black Panther",
+              "Rabbit",
+              "Deer",
+              "Owl",
+              "Raven",
+              "Otter",
+              "Komodo Dragon",
+            ];
+            v(
+              `${f()}${g("Species", "Pick your species!")}\n        ${SPECIES_OPTS.map((e) => y(`data-sp="${e}"`, "yellow", "human" === e ? "Human" : `${e} Hybrid`)).join("")}`,
+              x,
+              e,
+            ),
+              w("[data-sp]", (e) => {
+                (d.species = e.dataset.sp), x(-1);
               });
           };
         x();
@@ -78425,7 +78462,7 @@
                   ? "University"
                   : "High School",
           c = (e, t) => `<tr><td><b>${e}:</b> ${t}</td></tr>`;
-        (ev.innerHTML = `<div class="jm-x" id="profX">${o}</div><div style="height:26px"></div>\n      <div class="ev-tag"><img class="ev-av" src="emoji/1f476.png"><span class="who">${n}</span><span class="kind">${s ? "Profile" : "You"}</span></div>\n      <h4>${s ? '<canvas class="prof-face" width="250" height="250"></canvas>' : '<img src="menu/magnifier.png" alt="">'}<span>${s ? n : "Profile"}</span></h4>\n      <table class="prof"><tbody>${c("Gender", state.genderId && "Cisgender" !== state.genderId ? state.genderId : "f" === PG() ? "Female" : "Male")}${c("Age", state.age)}${state.age >= 13 ? c("Sexuality", state.sexuality || "Straight") + c("Marital Status", i) : ""}\n        ${c("Education", l)}${c("Location", a === e ? a : `${a}, ${e}`)}${state.talent && TALENTS[state.talent] ? c("Special Talent", TALENTS[state.talent].name) : ""}</tbody></table>\n      <div class="ev-bars" style="row-gap:9px;margin-top:22px">${Object.entries(
+        (ev.innerHTML = `<div class="jm-x" id="profX">${o}</div><div style="height:26px"></div>\n      <div class="ev-tag"><img class="ev-av" src="emoji/1f476.png"><span class="who">${n}</span><span class="kind">${s ? "Profile" : "You"}</span></div>\n      <h4>${s ? '<canvas class="prof-face" width="250" height="250"></canvas>' : '<img src="menu/magnifier.png" alt="">'}<span>${s ? n : "Profile"}</span></h4>\n      <table class="prof"><tbody>${c("Gender", state.genderId && "Cisgender" !== state.genderId ? state.genderId : "f" === PG() ? "Female" : "Male")}${c("Species", state.species && "human" !== state.species ? "Hybrid" : "Human")}${c("Age", state.age)}${state.age >= 13 ? c("Sexuality", state.sexuality || "Straight") + c("Marital Status", i) : ""}\n        ${c("Education", l)}${c("Location", a === e ? a : `${a}, ${e}`)}${state.talent && TALENTS[state.talent] ? c("Special Talent", TALENTS[state.talent].name) : ""}</tbody></table>\n      <div class="ev-bars" style="row-gap:9px;margin-top:22px">${Object.entries(
           { ...state.stats, ...(state.attrs || {}) },
         )
           .map(
