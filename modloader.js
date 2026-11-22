@@ -47,6 +47,13 @@
       src: "cheat.js?v=1",
       desc: "Adds a small draggable button floating on screen. Tap it to open a panel of cheats: add money, set cash to $0, max or min all four stats, full heal, and age up on demand.",
     },
+    {
+      id: "nk",
+      name: "North Korea Events",
+      icon: "emoji/1f575-fe0f.png",
+      src: "nk.js?v=1",
+      desc: "Country-specific life events for characters born in North Korea: a songbun social class at birth, food rationing, mandatory ideology sessions, the risk of being reported by an informant, and a rare, high-risk chance to attempt leaving the country. Only activates when your country is North Korea.",
+    },
   ];
 
   // ---------------------------------------------------------------- on/off por mod

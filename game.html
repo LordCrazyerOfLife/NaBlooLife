@@ -11950,6 +11950,91 @@
         gh: "₵",
         ma: "MAD ",
         jo: "JD ",
+        ag: "EC$",
+        al: "L ",
+        am: "֏",
+        az: "₼",
+        ba: "KM ",
+        bb: "Bds$",
+        bf: "FCFA ",
+        bg: "лв ",
+        bh: "BD ",
+        bi: "FBu ",
+        bj: "FCFA ",
+        bn: "B$",
+        bt: "Nu ",
+        bw: "P ",
+        by: "Br ",
+        cf: "FCFA ",
+        cg: "FCFA ",
+        ci: "FCFA ",
+        cm: "FCFA ",
+        cv: "CVE ",
+        dm: "EC$",
+        er: "Nfk ",
+        fj: "FJ$",
+        fm: "$",
+        ga: "FCFA ",
+        gd: "EC$",
+        gm: "D ",
+        gn: "FG ",
+        gq: "FCFA ",
+        gw: "FCFA ",
+        hn: "L ",
+        kg: "som ",
+        kh: "៛",
+        ki: "A$",
+        km: "CF ",
+        kn: "EC$",
+        kp: "₩",
+        la: "₭",
+        lc: "EC$",
+        li: "CHF ",
+        lr: "L$",
+        ls: "L ",
+        ly: "LD ",
+        md: "L ",
+        mg: "Ar ",
+        mh: "$",
+        mk: "ден ",
+        ml: "FCFA ",
+        mm: "K ",
+        mr: "UM ",
+        mu: "Rs ",
+        mv: "Rf ",
+        mw: "MK ",
+        mz: "MT ",
+        na: "N$",
+        ne: "FCFA ",
+        nr: "$",
+        om: "OMR ",
+        ps: "₪",
+        pw: "$",
+        rw: "RWF ",
+        sb: "SI$",
+        sc: "SR ",
+        sd: "SDG ",
+        sl: "Le ",
+        sn: "FCFA ",
+        so: "Sh ",
+        sr: "SRD ",
+        ss: "SSP ",
+        st: "Db ",
+        sz: "E ",
+        td: "FCFA ",
+        tg: "FCFA ",
+        tj: "SM ",
+        tl: "$",
+        tm: "TMT ",
+        to: "T$",
+        tt: "TT$",
+        tv: "A$",
+        tz: "TSh ",
+        uz: "som ",
+        vc: "EC$",
+        vu: "VT ",
+        ye: "YR ",
+        zm: "ZK ",
         ...Object.fromEntries(
           "at be cy de ee es fi fr gr hr ie it lt lu lv mt nl pt si sk ad mc sm va me xk"
             .split(" ")
@@ -14576,6 +14661,7 @@
             : codes[Math.floor(Math.random() * codes.length)]),
         PICK && PICK.city && PICK.country === state.country && (state.city = PICK.city);
       state.species = PICK && PICK.species && "human" !== PICK.species ? PICK.species : "human";
+      state.nkHeir = !("kp" !== state.country || !PICK || !PICK.nkRuling);
       const [countryName, capital] = COUNTRIES[state.country],
         city = state.city || capital;
       (document.querySelector(".phone > .profile .pflag").src = `flags/${state.country}.png`),
@@ -71608,6 +71694,7 @@
             look: s(r),
             genes: [],
             species: "human",
+            nkRuling: !1,
             country: c,
             city: i(c),
             talent: null,
@@ -71699,6 +71786,7 @@
                 city: d.city,
                 talent: d.talent,
                 species: d.species || "human",
+                nkRuling: "kp" === d.country && !!d.nkRuling,
                 birthYear: d.year || null,
                 stats: t
                   ? { Happiness: t.Happiness, Health: t.Health, Smarts: t.Smarts, Looks: t.Looks }
@@ -71772,7 +71860,8 @@
                 : `${d.genes.length} traits`
               : "None";
             v(
-              `${e ? `<button class="nl-back nl-x" data-close>${X_ICON}</button>` : ""}\n        <button class="nl-reroll" data-reroll aria-label="Random name"></button>\n        ${g("New Life", "Start a new life!", "splash/seedling.png")}\n        ${y('data-go="start"', "green", `Start ${m(d.first)}'s life!`)}\n        <button class="nl-btn nl-million" data-go="million">Start with $1,000,000!</button>\n        <button class="nl-btn nl-million nl-famous" data-go="famous"><img src="freelife/apple/2b50.png" alt="">Start famous</button>\n        <hr class="nl-line">\n        ${$("name", `${m(d.first)} ${m(d.last)}`, "Name")}\n        ${$("gender", `<span class="nl-sym">${"f" === d.g ? "&#9792;" : "&#9794;"}</span>${"f" === d.g ? "Female" : "Male"}`, "Gender")}\n        ${$("species", d.species && "human" !== d.species ? `${d.species} Hybrid` : "Human", "Species")}\n        ${$("country", `${p(`flags/${d.country}.png`)}${m(COUNTRIES[d.country][0])}`, "Country")}\n        ${$("city", `${p(`flags/${d.country}.png`)}${m(d.city)}`, "City")}\n        ${$("year", `${p(d.year && d.year < 1900 ? "emoji/1f3a9.png" : "emoji/1f4c5.png")}${d.year || "Random"}`, "Birth Year")}\n        ${ROYAL_LANDS.includes(d.country) ? `<button class="nl-btn c-purple nl-two" data-go="royal"><b>${p(d.royal ? ROY_RANKS[d.royal].ico : "royal/broom.png")}${d.royal ? royWord(d.royal, d.g) : "Commoner"}<img class="nl-god nl-god-w" src="royal/godmode.png" alt="God Mode"></b><small>Royal Status</small></button>` : ""}\n        ${mods.birthTraits ? y('data-go="genes"', "yellow", `${p("emoji/1f9e0.png")}Genetic trait: ${m(a)}`) : ""}\n        ${y('data-go="talent"', "orange", d.talent ? `${p(TALENTS[d.talent].ico)}${TALENTS[d.talent].name}` : "Select your special talent")}\n        ${y('data-go="look"', "yellow", `${S}Select your appearance`)}\n        ${y('data-go="attrs"', "yellow", `${S}Select your attributes`)}`,
+              `${e ? `<button class="nl-back nl-x" data-close>${X_ICON}</button>` : ""}\n        <button class="nl-reroll" data-reroll aria-label="Random name"></button>\n        ${g("New Life", "Start a new life!", "splash/seedling.png")}\n        ${y('data-go="start"', "green", `Start ${m(d.first)}'s life!`)}\n        <button class="nl-btn nl-million" data-go="million">Start with $1,000,000!</button>\n        <button class="nl-btn nl-million nl-famous" data-go="famous"><img src="freelife/apple/2b50.png" alt="">Start famous</button>\n        <hr class="nl-line">\n        ${$("name", `${m(d.first)} ${m(d.last)}`, "Name")}\n        ${$("gender", `<span class="nl-sym">${"f" === d.g ? "&#9792;" : "&#9794;"}</span>${"f" === d.g ? "Female" : "Male"}`, "Gender")}\n        ${$("species", d.species && "human" !== d.species ? `${d.species} Hybrid` : "Human", "Species")}\n        ${$("country", `${p(`flags/${d.country}.png`)}${m(COUNTRIES[d.country][0])}`, "Country")}\n        ${$("city", `${p(`flags/${d.country}.png`)}${m(d.city)}`, "City")}\n        ${$("year", `${p(d.year && d.year < 1900 ? "emoji/1f3a9.png" : "emoji/1f4c5.png")}${d.year || "Random"}`, "Birth Year")}\n        ${ROYAL_LANDS.includes(d.country) ? `<button class="nl-btn c-purple nl-two" data-go="royal"><b>${p(d.royal ? ROY_RANKS[d.royal].ico : "royal/broom.png")}${d.royal ? royWord(d.royal, d.g) : "Commoner"}<img class="nl-god nl-god-w" src="royal/godmode.png" alt="God Mode"></b><small>Royal Status</small></button>` : ""}
+        ${"kp" === d.country ? y('data-go="nkfam"', "purple", d.nkRuling ? "Child of the Leader" : "Ordinary Citizen") : ""}\n        ${mods.birthTraits ? y('data-go="genes"', "yellow", `${p("emoji/1f9e0.png")}Genetic trait: ${m(a)}`) : ""}\n        ${y('data-go="talent"', "orange", d.talent ? `${p(TALENTS[d.talent].ico)}${TALENTS[d.talent].name}` : "Select your special talent")}\n        ${y('data-go="look"', "yellow", `${S}Select your appearance`)}\n        ${y('data-go="attrs"', "yellow", `${S}Select your attributes`)}`,
               null,
               t,
             );
@@ -71789,6 +71878,7 @@
               name: R,
               gender: B,
               species: SP,
+              nkfam: NKFAM,
               royal: M,
               year: C,
             };
@@ -72213,6 +72303,16 @@
             ),
               w("[data-sp]", (e) => {
                 (d.species = e.dataset.sp), x(-1);
+              });
+          },
+          NKFAM = (e = 0) => {
+            v(
+              `${f()}${g("Birth Status", "Were you born into North Korea's ruling family?")}\n        ${y('data-nkf="0"', "blue", "Ordinary Citizen")}${y('data-nkf="1"', "purple", "Child of the Leader")}`,
+              x,
+              e,
+            ),
+              w("[data-nkf]", (e) => {
+                (d.nkRuling = "1" === e.dataset.nkf), x(-1);
               });
           };
         x();
