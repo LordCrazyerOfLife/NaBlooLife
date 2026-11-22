@@ -11,7 +11,7 @@
       pray: !0,
       sound: !0,
       bitlifeLoader: !1,
-      bitlifeMode: !1,
+      bitlifeMode: !0,
       snow: !0,
       soundPack: "auto",
       iconPack: "auto",
