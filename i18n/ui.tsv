@@ -1118,17 +1118,7 @@ Enforcer	Matón	Executor
 Lieutenant	Teniente	Tenente
 Shot Caller	El que manda	Chefe de área
 Boss	Jefe	Chefão
-Red	Rojo	Vermelho
-Blue	Azul	Azul
-Green	Verde	Verde
-Gold	Dorado	Dourado
-Pink	Rosado	Rosa
-Purple	Morado	Roxo
-Orange	Naranja	Laranja
-White	Blanco	Branco
-Glock with Extended Mag	Glock con cargador extendido	Glock com pente estendido
-Glock with Switch	Glock con switch	Glock com switch
-ARP	ARP	ARP
+Glock	Glock	Glock
 Draco	Draco	Draco
 Gang	Pandilla	Gangue
 Police heat	Calor policial	Atenção da polícia
@@ -1215,8 +1205,6 @@ I started carrying a different gun.	Empecé a andar con otra arma.	Comecei a and
 You don't have enough money for that.	No te alcanza para eso.	Você não tem dinheiro para isso.
 I bought a gun on the street.	Compré un arma en la calle.	Comprei uma arma na rua.
 You got it from a guy who knows a guy. Now you're carrying it.	Te la consiguió un pana de un pana. Ahora la llevas encima.	Você conseguiu com um conhecido de um conhecido. Agora está com ela.
-Pick the color of the switch.	Elige el color del switch.	Escolha a cor do switch.
-Color:	Color:	Cor:
 Hang out	Pasar el rato	Dar um rolê
 You already chilled with him this year.	Ya pasaron el rato este año.	Vocês já deram um rolê este ano.
 I hung out with one of my homies from the gang.	Pasé el rato con uno de mis homies de la pandilla.	Dei um rolê com um dos meus parças da gangue.
@@ -1306,7 +1294,6 @@ Deer Rifle .308	Rifle de venado .308	Rifle de veado .308
 Hunting Bow	Arco de caza	Arco de caça
 Street Glock	Glock de la calle	Glock da rua
 Mini Draco	Mini Draco	Mini Draco
-Mini ARP	Mini ARP	Mini ARP
 Pistols	Pistolas	Pistolas
 Shotguns	Escopetas	Escopetas
 Hunting	Caza	Caça
@@ -1314,8 +1301,6 @@ Glock Extended Mag (33 rounds)	Cargador extendido de Glock (33 balas)	Pente este
 Glock Drum Mag (50 rounds)	Cargador de tambor de Glock (50 balas)	Pente tambor de Glock (50 balas)
 Draco Extended Mag (40 rounds)	Cargador extendido de Draco (40 balas)	Pente estendido de Draco (40 balas)
 Draco Drum Mag (75 rounds)	Cargador de tambor de Draco (75 balas)	Pente tambor de Draco (75 balas)
-ARP Extended Mag (40 rounds)	Cargador extendido de ARP (40 balas)	Pente estendido de ARP (40 balas)
-ARP Drum Mag (60 rounds)	Cargador de tambor de ARP (60 balas)	Pente tambor de ARP (60 balas)
 Standard mag (17 rounds)	Cargador estándar (17 balas)	Pente padrão (17 balas)
 Standard mag (30 rounds)	Cargador estándar (30 balas)	Pente padrão (30 balas)
 Optic	Mira	Mira
@@ -1324,30 +1309,29 @@ Grip	Empuñadura	Empunhadura
 Rail	Riel	Trilho
 Trigger	Gatillo	Gatilho
 Red Dot Sight	Mira de punto rojo	Mira de ponto vermelho
-4x Scope	Mira telescópica 4x	Luneta 4x
-Compensator	Compensador	Compensador
 Suppressor	Silenciador	Silenciador
-Vertical Grip	Empuñadura vertical	Empunhadura vertical
-Laser Sight	Mira láser	Mira laser
-Weapon Light	Linterna táctica	Lanterna tática
-Pistol Brace	Brace de pistola	Brace de pistola
 Switch	Switch	Switch
 Auto Sear	Auto sear	Auto sear
+Red	Rojo	Vermelho
+Blue	Azul	Azul
+Green	Verde	Verde
+Gold	Dorado	Dourado
+Pink	Rosado	Rosa
+Purple	Morado	Roxo
+Orange	Naranja	Laranja
+White	Blanco	Branco
 Glock 19 · Tactical	Glock 19 · Táctica	Glock 19 · Tática
 Glock · Switched	Glock · Con switch	Glock · Com switch
 Glock · Full Kit	Glock · Kit completo	Glock · Kit completo
 Draco · Optic Pack	Draco · Paquete con mira	Draco · Pacote com mira
 Draco · Full Auto	Draco · Automático	Draco · Automático
 Mini Draco · Compact Kit	Mini Draco · Kit compacto	Mini Draco · Kit compacto
-ARP · Tactical	ARP · Táctica	ARP · Tática
-ARP · Quiet	ARP · Silenciosa	ARP · Silenciosa
-Mini ARP · Spray	Mini ARP · Ráfaga	Mini ARP · Rajada
 Gun Store	Tienda de armas	Loja de armas
 Pistols, shotguns and hunting gear. Everything legal.	Pistolas, escopetas y armas de caza. Todo legal.	Pistolas, escopetas e armas de caça. Tudo legal.
 Lil Ray	Lil Ray	Lil Ray
 Corner guy. Glocks, switches and Glock mags.	El de la esquina. Glocks, switches y cargadores de Glock.	O cara da esquina. Glocks, switches e pentes de Glock.
 Mr. Ortiz	Don Ortiz	Seu Ortiz
-Gun runner. Dracos and ARPs, big and mini.	Traficante de armas. Dracos y ARPs, grandes y mini.	Traficante de armas. Dracos e ARPs, grandes e mini.
+Gun runner. Dracos, big and mini.	Traficante de armas. Dracos, grandes y mini.	Traficante de armas. Dracos, grandes e mini.
 Ghost	Ghost	Ghost
 Parts guy. Attachments and magazines for everything.	El de las piezas. Accesorios y cargadores para todo.	O cara das peças. Acessórios e pentes para tudo.
 Automatic	Automática	Automática
@@ -1370,7 +1354,7 @@ Guns	Armas	Armas
 Attachments	Accesorios	Acessórios
 Fits everything	Sirve para todas	Serve em todas
 Glocks	Glocks	Glocks
-Dracos and ARPs	Dracos y ARPs	Dracos e ARPs
+Dracos	Dracos	Dracos
 Ready-Made (with attachments)	Ya armadas (con accesorios)	Já montadas (com acessórios)
 You have to be at least	Tienes que tener al menos	Você precisa ter pelo menos
 years old to buy that.	años para comprar eso.	anos para comprar isso.
@@ -1382,6 +1366,8 @@ A dealer took my money and disappeared.	Un dealer se llevó mi plata y desaparec
 Scammed	Te estafaron	Você foi enganado
 He took your cash and never showed up. Lesson learned.	Se llevó tu plata y nunca apareció. Aprendiste la lección.	Ele pegou seu dinheiro e nunca apareceu. Lição aprendida.
 It was a police sting.	Era una trampa de la policía.	Era uma armadilha da polícia.
+Pick the color of the switch.	Elige el color del switch.	Escolha a cor do switch.
+Color:	Color:	Cor:
 Carry It	Llevarla encima	Levar com você
 You're armed	Andas armado	Você está armado
 Only one gun at a time	Solo una arma a la vez	Só uma arma por vez
@@ -1423,3 +1409,535 @@ Hunting License	Licencia de caza	Licença de caça
 You need a license to hunt legally.	Necesitas una licencia para cazar legalmente.	Você precisa de uma licença para caçar legalmente.
 Buy the license	Comprar la licencia	Comprar a licença
 Legal store, street dealers and your arsenal	Tienda legal, dealers de la calle y tu arsenal	Loja legal, dealers da rua e seu arsenal
+Political Career	Carrera Política	Carreira Política
+Unity Party	Partido Unidad	Partido Unidade
+Liberty Party	Partido Libertad	Partido Liberdade
+Independent	Independiente	Independente
+Environment	Medio Ambiente	Meio Ambiente
+Corruption	Corrupción	Corrupção
+Economy	Economía	Economia
+Healthcare	Sanidad	Saúde
+Immigration	Inmigración	Imigração
+Infrastructure	Infraestructura	Infraestrutura
+Taxes	Impuestos	Impostos
+Housing	Vivienda	Moradia
+Employment	Empleo	Emprego
+Civil Rights	Derechos Civiles	Direitos Civis
+Topic	Tema	Tema
+My Campaign	Mi campaña	Minha campanha
+School Board Member	Miembro de la Junta Escolar	Membro do Conselho Escolar
+School District	Distrito Escolar	Distrito Escolar
+Set school policy	Fijar la política escolar	Definir a política escolar
+Approve the curriculum	Aprobar el currículo	Aprovar o currículo
+Hire the superintendent	Contratar al superintendente	Contratar o superintendente
+City Councilor	Concejal Municipal	Vereador
+City Hall	Ayuntamiento	Prefeitura
+Pass city ordinances	Aprobar ordenanzas municipales	Aprovar ordenanças municipais
+Approve the city budget	Aprobar el presupuesto municipal	Aprovar o orçamento municipal
+Decide zoning	Decidir la zonificación	Decidir o zoneamento
+Mayor	Alcalde	Prefeito
+Veto ordinances	Vetar ordenanzas	Vetar ordenanças
+Issue executive orders	Emitir órdenes ejecutivas	Emitir ordens executivas
+Appoint city officials	Nombrar funcionarios municipales	Nomear funcionários municipais
+Run the city budget	Manejar el presupuesto municipal	Comandar o orçamento municipal
+State Representative	Representante Estatal	Deputado Estadual
+State Assembly	Asamblea Estatal	Assembleia Estadual
+File state bills	Presentar proyectos estatales	Apresentar projetos estaduais
+Vote on state laws	Votar las leyes estatales	Votar as leis estaduais
+Serve on committees	Trabajar en comisiones	Atuar em comissões
+State Senator	Senador Estatal	Senador Estadual
+State Senate	Senado Estatal	Senado Estadual
+Confirm appointments	Confirmar nombramientos	Confirmar nomeações
+Filibuster	Hacer filibusterismo	Fazer obstrução
+Governor	Gobernador	Governador
+State Capitol	Capitolio Estatal	Capitólio Estadual
+Veto state bills	Vetar proyectos estatales	Vetar projetos estaduais
+Pardon convicts	Indultar convictos	Indultar condenados
+Appoint judges	Nombrar jueces	Nomear juízes
+U.S. Representative	Representante Federal	Deputado Federal
+U.S. House	Cámara de Representantes	Câmara dos Deputados
+File federal bills	Presentar proyectos federales	Apresentar projetos federais
+Vote on federal laws	Votar las leyes federales	Votar as leis federais
+Vote on impeachment	Votar el impeachment	Votar o impeachment
+U.S. Senator	Senador Federal	Senador Federal
+U.S. Senate	Senado Federal	Senado Federal
+Confirm judges and cabinet picks	Confirmar jueces y ministros	Confirmar juízes e ministros
+President	Presidente	Presidente
+The White House	La Casa Blanca	A Casa Branca
+Veto federal bills	Vetar proyectos federales	Vetar projetos federais
+Appoint Supreme Court justices	Nombrar jueces de la Corte Suprema	Nomear juízes da Suprema Corte
+Give the State of the Union	Dar el Estado de la Unión	Fazer o Discurso do Estado da União
+Campaign funds	Fondos de campaña	Fundos de campanha
+Approval	Aprobación	Aprovação
+Laws passed	Leyes aprobadas	Leis aprovadas
+Bills filed	Proyectos presentados	Projetos apresentados
+Choose a Topic	Elige un tema	Escolha um tema
+What will you focus on?	¿En qué te vas a enfocar?	Em que você vai se concentrar?
+Action	Acción	Ação
+Name Your Campaign	Ponle nombre a tu campaña	Dê um nome à sua campanha
+This is the name voters will see on the ballot and in the news.	Este es el nombre que los votantes verán en la papeleta y en las noticias.	Este é o nome que os eleitores verão na cédula e nas notícias.
+Campaign name:	Nombre de la campaña:	Nome da campanha:
+Use this name	Usar este nombre	Usar este nome
+You don't have any personal money to put into the campaign.	No tienes dinero personal para poner en la campaña.	Você não tem dinheiro pessoal para colocar na campanha.
+Add Personal Funds	Añadir fondos personales	Adicionar fundos pessoais
+Personal money	Dinero personal	Dinheiro pessoal
+Amount to transfer:	Cantidad a transferir:	Valor a transferir:
+Transfer to campaign	Transferir a la campaña	Transferir para a campanha
+You don't have that much personal money.	No tienes tanto dinero personal.	Você não tem tanto dinheiro pessoal.
+Campaign Funded	Campaña financiada	Campanha financiada
+You moved your own money into the campaign.	Moviste tu propio dinero a la campaña.	Você moveu seu próprio dinheiro para a campanha.
+Political office	Cargo político	Cargo político
+Campaign	Campaña	Campanha
+Your share	Tu porcentaje	Sua porcentagem
+Opponent share	Porcentaje del rival	Porcentagem do rival
+I won the election for	Gané la elección para	Venci a eleição para
+You lost.	Perdiste.	Você perdeu.
+I lost the election for	Perdí la elección para	Perdi a eleição para
+Election Night	Noche de Elecciones	Noite de Eleições
+The results are in. You won.	Ya salieron los resultados. Ganaste.	Os resultados saíram. Você venceu.
+The results are in. You lost.	Ya salieron los resultados. Perdiste.	Os resultados saíram. Você perdeu.
+Give a Speech	Dar un discurso	Fazer um discurso
+Win over the crowd	Ganarte al público	Conquistar o público
+What will your speech be about?	¿Sobre qué va a ser tu discurso?	Sobre o que será seu discurso?
+A Bad Speech	Un mal discurso	Um discurso ruim
+You stumbled over your words and the clip went viral for the wrong reason.	Te trabaste y el clip se hizo viral por la razón equivocada.	Você tropeçou nas palavras e o clipe viralizou pelo motivo errado.
+You gave a strong speech and the room applauded.	Diste un discurso fuerte y la sala aplaudió.	Você fez um discurso forte e a sala aplaudiu.
+Town Hall	Audiencia pública	Assembleia pública
+Meet your constituents	Conoce a tus votantes	Encontre seus eleitores
+What will you hear from constituents about?	¿Sobre qué te van a hablar tus votantes?	Sobre o que seus eleitores vão falar?
+You listened to complaints about potholes, schools and taxes. People felt heard.	Escuchaste quejas sobre baches, escuelas e impuestos. La gente se sintió escuchada.	Você ouviu reclamações sobre buracos, escolas e impostos. As pessoas se sentiram ouvidas.
+Fundraiser	Recaudar fondos	Arrecadar fundos
+Fill the campaign war chest	Llenar la caja de campaña	Encher o caixa de campanha
+What will you pitch to donors?	¿Qué les vas a vender a los donantes?	O que você vai apresentar aos doadores?
+Donors wrote checks. Some of them will expect favors later.	Los donantes firmaron cheques. Algunos van a esperar favores después.	Os doadores assinaram cheques. Alguns vão esperar favores depois.
+Press Interview	Entrevista de prensa	Entrevista à imprensa
+Face the media	Enfrenta a los medios	Enfrente a mídia
+What will you talk about in the interview?	¿De qué vas a hablar en la entrevista?	Sobre o que você vai falar na entrevista?
+You handled the questions well and the headline was friendly.	Manejaste las preguntas bien y el titular fue amistoso.	Você lidou bem com as perguntas e a manchete foi amigável.
+You got defensive and the interviewer kept pressing. It looked bad.	Te pusiste a la defensiva y el entrevistador siguió presionando. Se vio mal.	Você ficou na defensiva e o entrevistador continuou pressionando. Ficou feio.
+Campaign Rally	Mitin de campaña	Comício de campanha
+Spend campaign funds to fire up voters	Gasta fondos para encender a los votantes	Gaste fundos para animar os eleitores
+What will your rally focus on?	¿En qué se va a enfocar tu mitin?	Em que seu comício vai se concentrar?
+You couldn't afford a real rally. A few volunteers still showed up.	No te alcanzó para un mitin de verdad. Igual llegaron unos voluntarios.	Você não tinha dinheiro para um comício de verdade. Alguns voluntários apareceram.
+The rally was packed. Your name is on everyone's lips.	El mitin se llenó. Tu nombre está en boca de todos.	O comício lotou. Seu nome está na boca de todos.
+Debate Your Opponent	Debatir con tu rival	Debater com seu rival
+High risk, high reward	Mucho riesgo, mucha recompensa	Muito risco, muita recompensa
+Check the Polls	Ver las encuestas	Ver as pesquisas
+See where you stand	Mira cómo vas	Veja como você está
+Projected share	Porcentaje proyectado	Porcentagem projetada
+The Polls	Las encuestas	As pesquisas
+Polls are a snapshot, not a prophecy. Campaigning still matters.	Las encuestas son una foto, no una profecía. La campaña todavía importa.	As pesquisas são uma foto, não uma profecia. A campanha ainda importa.
+File a Bill	Presentar un proyecto	Apresentar um projeto
+Write a law and fight for it	Escribe una ley y pelea por ella	Escreva uma lei e lute por ela
+What should your bill focus on?	¿En qué se debe enfocar tu proyecto?	Em que seu projeto deve se concentrar?
+Bill	Proyecto	Projeto
+Bill Passed	Proyecto aprobado	Projeto aprovado
+Your bill made it through. Your name is on a real law now.	Tu proyecto pasó. Tu nombre está en una ley de verdad.	Seu projeto passou. Seu nome está numa lei de verdade.
+Bill Failed	Proyecto rechazado	Projeto rejeitado
+The bill died in committee. You'll need more support next time.	El proyecto murió en comisión. Vas a necesitar más apoyo la próxima vez.	O projeto morreu na comissão. Você vai precisar de mais apoio na próxima vez.
+Vote on a Bill	Votar un proyecto	Votar um projeto
+Take a side on the floor	Toma partido en el pleno	Tome partido no plenário
+What is the bill about?	¿De qué trata el proyecto?	Sobre o que é o projeto?
+A controversial bill is on the floor. Your vote will be remembered.	Hay un proyecto controvertido en el pleno. Tu voto se va a recordar.	Há um projeto polêmico no plenário. Seu voto será lembrado.
+Omnibus Reform Act	Ley de Reforma Ómnibus	Lei de Reforma Abrangente
+Vote Yes	Votar sí	Votar sim
+You voted yes. Your allies are happy, your opponents are not.	Votaste sí. Tus aliados están contentos, tus opositores no.	Você votou sim. Seus aliados estão felizes, seus opositores não.
+Vote No	Votar no	Votar não
+You voted no. Some people call it principle, others call it obstruction.	Votaste no. Unos lo llaman principio, otros lo llaman obstrucción.	Você votou não. Alguns chamam de princípio, outros de obstrução.
+Committee Hearing	Audiencia en comisión	Audiência na comissão
+Build support for your next bill	Construye apoyo para tu próximo proyecto	Construa apoio para seu próximo projeto
+What will the hearing focus on?	¿En qué se va a enfocar la audiencia?	Em que a audiência vai se concentrar?
+You questioned witnesses and made your case. Your next bill has a better shot.	Interrogaste testigos y defendiste tu caso. Tu próximo proyecto tiene mejor chance.	Você questionou testemunhas e defendeu seu caso. Seu próximo projeto tem mais chance.
+Block a bill with your voice	Bloquea un proyecto con tu voz	Bloqueie um projeto com sua voz
+What will you speak about?	¿Sobre qué vas a hablar?	Sobre o que você vai falar?
+You held the floor for hours. The bill is stalled, and the cameras loved it.	Te quedaste con la palabra por horas. El proyecto quedó estancado, y las cámaras lo amaron.	Você segurou o plenário por horas. O projeto parou, e as câmeras adoraram.
+Veto a Bill	Vetar un proyecto	Vetar um projeto
+Kill a law you oppose	Mata una ley que te opones	Mate uma lei que você se opõe
+The legislature passed a bill you don't like. You can veto it or sign it.	La legislatura aprobó un proyecto que no te gusta. Puedes vetarlo o firmarlo.	A legislatura aprovou um projeto que você não gosta. Você pode vetar ou assinar.
+Veto it	Vetarlo	Vetar
+Vetoed	Vetado	Vetado
+You vetoed the bill. Your base cheered; the other side called you a tyrant.	Vetaste el proyecto. Tu base celebró; el otro lado te llamó tirano.	Você vetou o projeto. Sua base comemorou; o outro lado chamou você de tirano.
+Sign it	Firmarlo	Assinar
+Signed	Firmado	Assinado
+You signed the bill into law. Compromise is rarely popular with everyone.	Firmaste el proyecto como ley. El compromiso rara vez es popular con todos.	Você assinou o projeto como lei. O compromisso raramente agrada a todos.
+Executive Order	Orden ejecutiva	Ordem executiva
+Act without the legislature	Actúa sin la legislatura	Aja sem a legislatura
+What will your order do?	¿Qué va a hacer tu orden?	O que sua ordem vai fazer?
+You signed an order and it took effect immediately. Your supporters loved the speed.	Firmaste una orden y entró en vigor de inmediato. Tus seguidores amaron la rapidez.	Você assinou uma ordem e ela entrou em vigor imediatamente. Seus apoiadores adoraram a rapidez.
+Critics called it an abuse of power. The courts may get involved.	Los críticos lo llamaron abuso de poder. Los tribunales podrían meterse.	Os críticos chamaram de abuso de poder. Os tribunais podem se envolver.
+Appoint an Official	Nombrar un funcionario	Nomear um funcionário
+Put your people in power	Pon a tu gente en el poder	Coloque sua gente no poder
+What policy area will your appointee handle?	¿Qué área política va a manejar tu nombrado?	Qual área política seu nomeado vai cuidar?
+You don't have enough money for the appointments and favors this requires.	No tienes suficiente dinero para los nombramientos y favores que esto requiere.	Você não tem dinheiro suficiente para as nomeações e favores que isso exige.
+You appointed a loyal ally. They'll remember who gave them the job.	Nombraste a un aliado leal. Van a recordar quién les dio el puesto.	Você nomeou um aliado leal. Eles vão lembrar quem lhes deu o cargo.
+Pardon a Convict	Indultar a un convicto	Indultar um condenado
+Use your clemency power	Usa tu poder de clemencia	Use seu poder de clemência
+What is the clemency case about?	¿De qué trata el caso de clemencia?	Sobre o que é o caso de clemência?
+Pardon Scandal	Escándalo de indulto	Escândalo de indulto
+The person you pardoned was connected to a donor. The press is digging.	La persona que indultaste estaba conectada a un donante. La prensa está investigando.	A pessoa que você indultou estava ligada a um doador. A imprensa está investigando.
+You granted clemency. Someone got a second chance, and someone else is angry.	Concediste clemencia. Alguien tuvo una segunda oportunidad, y alguien más está enojado.	Você concedeu clemência. Alguém ganhou uma segunda chance, e outra pessoa está furiosa.
+Present a Budget	Presentar un presupuesto	Apresentar um orçamento
+Put your priorities in the numbers	Pon tus prioridades en los números	Coloque suas prioridades nos números
+What will your budget prioritize?	¿Qué va a priorizar tu presupuesto?	O que seu orçamento vai priorizar?
+Budget	Presupuesto	Orçamento
+Your budget passed. Every number is a political choice, and everyone noticed.	Tu presupuesto pasó. Cada número es una decisión política, y todos lo notaron.	Seu orçamento passou. Cada número é uma escolha política, e todos notaram.
+State of the Union	Estado de la Unión	Estado da União
+Address the nation once a year	Habla al país una vez al año	Fale à nação uma vez por ano
+What will be the centerpiece of your speech?	¿Cuál será el tema central de tu discurso?	Qual será o tema central do seu discurso?
+You stood before Congress and the country. The speech will be replayed for years.	Te paraste frente al Congreso y al país. El discurso se va a repetir por años.	Você ficou diante do Congresso e do país. O discurso será reprisado por anos.
+Jobs and the Economy	Empleo y Economía	Emprego e Economia
+What is your plan to create good-paying jobs?	¿Cuál es tu plan para crear empleos bien pagados?	Qual é seu plano para criar empregos bem remunerados?
+Invest in small businesses and job training.	Invertir en pequeñas empresas y capacitación laboral.	Investir em pequenas empresas e capacitação profissional.
+Cut taxes for the wealthy and wait for it to trickle down.	Bajar impuestos a los ricos y esperar que gotee.	Cortar impostos dos ricos e esperar que escorram.
+Jobs are a state issue, not my problem.	El empleo es un tema estatal, no mi problema.	Emprego é uma questão estadual, não meu problema.
+How will you address climate change?	¿Cómo vas a enfrentar el cambio climático?	Como você vai enfrentar as mudanças climáticas?
+Clean energy investments and stricter pollution rules.	Inversión en energía limpia y reglas de contaminación más estrictas.	Investimento em energia limpa e regras de poluição mais rígidas.
+Climate rules kill jobs, so I will weaken them.	Las reglas climáticas matan empleos, así que las voy a debilitar.	Regras climáticas matam empregos, então vou enfraquecê-las.
+I don't believe the science.	No creo en la ciencia.	Não acredito na ciência.
+What will you do about violent crime?	¿Qué vas a hacer con el crimen violento?	O que você vai fazer com o crime violento?
+Fund police and prevention programs together.	Financiar a la policía y los programas de prevención juntos.	Financiar a polícia e programas de prevenção juntos.
+Build more prisons and cut everything else.	Construir más prisiones y recortar todo lo demás.	Construir mais prisões e cortar todo o resto.
+Blame the other party.	Culpar al otro partido.	Culpar o outro partido.
+A donor is under investigation. What will you do?	Un donante está bajo investigación. ¿Qué vas a hacer?	Um doador está sob investigação. O que você vai fazer?
+Return the money and cooperate fully.	Devolver el dinero y cooperar totalmente.	Devolver o dinheiro e cooperar plenamente.
+Deny everything and attack the press.	Negarlo todo y atacar a la prensa.	Negar tudo e atacar a imprensa.
+Say the investigation is a partisan witch hunt.	Decir que la investigación es una cacería política.	Dizer que a investigação é uma caça às bruxas partidária.
+How will you fix rising healthcare costs?	¿Cómo vas a arreglar el aumento de los costos de salud?	Como você vai resolver o aumento dos custos de saúde?
+Negotiate drug prices and expand coverage.	Negociar precios de medicamentos y ampliar la cobertura.	Negociar preços de medicamentos e ampliar a cobertura.
+Let the market decide everything.	Dejar que el mercado decida todo.	Deixar o mercado decidir tudo.
+Repeal coverage and call it freedom.	Derogar la cobertura y llamarlo libertad.	Revogar a cobertura e chamar de liberdade.
+Are public schools getting enough funding?	¿Las escuelas públicas reciben suficiente financiamiento?	As escolas públicas recebem financiamento suficiente?
+Raise teacher pay and fund classrooms.	Subir el salario docente y financiar las aulas.	Aumentar o salário dos professores e financiar as salas.
+Cut taxes and hope schools figure it out.	Bajar impuestos y esperar que las escuelas se arreglen.	Cortar impostos e esperar que as escolas se resolvam.
+Parents should pay for public school.	Los padres deberían pagar la escuela pública.	Os pais deveriam pagar pela escola pública.
+Rents are out of control. What is your plan?	Los alquileres están por las nubes. ¿Cuál es tu plan?	Os aluguéis estão fora de controle. Qual é seu plano?
+Build more housing and protect renters.	Construir más vivienda y proteger a los inquilinos.	Construir mais moradias e proteger os inquilinos.
+Deregulate everything and hope prices fall.	Desregular todo y esperar que bajen los precios.	Desregulamentar tudo e esperar que os preços caiam.
+It is not my problem.	No es mi problema.	Não é meu problema.
+How will you fix roads and bridges?	¿Cómo vas a arreglar las carreteras y los puentes?	Como você vai consertar estradas e pontes?
+A funded infrastructure plan with local workers.	Un plan de infraestructura financiado con trabajadores locales.	Um plano de infraestrutura financiado com trabalhadores locais.
+Wait for the federal government to pay.	Esperar que pague el gobierno federal.	Esperar que o governo federal pague.
+Tax cuts will fix the roads somehow.	Los recortes de impuestos arreglarán las carreteras de alguna forma.	Cortes de impostos vão consertar as estradas de alguma forma.
+Factory Dumping	Vertido de la fábrica	Despejo da fábrica
+A factory has been dumping waste into the river. The cameras are waiting for your response.	Una fábrica ha estado vertiendo residuos al río. Las cámaras esperan tu respuesta.	Uma fábrica vem despejando resíduos no rio. As câmeras esperam sua resposta.
+Fund a cleanup	Financiar una limpieza	Financiar uma limpeza
+Cleanup Announced	Limpieza anunciada	Limpeza anunciada
+You sent crews to the river. Families can fish there again, and the photos are good.	Enviaste cuadrillas al río. Las familias pueden pescar otra vez, y las fotos son buenas.	Você enviou equipes ao rio. As famílias podem pescar de novo, e as fotos são boas.
+Make the factory pay	Hacer que la fábrica pague	Fazer a fábrica pagar
+Factory Pays	La fábrica paga	A fábrica paga
+You forced the company to fund the cleanup. It wrote a check, and its lawyers are watching you.	Obligaste a la empresa a financiar la limpieza. Firmó un cheque, y sus abogados te están vigilando.	Você forçou a empresa a financiar a limpeza. Ela assinou um cheque, e seus advogados estão de olho em você.
+Ignore the report	Ignorar el informe	Ignorar o relatório
+River Still Toxic	El río sigue tóxico	O rio continua tóxico
+The story grew for weeks. Voters noticed the silence.	La historia creció durante semanas. Los votantes notaron el silencio.	A história cresceu por semanas. Os eleitores notaram o silêncio.
+Donor Investigation	Investigación a un donante	Investigação de um doador
+A major donor is under investigation. Reporters want to know what you knew.	Un gran donante está bajo investigación. Los periodistas quieren saber qué sabías.	Um grande doador está sob investigação. Os repórteres querem saber o que você sabia.
+Cooperate fully	Cooperar totalmente	Cooperar plenamente
+Full Cooperation	Cooperación total	Cooperação total
+You released the records and answered every question. It cost you a donor, not your credibility.	Publicaste los registros y respondiste todo. Te costó un donante, no tu credibilidad.	Você divulgou os registros e respondeu tudo. Custou um doador, não sua credibilidade.
+Deny everything	Negarlo todo	Negar tudo
+Denials Everywhere	Negaciones por todas partes	Negações por toda parte
+Your denials held for a day. Then a second document surfaced.	Tus negaciones duraron un día. Luego apareció un segundo documento.	Suas negações duraram um dia. Depois surgiu um segundo documento.
+Return the donation	Devolver la donación	Devolver a doação
+Money Returned	Dinero devuelto	Dinheiro devolvido
+You returned the money and called for transparency. The story lost steam.	Devolviste el dinero y pediste transparencia. La historia perdió fuerza.	Você devolveu o dinheiro e pediu transparência. A história perdeu força.
+Crime Wave	Ola de crimen	Onda de crime
+Violent crime is up and the evening news leads with it every night.	El crimen violento aumentó y las noticias de la noche lo ponen primero cada día.	O crime violento aumentou e o noticiário da noite abre com isso toda noite.
+Hire more police	Contratar más policías	Contratar mais policiais
+More Officers	Más agentes	Mais agentes
+You funded new patrols. The police union is grateful, and so are nervous voters.	Financiaste nuevas patrullas. El sindicato policial está agradecido, y los votantes nerviosos también.	Você financiou novas patrulhas. O sindicato da polícia agradece, e os eleitores nervosos também.
+Fund prevention programs	Financiar programas de prevención	Financiar programas de prevenção
+Prevention First	Prevención primero	Prevenção em primeiro lugar
+You invested in youth centers and job programs. It will take years, but families feel heard.	Invertiste en centros juveniles y programas de empleo. Tardará años, pero las familias se sienten escuchadas.	Você investiu em centros juvenis e programas de emprego. Vai levar anos, mas as famílias se sentem ouvidas.
+Blame your opponent	Culpar a tu rival	Culpar seu rival
+Attack Mode	Modo ataque	Modo ataque
+The attack played well on partisan media and badly everywhere else.	El ataque funcionó en medios partidistas y mal en todo lo demás.	O ataque funcionou na mídia partidária e mal em todo o resto.
+Teachers' Strike	Huelga de maestros	Greve dos professores
+Teachers walked out over pay. Schools are closed and parents are furious.	Los maestros se fueron a la huelga por el salario. Las escuelas están cerradas y los padres están furiosos.	Os professores entraram em greve por salário. As escolas estão fechadas e os pais estão furiosos.
+Raise teacher pay	Subir el salario docente	Aumentar o salário dos professores
+Deal Reached	Acuerdo alcanzado	Acordo alcançado
+You funded a raise and the strike ended. Parents are relieved.	Financiaste un aumento y la huelga terminó. Los padres están aliviados.	Você financiou um aumento e a greve acabou. Os pais estão aliviados.
+Replace the teachers	Reemplazar a los maestros	Substituir os professores
+Classrooms Empty	Aulas vacías	Salas vazias
+Substitutes could not cover the gap. The photos of empty classrooms hurt you.	Los sustitutos no cubrieron el hueco. Las fotos de aulas vacías te hicieron daño.	Os substitutos não cobriram a lacuna. As fotos de salas vazias te machucaram.
+Wait them out	Esperar a que se rindan	Esperar que desistam
+Strike Drags On	La huelga se alarga	A greve se arrasta
+The strike lasted three weeks. Everyone blamed you.	La huelga duró tres semanas. Todos te culparon.	A greve durou três semanas. Todos culparam você.
+Hospital Closure	Cierre de hospital	Fechamento de hospital
+The only hospital in a poor neighborhood is closing. Thousands will lose care.	El único hospital de un barrio pobre está cerrando. Miles perderán atención.	O único hospital de um bairro pobre está fechando. Milhares perderão atendimento.
+Bail out the hospital	Rescatar el hospital	Salvar o hospital
+Hospital Saved	Hospital salvado	Hospital salvo
+You found the money. Nurses cheered and patients wrote thank-you notes.	Encontraste el dinero. Las enfermeras celebraron y los pacientes escribieron notas de agradecimiento.	Você encontrou o dinheiro. As enfermeiras comemoraram e os pacientes escreveram cartas de agradecimento.
+Sell it to a private buyer	Venderlo a un comprador privado	Vender a um comprador privado
+Private Buyer	Comprador privado	Comprador privado
+The hospital reopened with fewer beds and higher bills. The new owner donated to your campaign.	El hospital reabrió con menos camas y facturas más altas. El nuevo dueño donó a tu campaña.	O hospital reabriu com menos leitos e contas mais altas. O novo dono doou para sua campanha.
+Visit for a photo op	Visitar para una foto	Visitar para uma foto
+Photo Op	Foto para la prensa	Foto para a imprensa
+You toured the ward and left. Nothing changed.	Recorriste la sala y te fuiste. Nada cambió.	Você visitou a ala e foi embora. Nada mudou.
+Hurricane Relief	Ayuda por el huracán	Ajuda pelo furacão
+A hurricane flattened entire neighborhoods. The state is asking what you will do.	Un huracán arrasó barrios enteros. El estado pregunta qué vas a hacer.	Um furacão arrasou bairros inteiros. O estado pergunta o que você vai fazer.
+Release emergency funds	Liberar fondos de emergencia	Liberar fundos de emergência
+Relief Arrives	Llega la ayuda	A ajuda chega
+You moved fast and people noticed. Shelters opened within hours.	Actuaste rápido y la gente lo notó. Los refugios abrieron en horas.	Você agiu rápido e as pessoas notaram. Os abrigos abriram em horas.
+Visit the damage	Visitar los daños	Visitar os danos
+On the Ground	En el terreno	No local
+You spent the day with victims. It was symbolic, but it mattered.	Pasaste el día con las víctimas. Fue simbólico, pero importó.	Você passou o dia com as vítimas. Foi simbólico, mas importou.
+Blame the federal government	Culpar al gobierno federal	Culpar o governo federal
+Washington Blame	Culpa a Washington	Culpa a Washington
+Your base liked it. The victims did not.	A tu base le gustó. A las víctimas no.	Sua base gostou. As vítimas não.
+Border Surge	Aumento en la frontera	Aumento na fronteira
+A surge at the border is dominating the news. Both sides want a clear answer.	Un aumento en la frontera domina las noticias. Ambos lados quieren una respuesta clara.	Um aumento na fronteira domina as notícias. Os dois lados querem uma resposta clara.
+Pass a border security bill	Aprobar una ley de seguridad fronteriza	Aprovar uma lei de segurança na fronteira
+Security Bill	Ley de seguridad	Lei de segurança
+You passed a tough bill. It satisfied some voters and angered others.	Aprobaste una ley dura. Satisfizo a algunos votantes y enojó a otros.	Você aprovou uma lei dura. Satisfez alguns eleitores e irritou outros.
+Border Security Act	Ley de Seguridad Fronteriza	Lei de Segurança da Fronteira
+Fund humanitarian aid	Financiar ayuda humanitaria	Financiar ajuda humanitária
+Aid Approved	Ayuda aprobada	Ajuda aprovada
+You sent aid to shelters and processing centers. Advocates praised you.	Enviaste ayuda a refugios y centros de procesamiento. Los defensores te elogiaron.	Você enviou ajuda a abrigos e centros de processamento. Os defensores elogiaram você.
+Avoid the issue	Evitar el tema	Evitar o assunto
+No Comment	Sin comentarios	Sem comentários
+The silence became the story.	El silencio se convirtió en la historia.	O silêncio virou a história.
+Housing Crisis	Crisis de vivienda	Crise de moradia
+Rents are rising faster than wages. Families are being priced out.	Los alquileres suben más rápido que los salarios. Las familias no pueden pagar.	Os aluguéis sobem mais rápido que os salários. As famílias estão sendo expulsas.
+Cap rents	Limitar los alquileres	Limitar os aluguéis
+Rent Cap Passed	Tope de alquiler aprobado	Teto de aluguel aprovado
+Tenants celebrated. Developers warned of fewer projects.	Los inquilinos celebraron. Los desarrolladores advirtieron menos proyectos.	Os inquilinos comemoraram. Os incorporadores avisaram sobre menos projetos.
+Give developers incentives	Dar incentivos a los desarrolladores	Dar incentivos aos incorporadores
+Building Boom	Auge de construcción	Boom de construção
+New towers broke ground. The developers remembered your help.	Nuevas torres empezaron a construirse. Los desarrolladores recordaron tu ayuda.	Novas torres começaram a ser construídas. Os incorporadores lembraram da sua ajuda.
+Create a task force	Crear un grupo de trabajo	Criar uma força-tarefa
+Task Force	Grupo de trabajo	Força-tarefa
+The task force will report next year. Nobody is holding their breath.	El grupo de trabajo presentará su informe el próximo año. Nadie se aguanta la respiración.	A força-tarefa vai relatar no próximo ano. Ninguém está ansioso.
+Transit Strike	Huelga de transporte	Greve do transporte
+Bus and train workers are on strike. The city is crawling.	Los trabajadores de autobuses y trenes están en huelga. La ciudad avanza a paso de tortuga.	Os trabalhadores de ônibus e trens estão em greve. A cidade está engatinhando.
+Fund the transit authority	Financiar la autoridad de transporte	Financiar a autoridade de transporte
+Buses Roll Again	Los autobuses vuelven	Os ônibus voltam
+You brokered a deal and service resumed. Commuters are grateful.	Negociaste un acuerdo y el servicio volvió. Los pasajeros están agradecidos.	Você intermediou um acordo e o serviço voltou. Os passageiros agradecem.
+Promote rideshare	Promocionar el transporte compartido	Promover o transporte compartilhado
+Rideshare Push	Empuje al transporte compartido	Impulso ao transporte compartilhado
+The app discounts helped some commuters and annoyed the union.	Los descuentos de la app ayudaron a algunos pasajeros y molestaron al sindicato.	Os descontos do app ajudaram alguns passageiros e irritaram o sindicato.
+Let them strike	Dejar que sigan en huelga	Deixar que continuem em greve
+City Gridlock	Ciudad bloqueada	Cidade parada
+Traffic was a nightmare for weeks. Voters remembered.	El tráfico fue una pesadilla durante semanas. Los votantes lo recordaron.	O trânsito foi um pesadelo por semanas. Os eleitores lembraram.
+Police Protest	Protesta policial	Protesto policial
+A controversial police shooting has sparked nightly protests.	Un tiroteo policial controvertido ha provocado protestas nocturnas.	Um tiroteio policial controverso provocou protestos noturnos.
+Order an independent review	Ordenar una revisión independiente	Ordenar uma revisão independente
+Independent Review	Revisión independiente	Revisão independente
+You called for a transparent investigation. Both sides are watching.	Pediste una investigación transparente. Ambos lados están mirando.	Você pediu uma investigação transparente. Os dois lados estão observando.
+Back the police	Apoyar a la policía	Apoiar a polícia
+Backing the Blue	Apoyo a la policía	Apoio à polícia
+The police union endorsed you. Protesters promised to remember.	El sindicato policial te respaldó. Los manifestantes prometieron recordarlo.	O sindicato da polícia apoiou você. Os manifestantes prometeram lembrar.
+Impose a curfew	Imponer un toque de queda	Impor um toque de recolher
+Curfew	Toque de queda	Toque de recolher
+The curfew stopped some marches and inflamed others.	El toque de queda detuvo algunas marchas e inflamó otras.	O toque de recolher parou algumas marchas e inflamou outras.
+Wildfire Season	Temporada de incendios	Temporada de incêndios
+Wildfires are spreading across the state. The air is hazardous.	Los incendios se extienden por el estado. El aire es peligroso.	Os incêndios estão se espalhando pelo estado. O ar é perigoso.
+Pass a climate bill	Aprobar una ley climática	Aprovar uma lei climática
+Climate Bill	Ley climática	Lei climática
+You tied recovery to long-term climate action. Activists cheered.	Vinculaste la recuperación a la acción climática a largo plazo. Los activistas celebraron.	Você vinculou a recuperação à ação climática de longo prazo. Os ativistas comemoraram.
+Climate Resilience Act	Ley de Resiliencia Climática	Lei de Resiliência Climática
+Open logging jobs	Abrir empleos forestales	Abrir empregos florestais
+Logging Jobs	Empleos forestales	Empregos florestais
+The timber industry praised you. Environmental groups did not.	La industria maderera te elogió. Los grupos ambientalistas no.	A indústria madeireira elogiou você. Os grupos ambientalistas não.
+Request federal aid	Pedir ayuda federal	Pedir ajuda federal
+Federal Aid	Ayuda federal	Ajuda federal
+Washington sent help. You shared the credit.	Washington envió ayuda. Compartiste el crédito.	Washington enviou ajuda. Você compartilhou o crédito.
+Tech Tax Break	Exención fiscal tecnológica	Isenção fiscal tecnológica
+A tech giant wants a tax break in exchange for building a campus.	Un gigante tecnológico quiere una exención fiscal a cambio de construir un campus.	Uma gigante da tecnologia quer uma isenção fiscal em troca de construir um campus.
+Give the break	Dar la exención	Dar a isenção
+Deal Signed	Acuerdo firmado	Acordo assinado
+The campus is coming. So is a large donation to your campaign.	El campus viene. También una gran donación a tu campaña.	O campus está vindo. Também uma grande doação para sua campanha.
+Refuse the deal	Rechazar el acuerdo	Recusar o acordo
+No Special Deal	Sin acuerdo especial	Sem acordo especial
+You said no. Small businesses applauded.	Dijiste no. Las pequeñas empresas aplaudieron.	Você disse não. As pequenas empresas aplaudiram.
+Negotiate terms	Negociar condiciones	Negociar termos
+Negotiated Deal	Acuerdo negociado	Acordo negociado
+You traded the break for local hiring and a smaller subsidy.	Cambiaste la exención por contratación local y un subsidio menor.	Você trocou a isenção por contratação local e um subsídio menor.
+School Book Fight	Pelea por un libro escolar	Briga por um livro escolar
+A parent group wants a book removed from school libraries.	Un grupo de padres quiere retirar un libro de las bibliotecas escolares.	Um grupo de pais quer remover um livro das bibliotecas escolares.
+Ban the book	Prohibir el libro	Proibir o livro
+Book Banned	Libro prohibido	Livro proibido
+The group celebrated. Students and teachers protested.	El grupo celebró. Estudiantes y maestros protestaron.	O grupo comemorou. Estudantes e professores protestaram.
+Defend the library	Defender la biblioteca	Defender a biblioteca
+Library Defended	Biblioteca defendida	Biblioteca defendida
+You stood with librarians and free speech groups.	Te pusiste del lado de bibliotecarios y grupos de libertad de expresión.	Você ficou ao lado de bibliotecários e grupos de liberdade de expressão.
+Let the school decide	Dejar que decida la escuela	Deixar a escola decidir
+Local Control	Control local	Controle local
+You left it to the school board. Most people accepted the answer.	Lo dejaste en manos de la junta escolar. La mayoría aceptó la respuesta.	Você deixou para o conselho escolar. A maioria aceitou a resposta.
+Opioid Epidemic	Epidemia de opioides	Epidemia de opioides
+Overdose deaths are rising. The county is asking for help.	Las muertes por sobredosis aumentan. El condado pide ayuda.	As mortes por overdose estão aumentando. O condado pede ajuda.
+Fund treatment centers	Financiar centros de tratamiento	Financiar centros de tratamento
+Treatment Funded	Tratamiento financiado	Tratamento financiado
+You expanded treatment and naloxone access. Health workers praised you.	Ampliaste el tratamiento y el acceso a naloxona. Los trabajadores de salud te elogiaron.	Você ampliou o tratamento e o acesso à naloxona. Os profissionais de saúde elogiaram você.
+Arrest the dealers	Arrestar a los traficantes	Prender os traficantes
+Crackdown	Operativo	Operação
+Police made arrests. Families said you ignored the root cause.	La policía hizo arrestos. Las familias dijeron que ignoraste la causa de fondo.	A polícia fez prisões. As famílias disseram que você ignorou a causa raiz.
+Overdoses Rise	Aumentan las sobredosis	Overdoses aumentam
+The death toll kept climbing and the story followed you.	El número de muertes siguió subiendo y la historia te persiguió.	O número de mortes continuou subindo e a história te seguiu.
+Union Endorsement	Respaldo sindical	Apoio sindical
+The largest union in the state is deciding whether to endorse you.	El sindicato más grande del estado decide si te va a respaldar.	O maior sindicato do estado está decidindo se vai apoiar você.
+Accept the endorsement	Aceptar el respaldo	Aceitar o apoio
+You accepted the endorsement and promised to protect workers.	Aceptaste el respaldo y prometiste proteger a los trabajadores.	Você aceitou o apoio e prometeu proteger os trabalhadores.
+Reject it	Rechazarlo	Recusar
+No Endorsement	Sin respaldo	Sem apoio
+You said you would not be owned by anyone. Business groups liked that.	Dijiste que no serías propiedad de nadie. A los grupos empresariales les gustó.	Você disse que não seria propriedade de ninguém. Os grupos empresariais gostaram.
+Stay neutral	Mantenerte neutral	Manter-se neutro
+Neutral Ground	Terreno neutral	Terreno neutro
+You thanked the union but stayed quiet. Nobody got a headline.	Agradeciste al sindicato pero te quedaste callado. Nadie tuvo titular.	Você agradeceu ao sindicato mas ficou quieto. Ninguém teve manchete.
+Newspaper Endorsement	Respaldo del periódico	Apoio do jornal
+The city's biggest newspaper is endorsing you. The editorial board wants a meeting.	El periódico más grande de la ciudad te va a respaldar. La junta editorial quiere una reunión.	O maior jornal da cidade está apoiando você. O conselho editorial quer uma reunião.
+Endorsed	Respaldado	Apoiado
+The front page called you the serious choice.	La primera plana te llamó la opción seria.	A primeira página chamou você de escolha séria.
+Demand a retraction	Exigir una retractación	Exigir uma retratação
+War With the Press	Guerra con la prensa	Guerra com a imprensa
+The paper published the demand and made you look thin-skinned.	El periódico publicó la exigencia y te hizo ver susceptible.	O jornal publicou a exigência e fez você parecer suscetível.
+The endorsement ran without your comment. It still helped.	El respaldo salió sin tu comentario. Igual ayudó.	O apoio saiu sem seu comentário. Ainda ajudou.
+Attack Ad	Anuncio de ataque	Anúncio de ataque
+Your opponent released an ad questioning your honesty.	Tu rival lanzó un anuncio cuestionando tu honestidad.	Seu rival lançou um anúncio questionando sua honestidade.
+Answer with your own ad	Responder con tu propio anuncio	Responder com seu próprio anúncio
+Counter Ad	Contraanuncio	Contra-anúncio
+Your ad hit back with receipts. The race tightened.	Tu anuncio respondió con pruebas. La carrera se apretó.	Seu anúncio respondeu com provas. A corrida apertou.
+No Response	Sin respuesta	Sem resposta
+The ad ran unanswered for a week.	El anuncio estuvo una semana sin respuesta.	O anúncio ficou uma semana sem resposta.
+Counterattack	Contraatacar	Contra-atacar
+Attack Politics	Política de ataque	Política de ataque
+You went personal. Some voters loved it; others were disgusted.	Te fuiste a lo personal. A algunos votantes les encantó; a otros les dio asco.	Você partiu para o pessoal. Alguns eleitores adoraram; outros ficaram enojados.
+Leaked Audio	Audio filtrado	Áudio vazado
+A recording of you complaining about voters just surfaced.	Acaba de aparecer una grabación en la que te quejas de los votantes.	Acabou de surgir uma gravação em que você reclama dos eleitores.
+Apology Accepted	Disculpa aceptada	Desculpas aceitas
+You apologized and took questions. The story faded faster than expected.	Te disculpaste y aceptaste preguntas. La historia se apagó más rápido de lo esperado.	Você pediu desculpas e aceitou perguntas. A história sumiu mais rápido do que o esperado.
+Deny it	Negarlo	Negar
+Denial	Negación	Negação
+The audio was clear. Your denial made it worse.	El audio era claro. Tu negación lo empeoró.	O áudio era claro. Sua negação piorou tudo.
+Blame editing	Culpar a la edición	Culpar a edição
+Edited Clip	Clip editado	Clipe editado
+Your supporters believed you. Everyone else did not.	Tus seguidores te creyeron. Todos los demás no.	Seus apoiadores acreditaram em você. Todos os outros não.
+Farm Drought	Sequía agrícola	Seca agrícola
+A drought is destroying crops. Farmers are asking for emergency aid.	Una sequía está destruyendo las cosechas. Los agricultores piden ayuda de emergencia.	Uma seca está destruindo as colheitas. Os agricultores pedem ajuda de emergência.
+Aid the farmers	Ayudar a los agricultores	Ajudar os agricultores
+Farm Aid	Ayuda agrícola	Ajuda agrícola
+You approved relief and visited the fields. Rural voters noticed.	Aprobaste ayuda y visitaste los campos. Los votantes rurales lo notaron.	Você aprovou ajuda e visitou os campos. Os eleitores rurais notaram.
+Order water restrictions	Ordenar restricciones de agua	Ordenar restrições de água
+Water Restrictions	Restricciones de agua	Restrições de água
+The restrictions helped the reservoir and angered suburban voters.	Las restricciones ayudaron al embalse y enojaron a los votantes suburbanos.	As restrições ajudaram o reservatório e irritaram os eleitores suburbanos.
+Pray for rain	Rezar por lluvia	Rezar por chuva
+Prayers for Rain	Oraciones por lluvia	Orações por chuva
+You held a prayer service. It rained a week later.	Hiciste un servicio de oración. Llovió una semana después.	Você fez um culto de oração. Choveu uma semana depois.
+Cyberattack	Ciberataque	Ciberataque
+Hackers breached city computers and stole residents' data.	Los hackers entraron a las computadoras de la ciudad y robaron datos de los residentes.	Hackers invadiram os computadores da cidade e roubaram dados dos moradores.
+Invest in cybersecurity	Invertir en ciberseguridad	Investir em cibersegurança
+Security Upgraded	Seguridad mejorada	Segurança melhorada
+You funded a rebuild and notified every victim.	Financiaste una reconstrucción y avisaste a cada víctima.	Você financiou uma reconstrução e avisou cada vítima.
+Cover it up	Encubrirlo	Acobertar
+Cover-Up	Encubrimiento	Acobertamento
+The breach leaked anyway. The cover-up became the bigger scandal.	La brecha se filtró igual. El encubrimiento se volvió el escándalo más grande.	A invasão vazou de qualquer forma. O encobrimento virou o escândalo maior.
+Blame the hackers	Culpar a los hackers	Culpar os hackers
+Hackers Blamed	Culpa a los hackers	Culpa aos hackers
+You blamed foreign hackers. It played well for a day.	Culpaste a hackers extranjeros. Funcionó bien por un día.	Você culpou hackers estrangeiros. Funcionou bem por um dia.
+Homeless Camp	Campamento de personas sin hogar	Acampamento de moradores de rua
+A large homeless camp has appeared downtown. Businesses want it gone.	Un gran campamento de personas sin hogar apareció en el centro. Los comercios quieren que se vaya.	Um grande acampamento de moradores de rua apareceu no centro. As empresas querem que ele suma.
+Open a shelter	Abrir un refugio	Abrir um abrigo
+Shelter Opens	Abre el refugio	O abrigo abre
+You funded a shelter with services. Advocates called it humane.	Financiaste un refugio con servicios. Los defensores lo llamaron humano.	Você financiou um abrigo com serviços. Os defensores chamaram de humano.
+Clear the camp	Despejar el campamento	Limpar o acampamento
+Camp Cleared	Campamento despejado	Acampamento limpo
+Police cleared the camp. The people did not disappear.	La policía despejó el campamento. Las personas no desaparecieron.	A polícia limpou o acampamento. As pessoas não desapareceram.
+The task force will study the problem for months.	El grupo de trabajo estudiará el problema durante meses.	A força-tarefa vai estudar o problema por meses.
+Minimum Wage Protest	Protesta por el salario mínimo	Protesto pelo salário mínimo
+Workers are marching for a higher minimum wage.	Los trabajadores marchan por un salario mínimo más alto.	Os trabalhadores estão marchando por um salário mínimo mais alto.
+Raise the minimum wage	Subir el salario mínimo	Aumentar o salário mínimo
+Wage Raised	Salario aumentado	Salário aumentado
+You signed the increase. Workers cheered and business groups warned of costs.	Firmaste el aumento. Los trabajadores celebraron y los grupos empresariales advirtieron sobre costos.	Você assinou o aumento. Os trabalhadores comemoraram e os grupos empresariais alertaram sobre custos.
+Oppose the raise	Oponerte al aumento	Opor-se ao aumento
+Wage Frozen	Salario congelado	Salário congelado
+You argued the economy could not absorb it. The marchers booed.	Argumentaste que la economía no podía absorberlo. Los manifestantes te abuchearon.	Você argumentou que a economia não podia absorver. Os manifestantes vaiaram.
+Commission a study	Encargar un estudio	Encomendar um estudo
+Study Ordered	Estudio encargado	Estudo encomendado
+You bought time. Both sides called it a dodge.	Compraste tiempo. Ambos lados lo llamaron evasión.	Você comprou tempo. Os dois lados chamaram de fuga.
+Candidate for	Candidato a	Candidato a
+Office	Cargo	Cargo
+Round	Ronda	Rodada
+Debate	Debate	Debate
+You won the debate	Ganaste el debate	Você venceu o debate
+The debate was a draw	El debate fue un empate	O debate foi um empate
+You lost the debate	Perdiste el debate	Você perdeu o debate
+Debate Result	Resultado del debate	Resultado do debate
+You controlled the room and landed the closing line.	Controlaste la sala y diste el golpe final.	Você controlou a sala e deu o golpe final.
+Neither side landed a decisive blow.	Ningún lado dio un golpe decisivo.	Nenhum lado deu um golpe decisivo.
+Your opponent was sharper on the night.	Tu rival estuvo más afilado esa noche.	Seu rival foi mais afiado naquela noite.
+Last Election	Última elección	Última eleição
+Last Result	Último resultado	Último resultado
+You resigned from office.	Renunciaste al cargo.	Você renunciou ao cargo.
+You left politics for another job.	Dejaste la política por otro trabajo.	Você deixou a política por outro trabalho.
+You lost your last election.	Perdiste tu última elección.	Você perdeu sua última eleição.
+Politics	Política	Política
+Start a Political Career	Empezar una carrera política	Começar uma carreira política
+Run for School Board and climb the ladder	Postúlate a la junta escolar y sube la escalera	Candidate-se ao conselho escolar e suba a escada
+The Political Ladder	La escalera política	A escada política
+Ranks, powers, terms and salaries	Rangos, poderes, términos y salarios	Cargos, poderes, mandatos e salários
+Career History	Historial de la carrera	Histórico da carreira
+Events and laws from your political career	Eventos y leyes de tu carrera política	Eventos e leis da sua carreira política
+You can't run for office from prison.	No puedes postularte desde la cárcel.	Você não pode se candidatar da prisão.
+You must be at least 18 to run for office.	Tienes que tener al menos 18 años para postularte.	Você precisa ter pelo menos 18 anos para se candidatar.
+Run for Office	Postúlate a un cargo	Candidate-se a um cargo
+Every political career starts somewhere. Pick a party and announce your first run for the School Board.	Toda carrera política empieza en algún lugar. Elige un partido y anuncia tu primera candidatura a la junta escolar.	Toda carreira política começa em algum lugar. Escolha um partido e anuncie sua primeira candidatura ao conselho escolar.
+Political party:	Partido político:	Partido político:
+Announce my candidacy	Anunciar mi candidatura	Anunciar minha candidatura
+You must be at least	Tienes que tener al menos	Você precisa ter pelo menos
+to run for this office.	para postularte a este cargo.	para se candidatar a este cargo.
+You need a university degree to run for this office.	Necesitas un título universitario para postularte a este cargo.	Você precisa de um diploma universitário para se candidatar a este cargo.
+I announced my candidacy for	Anuncié mi candidatura para	Anunciei minha candidatura para
+Announcement	Anuncio	Anúncio
+You announced your candidacy. You have one year to campaign before Election Night.	Anunciaste tu candidatura. Tienes un año para hacer campaña antes de la Noche de Elecciones.	Você anunciou sua candidatura. Tem um ano para fazer campanha antes da Noite de Eleições.
+Political party	Partido político	Partido político
+Election	Elección	Eleição
+Start campaigning	Empezar la campaña	Começar a campanha
+From local school boards to the White House. Each office has its own term, salary and powers.	De las juntas escolares locales a la Casa Blanca. Cada cargo tiene su término, salario y poderes.	Dos conselhos escolares locais à Casa Branca. Cada cargo tem seu mandato, salário e poderes.
+Term in office	Mandato	Mandato
+Powers	Poderes	Poderes
+Next election	Próxima elección	Próxima eleição
+Not in office	No estás en el cargo	Você não está no cargo
+Law	Ley	Lei
+Event	Evento	Evento
+No history yet	Todavía no hay historial	Ainda não há histórico
+Events and laws will appear here.	Los eventos y las leyes van a aparecer aquí.	Os eventos e as leis vão aparecer aqui.
+Your annual events and the laws you passed, newest first.	Tus eventos anuales y las leyes que aprobaste, primero lo más reciente.	Seus eventos anuais e as leis que você aprovou, primeiro o mais recente.
+Campaign Name	Nombre de la campaña	Nome da campanha
+Put your own money into the campaign	Pon tu propio dinero en la campaña	Coloque seu próprio dinheiro na campanha
+Election in	Elección en	Eleição em
+Election this year	Elección este año	Eleição este ano
+Campaign Actions	Acciones de campaña	Ações de campanha
+left	restantes	restantes
+No actions left this year	No te quedan acciones este año	Não restam ações este ano
+Withdraw Candidacy	Retirar la candidatura	Retirar a candidatura
+End your campaign	Termina tu campaña	Encerre sua campanha
+Withdrawing ends your campaign. You can run again next year.	Si te retiras, termina tu campaña. Puedes postularte otra vez el próximo año.	Se desistir, sua campanha termina. Você pode se candidatar de novo no próximo ano.
+Campaign Over	Campaña terminada	Campanha encerrada
+You withdrew from the race.	Te retiraste de la contienda.	Você desistiu da disputa.
+You already hold the highest office.	Ya tienes el cargo más alto.	Você já tem o cargo mais alto.
+You need a university degree.	Necesitas un título universitario.	Você precisa de um diploma universitário.
+You need at least	Necesitas al menos	Você precisa de pelo menos
+approval.	de aprobación.	de aprovação.
+Running for	Postulado a	Candidato a
+Tap to switch back to re-election	Toca para volver a la reelección	Toque para voltar à reeleição
+Run for Re-election	Postúlate a la reelección	Candidate-se à reeleição
+Ask the voters for another term	Pídele a los votantes otro término	Peça aos eleitores outro mandato
+Run for	Postúlate a	Candidate-se a
+Risk your seat for a higher office	Arriesga tu escaño por un cargo más alto	Arrisque seu assento por um cargo mais alto
+My Office	Mi cargo	Meu cargo
+Powers of the Office	Poderes del cargo	Poderes do cargo
+Actions	Acciones	Ações
+Leave Office	Salir del cargo	Sair do cargo
+Resign	Renunciar	Renunciar
+End your political career	Termina tu carrera política	Encerre sua carreira política
+Re-election	Reelección	Reeleição
+You will run for re-election when your term ends.	Vas a ir a la reelección cuando termine tu término.	Você vai disputar a reeleição quando seu mandato terminar.
+You switched back to running for re-election.	Volviste a postularte a la reelección.	Você voltou a disputar a reeleição.
+Higher Office	Cargo más alto	Cargo mais alto
+You will run for the higher office when your term ends. If you lose, you lose your current seat too.	Vas a postularte al cargo más alto cuando termine tu término. Si pierdes, también pierdes tu escaño actual.	Você vai disputar o cargo mais alto quando seu mandato terminar. Se perder, também perde sua cadeira atual.
+Resigning ends your political career. Are you sure?	Si renuncias, termina tu carrera política. ¿Estás seguro?	Se renunciar, sua carreira política termina. Tem certeza?
+I resigned as	Renuncié como	Renunciei como
+Resigned	Renunciaste	Renunciou
+You can't run a political career from prison.	No puedes manejar una carrera política desde la cárcel.	Você não pode tocar uma carreira política da prisão.
+You have no actions left this year.	No te quedan acciones este año.	Não restam ações este ano.
+I left politics to take another job.	Dejé la política por otro trabajo.	Deixei a política por outro trabalho.
+Run for office and climb the political ladder	Postúlate y sube la escalera política	Candidate-se e suba a escada política

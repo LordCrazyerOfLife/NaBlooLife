@@ -1,9 +1,10 @@
 /* NaBlooLife Mod Loader — adaptado para los mods de Free Life.
  *
- * Instalación: copiar este archivo a la raíz del juego (junto a game.html) y agregar
- *   <script src="modloader.js?v=12"></script>
- * después de mods.js. No hace falta ningún código de 8 dígitos: los mods se cargan
- * solos y se pueden apagar desde Settings → Mod Loader.
+ * Instalación: copiar este archivo a la raíz del juego (junto a game.html). NaBlooLife
+ * lo inyecta solo desde game.html cuando el Mod Loader está activo; en builds viejos
+ * también se puede agregar <script src="modloader.js?v=15"></script> después de mods.js.
+ * No hace falta ningún código de 8 dígitos: los mods se cargan solos y se pueden apagar
+ * desde Settings → Mod Loader.
  *
  * Cada entrada de MODS es { id, name, icon, src, desc, deps? }. `deps` se inyecta
  * antes que `src` (el ajedrez necesita motor, puzzles y eventos). Para sumar un mod
@@ -30,8 +31,15 @@
       id: "gang-bang",
       name: "Gang Bang",
       icon: "special/gangbang.png",
-      src: "gang.js?v=5",
+      src: "gang.js?v=8",
       desc: "Join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
+    },
+    {
+      id: "political-career",
+      name: "Political Career",
+      icon: "special/politician.png",
+      src: "politician.js?v=4",
+      desc: "Run for office from School Board to President: ranks, powers, campaigns, elections and scandals. Find it in Occupation, Special Careers.",
     },
     {
       id: "melon",

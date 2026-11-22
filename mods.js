@@ -55,7 +55,14 @@
         name: "Gang Bang",
         icon: "special/gangbang.png",
         desc: "A new special career: join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
-        src: "gang.js?v=5",
+        src: "gang.js?v=8",
+      },
+      // [mod] carrera política (politician.js)
+      17760704: {
+        name: "Political Career",
+        icon: "special/politician.png",
+        desc: "Run for office from School Board to President: ranks, powers, campaigns, elections, scandals and the full political ladder. Find it in Occupation, Special Careers.",
+        src: "politician.js?v=4",
       },
       // [mod] test mod (test-mod.js) - diagnostic only, confirms mod loading works
       99990000: {
@@ -69,7 +76,7 @@
         name: "Mod Loader",
         icon: "ui/gear.png",
         desc: "Loads extra mod scripts from a simple list in modloader.js, no 8-digit code needed per mod. Also on by default via Settings -> Mod Workshop -> Mods.",
-        src: "modloader.js?v=12",
+        src: "modloader.js?v=15",
       },
     },
     t = "bitlifepp-ported",

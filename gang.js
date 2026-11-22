@@ -75,20 +75,20 @@
 
   // ---------------------------------------------------------------- armas (íconos propios en guns/)
   const WEAPONS = [
-    { id: "glock", name: T("Glock with Extended Mag", "Glock con cargador extendido", "Glock com pente estendido"), price: 1200, power: 0.08, heat: 3, rank: 0 },
-    { id: "switch", name: T("Glock with Switch", "Glock con switch", "Glock com switch"), price: 2500, power: 0.14, heat: 6, rank: 0 },
-    { id: "arp", name: T("ARP", "ARP", "ARP"), price: 3500, power: 0.18, heat: 8, rank: 2 },
+    { id: "glock", name: T("Glock", "Glock", "Glock"), price: 1200, power: 0.08, heat: 3, rank: 0 },
+    // el switch ya no es un arma aparte: es un accesorio de la Glock (Gun Dealers)
+    // ARP retirada: la pandilla solo vende la Glock y la Draco nuevas
     { id: "draco", name: T("Draco", "Draco", "Draco"), price: 4000, power: 0.22, heat: 10, rank: 2 },
   ];
   const GUN_AGE = 16;
-  const gunIcon = (w) => (w.id === "switch" ? "glock-switch-120.png" : `guns/${w.id}.png`);
+  const gunIcon = (w) => { const sw = w.att && w.att.trigger && w.att.trigger.id === "switch" ? w.att.trigger.color || "red" : null; return sw ? `guns/switch-${sw}.png?v=2` : `guns/${w.id}.png?v=2`; };
   const weaponDef = (id) => WEAPONS.find((w) => w.id === id);
   // el arma que llevas encima (o null)
   const carried = (g) => (g.guns && g.carry != null && g.guns[g.carry] ? g.guns[g.carry] : null);
   const gunPower = (g) => {
     const c = carried(g);
     const ar = window.FL_ARMS ? window.FL_ARMS.power() : 0; // arma de arms.js (dealers)
-    return Math.max(c ? weaponDef(c.id).power : 0, ar);
+    return Math.max(c && weaponDef(c.id) ? weaponDef(c.id).power : 0, ar);
   };
 
   // textos sueltos que arma el código (para el i18n)
@@ -108,6 +108,13 @@
   const G = () => {
     const g = (state.gangLife ||= {});
     if (!g.v) Object.assign(g, { v: 1, member: false, gang: null, rank: 0, rep: 0, heat: 0, earned: 0, years: 0, evDone: {} });
+    if (g.v < 2) {
+      // saves viejos: "switch" pasa a ser una Glock con switch instalado y se van las armas retiradas (ARP)
+      const ok = new Set(WEAPONS.map((w) => w.id));
+      g.guns = (g.guns || []).flatMap((x) => (x.id === "switch" ? [{ id: "glock", att: { trigger: { id: "switch", color: "red" } } }] : ok.has(x.id) ? [x] : []));
+      if (g.carry != null && !g.guns[g.carry]) g.carry = g.guns.length ? 0 : null;
+      g.v = 2;
+    }
     if (!g.yr || g.yr.age !== state.age) g.yr = { age: state.age, acts: 0 };
     return g;
   };
@@ -156,7 +163,7 @@
         g.guns.splice(g.carry, 1);
         g.carry = g.guns.length ? 0 : null;
         say(T("The police confiscated my gun.", "La policía me quitó el arma.", "A polícia apreendeu minha arma."));
-        if (rnd() < 0.5) (charge = T("possession of an illegal firearm", "posesión ilegal de arma de fuego", "porte ilegal de arma de fogo")), (years = gun.id === "switch" || gun.id === "draco" ? [3, 8] : [2, 6]);
+        if (rnd() < 0.5) (charge = T("possession of an illegal firearm", "posesión ilegal de arma de fuego", "porte ilegal de arma de fogo")), (years = gun.id === "draco" ? [3, 8] : [2, 6]);
       }
       setTimeout(() => typeof arrest === "function" && (years ? arrest(charge, years) : arrest(charge)), 50);
       return true;
@@ -719,7 +726,7 @@
     };
     if (!window.FL_ARMS) {
       const el = document.createElement("script");
-      el.src = "arms.js?v=5";
+      el.src = "arms.js?v=8";
       document.head.append(el);
     }
   }
