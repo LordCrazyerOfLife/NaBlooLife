@@ -50,8 +50,9 @@
       #cheatPanel .cp-head {
         display: flex; align-items: center; justify-content: space-between;
         padding: 14px 16px 10px; background: #20242e;
-        border-bottom: 1px solid #2d323d;
+        border-bottom: 1px solid #2d323d; cursor: grab; touch-action: none;
       }
+      #cheatPanel .cp-head:active { cursor: grabbing; }
       #cheatPanel .cp-title { font-weight: 800; font-size: 16px; letter-spacing: .02em; }
       #cheatAskBackdrop {
         position: fixed; inset: 0; z-index: 2147483002; background: rgba(0,0,0,.5);
@@ -197,6 +198,57 @@
       if (e.key === "Escape" && panel.style.display !== "none") closePanel();
     });
 
+    // -------------------------------------------------------- drag the panel by its header
+    const panelHead = panel.querySelector(".cp-head");
+    const PANEL_DRAG_THRESHOLD = 8;
+    let panelTracking = false,
+      panelDragging = false,
+      panelStartX = 0,
+      panelStartY = 0,
+      panelOffX = 0,
+      panelOffY = 0;
+    panelHead.addEventListener("pointerdown", (e) => {
+      if (e.target.closest(".cp-close")) return;
+      panelTracking = true;
+      panelDragging = false;
+      panelStartX = e.clientX;
+      panelStartY = e.clientY;
+      const r = panel.getBoundingClientRect();
+      (panelOffX = e.clientX - r.left), (panelOffY = e.clientY - r.top);
+      panelHead.setPointerCapture(e.pointerId);
+    });
+    panelHead.addEventListener("pointermove", (e) => {
+      if (!panelTracking) return;
+      if (!panelDragging) {
+        const dx = e.clientX - panelStartX,
+          dy = e.clientY - panelStartY;
+        if (dx * dx + dy * dy < PANEL_DRAG_THRESHOLD * PANEL_DRAG_THRESHOLD) return;
+        panelDragging = true;
+        // Switch from centered (transform-based) positioning to an
+        // explicit pixel position, anchored at the panel's current spot,
+        // so it doesn't jump when the drag starts.
+        const r = panel.getBoundingClientRect();
+        panel.style.transform = "none";
+        panel.style.left = `${r.left}px`;
+        panel.style.top = `${r.top}px`;
+      }
+      const w = panel.offsetWidth,
+        h = panel.offsetHeight,
+        x = e.clientX - panelOffX,
+        y = e.clientY - panelOffY,
+        left = Math.max(4, Math.min(innerWidth - w - 4, x)),
+        top = Math.max(4, Math.min(innerHeight - h - 4, y));
+      (panel.style.left = `${left}px`), (panel.style.top = `${top}px`);
+    });
+    panelHead.addEventListener("pointerup", () => {
+      panelTracking = false;
+      panelDragging = false;
+    });
+    panelHead.addEventListener("pointercancel", () => {
+      panelTracking = false;
+      panelDragging = false;
+    });
+
     let sectionCount = 0;
     function section(label) {
       sectionCount++;
@@ -322,6 +374,63 @@
       renderStats();
     }, true);
 
+    // ------------------------------------------------------------------ Career & School tab
+    const careerSec = section("Career");
+    btn(careerSec, "Max job performance", () => {
+      if (!state.job) return say("I don't have a job right now.");
+      state.job.perf = 100;
+      renderStats();
+    }, true);
+    btn(careerSec, "Boost salary x5", () => {
+      if (!state.job) return say("I don't have a job right now.");
+      state.job.pay = Math.round((state.job.pay || 0) * 5);
+      renderStats();
+    }, true);
+    btn(careerSec, "Set salary to $1,000,000/yr", () => {
+      if (!state.job) return say("I don't have a job right now.");
+      state.job.pay = 1000000;
+      renderStats();
+    }, true);
+    btn(careerSec, "Clear expulsion record", () => {
+      state.expelled = null;
+      renderStats();
+    }, true);
+    btn(careerSec, "Max respect", () => {
+      state.respect = 100;
+      renderStats();
+    }, true);
+    btn(careerSec, "Min respect", () => {
+      state.respect = 0;
+      renderStats();
+    }, true);
+
+    // ------------------------------------------------------------------ Health & Legal tab
+    const healthSec = section("Health");
+    btn(healthSec, "Cure depression", () => {
+      state.depressed = null;
+      renderStats();
+    }, true);
+    btn(healthSec, "Clear all illnesses", () => {
+      state.ills = [];
+      renderStats();
+    }, true);
+    btn(healthSec, "Clear all conditions", () => {
+      state.conds = [];
+      renderStats();
+    }, true);
+    btn(healthSec, "End homelessness", () => {
+      state.homeless = null;
+      renderStats();
+    }, true);
+    btn(healthSec, "Clear criminal record", () => {
+      state.record = 0;
+      renderStats();
+    }, true);
+    btn(healthSec, "Drop pending felony charge", () => {
+      state.felony = null;
+      renderStats();
+    }, true);
+
     // ------------------------------------------------------------------ Misc tab
     const miscSec = section("Misc");
     if (typeof mindOf === "function")
@@ -343,7 +452,7 @@
     }, true);
     if (typeof ageBtnEl !== "undefined")
       btn(miscSec, "Age up (+1 year)", () => ageBtnEl.click(), true);
-    note(miscSec, "Drag the \u{1F4B0} button to move it. Tap it to open/close this menu.");
+    note(miscSec, "Drag the \u{1F4B0} button or this panel's header to move them. Tap the button to open/close this menu.");
 
     document.body.appendChild(backdrop);
     document.body.appendChild(panel);
