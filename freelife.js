@@ -371,7 +371,7 @@
   // crowned baby-in-a-crescent logo (freelife/logo-royal.png).
   // Selected via localStorage["fl-theme"] === "royal".
   // ============================================================
-  function royal(container, onDone) {
+  function snow(container, onDone) {
     const ASSET = "freelife/";
     [`${ASSET}logo-royal.png`].forEach((src) => {
       new Image().src = src;
@@ -607,19 +607,7 @@
     setTimeout(finish, 20000);
   }
 
-  window.FreeLifeSplash = function (r, c) {
-    if ("royal" === localStorage.getItem("fl-theme")) return royal(r, c);
-    if (
-      (() => {
-        try {
-          const t = JSON.parse(localStorage.getItem("bitlifepp-pick") || "null");
-          return t ? "1800s" === t.era : "1800s" === localStorage.getItem("fl-era");
-        } catch {
-          return !1;
-        }
-      })()
-    )
-      return p(r, c);
+  function snow1(r, c) {
     e.concat(`${t}bg.jpg`, `${t}logo.png`).forEach((t) => {
       new Image().src = t;
     }),
@@ -936,5 +924,9 @@
       G && lt();
     }),
       setTimeout(lt, 2e4);
+  }
+
+  window.FreeLifeSplash = function (r, c) {
+    return snow(r, c);
   };
 })();
