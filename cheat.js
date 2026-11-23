@@ -359,20 +359,39 @@
     });
 
     // ------------------------------------------------------------ drag the button around
-    let dragging = false,
+    // A real drag only starts once the pointer has moved past DRAG_THRESHOLD
+    // pixels from where it went down. Below that, it's treated as a tap --
+    // touchscreens virtually never keep a finger perfectly still, so without
+    // this threshold almost every tap picked up a pixel or two of movement,
+    // got flagged as "dragged", and the click handler silently swallowed it
+    // instead of opening the menu.
+    const DRAG_THRESHOLD = 8;
+    let tracking = false,
+      dragging = false,
+      startX = 0,
+      startY = 0,
       offX = 0,
       offY = 0;
     fab.addEventListener("pointerdown", (e) => {
-      dragging = true;
+      tracking = true;
+      dragging = false;
       fab.dataset.dragged = "0";
-      fab.style.cursor = "grabbing";
+      startX = e.clientX;
+      startY = e.clientY;
       const r = fab.getBoundingClientRect();
       (offX = e.clientX - r.left), (offY = e.clientY - r.top);
       fab.setPointerCapture(e.pointerId);
     });
     fab.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
-      fab.dataset.dragged = "1";
+      if (!tracking) return;
+      if (!dragging) {
+        const dx = e.clientX - startX,
+          dy = e.clientY - startY;
+        if (dx * dx + dy * dy < DRAG_THRESHOLD * DRAG_THRESHOLD) return;
+        dragging = true;
+        fab.dataset.dragged = "1";
+        fab.style.cursor = "grabbing";
+      }
       const x = e.clientX - offX,
         y = e.clientY - offY,
         left = Math.max(4, Math.min(innerWidth - 54, x)),
@@ -381,10 +400,12 @@
       (fab.style.right = "auto"), (fab.style.bottom = "auto");
     });
     fab.addEventListener("pointerup", () => {
+      tracking = false;
       dragging = false;
       fab.style.cursor = "grab";
     });
     fab.addEventListener("pointercancel", () => {
+      tracking = false;
       dragging = false;
       fab.style.cursor = "grab";
     });
