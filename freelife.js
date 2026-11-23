@@ -365,7 +365,250 @@
     }),
       setTimeout(X, 2e4);
   }
+
+  // ============================================================
+  // ROYAL THEME — dark regal loading screen built around the
+  // crowned baby-in-a-crescent logo (freelife/logo-royal.png).
+  // Selected via localStorage["fl-theme"] === "royal".
+  // ============================================================
+  function royal(container, onDone) {
+    const ASSET = "freelife/";
+    [`${ASSET}logo-royal.png`].forEach((src) => {
+      new Image().src = src;
+    });
+
+    document.head.insertAdjacentHTML(
+      "beforeend",
+      `<style>
+      #splash.flr { background: #16161b; }
+      #splash.flr > img, #splash.flr > .sp-text { display: none; }
+
+      #splash.flr .fl-stage {
+        position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%);
+        height: 100%; aspect-ratio: 9 / 19.5; max-width: 100%; overflow: hidden;
+        background: radial-gradient(ellipse at 50% 40%, #1f1f27 0%, #16161b 65%);
+      }
+      #splash.flr canvas.r-sparkle {
+        position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2;
+      }
+
+      #splash.flr .r-glow {
+        position: absolute; left: 50%; top: 50%; width: 100%; aspect-ratio: 1;
+        transform: translate(-50%, -50%); pointer-events: none; z-index: 1; border-radius: 50%;
+      }
+      #splash.flr .r-glow::before {
+        content: ""; position: absolute; inset: -40%; border-radius: 50%;
+        background: radial-gradient(circle, rgba(230,25,230,.32) 0%, rgba(230,25,230,.14) 35%, transparent 68%);
+        animation: rBreath 3.2s ease-in-out infinite alternate;
+      }
+      @keyframes rBreath { to { transform: scale(1.14); opacity: .75; } }
+
+      #splash.flr .fl-lw {
+        position: absolute; left: 50%; top: 14%; width: 62%; transform: translateX(-50%);
+        z-index: 3; animation: flPop .75s cubic-bezier(.2,1.4,.4,1) .1s both;
+      }
+      #splash.flr .fl-lw .r-glow { z-index: -1; }
+      #splash.flr .fl-logo {
+        position: static; display: block; width: 100%; opacity: 1; transition: none;
+        filter: drop-shadow(0 10px 22px rgba(230,25,230,.35));
+        animation: flFloat 3.4s ease-in-out .9s infinite;
+      }
+
+      #splash.flr .fl-load {
+        position: absolute; left: 13%; right: 13%; top: 60%; text-align: center; z-index: 3;
+        animation: flFade .6s ease-out .45s both;
+      }
+      #splash.flr .fl-txt {
+        color: #fff; font: 800 clamp(13px,2.1vh,17px) "Mulish","Nunito",sans-serif;
+        letter-spacing: .3px; text-shadow: 0 2px 6px rgba(230,25,230,.4); margin-bottom: 1.1vh;
+      }
+      #splash.flr .fl-txt i { display: inline-block; width: 1.2em; text-align: left; font-style: normal; }
+      #splash.flr .fl-bar {
+        position: relative; height: clamp(10px,1.6vh,15px); border-radius: 99px;
+        background: rgba(255,255,255,.06); border: 2px solid rgba(230,25,230,.35);
+        box-shadow: inset 0 2px 4px rgba(0,0,0,.4); overflow: hidden;
+      }
+      #splash.flr .fl-fill {
+        position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 99px;
+        background: linear-gradient(90deg, #e619e6, #ff7ae0 55%, #ffffff);
+        box-shadow: 0 0 10px rgba(230,25,230,.75);
+      }
+      #splash.flr .fl-fill::after {
+        content: ""; position: absolute; inset: 0;
+        background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.6) 50%, transparent 70%);
+        background-size: 200% 100%; animation: flShine 1.6s linear infinite;
+      }
+      #splash.flr .fl-step {
+        margin-top: 1vh; color: #f3c9f3; font: 800 clamp(10px,1.5vh,12.5px) "Mulish","Nunito",sans-serif;
+        text-shadow: 0 1px 2px rgba(0,0,0,.55); display: flex; justify-content: space-between; gap: 8px;
+      }
+      #splash.flr .fl-step em { font-style: normal; font-weight: 700; opacity: .75; font-variant-numeric: tabular-nums; }
+
+      #splash.flr .fl-black {
+        position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; z-index: 20;
+        transition: opacity .6s ease-in-out;
+      }
+      #splash.flr.dark .fl-black { opacity: .5; }
+      #splash.flr.out { opacity: 0; transition: opacity .9s ease-in-out; }
+      </style>`,
+    );
+
+    container.classList.add("flr");
+    container.insertAdjacentHTML(
+      "beforeend",
+      `<div class="fl-stage">
+        <canvas class="r-sparkle"></canvas>
+        <div class="fl-lw"><div class="r-glow"></div><img class="fl-logo" src="${ASSET}logo-royal.png" alt="" /></div>
+        <div class="fl-load">
+          <div class="fl-txt">Loading<i></i></div>
+          <div class="fl-bar"><div class="fl-fill"></div></div>
+          <div class="fl-step"><span>Polishing the crown</span><em>0 / 0</em></div>
+        </div>
+      </div><div class="fl-black"></div>`,
+    );
+
+    const stage = container.querySelector(".fl-stage");
+    const fill = container.querySelector(".fl-fill");
+    const dots = container.querySelector(".fl-txt i");
+    const loadingTxt = container.querySelector(".fl-txt");
+    const sparkleCv = container.querySelector(".r-sparkle");
+    const sctx = sparkleCv.getContext("2d");
+
+    const sprite = (color) => {
+      const c = document.createElement("canvas");
+      c.width = c.height = 48;
+      const x = c.getContext("2d");
+      const g = x.createRadialGradient(24, 24, 0, 24, 24, 24);
+      g.addColorStop(0, `${color}ff`);
+      g.addColorStop(0.35, `${color}aa`);
+      g.addColorStop(1, `${color}00`);
+      x.fillStyle = g;
+      x.fillRect(0, 0, 48, 48);
+      return c;
+    };
+    const magentaDot = sprite("#e619e6");
+    const whiteDot = sprite("#ffffff");
+
+    let sw = 0, sh = 0;
+    const resizeSparkle = () => {
+      const r = stage.getBoundingClientRect();
+      const dpr = Math.min(2, devicePixelRatio || 1);
+      sw = r.width; sh = r.height;
+      sparkleCv.width = sw * dpr; sparkleCv.height = sh * dpr;
+      sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    new ResizeObserver(resizeSparkle).observe(stage);
+    resizeSparkle();
+
+    const mkSparkle = (y) => ({
+      x: Math.random() * sw,
+      y: y ?? Math.random() * sh,
+      r: 1.2 + 2.2 * Math.random(),
+      v: 10 + 16 * Math.random(),
+      sway: 10 + 18 * Math.random(),
+      ph: 6.28 * Math.random(),
+      twirl: 1 + 2 * Math.random(),
+      magenta: Math.random() < 0.4,
+    });
+    let sparkles = Array.from({ length: 46 }, () => mkSparkle());
+
+    let last = performance.now();
+    function drawSparkles(now) {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      sctx.clearRect(0, 0, sw, sh);
+      for (const p of sparkles) {
+        p.y -= p.v * dt;
+        p.ph += p.twirl * dt;
+        if (p.y < -10) Object.assign(p, mkSparkle(sh + 10));
+        const x = p.x + Math.sin(p.ph) * p.sway * 0.1;
+        const alpha = 0.25 + 0.65 * Math.abs(Math.sin(p.ph * 1.3));
+        sctx.globalAlpha = alpha;
+        sctx.drawImage(p.magenta ? magentaDot : whiteDot, x - 2 * p.r, p.y - 2 * p.r, 4 * p.r, 4 * p.r);
+      }
+      sctx.globalAlpha = 1;
+    }
+
+    const START = performance.now();
+    let loaded = "complete" === document.readyState;
+    if (!loaded) addEventListener("load", () => (loaded = true), { once: true });
+
+    const stepLabel = container.querySelector(".fl-step span");
+    const stepCount = container.querySelector(".fl-step em");
+    const STEPS = [
+      [0, "Polishing the crown"],
+      [0.18, "Rocking the cradle"],
+      [0.36, "Drafting the royal decree"],
+      [0.54, "Assembling the court"],
+      [0.72, "Preparing the nursery"],
+      [0.92, "Nearly announced"],
+    ];
+    const TARGET_MS = 16000;
+    let resources = [], lastScan = -1e9, shown = 0, progress = 0, displayed = 0, done = false;
+    let raf = requestAnimationFrame(tick);
+
+    function tick(now) {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      const elapsed = now - START;
+      const timeCurve = Math.min(1, elapsed / TARGET_MS);
+      progress = loaded || elapsed > TARGET_MS ? Math.max(progress, timeCurve) : Math.min(0.9, 0.95 * timeCurve);
+      displayed += (progress - displayed) * Math.min(1, 6 * dt);
+      fill.style.width = `${(100 * displayed).toFixed(2)}%`;
+      if (!done) dots.textContent = ".".repeat(1 + (Math.floor(elapsed / 380) % 3));
+
+      if (elapsed - lastScan > 400) {
+        lastScan = elapsed;
+        const seen = new Set();
+        for (const e of performance.getEntriesByType("resource")) {
+          try {
+            const u = new URL(e.name);
+            if (/^https?:/.test(u.protocol)) seen.add(u.pathname);
+          } catch {}
+        }
+        resources = [...seen];
+      }
+      if (resources.length && !done) {
+        const want = Math.round(displayed * resources.length);
+        shown = Math.min(want, shown + Math.max(1, Math.ceil(0.25 * (want - shown))));
+        stepCount.textContent = `${shown.toLocaleString()} / ${resources.length.toLocaleString()}`;
+        stepLabel.textContent = STEPS.filter((s) => displayed >= s[0]).pop()[1];
+      }
+
+      drawSparkles(now);
+
+      if (displayed > 0.995 && !done) {
+        done = true;
+        loadingTxt.firstChild.textContent = "Ready";
+        dots.textContent = "!";
+        stepLabel.textContent = "The royal baby has arrived";
+        setTimeout(finish, 450);
+      }
+      raf = requestAnimationFrame(tick);
+    }
+
+    let finished = false;
+    function finish() {
+      if (finished) return;
+      finished = true;
+      container.classList.add("dark");
+      setTimeout(() => {
+        onDone && onDone();
+        container.classList.add("out");
+      }, 300);
+      setTimeout(() => {
+        cancelAnimationFrame(raf);
+        removeEventListener("resize", resizeSparkle);
+        container.remove();
+      }, 1300);
+    }
+    container.addEventListener("click", () => {
+      if (loaded) finish();
+    });
+    setTimeout(finish, 20000);
+  }
+
   window.FreeLifeSplash = function (r, c) {
+    if ("royal" === localStorage.getItem("fl-theme")) return royal(r, c);
     if (
       (() => {
         try {
