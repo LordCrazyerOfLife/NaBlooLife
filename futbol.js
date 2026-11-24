@@ -549,13 +549,16 @@
     if (!obj) return rows || [];
     const out = rows || [];
     if (obj.attrs) {
+      const before = attrAvg(f);
       for (const [k, v] of Object.entries(obj.attrs)) {
         if (f.attrs && f.attrs[k] != null) {
           f.attrs[k] = clampN(f.attrs[k] + v, 1, 99);
           out.push([ATTRS.find((a) => a.id === k)?.n || k, `${v > 0 ? "+" : ""}${v}`]);
         }
       }
-      f.skill = clampN(Math.round(attrAvg(f)), 1, 99);
+      // [fix] move skill by the change in the attribute average. Overwriting it with the average made the
+      // overall jump (e.g. 70% -> 54%) after any training, since skill also moves on its own (matches, age).
+      f.skill = clampN(Math.round(f.skill + (attrAvg(f) - before)), 1, 99);
     }
     if (obj.skill) f.skill = clampN(f.skill + obj.skill, 1, 99);
     if (obj.fit) f.fit = clampN(f.fit + obj.fit, 1, 99);
@@ -1693,7 +1696,7 @@
 
   function addTrophy(f, name, kind, icon, sub) {
     if (!Array.isArray(f.trophies)) f.trophies = [];
-    if (f.trophies.length >= 160) f.trophies.shift();
+    if (f.trophies.length >= 400) f.trophies.shift();
     f.trophies.push({ n: name, k: kind, y: year(), c: sub || "", i: trophyArt(name) || icon || ICON });
     f.fame = clampN(f.fame + (kind === "individual" ? 3 : 2), 0, 100);
   }
@@ -2903,6 +2906,7 @@
           [T("Money"), money(state.money)],
         ];
         if (f.injury) rows.push([T("Injury"), `${f.injury.weeks} ${T("weeks left")}`]);
+        if (hasTrophy(f, T("Youth MVP"), year())) rows.push([T("Awards"), T("Youth MVP")]);
         card({
           iconSrc: (f.club && f.club.logo) || ICON,
           title: T("Youth season review"),
@@ -2996,9 +3000,12 @@
     const finish = () => {
       if (ended) return;
       ended = true;
+      resumeFlow = null;
       done();
     };
     const next = () => {
+      stepAt = Date.now();
+      resumeFlow = next;
       if (state.dead || !f.active) {
         f.pending = false;
         f.flowDone = true;
@@ -3021,6 +3028,17 @@
   }
 
   let flowActive = false;
+  // [fix] the season flow is a chain of popups. If one gets dropped (jCard returns early, another event
+  // replaces the card...) `next` is never called and flowActive stays true: age up was blocked until reload.
+  let stepAt = 0;
+  let resumeFlow = null;
+  function flowStalled() {
+    if (!flowActive || !resumeFlow) return false;
+    if (Date.now() - stepAt < 2500) return false;
+    const evOpen = typeof evWrap !== "undefined" && evWrap && evWrap.classList.contains("open");
+    const queued = typeof popupQueue !== "undefined" && popupQueue.length > 0;
+    return !evOpen && !queued && !document.querySelector(".notice-wrap");
+  }
   function beginSeason(force) {
     const f = F();
     if (!f.active || state.dead) return;
@@ -3499,7 +3517,8 @@ tap("fbCountryLeague", () => {
       [T("Goals"), String(f.career.goals)],
       [T("Assists"), String(f.career.assists)],
       [T("Club trophies"), String(byKind("club") + byKind("cup") + byKind("continental"))],
-      [T("Individual awards"), String(byKind("individual") + byKind("nation"))],
+      [T("National team titles"), String(byKind("nation"))],
+      [T("Individual awards"), String(byKind("individual"))],
       [T("National caps"), String(f.nat.caps)],
       [T("National goals"), String(f.nat.goals)],
       [T("Current club"), f.club ? f.club.name : "—"],
@@ -3821,6 +3840,21 @@ tap("fbCountryLeague", () => {
       "click",
       (ev) => {
         const f = state && state.futbol;
+        if (f && f.active && !f.retired && !state.dead && flowActive && flowStalled()) {
+          // nothing on screen belongs to the season anymore: skip the lost step and finish the flow
+          const r = resumeFlow;
+          ev.stopImmediatePropagation();
+          ev.preventDefault();
+          try {
+            r();
+          } catch (e) {
+            console.warn("[futbol] resume", e);
+            flowActive = false;
+            f.pending = false;
+            f.flowDone = true;
+          }
+          return;
+        }
         if (f && f.active && !f.retired && !state.dead && flowActive) {
           ev.stopImmediatePropagation();
           ev.preventDefault();

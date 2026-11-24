@@ -87,7 +87,7 @@
       id: "football-career",
       name: "Football Career",
       icon: "emoji/26bd.png",
-      src: "futbol.js?v=13",
+      src: "futbol.js?v=15",
       deps: ["futbol-data.js?v=1", "futbol-events.js?v=1"],
       desc: "A full BitLife-style football life: high-school team, academy, first team, league/cup/continental/national-team competitions, key match decisions, transfers, loans, contracts and a permanent trophy cabinet. Find it in Occupation, Special Careers.",
     },
@@ -111,6 +111,13 @@
       icon: "cars/ui-license.png",
       src: "licenses.js?v=2",
       desc: "License Office in Activities: car, motorcycle, commercial (CDL), boat, private pilot, helicopter and firearm licenses, each with a written exam and a practical test. They unlock sport bikes, boats, planes, helicopters, legal guns and driver jobs.",
+    },
+    {
+      id: "mental-health",
+      name: "Mental Health",
+      icon: "emoji/1f9e0.png",
+      src: "mentalhealth.js?v=2",
+      desc: "A serious mental-health layer: depression, anxiety, ADHD, bipolar disorder and PTSD with hidden symptoms, evaluation, therapy, medication with side effects, and real effects on stats, work and relationships. Military combat can cause PTSD. Also adds a sadistic streak as a personality trait (not a disorder) that ties into Melon and Infamous Killers. Find it in Activities.",
     },
     {
       id: "jewelry-wear",

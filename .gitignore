@@ -12,3 +12,4 @@ Thumbs.db
 *.clean.txt
 *.strings.txt
 *.missing.txt
+_art-src/_preview/

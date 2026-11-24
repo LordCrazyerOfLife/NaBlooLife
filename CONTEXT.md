@@ -1,6 +1,6 @@
 # YourLife: contexto del proyecto (handoff)
 
-> Última actualización: 2026-11-21 (sesión 2: Mundial jugable, i18n genérico, Bloodhounds). Léelo completo antes de tocar nada.
+> Última actualización: 2026-11-24 (sesión 5: Mental Health, fútbol, grids). Léelo completo antes de tocar nada.
 >
 > **Resumen de dónde estamos:** (1) traducción ES/PT del juego **terminada** (45,952 líneas) con una segunda pasada
 > de calidad pendiente; (2) **freebuff** conectado (opencode gratis) y probado; (3) tres mods propios hechos desde
@@ -428,6 +428,14 @@
 - **Backups:** ya no se guardan en el repo (se limpiaron para el push); el historial queda en git.
 - **Sin probar en vivo:** todo esto solo pasó `node --check` y la verificación de que existen los PNG. Falta jugarlo (dealers de marca, bloques de semanas, precios).
 - **Ideas de fútbol pendientes** (las que se propusieron): partidos clave jugables por momentos, eventos con memoria, objetivos por temporada, menú por pestañas.
+
+## Sesión 5 (2026-11-24): fútbol, Mental Health, herramienta de grids
+- **Fútbol (`futbol.js?v=15`):** (1) `applyEffects` ya no pisa `f.skill` con el promedio de atributos (movía 70% -> 54% tras entrenar): ahora suma el cambio del promedio. (2) El flujo de temporada es una cadena de popups; si uno se pierde (`jCard` sale temprano) `flowActive` quedaba en true y Age up se bloqueaba hasta recargar: `flowStalled()` detecta que no hay popup/cola/notice por >2.5s y retoma el flujo (`resumeFlow`). (3) Cabinet: Youth MVP sale en el review juvenil, "National team titles" separado de individuales en Career numbers, tope de trofeos 400.
+- **Mental Health (`mentalhealth.js?v=2`, mod `mental-health`):** Activities -> Mental Health. Depresión, ansiedad, ADHD, bipolar (I/II), PTSD sobre el sistema base (`state.mind`, `state.depressed`, ills Anxiety/ADHD/PTSD, que adopta y neutraliza para no duplicar el drenaje). Estado `state.mhx`: `c[id]` con `lvl` (carga de síntomas), `dx` (false = oculto, "wrong" = bipolar mal diagnosticado como depresión), `meds[]`, `tried`, `bad`. Síntomas ocultos hasta una evaluación (que puede fallar); efectos anuales en stats, `state.job.perf` (o `state.school.grades`) y `rel` de la gente cercana; terapia global (`m.th`: semanal/quincenal/mensual/grupo, terapeuta con `eff`), meds por condición (respuesta individual, efectos secundarios, adherencia; dejarlas de golpe recae; antidepresivo solo puede disparar manía en bipolar), autocuidado, hablar con alguien, crisis con líneas de ayuda reales, sin muerte por suicidio. Combate de Military Expanded = trauma (envuelve `runMilEvent`); activos y veteranos no pagan. Costo anual en `payCare` (si no alcanza, se pausa).
+  - **Antidepresivos con arte:** 12 cajas en `meds/` (Zoloft, Lexapro, Prozac, Cymbalta, Effexor, Wellbutrin, Remeron, Desyrel, Paxil, Celexa, Elavil, Trintellix) con ficha propia en `MEDS`; `recommend()` hace que el psiquiatra recomiende una según comorbilidades, edad, severidad, lo ya probado (`r.tried`) y los efectos que te hicieron dejar otra (`r.bad`); pantalla `openMedList` con imágenes. Los ids `ssri`/`atyp` quedan ocultos (`hide`) por compatibilidad.
+  - **Sadismo = rasgo, no trastorno** (`state.mhx.sad`: `v`, `urge`, `guilt`, `known`): el log de vida (MutationObserver con `VIOLENT`) dispara `onViolence`: felicidad +, reembolsa la culpa base (`mindBump`), `Remorse` bajo, Melon (brutality +, disguise -) y `state.serial.notice` +; urge que se resiste, se redirige (gimnasio), se trata o se actúa. Meter el medidor en la pantalla de Crime debajo de Melon.
+  - **Sin probar en vivo del todo:** el flujo evaluación -> terapia -> meds y el sadismo vía log sí se probaron con CDP; los popups de eventos (urge, crisis, manía, pánico) y el tick por Age up NO se vieron en pantalla. Textos en inglés, sin i18n. Debug: `FL_MH.give("ptsd")`, `FL_MH.tick()`, `FL_MH.eventNow("mania")`, `FL_MH.crisis()`.
+- **Herramienta de grids:** `python -I _art-src/split_grid.py [--list] [--only texto] [--preview]` lee `_art-src/grids.json` (src, cols/rows, names izq->der y arriba->abajo, out, box, cut, keep_all, mode hair). Para un grid nuevo: PNG en `_art-src/grids/` y una entrada en el json. Reproduce idéntico los grids de trofeos, carros, joyas, pelo y meds. `split_grids2.py` sigue como librería de helpers (`cutout`, `fit`, `cells`, `pad`). `--preview` escribe `_art-src/_preview/` (ignorado en git).
 
 ## Cómo está hecho el juego (lo que se averiguó)
 - **HTML, CSS y JS puro, escrito a mano.** Sin React/Vue/jQuery y sin bundler (ni webpack, Vite ni imports). Solo un
