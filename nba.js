@@ -797,6 +797,7 @@
       choices: e.c.map((c) => [c[0], () => {
         const p = prob(c);
         const win = p == null ? true : ch(p);
+        if (window.FL_SND) FL_SND.result(win);
         fxApply(n, win ? c[2] : c[3]);
         const text = win ? c[4] : c[5] || "It did not go your way.";
         if (c[6] && win) c[6](n);

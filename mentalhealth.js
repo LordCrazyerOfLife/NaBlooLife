@@ -476,6 +476,17 @@
   }
   const jobKey = () => (state.job ? `${state.job.emp || state.job.c || "job"}|${state.job.t || ""}` : "");
 
+  // [mod] the game's own Mental Health bar: when it is high, the disorder events and onsets should be rare
+  const mhBar = () => {
+    let v = NaN;
+    try {
+      if (typeof mindOf === "function") v = Number(mindOf().mh); // the "Mental Health" bar of the base game
+    } catch {}
+    if (!Number.isFinite(v)) v = Number(stats()["Mental Health"]);
+    return Number.isFinite(v) ? v : 50;
+  };
+  const mhCalm = () => (mhBar() >= 85 ? 0.1 : mhBar() >= 70 ? 0.35 : mhBar() >= 55 ? 0.7 : 1);
+
   // ------------------------------------------------------------------ stress
   function updateStress() {
     const m = S();
@@ -496,6 +507,7 @@
     m.recent = m.recent.filter((x) => state.age - x.a <= 3);
     m.recent.forEach((x) => (t += (x.s / 100) * 9 * (1 - (state.age - x.a) / 4)));
     if (m.th.on && !m.th.lapsed) t -= 6;
+    t -= Math.max(0, mhBar() - 50) * 0.35; // a healthy mind lowers stress
     t = cl(t);
     m.stress = Math.round(cl(m.stress + (t - m.stress) * 0.5));
   }
@@ -514,15 +526,15 @@
     if (m.c.ptsd) pDep += 0.05;
     if (SD().guilt >= 70) pDep += 0.04;
     if (age < 12) pDep *= 0.3;
-    if (age >= COND.depression.minAge && !hasOne("depression") && !state.depressed && ch(cl(pDep, 0, 0.35))) newCond("depression", { dx: false });
+    if (age >= COND.depression.minAge && !hasOne("depression") && !state.depressed && ch(cl(pDep * mhCalm(), 0, 0.35))) newCond("depression", { dx: false });
 
     let pAnx = 0.6 * (0.01 + 0.0015 * Math.max(0, m.stress - 35) + (famHas("anxiety") || famHas("panic") ? 0.04 : 0) + (m.c.adhd ? 0.03 : 0));
     if (age < 10) pAnx *= 0.5;
-    if (age >= COND.anxiety.minAge && !hasOne("anxiety") && ch(cl(pAnx, 0, 0.3))) newCond("anxiety", { dx: false });
+    if (age >= COND.anxiety.minAge && !hasOne("anxiety") && ch(cl(pAnx * mhCalm(), 0, 0.3))) newCond("anxiety", { dx: false });
 
     if (age >= 15 && age <= 38 && !hasOne("bipolar")) {
       const pBi = 0.6 * (0.0025 + (m.stress > 60 ? 0.002 : 0) + (famHas("bipolar") ? 0.02 : 0));
-      if (ch(pBi)) newCond("bipolar", { dx: false });
+      if (ch(pBi * mhCalm())) newCond("bipolar", { dx: false });
     }
   }
 
@@ -1597,12 +1609,13 @@
   function pickEvents() {
     const m = S();
     const hot = conds().some((r) => (r.id === "bipolar" ? r.phase !== "stable" && r.lvl >= 75 : load(r) >= 75 && !r.rem) && r.id !== "adhd");
-    if (hot && ch(0.4 + (supportCount() === 0 ? 0.15 : 0) - (m.th.on ? 0.1 : 0))) {
+    if (hot && mhBar() < 70 && ch(0.4 + (supportCount() === 0 ? 0.15 : 0) - (m.th.on ? 0.1 : 0))) {
       m.ev.crisis = state.age;
       return crisisEvent();
     }
-    let slots = ch(0.6) ? 1 : 0;
-    if (ch(0.25)) slots++;
+    const calm = mhCalm();
+    let slots = ch(0.6 * calm) ? 1 : 0;
+    if (ch(0.25 * calm)) slots++;
     for (let i = 0; i < slots; i++) {
       const pool = EVENTS.map((e) => ({ e, w: m.ev[e.id] != null && state.age - m.ev[e.id] < 2 ? 0 : e.w() })).filter((x) => x.w > 0);
       if (!pool.length) return;

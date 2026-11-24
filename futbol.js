@@ -40,6 +40,28 @@
   };
   const playSnd = (n) => typeof play === "function" && play(n);
   const sayIt = (s) => typeof say === "function" && say(s);
+  // [mod] the life log used to say "Event title: choice". Now it tells what happened, in the first person.
+  const firstPerson = (txt) => {
+    let t = String(txt || "").trim();
+    const R = [
+      [/\bYou're\b/gi, "I'm"],
+      [/\bYou are\b/gi, "I am"],
+      [/\bYou were\b/gi, "I was"],
+      [/\bYou have\b/gi, "I have"],
+      [/\bYou've\b/gi, "I've"],
+      [/\bYou'll\b/gi, "I'll"],
+      [/\b(tell|tells|told|give|gives|gave|hand|hands|handed|ask|asks|asked|offer|offers|offered|call|calls|called|show|shows|showed|send|sends|sent|see|sees|saw|hit|hits|ignore|ignores|follow|follows|followed|let|lets|make|makes|made|force|forces|forced|thank|thanks|thanked|warn|warns|warned|promise|promises|promised|to|for|with|at|about|without|from|behind|on|by) you\b/gi, "$1 me"],
+      [/\bYou\b/g, "I"],
+      [/\byou\b/g, "I"],
+      [/\bYour\b/g, "My"],
+      [/\byours\b/gi, "mine"],
+      [/\byourself\b/gi, "myself"],
+      [/\byour\b/g, "my"],
+    ];
+    R.forEach(([a, b]) => (t = t.replace(a, b)));
+    if (t && !/[.!?]$/.test(t)) t += ".";
+    return t;
+  };
   const noticeIt = (t, b, cb, one = true) => typeof notice === "function" && notice(t, b, cb, one);
   const renderAll = () => typeof renderStats === "function" && renderStats();
   const chev = () => (typeof CHEV !== "undefined" ? CHEV : "");
@@ -655,7 +677,7 @@
             good: { skill: 3, fame: 5, hype: 8, coach: 2, mods: { atk: 3 } },
             bad: { coach: -6, fame: -1, hap: -2 },
             gm: "You try a rabona cross and it lands on the striker's head. The corner flag scouts are writing.",
-            bm: "You try a rabona and fall over. The coach calls it 'circus football'.",
+            bm: "The rabona does not come off, but the coach likes that you tried. 'Keep that bravery, fix the timing,' he says.",
           },
         ],
       },
@@ -670,7 +692,7 @@
             good: { coach: 6, club: 5, hap: 4, form: 4, mods: { def: 1 } },
             bad: { coach: -3, club: -3, hap: -3 },
             gm: "You speak for thirty seconds and the room goes quiet. They run through a wall for you.",
-            bm: "Your speech lands like a wet ball. Someone giggles. You want the floor to swallow you.",
+            bm: "Your speech is not your best, but the room respects that you stood up. It gets better next time.",
           },
           {
             t: T("Lead by example"),
@@ -701,7 +723,7 @@
             good: { fit: 5, skill: 2, coach: 3, hap: 2 },
             bad: { fit: -2, skill: -1 },
             gm: "You spend six weeks on coordination and core work. Your body catches up with your legs.",
-            bm: "The exercises do not help. You spend the season looking like a giraffe on ice.",
+            bm: "The exercises do not help much this time. Progress is slow, but the physio adjusts your plan.",
           },
           {
             t: T("Play through it"),
@@ -812,7 +834,7 @@
             good: { fame: 8, skill: 3, coach: 4, mods: { atk: 3 } },
             bad: { fame: -3, coach: -4, hap: -5 },
             gm: "You go around him and walk it in. The stadium cannot believe it.",
-            bm: "The keeper reads it and takes the ball off your toe. You look ridiculous.",
+            bm: "The keeper reads it and takes the ball off your toe. It was a bold try.",
           },
         ],
       },
@@ -891,7 +913,7 @@
             good: { fame: 12, skill: 3, hap: 8, coach: 8, mods: { atk: 2 } },
             bad: { fame: -8, hap: -10, form: -6 },
             gm: "You send the keeper the wrong way and win the cup. The picture will hang in the club museum.",
-            bm: "You put it wide. The cup goes to the other dressing room and the miss follows you forever.",
+            bm: "You put it wide. The cup goes to the other dressing room and it hurts, but your teammates pick you up.",
           },
           {
             t: T("Give it to the striker"),
@@ -907,7 +929,7 @@
             good: { fame: 18, hap: 10, skill: 2, coach: 5 },
             bad: { fame: -12, hap: -12, coach: -8 },
             gm: "You chip it down the middle. The keeper dives. The cup is yours and the clip breaks the internet.",
-            bm: "The keeper stays up and catches it. You have made the most embarrassing miss of the season.",
+            bm: "The keeper stays up and catches it. A tough miss, and the dressing room tells you to shake it off.",
           },
         ],
       },
@@ -930,7 +952,7 @@
             good: { fame: 5, skill: 2, hype: 6, mods: { atk: 2 } },
             bad: { coach: -6, club: -4 },
             gm: "You beat four players and score. The fourth-tier keeper is still applauded off.",
-            bm: "You shoot from everywhere and waste every attack. The manager is furious.",
+            bm: "Nothing falls for you today and the attacks fizzle out. The manager wants you to pick your moments.",
           },
           {
             t: T("Win a penalty"),
@@ -953,7 +975,7 @@
             good: { coach: 6, fame: 4, hap: 4, mods: { atk: 1 } },
             bad: { fame: -5, hap: -5, coach: -3 },
             gm: "You take the first penalty and bury it. The shootout is won and the final is booked.",
-            bm: "You take the first and miss. The team loses the shootout and the silence is awful.",
+            bm: "You take the first and miss. The team loses the shootout, and your teammates hug you anyway.",
           },
           {
             t: T("Take the fifth"),
@@ -1017,7 +1039,7 @@
             good: { fame: 6, coach: 6, form: 4, mods: { atk: 2 } },
             bad: { coach: -4, hap: -4 },
             gm: "You shoot from everywhere and one goes in. The comeback is on.",
-            bm: "You waste every attack shooting from forty yards. The tie is dead by half-time.",
+            bm: "Your long shots do not drop and the tie slips away by half-time. Lesson learned.",
           },
           {
             t: T("Feed the striker"),
@@ -1229,8 +1251,9 @@
         choices: m.choices.map((ch) => [
           ch.t,
           () => {
-            const p = clampN(ch.p(f) + (f.mods && f.mods.luck ? f.mods.luck * 0.01 : 0), 0.05, 0.95);
+            const p = clampN(ch.p(f) + 0.14 + (f.mods && f.mods.luck ? f.mods.luck * 0.01 : 0), 0.3, 0.95); // [mod] +14%, never below 30%
             const good = rnd() < p;
+            if (window.FL_SND) FL_SND.result(good);
             const eff = good ? ch.good : ch.bad;
             const rows = applyEffects(f, eff);
             const msg = good ? ch.gm : ch.bm;
@@ -1242,10 +1265,10 @@
               rows.push([T("Season momentum"), `${(eff.mods.atk || 0) + (eff.mods.def || 0) > 0 ? "+" : ""}${(eff.mods.atk || 0) + (eff.mods.def || 0)}`]);
             }
             f.highlights.push(msg);
-            sayIt(good ? `${m.title}: ${T("it worked.")}` : `${m.title}: ${T("it did not work.")}`);
+            sayIt(msg ? firstPerson(msg) : good ? `${m.title}: ${T("it worked.")}` : `${m.title}: ${T("it did not work.")}`);
             card({
               iconSrc: good ? E("1f525") : E("1f4c9"),
-              title: good ? T("It comes off") : T("It backfires"),
+              title: good ? T("It comes off") : T("Not this time"),
               lead: msg,
               rows,
               ok: next,
@@ -1304,11 +1327,12 @@
                 f.fatigue = clampN(f.fatigue + 8, 0, 100);
                 sayIt(`I got hurt during ${blk.n.toLowerCase()} training.`);
               } else {
-                const room = clampN((f.potential - f.attrs[tr.id]) / 25, 0.15, 1.25);
+                const room = clampN((f.potential - f.attrs[tr.id]) / 22, 0.4, 1.3); // [mod] was 0.15..1.25 /25
                 const coach = 1 + (f.coachRel - 50) / 200;
                 const tired = f.fatigue >= 70 ? 0.6 : 1;
-                const base = ri(1, 3) * 0.35 * inten.mult * youthBoost * ageFx * room * coach * tired;
-                const gain = roundP(base);
+                const base = ri(2, 4) * 0.5 * inten.mult * youthBoost * ageFx * room * coach * tired; // [mod] about 2x faster
+                let gain = roundP(base);
+                if (!gain && inten.mult >= 1 && f.fatigue < 70 && rnd() < 0.5) gain = 1; // a normal block almost always moves something
                 const attrs = {};
                 if (gain) attrs[tr.id] = gain;
                 if (LINKED[tr.id] && rnd() < 0.15 * inten.mult) attrs[LINKED[tr.id]] = 1;
@@ -1418,6 +1442,21 @@
       const choices = offers.map((o) => [
         T("Sign for") + ` ${o.club.name}`,
         () => {
+          // [mod] a trial, not a gift: the bigger the club, the harder it is to be chosen
+          const pTrial = clampN(0.5 + (f.skill - (o.club.rep - 15)) / 120 + (f.gifted ? 0.1 : 0), 0.3, 0.95);
+          if (rnd() > pTrial) {
+            f.scouted = false;
+            f.waitAcademy = (f.waitAcademy || 0) + 1;
+            applyEffects(f, { hap: -3, skill: 1 });
+            sayIt(`I failed my trial at ${o.club.name}.`);
+            return card({
+              iconSrc: o.club.logo,
+              title: T("Trial failed"),
+              lead: `${o.club.name} ${T("watched you for three days and decided to pass. The scouts will be back if you keep improving.")}`,
+              rows: [[T("Chance you had"), `${Math.round(pTrial * 100)}%`], [T("Next chance"), String(year() + 1)]],
+              ok: next,
+            });
+          }
           f.club = o.club;
           f.youth = true;
           f.pro = false;
@@ -2112,7 +2151,8 @@
     const P = posOf(f);
     const games = 38;
     const out = [];
-    let playRate = clampN(0.22 + (f.skill - (f.club ? f.club.rep : 60) + 14) / 52, 0.1, 1);
+    let playRate = clampN(0.22 + (f.skill - (f.club ? f.club.rep : 60) + 14) / 52 + (f.coachRel - 50) / 260, 0.1, 1); // [mod] the coach picks his players
+    if (f.coachRel < 20) playRate *= 0.65; // frozen out
     if (f.loan) playRate = clampN(playRate + 0.3, 0.25, 1);
     if (f.injury) playRate *= 0.3;
     if (f.ban) playRate *= Math.max(0.15, 1 - f.ban / 9);
@@ -2452,15 +2492,16 @@
       const last = f.lastSeason;
       const interest =
         (f.hype || 0) + (last ? Math.max(0, last.rating - 6.4) * 18 : 0) + f.fame * 0.35 + f.skill - (f.club ? f.club.rep : 60) * 0.55;
-      const shouldTalk = expired || interest >= 26 || rnd() < 0.35;
+      const shouldTalk = expired || interest >= 26 || rnd() < 0.35 || (f.clubRel < 25 && f.coachRel < 25);
       if (!shouldTalk) return next();
 
       const offers = transferOffers(f, 2);
+      const unwanted = f.clubRel < 25 && (expired || f.coachRel < 25);
       const choices = [
         [
           expired ? T("Re-sign with the club") : T("Stay and sign a new deal"),
           () => {
-            const bump = expired ? ri(5, 15) : ri(18, 38);
+            const bump = Math.round((expired ? ri(5, 15) : ri(18, 38)) * clampN(0.4 + f.clubRel / 80, 0.4, 1.4)); // [mod] a happy club pays more
             f.wage = Math.max(45000, Math.round((f.wage * (1 + bump / 100)) / 1000) * 1000);
             f.contract = { wage: f.wage, years: 4, release: f.wage * 12 };
             f.clubRel = clampN(f.clubRel + 8, 0, 100);
@@ -2522,12 +2563,15 @@
           },
         ]);
       }
+      if (unwanted && choices.length > 1) choices.shift(); // [mod] a club that does not like you will not offer a new deal
       card({
         iconSrc: (f.club && f.club.logo) || ICON,
         title: expired ? T("Your contract has expired") : T("Transfer window"),
-        lead: expired
-          ? "You are a free agent. Every club in this list can sign you without a fee. Choose carefully."
-          : "Your agent has been busy. These clubs want to talk, and your current club wants to keep you.",
+        lead: unwanted
+          ? "The club made it clear: there will be no new deal. Your relationship with the coach and the board has gone cold, and your agent is already on the phone."
+          : expired
+            ? "You are a free agent. Every club in this list can sign you without a fee. Choose carefully."
+            : "Your agent has been busy. These clubs want to talk, and your current club wants to keep you.",
         rows: [
           [T("Current club"), f.club ? f.club.name : "—"],
           [T("Wage"), `${money(f.wage)}/${T("yr")}`],
@@ -2545,8 +2589,12 @@
     const due = FOLLOWUPS.filter((x) => !f.recent.includes(x.id) && !f.memLog.some((m) => m.id === x.id) && x.when(f));
     if (due.length && rnd() < 0.6) return pick(due);
     if (!all.length) return null;
+    // [mod] about 45% of the random events are life outside football (ev.life), the rest are football stories
+    const wantLife = rnd() < 0.45;
+    const hasLife = all.some((x) => x && x.life);
     const pool = all.filter((ev) => {
       if (!ev || !ev.choices || ev.choices.length < 2) return false;
+      if (hasLife && !!ev.life !== wantLife) return false;
       if (ev.min && state.age < ev.min) return false;
       if (ev.max && state.age > ev.max) return false;
       if (ev.tier === "pro" && !f.pro) return false;
@@ -2589,14 +2637,16 @@
       if (f.recent.length > 14) f.recent.shift();
       const text = typeof ev.text === "function" ? ev.text(f) : ev.text;
       card({
-        tag: T("Football Life"),
-        iconSrc: E("1f4f0"),
+        tag: ev.life ? T("Life") : T("Football Life"),
+        iconSrc: ev.life ? E(ev.icon || "1f9d1") : E("1f4f0"),
         title: ev.title,
         lead: `${text}<br><br>${T("What do you do?")}`,
-        rows: [
-          [T("Club"), f.club ? f.club.name : "—"],
-          [T("Age"), String(state.age)],
-        ],
+        rows: ev.life
+          ? [[T("Age"), String(state.age)], [T("Money"), money(state.money)]]
+          : [
+              [T("Club"), f.club ? f.club.name : "—"],
+              [T("Age"), String(state.age)],
+            ],
         choices: ev.choices.map((ch, ci) => [
           ch.t,
           () => {
@@ -2629,7 +2679,7 @@
               }
             }
             if (!rows.length && ch.e) rows = effectRows(ch.e);
-            sayIt(`${ev.title}: ${ch.t}.`);
+            sayIt(msg ? firstPerson(msg) : `${ev.title}: ${ch.t}.`);
             card({
               iconSrc: E("1f4ac"),
               title: ev.title,
@@ -2660,19 +2710,35 @@
       }
       list.push({ kind: "pos", target, label: target === 1 ? "Win the league" : `Finish in the top ${target}` });
     } else {
-      list.push({ kind: "score", target: 65, label: "Youth score of 65% or more" });
+      // [mod] realistic for a youth player: what the academy score formula gives an average year, minus a little
+      const exp = f.skill * 0.52 + f.fit * 0.22 + f.form * 0.16 + f.coachRel * 0.1 + 6;
+      const t = clampN(Math.round(exp - 3), 45, 80);
+      list.push({ kind: "score", target: t, label: `Youth score of ${t}% or more` });
     }
+    // [mod] targets come from what you can really expect to play and produce at your age and level
+    const rep = f.club ? f.club.rep || 60 : 60;
+    const expApps = f.pro ? Math.max(2, Math.round(38 * clampN(0.22 + (f.skill - rep + 14) / 52, 0.1, 1))) : 22;
+    const ageF = state.age >= 34 ? 0.8 : state.age >= 32 ? 0.9 : 1;
     if (pos.gk) {
-      const t = Math.round(4 + f.skill / 12);
-      list.push({ kind: "clean", target: t, label: `Keep ${t} clean sheets` });
+      if (f.pro) {
+        const t = Math.max(1, Math.round(expApps * clampN(0.14 + (rep - 55) / 180, 0.08, 0.5) * 0.85 * ageF));
+        list.push({ kind: "clean", target: t, label: `Keep ${t} clean sheet${t === 1 ? "" : "s"}` });
+      } else {
+        const t = f.skill >= 60 ? 6.7 : 6.3; // the youth sim does not count clean sheets, so judge a keeper on rating
+        list.push({ kind: "rating", target: t, label: `Average rating ${t} or better` });
+        return { year: year(), list };
+      }
     } else {
-      const t = Math.max(1, Math.round(pos.goal * (4 + f.skill / 9)));
+      const per = f.pro ? 0.1 + f.skill / 300 : 0.08 + f.skill / 300;
+      const t = Math.max(1, Math.round(expApps * per * pos.goal * 0.8 * ageF));
       list.push({ kind: "goals", target: t, label: `Score ${t} goal${t === 1 ? "" : "s"}` });
     }
     const third = pick(["fit", "rating", "health"]);
     if (third === "fit") list.push({ kind: "fit", target: 65, label: "Finish the season fit (65%+)" });
-    else if (third === "rating") list.push({ kind: "rating", target: f.pro ? 6.8 : 6.5, label: `Average rating ${f.pro ? "6.8" : "6.5"} or better` });
-    else list.push({ kind: "health", target: 0, label: "Stay injury-free" });
+    else if (third === "rating") {
+      const r = f.pro ? (f.skill >= rep + 8 ? 7.0 : f.skill >= rep - 8 ? 6.7 : 6.4) : f.skill >= 60 ? 6.7 : 6.3;
+      list.push({ kind: "rating", target: r, label: `Average rating ${r.toFixed(1)} or better` });
+    } else list.push({ kind: "health", target: 0, label: "Stay injury-free" });
     return { year: year(), list };
   }
 
@@ -3182,6 +3248,19 @@
       if (!keep.includes(i)) arr.forEach((n) => (n.style.display = "none"));
     });
     const play = document.getElementById("fbPlay");
+    if (tab === "today") {
+      const st = document.getElementById("fbStatus");
+      const col = (v) => (v >= 65 ? "#2fa03b" : v >= 35 ? "#f5841f" : "#b3261e");
+      const bar = (label, v, hint, color) =>
+        `<div style="margin:5px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(label)}</b><span style="opacity:.75">${esc(hint)} · ${Math.round(v)}%</span></div><i style="display:block;height:8px;border-radius:5px;background:#0002;overflow:hidden;margin-top:3px"><u style="display:block;height:100%;width:${Math.max(3, v)}%;background:${color}"></u></i></div>`;
+      const coachTxt = f.coachRel >= 75 ? T("He trusts you") : f.coachRel >= 45 ? T("Fine") : f.coachRel >= 20 ? T("On thin ice") : T("Frozen out");
+      const clubTxt = f.clubRel >= 75 ? T("They want you") : f.clubRel >= 45 ? T("Fine") : f.clubRel >= 25 ? T("Cooling") : T("They want you gone");
+      if (st)
+        st.insertAdjacentHTML(
+          "afterend",
+          `<div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:8px 14px">${bar(T("Coach relationship"), f.coachRel, coachTxt, col(f.coachRel))}${bar(T("Club relationship"), f.clubRel, clubTxt, col(f.clubRel))}${bar(T("Fitness"), f.fit, f.injury ? T("Injured") : fatigueLabel(f.fatigue || 0), col(f.fit))}${bar(T("Fame"), f.fame || 0, T("Fans"), "#6b2f8f")}<div style="font-size:11px;opacity:.65;margin-top:2px">${esc(T("The coach decides your minutes. The club decides your contract and your next move."))}</div></div>`,
+        );
+    }
     if (play && tab === "today") {
       const ob = f.obj && f.obj.year === year() ? f.obj : null;
       play.insertAdjacentHTML("afterend", row("fbObj", E("1f3c6"), T("Season objectives"), ob ? ob.list.map((o) => T(o.label)).join(" · ") : T("Set when the season starts")));
@@ -3467,6 +3546,36 @@ tap("fbCountryLeague", () => {
     f.pos = i;
     applyEffects(f, boost);
     syncJob(f);
+    const quit = () => {
+      f.active = false;
+      f.retired = false;
+      clearFootballJob();
+      sayIt("I was cut from my school football team and gave up on it for now.");
+      if (typeof openSpecialCareers === "function") openSpecialCareers();
+    };
+    // [mod] the school coach does not take everyone: tryout chance from skill and fitness, one retry after training
+    const tryout = (chance, attempt) => {
+      if (rnd() < chance) return showTeam();
+      card({
+        iconSrc: E("1f61e"),
+        title: T("Cut from the team"),
+        lead: attempt === 0
+          ? T("The coach reads the list out loud and your name is not on it. 'Not ready yet,' he says. 'Work on it.'")
+          : T("Second tryout, same result. The coach shakes his head and points at the door."),
+        rows: [[T("Your skill"), `${Math.round(f.skill)}%`], [T("Chance you had"), `${Math.round(chance * 100)}%`]],
+        choices:
+          attempt === 0
+            ? [
+                [T("Train hard and try again"), () => {
+                  applyEffects(f, { skill: 2, fit: 2 });
+                  tryout(clampN(chance + 0.14, 0, 0.95), 1);
+                }],
+                [T("Give up for now"), quit],
+              ]
+            : [[T("Give up for now"), quit]],
+      });
+    };
+    const showTeam = () => {
     sayIt(`I started my football career as a ${p.n.toLowerCase()}.`);
     card({
       iconSrc: "emoji/26bd.png",
@@ -3485,6 +3594,8 @@ tap("fbCountryLeague", () => {
       choices: [[T("Play the first season"), () => beginSeason(true)]],
       ok: () => openFutbol(),
     });
+    };
+    tryout(clampN(0.2 + f.skill / 110 + ((Number(state.stats && state.stats.Health) || 55) - 55) / 500, 0.3, 0.9), 0);
   }
 
   // ------------------------------------------------------------------ cabinets & stats

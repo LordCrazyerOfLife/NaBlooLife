@@ -26,7 +26,7 @@
         {
           t: "Play through the pain",
           e: { fit: -14, coach: 8, club: 6, fame: 1 },
-          msg: "You tape it up and finish the session. The coach calls you a warrior. The physio calls you an idiot.",
+          msg: "You tape it up and finish the session. The coach calls you a warrior. The physio tells you to be careful next time.",
           risk: 0.35,
           riskE: { injury: 8, fit: -12, hap: -6 },
           riskMsg: "The knee gives way completely. You are out for two months and the club doctor is furious.",
@@ -117,7 +117,7 @@
         {
           t: "Sign the deal",
           e: { money: 120000, fame: 5, hap: 4 },
-          msg: "You sign. The billboard goes up outside the stadium and your teammates mock you for a month.",
+          msg: "You sign. The billboard goes up outside the stadium and your teammates joke about it for a week.",
         },
         {
           t: "Negotiate for more",

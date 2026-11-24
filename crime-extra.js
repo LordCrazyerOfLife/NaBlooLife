@@ -47,7 +47,9 @@
       warn("card", e);
     }
   };
+  const sfx = (g) => window.FL_SND && FL_SND.result(g);
   const caught = (charge, text) => {
+    sfx(false);
     state.record = (state.record || 0) + 1;
     note("Busted", text, () => {
       try {
@@ -221,12 +223,14 @@
     addMoney(-stake);
     const finish = () => {
       if (ch(p)) {
+        sfx(true);
         x.race.wins++;
         addMoney(stake * 2);
         stat("Happiness", ri(6, 12));
         sayIt(`I won a street race in my ${carName(c)} and took ${money(stake)}.`);
         note("You won", `You cross the line first. The crowd goes crazy and you take home ${money(stake * 2)}.`, back);
       } else {
+        sfx(false);
         x.race.losses++;
         stat("Happiness", -ri(1, 4));
         sayIt("I lost a street race.");
@@ -235,6 +239,7 @@
     };
     const r = rnd();
     if (r < 0.11) {
+      sfx(false);
       x.race.crashes++;
       c.cond = Math.max(1, (c.cond || 50) - ri(15, 45));
       stat("Health", -ri(8, 30));
@@ -324,6 +329,7 @@
     addMoney(-v);
     const rigged = ch(0.08);
     if (!rigged && ch(g.p)) {
+      sfx(true);
       const w = Math.round(v * g.m);
       addMoney(w);
       x.bet.won += w - v;
@@ -331,6 +337,7 @@
       sayIt(`I won ${money(w - v)} in an underground bet.`);
       note("You win", `${g.t}: ${money(w)} on the table, all yours.`, bet);
     } else {
+      sfx(false);
       x.bet.lost += v;
       stat("Happiness", -ri(2, 6));
       sayIt(`I lost ${money(v)} in an underground bet.`);
@@ -406,6 +413,7 @@
       return note("Bad landing", "The jump goes wrong. You hit the roof wrong and roll, and the train rolls on without you. Everything hurts.", back);
     }
     if (ch(p)) {
+      sfx(true);
       let g = ri(c.lo, c.hi);
       g = price(g);
       if (crewOn) g = Math.round(g * 0.75);
