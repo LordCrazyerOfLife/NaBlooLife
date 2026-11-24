@@ -72,7 +72,7 @@
     ["npcMasks", "emoji/1f383.png", "NPC Masks", "NPCs can wear masks"],
     ["pcMode", "emoji/1f5a5-fe0f.png", "PC Mode", "Fit the game to your computer screen"],
     ["pray", "emoji/1f64f.png", "Pray Button", "Display the Pray button"],
-    ["snow", "emoji/2744-fe0f.png", "Snow & Ice", "Falling snow, snow caps and icicles in Free Life"],
+    ["snow", "emoji/2744-fe0f.png", "Snow & Ice", "Falling snow, snow caps and icicles in YourLife"],
     ["sound", "settings/sound.png", "Sound Effects", ""],
     ["languages", "emoji/1f30e.png", "Languages", "", { dots: !0 }],
   ];
@@ -112,7 +112,7 @@
     n &&
       (n.innerHTML = t.bitlifeMode
         ? "Your Life"
-        : '<img class="fl-hlogo" src="freelife/logo-wide.png" alt="Free Life">'),
+        : '<img class="fl-hlogo" src="freelife/logo-wide.png" alt="YourLife">'),
       t.bitlifeMode ||
         (l(".topbar"),
         l(".nav"),
@@ -861,6 +861,11 @@
       const e = document.querySelector(".phone");
       return e.classList.contains("flui") && !e.classList.contains("y2018");
     },
+    ao = () => {
+      // [mod] normal theme: swap the plain emoji images for their Apple versions (every emoji/*.png has one)
+      const e = document.querySelector(".phone");
+      return !!e && !e.classList.contains("y2018") && "bitlife" !== t.iconPack;
+    },
     m = (e) => {
       const n = e.getAttribute("src") || "",
         t = e.dataset.blSrc || n;
@@ -871,6 +876,9 @@
         const t = p(n),
           o = c[n] || (t && `freelife/apple/${t}.png`);
         o && ((e.dataset.blSrc = n), e.setAttribute("src", o));
+      } else if (ao() && /^emoji\/[0-9a-f-]+\.png$/.test(t)) {
+        const o = `freelife/apple/${t.slice(6)}`;
+        n !== o && ((e.dataset.blSrc = t), e.setAttribute("src", o));
       } else e.dataset.blSrc && (e.setAttribute("src", e.dataset.blSrc), delete e.dataset.blSrc);
     },
     u = () => document.querySelectorAll("img").forEach(m),

@@ -577,6 +577,10 @@
     });
   }
   function D(e) {
+    const o = D0(e);
+    return (o.per = 1e3 * Math.round((o.per * (typeof window.inflFx === "function" ? window.inflFx() : 1)) / 1e3)), o;
+  }
+  function D0(e) {
     const t = u();
     return "first" === e
       ? { per: 5e4 * rint(18, 80), years: rint(2, 4) }
@@ -810,7 +814,8 @@
       a("stats", i("stats"), "Stats", "<span>View your historical stats</span>", DOTS, !e.seasons.length) +
       a("surgery", i("surgery"), "Surgery", "<span>Undergo surgery on an injury</span>") +
       a("trade", i("trade"), "Trade", "<span>Request a trade</span>") +
-      a("train", i("train"), "Train", "<span>Work on your fitness</span>")),
+      a("train", i("train"), "Train", "<span>Work on your fitness</span>") +
+      a("cabinet", "trophies/nba-01-larry-obrien.png", "Trophy Case", "<span>Your titles and awards</span>")),
       sList.querySelectorAll("[data-bb]").forEach((e) => (e.onclick = () => K[e.dataset.bb]())),
       (sList.scrollTop = 0),
       screen.classList.add("open");
@@ -818,10 +823,41 @@
   window.openJobScreen = function () {
     return d() ? V() : U.apply(this, arguments);
   };
+  const NBA_ART = {
+    "Most Valuable Player": "nba-03-mvp",
+    "Championship MVP": "nba-02-finals-mvp",
+    "Defensive Player of the Year": "nba-04-defensive-player",
+    "Offensive Player of the Year": "nba-10-scoring-champion",
+    "Sixth Man of the Year": "nba-06-sixth-man",
+    "Rookie of the Year": "nba-05-rookie-of-the-year",
+    "Most Improved Player": "nba-09-all-defensive-team",
+  };
+  function cabinetScreen() {
+    const e = u();
+    (sTitle.textContent = "TROPHY CASE"), (sSub.style.display = "none"), (sBack.innerHTML = BACK_ICON), (sBack.onclick = () => V());
+    const titles = (e.seasons || []).filter((s) => 1 === s.place);
+    const awards = [];
+    (e.seasons || []).forEach((s) => (s.awards || []).forEach((a) => awards.push([a, s.y, s.team])));
+    const row = (img, t, sub) =>
+      `<div class="row dis"><img src="trophies/${img}.png" style="object-fit:contain"><div class="t"><b>${t}</b><span>${sub}</span></div></div>`;
+    sList.innerHTML =
+      (titles.length
+        ? `<div class="sec">Championships · ${titles.length}</div>` + titles.map((s) => row("nba-01-larry-obrien", `${s.y} Champions`, s.team)).join("")
+        : "") +
+        (awards.length
+          ? `<div class="sec">Awards · ${awards.length}</div>` +
+            awards.sort((a, b) => String(b[1]).localeCompare(String(a[1]))).map(([n, y, team]) => row(NBA_ART[n] || "nba-08-all-star-mvp", n, `${y} · ${team}`)).join("")
+          : "") ||
+      '<div class="row dis"><img src="trophies/nba-01-larry-obrien.png" style="object-fit:contain"><div class="t"><b>Nothing yet</b><span>Win a title or an award and it goes here</span></div></div>';
+    (sList.scrollTop = 0), screen.classList.add("open");
+  }
   const J = () => {
       screen.classList.contains("open") && "JOB" === sTitle.textContent && V();
     },
     K = {
+      cabinet() {
+        cabinetScreen();
+      },
       me() {
         const a = u(),
           s = w(a.team),

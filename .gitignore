@@ -1,0 +1,14 @@
+# generated / scratch
+__pycache__/
+*.pyc
+*.bak
+*.bak-*
+*~
+node_modules/
+Thumbs.db
+# string-extraction scratch files
+*.all.txt
+*.tpl.txt
+*.clean.txt
+*.strings.txt
+*.missing.txt

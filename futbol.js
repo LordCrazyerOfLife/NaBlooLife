@@ -1,4 +1,4 @@
-/* [mod] Football Career for Free Life (local mod).
+/* [mod] Football Career for YourLife (local mod).
  *
  * A full BitLife-style football life: high-school team, academy, first team,
  * yearly training, league/cup/continental/national-team competitions, key
@@ -431,6 +431,8 @@
       f.attrs[a.id] = clampN(f.attrs[a.id] == null ? f.skill + ri(-7, 7) : f.attrs[a.id], 1, 99);
     });
     f.fit = clampN(f.fit == null ? 70 : f.fit, 1, 99);
+    f.fatigue = clampN(f.fatigue == null ? 20 : f.fatigue, 0, 100);
+    if (!INTENSITY[f.plan]) f.plan = "normal";
     f.fame = clampN(f.fame == null ? 0 : f.fame, 0, 100);
     f.form = clampN(f.form == null ? 50 : f.form, 0, 100);
     f.coachRel = clampN(f.coachRel == null ? 55 : f.coachRel, 0, 100);
@@ -458,6 +460,10 @@
     f.ban = Math.max(0, Number(f.ban) || 0);
     f.career = f.career && typeof f.career === "object" ? f.career : { apps: 0, goals: 0, assists: 0, seasons: 0 };
     f.captain = !!f.captain;
+    f.obj = f.obj && typeof f.obj === "object" ? f.obj : null;
+    f.memLog = Array.isArray(f.memLog) ? f.memLog : [];
+    f.trainLeft = Number.isFinite(f.trainLeft) ? f.trainLeft : 0;
+    f.tab = ["today", "career", "club"].includes(f.tab) ? f.tab : "today";
     f.retired = !!f.retired;
     return f;
   }
@@ -491,7 +497,10 @@
     const base = 90000 * Math.pow(1.085, rep - 60);
     const skillF = 0.45 + clampN(skill, 40, 99) / 55;
     const fameF = 1 + clampN(fame, 0, 100) / 70;
-    return Math.max(45000, Math.round((base * skillF * fameF) / 10000) * 10000);
+    // [mod] superstar premium: the elite earn far more than the flat curve gave them
+    const star = 1 + (Math.max(0, skill - 85) / 10) * (rep >= 85 ? 1 : 0.35) + (fame > 70 ? (fame - 70) / 100 : 0) * (rep >= 85 ? 1 : 0);
+    const infl = typeof window.inflFx === "function" ? window.inflFx() : 1; // same 3%/yr as job salaries
+    return Math.max(45000, Math.round((base * skillF * fameF * star * infl) / 10000) * 10000);
   }
 
   function syncJob(f) {
@@ -1245,60 +1254,106 @@
   }
 
   // ------------------------------------------------------------------ training
-  function trainingStep(f) {
+  // ------------------------------------------------------------------ weekly training blocks
+  // A season is 3-4 blocks of weeks. Each block: pick a focus; intensity comes from
+  // the season plan (Light / Normal / Hard). Hard work grows attributes faster but
+  // piles up fatigue; high fatigue hurts form/fitness and raises injury risk.
+  const INTENSITY = {
+    light: { n: "Light", mult: 0.6, fat: 6, inj: 0.02, fit: 1, note: "Safe and steady. Slow progress." },
+    normal: { n: "Normal", mult: 1, fat: 14, inj: 0.05, fit: 0, note: "Balanced work." },
+    hard: { n: "Hard", mult: 1.5, fat: 26, inj: 0.11, fit: -2, note: "Fast progress, heavy fatigue, injury risk." },
+  };
+  const LINKED = {
+    shooting: "vision", passing: "vision", pace: "physical", physical: "pace", dribbling: "touch",
+    defending: "physical", reaction: "pace", touch: "dribbling", vision: "passing",
+  };
+  const BLOCKS = {
+    pre: { n: "Pre-season", weeks: "Weeks 1-6", story: ["Two-a-days in the heat. Everyone is chasing a shirt.", "The new season starts in the gym, not on the pitch.", "Friendlies, running drills and early mornings."] },
+    early: { n: "Early season", weeks: "Weeks 7-18", story: ["The league is on. Training squeezes in between matches.", "Midweek sessions after the first matches.", "The rhythm of the season sets in."] },
+    mid: { n: "Mid-season", weeks: "Weeks 19-30", story: ["Winter. Fixtures pile up and legs get heavy.", "Cold mornings, packed calendar.", "The cups take over the schedule."] },
+    run: { n: "Run-in", weeks: "Weeks 31-42", story: ["Everything is decided now. Every session counts.", "The final stretch of the season.", "Titles and relegations are settled in these weeks."] },
+  };
+  const fatigueLabel = (v) => (v >= 80 ? T("Exhausted") : v >= 60 ? T("Tired") : v >= 35 ? T("Fine") : T("Fresh"));
+  const roundP = (x) => Math.floor(x) + (rnd() < x - Math.floor(x) ? 1 : 0);
+
+  function weekBlockStep(f, key, optional) {
+    const blk = BLOCKS[key];
     return (next) => {
-      const age = state.age;
-      const youthBoost = f.youth ? 1.35 : 1;
-      const ageFx = age < 24 ? 1.2 : age > 30 ? 0.55 : 1;
-      const choices = TRAININGS.map((tr) => [
-        tr.n,
-        () => {
-          let rows;
-          if (tr.id === "recovery") {
-            rows = applyEffects(f, { fit: ri(5, 9), form: ri(2, 5), hap: 2, coach: f.pro ? -1 : 0 });
-          } else {
-            const gain = Math.max(1, Math.round(ri(2, 4) * youthBoost * ageFx));
-            const attrs = { [tr.id]: gain };
-            if (tr.id === "shooting") attrs.vision = 1;
-            if (tr.id === "passing") attrs.vision = 1;
-            if (tr.id === "pace") attrs.physical = 1;
-            if (tr.id === "physical") attrs.pace = 1;
-            if (tr.id === "dribbling") attrs.touch = 1;
-            if (tr.id === "defending") attrs.physical = 1;
-            if (tr.id === "reaction") attrs.pace = 1;
-            if (tr.id === "touch") attrs.dribbling = 1;
-            if (tr.id === "vision") attrs.passing = 1;
-            rows = applyEffects(f, { attrs, fit: tr.id === "physical" ? 1 : -ri(0, 2), form: 2 });
-          }
-          f.lastTraining = tr.id;
-          sayIt(`I spent the year on ${tr.n.toLowerCase()}.`);
-          card({
-            iconSrc: tr.ico,
-            title: tr.n,
-            lead:
-              tr.id === "recovery"
-                ? T("Recovery, sleep and avoiding injuries. Your body needed this.")
-                : T("A full year focused on one part of your game. The coaches can see the difference."),
-            rows: [[T("Focus"), tr.n], ...rows],
-            bars: ATTRS.map((a) => [a.n, Math.round(f.attrs[a.id])]),
-            ok: next,
-          });
-        },
-      ]);
-      card({
-        tag: CAREER,
-        iconSrc: E("1f4aa"),
-        title: T("Yearly training"),
-        lead: T("Pick the training programme that will shape your season. You have 10 ways to improve."),
-        rows: [
-          [T("Age"), String(age)],
-          [T("Potential"), f.potential >= 90 ? T("Extraordinary") : f.potential >= 80 ? T("High") : T("Solid")],
-          [T("Overall"), `${Math.round(f.skill)}%`],
-          [T("Fitness"), `${Math.round(f.fit)}%`],
-        ],
-        bars: ATTRS.map((a) => [a.n, Math.round(f.attrs[a.id])]),
-        choices,
-      });
+      const show = () => {
+        const age = state.age;
+        const inten = INTENSITY[f.plan] || INTENSITY.normal;
+        const youthBoost = f.youth ? 1.35 : 1;
+        const ageFx = age < 24 ? 1.2 : age > 30 ? 0.55 : 1;
+        const choices = TRAININGS.map((tr) => [
+          tr.n,
+          () => {
+            const rows = [];
+            if (tr.id === "recovery") {
+              f.fatigue = clampN(f.fatigue - 30, 0, 100);
+              applyEffects(f, { fit: ri(3, 6), form: ri(2, 4), hap: 1, coach: f.pro ? -1 : 0 }, rows);
+              sayIt(`I took ${blk.weeks.toLowerCase()} to recover.`);
+            } else {
+              const risk = inten.inj + Math.max(0, f.fatigue - 55) / 250 - (f.fit - 60) / 600;
+              const hurt = rnd() < Math.max(0.005, risk);
+              if (hurt) {
+                const weeks = ri(3, 14) + (f.fatigue > 75 ? 3 : 0);
+                applyEffects(f, { injury: weeks, fit: -4, form: -3 }, rows);
+                f.fatigue = clampN(f.fatigue + 8, 0, 100);
+                sayIt(`I got hurt during ${blk.n.toLowerCase()} training.`);
+              } else {
+                const room = clampN((f.potential - f.attrs[tr.id]) / 25, 0.15, 1.25);
+                const coach = 1 + (f.coachRel - 50) / 200;
+                const tired = f.fatigue >= 70 ? 0.6 : 1;
+                const base = ri(1, 3) * 0.35 * inten.mult * youthBoost * ageFx * room * coach * tired;
+                const gain = roundP(base);
+                const attrs = {};
+                if (gain) attrs[tr.id] = gain;
+                if (LINKED[tr.id] && rnd() < 0.15 * inten.mult) attrs[LINKED[tr.id]] = 1;
+                applyEffects(f, { attrs, fit: inten.fit, form: f.fatigue < 60 ? 2 : 0 }, rows);
+                if (!gain) rows.push([T("Progress"), T("Nothing this block")]);
+                f.fatigue = clampN(f.fatigue + inten.fat, 0, 100);
+                sayIt(`I trained ${tr.n.toLowerCase()} in ${blk.n.toLowerCase()}.`);
+              }
+              if (f.fatigue >= 80) applyEffects(f, { form: -4, fit: -3 }, rows);
+              else if (f.fatigue >= 65) applyEffects(f, { form: -2 }, rows);
+            }
+            f.lastTraining = tr.id;
+            card({
+              iconSrc: tr.ico,
+              title: `${blk.n}: ${tr.n}`,
+              lead: pick(blk.story),
+              rows: [[T("Weeks"), T(blk.weeks)], [T("Intensity"), T(inten.n)], [T("Fatigue"), `${Math.round(f.fatigue)}% (${fatigueLabel(f.fatigue)})`], ...rows],
+              bars: ATTRS.map((a) => [a.n, Math.round(f.attrs[a.id])]),
+              ok: next,
+            });
+          },
+        ]);
+        choices.push([
+          `${T("Intensity")}: ${T(inten.n)} - ${T("change")}`,
+          () => {
+            f.plan = f.plan === "light" ? "normal" : f.plan === "normal" ? "hard" : "light";
+            show();
+          },
+        ]);
+        if (optional) choices.push([T("Not now"), () => openFutbol()]);
+        card({
+          tag: CAREER,
+          iconSrc: E("1f4aa"),
+          title: `${T(blk.n)} · ${T(blk.weeks)}`,
+          lead: `${T(inten.note)} ${f.fatigue >= 70 ? T("Your body is screaming for rest.") : ""}`.trim(),
+          rows: [
+            [T("Age"), String(age)],
+            [T("Potential"), f.potential >= 90 ? T("Extraordinary") : f.potential >= 80 ? T("High") : T("Solid")],
+            [T("Overall"), `${Math.round(f.skill)}%`],
+            [T("Fitness"), `${Math.round(f.fit)}%`],
+            [T("Fatigue"), `${Math.round(f.fatigue)}% (${fatigueLabel(f.fatigue)})`],
+            [T("Intensity"), T(inten.n)],
+          ],
+          bars: ATTRS.map((a) => [a.n, Math.round(f.attrs[a.id])]),
+          choices,
+        });
+      };
+      show();
     };
   }
 
@@ -1615,10 +1670,31 @@
     return code ? `flags/${code}.png` : E("1f5fa-fe0f");
   }
 
+  // trophy pictures (trophies/*.png): the competition or award decides the art, the club logo is only the fallback
+  const TROPHY_ART = [
+    [/ballon d.?or|golden ball/i, "award-01-ballon-dor"], [/golden boot/i, "award-04-golden-boot"], [/golden glove/i, "award-05-golden-glove"],
+    [/yashin/i, "award-07-yashin-trophy"], [/kopa/i, "award-06-kopa-trophy"], [/fair play/i, "award-12-fair-play"],
+    [/young player/i, "award-10-uefa-young-player"], [/player of the season/i, "award-02-the-best"],
+    [/conference league/i, "uefa-03-conference-league"], [/europa league/i, "uefa-02-europa-league"], [/super cup/i, "uefa-04-super-cup"],
+    [/concacaf/i, "intl-06-club-world-cup"], [/libertadores/i, "intl-05-libertadores"], [/champions league/i, "uefa-01-champions-league"],
+    [/women.*world cup/i, "intl-12-womens-world-cup"], [/world cup/i, "intl-01-world-cup"], [/european championship|\beuro\b/i, "intl-02-euro"],
+    [/copa am|gold cup/i, "intl-03-copa-america"], [/africa/i, "intl-04-africa-cup"], [/olympic/i, "intl-08-olympic"], [/nations league/i, "intl-09-nations-league"],
+  ];
+  const trophyArt = (name) => {
+    const n = String(name || "");
+    const hit = TROPHY_ART.find(([re]) => re.test(n));
+    return hit ? `trophies/${hit[1]}.png` : null;
+  };
+  const contChampName = (f) => {
+    const l = f && f.club && findLeagueOfClub(f.club);
+    const c = l && l.conf;
+    return c === "UEFA" ? T("European Championship") : c === "CONMEBOL" ? T("Copa América") : c === "CONCACAF" ? T("Gold Cup") : T("Continental Championship");
+  };
+
   function addTrophy(f, name, kind, icon, sub) {
     if (!Array.isArray(f.trophies)) f.trophies = [];
     if (f.trophies.length >= 160) f.trophies.shift();
-    f.trophies.push({ n: name, k: kind, y: year(), c: sub || "", i: icon || ICON });
+    f.trophies.push({ n: name, k: kind, y: year(), c: sub || "", i: trophyArt(name) || icon || ICON });
     f.fame = clampN(f.fame + (kind === "individual" ? 3 : 2), 0, 100);
   }
 
@@ -1665,7 +1741,7 @@
       isWorldCupYear() && age >= 20
         ? { name: T("World Cup"), rounds: 4, prestige: 3 }
         : isContinentalYear() && age >= 20
-          ? { name: T("Continental Championship"), rounds: 3, prestige: 2 }
+          ? { name: contChampName(f), rounds: 3, prestige: 2 }
           : null;
     if (!tournament) return { caps, goals: nGoals, tournament: null };
 
@@ -2137,6 +2213,14 @@
       addTrophy(f, T("Young Player of the Season"), "individual", E("1f31f"), league.name);
       awards.push(T("Young Player of the Season"));
     }
+    if (state.age <= 21 && rating >= 8.0 && (leagueWon || contWon) && rnd() < 0.3) {
+      addTrophy(f, T("Kopa Trophy"), "individual", E("1f3c6"), T("World football"));
+      awards.push(T("Kopa Trophy"));
+    }
+    if (P.gk && rating >= 8.1 && cleanSheets >= 14 && rnd() < 0.3) {
+      addTrophy(f, T("Yashin Trophy"), "individual", E("1f9e4"), T("World football"));
+      awards.push(T("Yashin Trophy"));
+    }
     if (rating >= 7.8 && rnd() < 0.4) {
       addTrophy(f, T("Team of the Season"), "individual", E("1f4dc"), league.name);
       awards.push(T("Team of the Season"));
@@ -2441,6 +2525,8 @@
   // ------------------------------------------------------------------ random events
   function pickEvent(f) {
     const all = window.FL_FUTBOL_EVENTS || [];
+    const due = FOLLOWUPS.filter((x) => !f.recent.includes(x.id) && !f.memLog.some((m) => m.id === x.id) && x.when(f));
+    if (due.length && rnd() < 0.6) return pick(due);
     if (!all.length) return null;
     const pool = all.filter((ev) => {
       if (!ev || !ev.choices || ev.choices.length < 2) return false;
@@ -2461,10 +2547,27 @@
     return pool[pool.length - 1];
   }
 
+  // At most MAX_EVENTS "event" cards per season (decision moments + random events). Exceptions that never count and
+  // are never skipped: follow-ups of your past choices, the special events below, the derby, the national team,
+  // continental nights (Champions League and the like), cups, the World Cup and other national-team tournaments,
+  // transfers/contracts, results and objectives. Only the regular league/youth moments and random events count.
+  const MAX_EVENTS = 6;
+  const SPECIAL_EVENTS = new Set(["injury", "callup", "retirement", "firstteam", "clause", "scouts", "captain"]);
+  const isSpecialEvent = (ev) => !!ev && (ev.special === true || SPECIAL_EVENTS.has(ev.id) || String(ev.id || "").startsWith("fu_"));
+  const counted = (f, fn) => (next) => {
+    if ((f.evCount || 0) >= MAX_EVENTS) return next();
+    f.evCount = (f.evCount || 0) + 1;
+    return fn(next);
+  };
+
   function eventStep(f) {
     return (next) => {
       const ev = pickEvent(f);
       if (!ev) return next();
+      if (!isSpecialEvent(ev)) {
+        if ((f.evCount || 0) >= MAX_EVENTS) return next(); // the season already had its 6 events
+        f.evCount = (f.evCount || 0) + 1;
+      }
       f.recent.push(ev.id);
       if (f.recent.length > 14) f.recent.shift();
       const text = typeof ev.text === "function" ? ev.text(f) : ev.text;
@@ -2477,9 +2580,11 @@
           [T("Club"), f.club ? f.club.name : "—"],
           [T("Age"), String(state.age)],
         ],
-        choices: ev.choices.map((ch) => [
+        choices: ev.choices.map((ch, ci) => [
           ch.t,
           () => {
+            f.memLog.push({ id: ev.id, c: ci, y: year() });
+            if (f.memLog.length > 40) f.memLog.shift();
             let rows = [];
             let msg = ch.msg || "";
             if (typeof ch.run === "function") {
@@ -2520,6 +2625,256 @@
       });
     };
   }
+
+  // ------------------------------------------------------------------ season objectives
+  // The club sets 2-3 goals at the start of the year; at the season review they are checked and pay
+  // (or cost) money, hype and relationships. Targets scale with the club's weight and your position.
+  function makeObjectives(f) {
+    const list = [];
+    const pos = posOf(f);
+    if (f.pro) {
+      const l = f.club && findLeagueOfClub(f.club);
+      let target = 8;
+      if (l && Array.isArray(l.clubs) && f.club) {
+        const rank = 1 + l.clubs.filter((c) => (c.rep || 0) > (f.club.rep || 0)).length;
+        target = clampN(Math.round(rank * 0.85), 1, 18);
+      } else if (f.club) {
+        target = clampN(Math.round((99 - f.club.rep) / 3), 1, 16);
+      }
+      list.push({ kind: "pos", target, label: target === 1 ? "Win the league" : `Finish in the top ${target}` });
+    } else {
+      list.push({ kind: "score", target: 65, label: "Youth score of 65% or more" });
+    }
+    if (pos.gk) {
+      const t = Math.round(4 + f.skill / 12);
+      list.push({ kind: "clean", target: t, label: `Keep ${t} clean sheets` });
+    } else {
+      const t = Math.max(1, Math.round(pos.goal * (4 + f.skill / 9)));
+      list.push({ kind: "goals", target: t, label: `Score ${t} goal${t === 1 ? "" : "s"}` });
+    }
+    const third = pick(["fit", "rating", "health"]);
+    if (third === "fit") list.push({ kind: "fit", target: 65, label: "Finish the season fit (65%+)" });
+    else if (third === "rating") list.push({ kind: "rating", target: f.pro ? 6.8 : 6.5, label: `Average rating ${f.pro ? "6.8" : "6.5"} or better` });
+    else list.push({ kind: "health", target: 0, label: "Stay injury-free" });
+    return { year: year(), list };
+  }
+
+  function objectiveStep(f) {
+    return (next) => {
+      f.obj = makeObjectives(f);
+      card({
+        tag: CAREER,
+        iconSrc: E("1f3c6"),
+        title: T("Season objectives"),
+        lead: f.pro
+          ? T("The board has set the targets for this season. Hit them and the club notices; miss them and it remembers.")
+          : T("The academy director lists what he expects from you this year."),
+        rows: f.obj.list.map((o, i) => [`${T("Goal")} ${i + 1}`, T(o.label)]),
+        ok: next,
+      });
+    };
+  }
+
+  function testObjective(f, s, o) {
+    if (!s) return false;
+    switch (o.kind) {
+      case "pos": return s.position <= o.target;
+      case "goals": return s.goals >= o.target;
+      case "clean": return (s.cleanSheets || 0) >= o.target;
+      case "rating": return s.rating >= o.target;
+      case "score": return s.score >= o.target;
+      case "fit": return f.fit >= o.target;
+      case "health": return !f.injury;
+      default: return false;
+    }
+  }
+
+  function objectiveReview(f, s, next) {
+    const ob = f.obj;
+    if (!ob || ob.year !== year() || ob.reviewed) return next();
+    ob.reviewed = true;
+    let met = 0;
+    const rows = ob.list.map((o) => {
+      const ok = testObjective(f, s, o);
+      if (ok) met++;
+      return [T(o.label), ok ? T("Achieved") : T("Missed")];
+    });
+    const missed = ob.list.length - met;
+    const fx = { club: met * 3 - missed * 3, coach: met * 2 - missed * 2, hype: met * 2 - missed };
+    if (met) fx.money = Math.round((f.wage || 50000) * 0.05 * met);
+    if (met === ob.list.length && f.pro) fx.wagePct = 4;
+    const extra = applyEffects(f, fx);
+    sayIt(met === ob.list.length ? "I hit every objective the club set for me." : met ? "I hit some of the objectives the club set for me." : "I missed all my objectives this season.");
+    card({
+      iconSrc: E("1f3c6"),
+      title: T("Objectives review"),
+      lead:
+        met === ob.list.length
+          ? T("Every target hit. The board is happy and the numbers show it.")
+          : met
+            ? T("A mixed report. Some boxes ticked, some not.")
+            : T("The board expected more. They will not forget it."),
+      rows: [...rows, ...extra],
+      ok: next,
+    });
+  }
+
+  // ------------------------------------------------------------------ playable key match (derby day)
+  function keyMatchStep(f) {
+    return (next) => {
+      if (!f.pro || !f.club) return next();
+      const l = findLeagueOfClub(f.club);
+      const pool = ((l && l.clubs) || []).filter((c) => c && c.name && c.name !== f.club.name);
+      const opp = pool.length ? pick(pool) : { name: "Rival FC", rep: f.club.rep };
+      const pos = posOf(f);
+      const tm = f.club.rep * 0.6 + f.skill * 0.4;
+      const to = (opp.rep || f.club.rep) * 0.6 + 55 * 0.4;
+      const lm = Math.max(0.3, 1.25 * (1 + (tm - to) / 90));
+      const lo = Math.max(0.3, 1.05 * (1 - (tm - to) / 130));
+      const minutes = [11, 26, 41, 57, 72, 86];
+      const m = { my: 0, op: 0, goals: 0, assists: 0, i: 0, note: T("The stadium is full and loud. Everybody knows what this one means.") };
+      const poisson = (lam) => {
+        let L = Math.exp(-lam), k = 0, p = 1;
+        do { k++; p *= rnd(); } while (p > L && k < 10);
+        return k - 1;
+      };
+      const A = (id) => f.attrs[id] || 50;
+      const formFx = (f.form - 50) / 500;
+      const moment = () => {
+        const min = minutes[m.i];
+        const attack = pos.gk ? false : rnd() < 0.5 + pos.goal * 0.08 - pos.def * 0.06;
+        const tag = `${min}'`;
+        const rows = [[T("Score"), `${f.club.name} ${m.my} - ${m.op} ${opp.name}`], [T("Minute"), tag]];
+        const go = (txt, fn) => [txt, () => { fn(); m.i++; (m.i >= minutes.length ? finish : moment)(); }];
+        if (attack) {
+          card({
+            tag: T("Derby day"), iconSrc: ICON, title: `${tag} - ${T("Your chance")}`,
+            lead: `${m.note}<br><br>${T("The ball falls to you at the edge of the box. What do you do?")}`, rows,
+            choices: [
+              go(T("Shoot"), () => {
+                if (rnd() < 0.1 + A("shooting") / 260 + formFx) { m.my++; m.goals++; m.note = T("You hit it clean. GOAL! The stadium erupts."); }
+                else m.note = T("You get it away, but the keeper dives and stops it.");
+              }),
+              go(T("Play the through ball"), () => {
+                if (rnd() < 0.3 + A("passing") / 300 + formFx && rnd() < 0.55) { m.my++; m.assists++; m.note = T("A perfect pass. Your teammate scores. ASSIST!"); }
+                else m.note = T("The pass is just too long. It runs out for a goal kick.");
+              }),
+              go(T("Take him on"), () => {
+                if (rnd() < 0.35 + A("dribbling") / 250 + formFx) {
+                  if (rnd() < 0.3) { m.my++; m.goals++; m.note = T("You skin him and finish. GOAL!"); }
+                  else m.note = T("You beat your man, but the shot is blocked.");
+                } else { if (rnd() < 0.12) { m.op++; m.note = T("You lose it and they break away. They score."); } else m.note = T("You lose the ball but the team recovers."); }
+              }),
+            ],
+          });
+        } else {
+          card({
+            tag: T("Derby day"), iconSrc: ICON, title: `${tag} - ${T("Danger")}`,
+            lead: `${m.note}<br><br>${pos.gk ? T("A shot is coming at you from close range.") : T("They break forward and you are the last line.")}`, rows,
+            choices: pos.gk
+              ? [
+                  go(T("Dive left"), () => { if (rnd() < 0.5 + A("reaction") / 300) m.note = T("Great save! You tip it round the post."); else { m.op++; m.note = T("Wrong way. It's in."); } }),
+                  go(T("Dive right"), () => { if (rnd() < 0.5 + A("reaction") / 300) m.note = T("Great save! You tip it round the post."); else { m.op++; m.note = T("Wrong way. It's in."); } }),
+                  go(T("Stay big and wait"), () => { if (rnd() < 0.45 + A("physical") / 400) m.note = T("You make yourself big and the shot hits you."); else { m.op++; m.note = T("It goes through you. Goal."); } }),
+                ]
+              : [
+                  go(T("Slide in"), () => { if (rnd() < 0.45 + A("defending") / 260) m.note = T("Clean tackle. The crowd roars."); else if (rnd() < 0.45) { m.op++; m.note = T("You miss the ball. They score."); } else m.note = T("You miss it, but the keeper saves."); }),
+                  go(T("Read the pass"), () => { if (rnd() < 0.4 + A("vision") / 300 + A("reaction") / 600) m.note = T("You step in and cut it out."); else if (rnd() < 0.35) { m.op++; m.note = T("You guessed wrong. They score."); } else m.note = T("Wrong read, but the shot goes wide."); }),
+                  go(T("Drop and hold the line"), () => { if (rnd() < 0.2) { m.op++; m.note = T("They find a gap anyway. Goal."); } else m.note = T("The line holds. They have nothing."); }),
+                ],
+          });
+        }
+      };
+      const finish = () => {
+        m.my += poisson(lm * 0.4);
+        m.op += poisson(lo * 0.4);
+        const res = m.my > m.op ? "win" : m.my === m.op ? "draw" : "loss";
+        f.career.goals += m.goals;
+        f.career.assists += m.assists;
+        const fx = res === "win" ? { fame: 3, form: 6, club: 5, hype: 4, money: Math.round((f.wage || 50000) * 0.02) } : res === "draw" ? { form: 1, club: 1 } : { form: -5, club: -3, coach: -2, hype: -2 };
+        const eff = applyEffects(f, fx);
+        const text = `${f.club.name} ${m.my} - ${m.op} ${opp.name}`;
+        sayIt(res === "win" ? `I helped beat ${opp.name} ${m.my}-${m.op} in a derby.` : res === "draw" ? `We drew ${m.my}-${m.op} with ${opp.name}.` : `We lost ${m.my}-${m.op} to ${opp.name}.`);
+        card({
+          tag: T("Derby day"), iconSrc: ICON, title: res === "win" ? T("Derby won") : res === "draw" ? T("Derby drawn") : T("Derby lost"),
+          lead: res === "win" ? T("The whole city is singing. This is why you play.") : res === "draw" ? T("A point each. Nobody is happy and nobody is crushed.") : T("A quiet bus ride home and a long night."),
+          rows: [[T("Final"), text], [T("Your goals"), String(m.goals)], [T("Your assists"), String(m.assists)], ...eff],
+          ok: next,
+        });
+      };
+      card({
+        tag: T("Derby day"), iconSrc: (f.club && f.club.logo) || ICON, title: `${f.club.name} vs ${opp.name}`,
+        lead: T("The biggest match of your season. Six moments will decide it, and the decisions are yours."),
+        rows: [[T("Opponent"), opp.name], [T("Your form"), `${Math.round(f.form)}%`], [T("Fitness"), `${Math.round(f.fit)}%`]],
+        choices: [[T("Kick off"), moment]],
+      });
+    };
+  }
+
+  // ------------------------------------------------------------------ events with memory
+  // Past choices (f.memLog) come back later: follow-up events fire when an earlier event is still hanging around.
+  const FOLLOWUPS = [
+    {
+      id: "fu_medical", title: "The medical file leaks",
+      when: (f) => f.memLog.some((m) => m.id === "injury" && m.c === 2 && year() - m.y <= 4),
+      text: () => "A journalist has your medical file from the time you hid your injury. The club wants to know what else you kept quiet.",
+      choices: [
+        { t: "Admit it publicly", e: { fame: -1, club: 3, coach: 3, hap: -3 }, msg: "You face the cameras and say it straight. The storm passes faster than you thought." },
+        { t: "Deny everything", e: { club: -4, hap: -2 }, msg: "You deny it. Then a second source appears.", risk: 0.5, riskE: { fame: -3, club: -6, coach: -5, hype: -4 }, riskMsg: "Nobody believes you and the club fines you for lying." },
+        { t: "Blame the club doctor", e: { club: -6, coach: -2 }, msg: "It works for a week. Then the doctor talks to the press." },
+      ],
+    },
+    {
+      id: "fu_photos", title: "The photos resurface",
+      when: (f) => f.memLog.some((m) => m.id === "party" && year() - m.y <= 3),
+      text: () => "Photos from that party are back on social media, now with a headline attached. Your sponsors are calling.",
+      choices: [
+        { t: "Post an apology", e: { fame: -1, club: 2, hap: -2 }, msg: "The apology lands well enough. The story fades in two days." },
+        { t: "Ignore it", e: { hype: -3, club: -2 }, msg: "Silence works until it doesn't.", risk: 0.4, riskE: { money: -45000, hype: -4 }, riskMsg: "A sponsor drops you over it." },
+        { t: "Call a lawyer", e: { money: -12000, hap: -1 }, msg: "The photos come down. The story does not." },
+      ],
+    },
+    {
+      id: "fu_rival", title: "The rivalry boils over",
+      when: (f) => f.memLog.some((m) => m.id === "rival" && year() - m.y <= 4),
+      text: () => "Your old rival is back in the headlines and the press is selling it as a war between the two of you.",
+      choices: [
+        { t: "Fuel the fire", e: { fame: 3, hype: 5, club: -1, coach: -2 }, msg: "Everyone talks about you. The manager is not delighted." },
+        { t: "Shake hands in public", e: { fame: 1, club: 3, hap: 3 }, msg: "A calm photo, a calm week. Fans call it class." },
+        { t: "Settle it on the pitch", e: { form: 5, fit: -3 }, msg: "You train like it is a final. It shows.", risk: 0.25, riskE: { injury: 4 }, riskMsg: "You push too hard and pull something." },
+      ],
+    },
+    {
+      id: "fu_manager", title: "The manager remembers",
+      when: (f) => f.memLog.some((m) => (m.id === "disrespect" || m.id === "coach" || m.id === "criticism") && year() - m.y <= 3),
+      text: () => "The manager has not forgotten what happened between you two. The team sheet on Saturday says it all.",
+      choices: [
+        { t: "Ask for a private talk", e: { coach: 5, hap: 1 }, msg: "He listens, grudgingly. You are back in the squad by Saturday." },
+        { t: "Prove it in training", e: { form: 3, fit: -2, coach: 2 }, msg: "You win every drill. He looks at you differently." },
+        { t: "Ask your agent to find another club", e: { coach: -4, club: -3 }, msg: "Word gets out. The atmosphere gets heavier." },
+      ],
+    },
+    {
+      id: "fu_agent", title: "Your agent calls in a favor",
+      when: (f) => f.memLog.some((m) => m.id === "agent" && year() - m.y <= 4),
+      text: () => "The agent who made things happen for you now wants something back: a favor, a signature and no questions.",
+      choices: [
+        { t: "Do the favor", e: { money: 25000, club: -2, hype: 2 }, msg: "He keeps his side. You keep your mouth shut.", risk: 0.3, riskE: { fame: -3, club: -6, hype: -4 }, riskMsg: "It turns out to be shady and it comes back on you." },
+        { t: "Refuse politely", e: { hap: 1 }, msg: "He takes it badly but you sleep fine." },
+        { t: "Fire him", e: { money: -30000, hap: 2 }, msg: "A clean break. Finding a new one costs you." },
+      ],
+    },
+    {
+      id: "fu_sponsor", title: "The sponsor wants a favor",
+      when: (f) => f.memLog.some((m) => m.id === "sponsor" && year() - m.y <= 4),
+      text: () => "The brand that signed you wants you in a campaign that is a little more than you agreed to.",
+      choices: [
+        { t: "Do the campaign", e: { money: 60000, fame: 2, fit: -2 }, msg: "A long shoot, a big check and your face on a billboard." },
+        { t: "Stick to the contract", e: { hap: 1 }, msg: "They grumble and respect it." },
+        { t: "Renegotiate", e: { money: 25000 }, msg: "You squeeze a bit more out of them.", risk: 0.3, riskE: { money: -20000, hype: -2 }, riskMsg: "They walk away from the table. Ouch." },
+      ],
+    },
+  ];
 
   // ------------------------------------------------------------------ season flow
   function resultsStep(f) {
@@ -2563,7 +2918,7 @@
             [T("Fitness"), f.fit],
             [T("Fame"), f.fame],
           ],
-          ok: next,
+          ok: () => objectiveReview(f, youth, next),
         });
         return;
       }
@@ -2601,7 +2956,7 @@
           [T("Fitness"), f.fit],
           ...ATTRS.map((a) => [a.n, Math.round(f.attrs[a.id])]),
         ],
-        ok: next,
+        ok: () => objectiveReview(f, summary, next),
       });
     };
   }
@@ -2609,26 +2964,29 @@
   function buildSeasonSteps(f) {
     const steps = [];
     steps.push((next) => statusCard(f, next));
+    steps.push(objectiveStep(f));
     const age = state.age;
     const scouted = f.scouted || f.academy;
     if (!f.pro && !scouted && age >= 15 && (f.skill >= 85 || f.gifted || (f.waitAcademy || 0) > 0 || age >= 18)) {
       steps.push(scoutStep(f));
     }
-    steps.push(trainingStep(f));
+    f.fatigue = Math.max(10, (f.fatigue || 0) - 45); // off-season rest
+    f.trainLeft = f.pro ? 4 : 3; // training blocks you can use this season, whenever you want (see trainNow)
     if (!f.pro) {
-      steps.push(momentStep("youth", f));
+      steps.push(counted(f, momentStep("youth", f)));
       if (age >= 17) steps.push(promotionStep(f));
     } else {
-      steps.push(momentStep("league", f));
-      steps.push(momentStep("cup", f));
+      steps.push(counted(f, momentStep("league", f)));
+      steps.push(momentStep("cup", f)); // competitions never count toward the event cap
+      steps.push(keyMatchStep(f));
       const qualified = f.qualified || (f.lastSeason && f.lastSeason.qualified) || (f.club && f.club.rep >= 87);
       if (qualified) steps.push(momentStep("continental", f));
       if (f.nat.called && (isWorldCupYear() || isContinentalYear())) steps.push(momentStep("national", f));
     }
     steps.push(resultsStep(f));
     if (f.pro) steps.push(transferStep(f));
-    steps.push(eventStep(f));
-    if (rnd() < 0.45) steps.push(eventStep(f));
+    const slots = 2 + (rnd() < 0.6 ? 1 : 0) + (rnd() < 0.35 ? 1 : 0) + (rnd() < 0.15 ? 1 : 0);
+    for (let i = 0; i < slots; i++) steps.push(eventStep(f));
     return steps;
   }
 
@@ -2662,6 +3020,7 @@
     next();
   }
 
+  let flowActive = false;
   function beginSeason(force) {
     const f = F();
     if (!f.active || state.dead) return;
@@ -2670,6 +3029,7 @@
       noticeIt(T("Football Career"), T("You cannot play football from prison."), null, true);
       return;
     }
+    if (f.pending && !flowActive) f.pending = false; // stale flag (the page was reloaded mid-season)
     if (f.pending) {
       noticeIt(T("Season in progress"), T("Answer the current football decision first."), null, true);
       return;
@@ -2680,12 +3040,25 @@
     f.pendingAt = Date.now();
     f.flowDone = false;
     f.seasonAge = state.age;
+    // [mod] inflation: the held contract keeps pace (3%/yr, same as every other job)
+    if (typeof window.inflFx === "function" && f.wage) {
+      const gap = f.lastInflYear != null ? year() - f.lastInflYear : 0;
+      if (gap > 0) {
+        const k = Math.pow(1.03, gap);
+        f.wage = Math.round((f.wage * k) / 1000) * 1000;
+        if (f.contract && f.contract.wage) f.contract.wage = f.wage;
+      }
+    }
+    f.lastInflYear = year();
+    f.evCount = 0;
     f.mods = { atk: 0, def: 0, luck: 0 };
     f.momentsUsed = [];
     f.highlights = [];
     const steps = buildSeasonSteps(f);
     syncJob(f);
+    flowActive = true;
     runSteps(f, steps, () => {
+      flowActive = false;
       f.pending = false;
       f.flowDone = true;
       f.pendingAt = 0;
@@ -2700,6 +3073,7 @@
       f.pending = false;
       return;
     }
+    if (f.pending && !flowActive) f.pending = false;
     if (f.pending) return;
     if (f.seasonAge === state.age) return;
     beginSeason(false);
@@ -2738,6 +3112,70 @@
   function clubBanner(f) {
     if (!f.club) return T("No club");
     return `${f.club.name} · ${f.club.lName || ""}`;
+  }
+
+  // ------------------------------------------------------------------ train when YOU decide
+  function trainNow(f) {
+    const order = f.pro ? ["pre", "early", "mid", "run"] : ["pre", "mid", "run"];
+    const left = f.trainLeft || 0;
+    if (state.prison) return noticeIt(T("Training"), T("You cannot train from prison."), null, true);
+    if (left <= 0)
+      return noticeIt(T("Training"), T("You have used all the training blocks of this season. New ones open when the next season starts."), () => openFutbol(), true);
+    if (f.injury)
+      return noticeIt(T("Training"), T("You are injured. Let it heal or pay for rehab before you train."), () => openFutbol(), true);
+    const key = order[Math.min(order.length - 1, Math.max(0, order.length - left))];
+    weekBlockStep(f, key, true)(() => {
+      f.trainLeft = Math.max(0, (f.trainLeft || 0) - 1);
+      openFutbol();
+    });
+  }
+
+  // ------------------------------------------------------------------ hub tabs
+  if (!document.getElementById("flFbCss")) {
+    const st = document.createElement("style");
+    st.id = "flFbCss";
+    st.textContent = ".fb-tabs{display:flex;gap:6px;padding:8px 12px 4px}.fb-tabs button{flex:1;min-height:42px;border-radius:999px;border:2px solid #1a6fd1;background:transparent;color:#1a6fd1;font:inherit;font-weight:800;cursor:pointer;touch-action:manipulation}.fb-tabs button.on{background:#1a6fd1;color:#fff}";
+    document.head.appendChild(st);
+  }
+  function applyTabs(f) {
+    const tab = f.tab || "today";
+    const groups = [];
+    let g = -1;
+    [...sList.children].forEach((k) => {
+      if (k.classList.contains("sec")) g++;
+      (groups[Math.max(g, 0)] ||= []).push(k);
+    });
+    const keep = { today: [0, 2], career: [1], club: [3] }[tab] || [0, 2];
+    groups.forEach((arr, i) => {
+      if (!keep.includes(i)) arr.forEach((n) => (n.style.display = "none"));
+    });
+    const play = document.getElementById("fbPlay");
+    if (play && tab === "today") {
+      const ob = f.obj && f.obj.year === year() ? f.obj : null;
+      play.insertAdjacentHTML("afterend", row("fbObj", E("1f3c6"), T("Season objectives"), ob ? ob.list.map((o) => T(o.label)).join(" · ") : T("Set when the season starts")));
+      tap("fbObj", () => {
+        if (!ob) return noticeIt(T("Season objectives"), T("The club sets your goals when the season starts."), null, true);
+        card({ tag: CAREER, iconSrc: E("1f3c6"), title: T("Season objectives"), lead: T("What the club expects from you this year."), rows: ob.list.map((o, i) => [`${T("Goal")} ${i + 1}`, `${T(o.label)}${ob.reviewed ? "" : ""}`]), ok: () => openFutbol() });
+      });
+    }
+    if (play && tab === "today") {
+      const total = f.pro ? 4 : 3;
+      const left = f.trainLeft || 0;
+      play.insertAdjacentHTML(
+        "afterend",
+        row("fbTrainNow", E("1f4aa"), T("Training"), f.injury ? T("Injured: you cannot train right now") : `${left}/${total} ${T("blocks left this season")} · ${T("Fatigue")} ${Math.round(f.fatigue || 0)}%`, !left || !!f.injury),
+      );
+      tap("fbTrainNow", () => trainNow(f));
+    }
+    const labels = [["today", T("Today")], ["career", T("Career")], ["club", T("Club")]];
+    sList.insertAdjacentHTML("afterbegin", `<div class="fb-tabs">${labels.map(([k, n]) => `<button data-tab="${k}" class="${k === tab ? "on" : ""}">${esc(n)}</button>`).join("")}</div>`);
+    sList.querySelectorAll(".fb-tabs button").forEach((b) => {
+      b.onclick = () => {
+        f.tab = b.dataset.tab;
+        playSnd("choice");
+        openFutbol();
+      };
+    });
   }
 
   function openFutbol() {
@@ -2796,6 +3234,7 @@
       row("fbContract", E("1f4dd"), T("Contract and wages"), `${money(f.wage)}/${T("yr")} · ${f.contract && f.contract.years ? `${f.contract.years} ${T("years")}` : T("no contract")}`) +
       row("fbRetire", E("1f3c1"), T("Retire"), T("Hang up the boots and look back"));
 
+    applyTabs(f);
     tap("fbStatus", () => {
       statusCard(f, () => openFutbol(), [["Hype", `${Math.round(f.hype)}%`], ["Coach", `${Math.round(f.coachRel)}%`]]);
     });
@@ -3044,7 +3483,7 @@ tap("fbCountryLeague", () => {
         .slice()
         .sort((a, b) => b.y - a.y)
         .forEach((t) => {
-          html += row("", t.i || ICON, t.n, `${t.y}${t.c ? ` · ${t.c}` : ""}`, true, "");
+          html += row("", trophyArt(t.n) || t.i || ICON, t.n, `${t.y}${t.c ? ` · ${t.c}` : ""}`, true, "");
         });
     });
     sList.innerHTML = html;
@@ -3374,5 +3813,31 @@ tap("fbCountryLeague", () => {
     career: CAREER,
   };
 
-//__PART4__
+  // ------------------------------------------------------------------ age-up hook (was missing: //__PART4__)
+  const ageBtn = document.getElementById("ageBtn");
+  if (ageBtn) {
+    // one season at a time: while the football decisions are on screen, the year cannot advance
+    ageBtn.addEventListener(
+      "click",
+      (ev) => {
+        const f = state && state.futbol;
+        if (f && f.active && !f.retired && !state.dead && flowActive) {
+          ev.stopImmediatePropagation();
+          ev.preventDefault();
+          noticeIt(T("Season in progress"), T("Answer the current football decision first."), null, true);
+        }
+      },
+      true,
+    );
+    ageBtn.addEventListener("click", () =>
+      setTimeout(() => {
+        try {
+          yearTick();
+        } catch (e) {
+          console.warn("[futbol] yearTick", e);
+        }
+      }, 0),
+    );
+  }
+  window.FL_FUTBOL.tick = yearTick;
 })();

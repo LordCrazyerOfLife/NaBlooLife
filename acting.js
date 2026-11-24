@@ -631,7 +631,7 @@
       studio: T,
       quality: C,
       budget: L,
-      pay: v(localPrice(Math.round(Y))),
+      pay: v(localPrice(Math.round(Y * (typeof window.inflFx === "function" ? window.inflFx() : 1)))),
       eps: B,
       director: `${P.first} ${P.last}`,
       dir: P,

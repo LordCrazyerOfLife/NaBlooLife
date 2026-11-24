@@ -1,4 +1,4 @@
-/* [mod] Special Life: Illegal Street Racer, Judge y Artist para Free Life.
+/* [mod] Special Life: Illegal Street Racer, Judge y Artist para YourLife.
  *
  * Se carga desde modloader.js y se engancha a Occupation -> Special Careers.
  * No modifica game.html: usa state (JSON por vida), jCard/notice y los coches
@@ -27,6 +27,7 @@
   const pick = (a) => a[Math.floor(rnd() * a.length)];
   const esc = (s) =>
     String(s ?? "").replace(/[&<>\"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '\"': "&quot;", "'": "&#39;" })[c]);
+  const ip = (n) => Math.round(n * (typeof window.inflFx === "function" ? window.inflFx() : 1));
   const money = (n) =>
     typeof usd === "function" ? usd(Math.round(n)) : "$" + Math.round(n).toLocaleString("en-US");
   const back = (fn) => (typeof fn === "function" ? fn : () => window.openSpecialCareers());
@@ -190,7 +191,7 @@
     r.active = true;
     r.lastAge = state.age;
     if (!Number.isInteger(r.car) || !state.cars[r.car]) r.car = 0;
-    setJob({ t: RANKS[r.rank].n, c: "Motorsport", emp: "Underground circuit", pay: RANKS[r.rank].pay, icon: ICON.race, racing: true, perf: clamp(40 + r.rep / 4, 0, 100) });
+    setJob({ t: RANKS[r.rank].n, c: "Motorsport", emp: "Underground circuit", pay: ip(RANKS[r.rank].pay), icon: ICON.race, racing: true, perf: clamp(40 + r.rep / 4, 0, 100) });
     if (typeof say === "function") say("I joined the illegal street racing circuit.");
     openRacing();
   }
@@ -258,7 +259,7 @@
       r.rank = next;
       if (state.job && state.job.racing) {
         state.job.t = RANKS[next].n;
-        state.job.pay = RANKS[next].pay;
+        state.job.pay = ip(RANKS[next].pay);
       }
       if (show && typeof notice === "function")
         notice("Promoted", `You are now a ${RANKS[next].n}.`, null, true);
@@ -531,7 +532,7 @@
     j.active = true;
     j.lastAge = state.age;
     newCase();
-    setJob({ t: JUDGE_RANKS[j.rank].n, c: "Legal", emp: "The Court", pay: JUDGE_RANKS[j.rank].pay, icon: ICON.judge, judge: true, perf: j.approval });
+    setJob({ t: JUDGE_RANKS[j.rank].n, c: "Legal", emp: "The Court", pay: ip(JUDGE_RANKS[j.rank].pay), icon: ICON.judge, judge: true, perf: j.approval });
     if (typeof say === "function") say("I became a judge.");
     openJudge();
   }
@@ -714,7 +715,7 @@
       j.rank = rank;
       if (state.job && state.job.judge) {
         state.job.t = JUDGE_RANKS[rank].n;
-        state.job.pay = JUDGE_RANKS[rank].pay;
+        state.job.pay = ip(JUDGE_RANKS[rank].pay);
       }
       if (typeof notice === "function")
         notice("Promoted", `You are now a ${JUDGE_RANKS[rank].n}.`, null, true);
@@ -1025,9 +1026,9 @@
       if (r.lastAge !== state.age) {
         r.lastAge = state.age;
         if (state.job && state.job.racing) state.job.yrs = (state.job.yrs || 0) + 1;
-        r.earned += RANKS[r.rank].pay;
-        if (RANKS[r.rank].pay) {
-          state.money += RANKS[r.rank].pay;
+        r.earned += ip(RANKS[r.rank].pay);
+        if (ip(RANKS[r.rank].pay)) {
+          state.money += ip(RANKS[r.rank].pay);
           if (typeof renderStats === "function") renderStats();
         }
         updateRacingRank(true);
@@ -1038,8 +1039,8 @@
       if (j.lastAge !== state.age) {
         j.lastAge = state.age;
         if (state.job && state.job.judge) state.job.yrs = (state.job.yrs || 0) + 1;
-        j.earned += JUDGE_RANKS[j.rank].pay;
-        state.money += JUDGE_RANKS[j.rank].pay;
+        j.earned += ip(JUDGE_RANKS[j.rank].pay);
+        state.money += ip(JUDGE_RANKS[j.rank].pay);
         if (typeof renderStats === "function") renderStats();
         if (j.corruption > 0 && rnd() < clamp(j.corruption / 320, 0, 0.35)) {
           j.active = false;

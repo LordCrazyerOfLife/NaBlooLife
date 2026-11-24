@@ -1,4 +1,4 @@
-/* Free Life local mod: language support (English default, Español, Português BR).
+/* YourLife local mod: language support (English default, Español, Português BR).
  *
  * How it works: the game builds its UI in English. This file watches the DOM and swaps
  * each visible text node for its translation from i18n/<lang>.js. The game's code still

@@ -335,6 +335,126 @@
         img: "aircraft/airliner.png",
         desc: "A converted airliner for entourages, staff and very loud entrances.",
       },
+      {
+        id: "plane-01-airliner-blue",
+        name: "Meridian A320 Shuttle",
+        price: 38000000,
+        upkeep: 95000,
+        speed: "470 kt",
+        cap: 40,
+        img: "aircraft/plane-01-airliner-blue.png",
+        desc: "A narrow-body airliner refit for executive charters.",
+      },
+      {
+        id: "plane-02-airliner-red-stripe",
+        name: "Sunrise A320 Charter",
+        price: 36000000,
+        upkeep: 92000,
+        speed: "470 kt",
+        cap: 40,
+        img: "aircraft/plane-02-airliner-red-stripe.png",
+        desc: "A short-haul airliner with a red-and-blue stripe livery.",
+      },
+      {
+        id: "plane-03-bizjet-gold",
+        name: "Sovereign G650 Jet",
+        price: 68000000,
+        upkeep: 160000,
+        speed: "516 kt",
+        cap: 16,
+        img: "aircraft/plane-03-bizjet-gold.png",
+        desc: "An ultra long-range business jet with gold accents.",
+      },
+      {
+        id: "plane-04-turboprop-navy",
+        name: "Atlas ATR Turboprop",
+        price: 22000000,
+        upkeep: 64000,
+        speed: "270 kt",
+        cap: 50,
+        img: "aircraft/plane-04-turboprop-navy.png",
+        desc: "A regional twin turboprop for island hopping.",
+      },
+      {
+        id: "plane-05-superjumbo-white",
+        name: "Imperial Superjumbo",
+        price: 350000000,
+        upkeep: 780000,
+        speed: "560 kt",
+        cap: 120,
+        img: "aircraft/plane-05-superjumbo-white.png",
+        desc: "A double-decker superjumbo with a private suite deck.",
+      },
+      {
+        id: "plane-06-bizjet-black-red",
+        name: "Raven Phantom Jet",
+        price: 52000000,
+        upkeep: 130000,
+        speed: "500 kt",
+        cap: 14,
+        img: "aircraft/plane-06-bizjet-black-red.png",
+        desc: "A black-and-red executive jet that says money without words.",
+      },
+      {
+        id: "plane-07-regional-blue",
+        name: "Azure Regional Jet",
+        price: 30000000,
+        upkeep: 80000,
+        speed: "450 kt",
+        cap: 36,
+        img: "aircraft/plane-07-regional-blue.png",
+        desc: "A regional jet with a custom blue livery.",
+      },
+      {
+        id: "plane-08-cargo-purple",
+        name: "Parcel Express Freighter",
+        price: 42000000,
+        upkeep: 105000,
+        speed: "460 kt",
+        cap: 6,
+        img: "aircraft/plane-08-cargo-purple.png",
+        desc: "A cargo freighter for moving a lot of boxes very fast.",
+      },
+      {
+        id: "plane-09-supersonic-white",
+        name: "Concorde-Class Supersonic",
+        price: 250000000,
+        upkeep: 600000,
+        speed: "1,150 kt",
+        cap: 40,
+        img: "aircraft/plane-09-supersonic-white.png",
+        desc: "A supersonic jet that crosses the Atlantic before lunch.",
+      },
+      {
+        id: "plane-10-bizjet-navy",
+        name: "Meridian Navy Jet",
+        price: 48000000,
+        upkeep: 120000,
+        speed: "490 kt",
+        cap: 14,
+        img: "aircraft/plane-10-bizjet-navy.png",
+        desc: "A midsize executive jet with navy and gold trim.",
+      },
+      {
+        id: "plane-11-jumbo-blue",
+        name: "Skyline Jumbo",
+        price: 420000000,
+        upkeep: 860000,
+        speed: "540 kt",
+        cap: 140,
+        img: "aircraft/plane-11-jumbo-blue.png",
+        desc: "A full-size jumbo jet with lounges and a private bedroom.",
+      },
+      {
+        id: "plane-12-bizjet-black",
+        name: "Onyx Light Jet",
+        price: 18000000,
+        upkeep: 52000,
+        speed: "440 kt",
+        cap: 8,
+        img: "aircraft/plane-12-bizjet-black.png",
+        desc: "A sleek black light jet for quick trips.",
+      },
     ],
     helicopters: [
       {
@@ -459,6 +579,8 @@
       },
     ],
   };
+  // [mod] vehicle prices x2.25 (same multiplier as cars in the car dealers)
+  Object.values(CATALOG).forEach((list) => list.forEach((v) => { v.price = Math.round(v.price * (window.VEHICLE_PRICE_MULT || 2.25)); }));
 
   const money = (n) =>
     typeof usd === "function"
@@ -523,6 +645,8 @@
           () => {
             if (state.age < 18)
               return notice("Too young", "You must be at least 18 to buy a vehicle.", null, true);
+            const needLic = { boats: "boat", sportbikes: "motorcycle", planes: "pilot", helicopters: "heli" }[kind];
+            if (needLic && window.FL_LICENSES && !FL_LICENSES.has(needLic)) return FL_LICENSES.need(needLic);
             if (state.money < def.price)
               return notice(
                 "Not enough",

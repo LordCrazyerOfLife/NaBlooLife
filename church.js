@@ -440,7 +440,7 @@
                   : "cardinal" === e
                     ? "College of Cardinals"
                     : "Holy See",
-      n = "priest" === e && a.pastor ? localPrice(34e3) : i ? localPrice(i) : 0;
+      n = Math.round(("priest" === e && a.pastor ? localPrice(34e3) : i ? localPrice(i) : 0) * (typeof window.inflFx === "function" ? window.inflFx() : 1));
     (state.job = {
       t: r,
       c: "Catholic Church",
@@ -1783,7 +1783,7 @@
           ? `Cardinal ${SURNAME}`
           : `${Y[e.stage][0]} Emeritus of ${"archbishop" === e.stage ? e.arch : e.diocese}`;
       (state.job.t = t),
-        (state.job.pay = localPrice(0.6 * Y[e.stage][2])),
+        (state.job.pay = Math.round(localPrice(0.6 * Y[e.stage][2]) * (typeof window.inflFx === "function" ? window.inflFx() : 1))),
         e.history.push(`Retired from active office (${a()})`),
         say("I retired from active office."),
         l("Retired", `${P()} accepted your resignation. You are now ${t}.`);

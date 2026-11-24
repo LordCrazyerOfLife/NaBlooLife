@@ -1,4 +1,4 @@
-/* NaBlooLife Mod Loader — adaptado para los mods de Free Life.
+/* NaBlooLife Mod Loader — adaptado para los mods de YourLife.
  *
  * Instalación: copiar este archivo a la raíz del juego (junto a game.html). NaBlooLife
  * lo inyecta solo desde game.html cuando el Mod Loader está activo; en builds viejos
@@ -28,61 +28,6 @@
       desc: "Play chess from childhood to the World Championship: FIDE rating, titles from CM to GM, norms, tournaments, coaches, lessons, puzzles and the Pawnder site. Find it in Occupation, Special Careers.",
     },
     {
-      id: "military-expanded",
-      name: "Military Expanded",
-      icon: "mil/x-combat-helmet.png",
-      src: "mil/x-combat-helmet.png",
-      desc: "MOS careers (sniper, medic, pilot and more), Special Forces selection, wars, real medals and rank insignia, battle scars, war reunions, and your medals in Assets.",
-      flags: ["militaryExpanded", "battleScars", "warReunion", "showMedals"],
-    },
-    {
-      id: "extended-hair",
-      name: "Extended Hair",
-      icon: "emoji/1f487.png",
-      src: "extended-hair.js?v=1",
-      desc: "Any hairstyle and color, rainbow hair and 100+ hair effects, plus 61 new hairstyles (afros, twists, locs, braids and more) in Barber Expanded.",
-      flags: ["modHair", "hairPack"],
-    },
-    {
-      id: "tattoos",
-      name: "Tattoos",
-      icon: "tattoo/teardrop.png",
-      src: "tattoos.js?v=1",
-      desc: "Face tattoo packs: forehead lettering, cheek pieces and teardrops. Pick them in New Life, Appearance or Salon & Spa.",
-      flags: ["gangTats", "pardinosTats", "bloodelTats"],
-    },
-    {
-      id: "infamous-killers",
-      name: "Infamous Killers",
-      icon: "emoji/1f4f0.png",
-      src: "infamous-killers.js?v=1",
-      desc: "Going to prison for murder makes you famous. More kills means more fame: a huge count stays at 100% for years, then slowly fades but never fully goes away.",
-      flags: ["infamousKillers"],
-    },
-    {
-      id: "family-pack",
-      name: "Family Pack",
-      icon: "emoji/1f333.png",
-      src: "family-pack.js?v=1",
-      desc: "Extended Family (grandparents, aunts, uncles, cousins and 150 family events), the Family Tree in Assets going back 5 generations with a famous ancestor, and your late ancestors in Relationships.",
-      flags: ["extFamily", "familyTree", "lateAncestors"],
-    },
-    {
-      id: "infinite-lovers",
-      name: "Infinite Lovers",
-      icon: "love/date.png",
-      src: "infinite-lovers.js?v=1",
-      desc: "Date as many people as you want at once, with no limit. Your partner never finds out!",
-      flags: ["infiniteLovers"],
-    },
-    {
-      id: "test-mod",
-      name: "Test Mod",
-      icon: "emoji/1f9ea.png",
-      src: "test-mod.js?v=1",
-      desc: "Diagnostic mod: confirms the mod-loading mechanism works and lists which base-game globals it can see. Makes no permanent changes.",
-    },
-    {
       id: "gang-bang",
       name: "Gang Bang",
       icon: "special/gangbang.png",
@@ -100,7 +45,7 @@
       id: "special-life",
       name: "Special Life: Racer, Judge & Artist",
       icon: "emoji/1f3ce-fe0f.png",
-      src: "special-life.js?v=2",
+      src: "special-life.js?v=3",
       desc: "Three special careers: illegal street racer with nationwide police heat and an underground exotic-car auction, judge with evidence, sentences, bribes and revenge, and artist with a real drawing canvas whose pieces persist in localStorage.",
     },
     {
@@ -142,9 +87,37 @@
       id: "football-career",
       name: "Football Career",
       icon: "emoji/26bd.png",
-      src: "futbol.js?v=3",
+      src: "futbol.js?v=13",
       deps: ["futbol-data.js?v=1", "futbol-events.js?v=1"],
       desc: "A full BitLife-style football life: high-school team, academy, first team, league/cup/continental/national-team competitions, key match decisions, transfers, loans, contracts and a permanent trophy cabinet. Find it in Occupation, Special Careers.",
+    },
+    {
+      id: "auction-house",
+      name: "Auction House",
+      icon: "emoji/1f528.png",
+      src: "auctions.js?v=3",
+      desc: "Auctions at the end of Shopping: a new catalogue every year with collectible hypercars, exotic cars, watches and chains. Bid live against named rivals with private limits and memories, jump-bid to scare them off, and pay a 10% buyer's premium when you win.",
+    },
+    {
+      id: "casino-games",
+      name: "Casino Games",
+      icon: "casino/casino-roulette.png",
+      src: "casino-games.js?v=2",
+      desc: "Unlocks the premium casino games the game lists but never shipped: Roulette, Slots, High-Low, Craps, Keno, Sports Betting and Texas Hold'em. Same cards, animations and flow as blackjack, with house edges close to the real thing.",
+    },
+    {
+      id: "licenses",
+      name: "Licenses",
+      icon: "cars/ui-license.png",
+      src: "licenses.js?v=2",
+      desc: "License Office in Activities: car, motorcycle, commercial (CDL), boat, private pilot, helicopter and firearm licenses, each with a written exam and a practical test. They unlock sport bikes, boats, planes, helicopters, legal guns and driver jobs.",
+    },
+    {
+      id: "jewelry-wear",
+      name: "Wear Jewelry",
+      icon: "emoji/1f48e.png",
+      src: "jewelry-wear.js?v=1",
+      desc: "Equip your jewelry on the avatar: neck (chains, necklaces), wrist (watches, bracelets), mouth (grillz) and ears (earrings). Open a piece in Assets, Jewelry and tap Wear. The face shrinks a little so the neck and wrist pieces fit.",
     },
   ];
 
@@ -207,48 +180,112 @@
     document.head.append(css);
   })();
 
-  // ---------------------------------------------------------------- pantalla del loader
+  // ---------------------------------------------------------------- pantalla del loader (= el nuevo workshop)
+  // One screen for everything: our script mods, the code mods of the old Workshop (no code needed) and
+  // the Workshop's own switches (re-used as they are, so every special case keeps working).
+  let origWorkshop = null;
+  const scriptName = (src) => String(src || "").split("?")[0].split("/").pop();
+  const PORTED = "bitlifepp-ported";
+  const portedList = () => {
+    try {
+      return window.BL_MODS && BL_MODS.read ? BL_MODS.read() : [];
+    } catch {
+      return [];
+    }
+  };
+  const savePorted = (list) => {
+    try {
+      localStorage.setItem(PORTED, JSON.stringify(list));
+    } catch {}
+  };
+  const registryMods = () => {
+    const reg = (window.BL_MODS && BL_MODS.REGISTRY) || {};
+    const mine = new Set(MODS.flatMap((m) => [scriptName(m.src), ...(m.deps || []).map(scriptName)]));
+    return Object.entries(reg)
+      .filter(([code, d]) => d && d.src && code !== "11111111" && !mine.has(scriptName(d.src)))
+      .map(([code, d]) => ({ code, ...d }));
+  };
+
   function openModLoader() {
     typeof play === "function" && play("choice");
+    if (typeof origWorkshop === "function") origWorkshop();
+    else sList.innerHTML = "";
     (sTitle.textContent = "MOD LOADER"), (sSub.style.display = "none");
     (sBack.innerHTML = typeof BACK_ICON !== "undefined" ? BACK_ICON : "&larr;"),
       (sBack.onclick = () => (typeof openMainMenu === "function" ? openMainMenu() : screen.classList.remove("open")));
 
-    if (!MODS.length) {
-      sList.innerHTML =
-        '<div class="sec">Mod Loader</div><div class="row"><div class="t"><b>No mods listed</b>' +
-        "<span>Add entries to MODS in modloader.js</span></div></div>";
-      return;
+    // the Workshop's own "Mod Loader" switch makes no sense here
+    const own = sList.querySelector('[data-mod="modLoader"]');
+    if (own) {
+      const sec = own.previousElementSibling;
+      own.remove();
+      if (sec && sec.classList.contains("sec") && (!sec.nextElementSibling || sec.nextElementSibling.classList.contains("sec"))) sec.remove();
     }
 
-    const row = (m) =>
-      `<div class="row" data-ml="${m.id}"><img src="${m.icon || "ui/gear.png"}"><div class="t"><b>${m.name || m.src}</b>` +
-      `<span>${isOn(m) ? "Enabled" : "Disabled"}${m.desc ? ` · ${m.desc}` : ""}</span></div>` +
-      `<img class="ck" src="${modBox(isOn(m))}"></div>`;
-
-    sList.innerHTML =
-      '<div class="mm-foot" style="padding:8px 14px; text-align:left">Toggle mods on or off. Changes apply the next time Free Life loads.</div>' +
-      '<div class="sec">Mod Loader</div>' +
-      MODS.map(row).join("");
+    const ported = portedList();
+    const row = (attr, m, on) =>
+      `<div class="row" ${attr}><img src="${m.icon || "ui/gear.png"}" style="object-fit:contain"><div class="t"><b>${m.name || m.src}</b>` +
+      `<span>${on ? "Enabled" : "Disabled"}${m.desc ? ` · ${m.desc}` : ""}</span></div>` +
+      `<img class="ck" src="${modBox(on)}"></div>`;
+    const reg = registryMods();
+    sList.insertAdjacentHTML(
+      "afterbegin",
+      '<div class="mm-foot" style="padding:8px 14px; text-align:left">Every mod lives here now: turn them on or off. Script mods apply the next time YourLife loads.</div>' +
+        (MODS.length ? '<div class="sec">Mod Loader</div>' + MODS.map((m) => row(`data-ml="${m.id}" data-mlr="1"`, m, isOn(m))).join("") : "") +
+        (reg.length
+          ? '<div class="sec">Special careers &amp; extras</div>' +
+            reg.map((m) => row(`data-rc="${m.code}" data-mlr="1"`, m, !!ported.find((x) => x.code === m.code && x.on))).join("")
+          : ""),
+    );
+    const click = (el, fn) =>
+      (el.onclick = () => {
+        typeof play === "function" && play("choice");
+        fn();
+      });
 
     sList.querySelectorAll("[data-ml]").forEach((el) => {
-      el.onclick = () => {
-        typeof play === "function" && play("choice");
+      click(el, () => {
         const m = MODS.find((x) => x.id === el.dataset.ml),
           nowOn = !isOn(m);
         setOn(m, nowOn);
         el.querySelector(".ck").src = modBox(nowOn);
         const sub = el.querySelector(".t span");
         if (sub) sub.textContent = `${nowOn ? "Enabled" : "Disabled"}${m.desc ? ` · ${m.desc}` : ""}`;
+        if (nowOn) loadOne(m); // load it right now
         typeof notice === "function" &&
           notice(
             nowOn ? "Mod Enabled" : "Mod Disabled",
-            `${m.name || m.src} will be ${nowOn ? "loaded" : "skipped"} the next time Free Life loads.`,
+            `${m.name || m.src} ${nowOn ? "is loaded now" : "will be skipped the next time YourLife loads"}.`,
             null,
             !0,
           );
-      };
+      });
     });
+    sList.querySelectorAll("[data-rc]").forEach((el) => {
+      click(el, () => {
+        const code = el.dataset.rc,
+          list = portedList(),
+          m = reg.find((x) => x.code === code);
+        let it = list.find((x) => x.code === code);
+        if (!it) {
+          it = { code, on: true };
+          list.push(it);
+        } else it.on = !it.on;
+        savePorted(list);
+        if (it.on && window.BL_MODS && BL_MODS.load) BL_MODS.load(code);
+        el.querySelector(".ck").src = modBox(it.on);
+        const sub = el.querySelector(".t span");
+        if (sub) sub.textContent = `${it.on ? "Enabled" : "Disabled"}${m && m.desc ? ` · ${m.desc}` : ""}`;
+        typeof notice === "function" &&
+          notice(
+            it.on ? "Mod Enabled" : "Mod Disabled",
+            `${(m && m.name) || code} ${it.on ? "is loaded now" : "will be off the next time YourLife loads"}.`,
+            null,
+            !0,
+          );
+      });
+    });
+    sList.scrollTop = 0;
   }
 
   // ---------------------------------------------------------------- menú principal + arranque
@@ -287,9 +324,19 @@
   }
   function boot() {
     if (!ready()) return setTimeout(boot, 60);
-    // si el jugador apagó el Mod Loader en Settings, no se agrega la fila ni se carga nada
-    const allowed = typeof mods === "undefined" || !mods || mods.modLoader !== false;
-    if (allowed) hookMenu();
+    // the Mod Loader is the Workshop now: the old on/off switch is gone, so it is always on
+    try {
+      if (typeof mods !== "undefined" && mods && mods.modLoader === false) {
+        mods.modLoader = true;
+        if (typeof saveMods === "function") saveMods();
+      }
+    } catch {}
+    // every place that used to open the Mod Workshop (Settings, main menu) opens the Mod Loader instead
+    if (typeof window.openModSettings === "function" && window.openModSettings !== openModLoader) {
+      origWorkshop = window.openModSettings;
+      window.openModSettings = openModLoader;
+    }
+    hookMenu();
     loadAll();
   }
 
