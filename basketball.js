@@ -495,6 +495,7 @@
     },
     R = () => (state.stats.Smarts >= 75 && chance(0.5) ? "Point Guard" : pickR(s));
   function B(t) {
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Pro Athlete")) return;
     const a = clamp(0.6 * t + 0.3 * y() + rint(-6, 6));
     return (
       (state.bball = {

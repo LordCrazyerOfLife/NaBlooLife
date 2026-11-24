@@ -51,12 +51,12 @@
       { err: !0, shown: !0 },
     ],
     ["bigText", "settings/bigtext.png", "Bigger Text", "Increase log text size"],
-    ["bitlifeLoader", "splash/sperm0.png", "BitLife Loading Theme", "Use the classic BitLife loading screen"],
+    ["bitlifeLoader", "splash/sperm0.png", "Your Life Loading Theme", "Use the classic BitLife loading screen"],
     [
       "bitlifeMode",
       "ui/navbarBitizenSeal.png",
-      "BitLife Mode",
-      "The classic red BitLife++ look and loading screen",
+      "Your Life Mode",
+      "The classic red Your Life look and loading screen",
     ],
     ["boosts", "settings/boosts.png", "Boosts", "Show boost opportunities"],
     [
@@ -111,7 +111,7 @@
     const n = document.querySelector(".topbar .logo-text");
     n &&
       (n.innerHTML = t.bitlifeMode
-        ? "BitLife++"
+        ? "Your Life"
         : '<img class="fl-hlogo" src="freelife/logo-wide.png" alt="Free Life">'),
       t.bitlifeMode ||
         (l(".topbar"),

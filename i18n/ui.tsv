@@ -1,4 +1,4 @@
-# Free Life UI dictionary. Columns: english<TAB>español<TAB>português (BR). Lines starting with # are comments.
+# Your Life UI dictionary. Columns: english<TAB>español<TAB>português (BR). Lines starting with # are comments.
 # Matching is case-insensitive; ALL-CAPS screen titles are upper-cased automatically.
 # Trailing ":" "!" "?" "." "..." are handled automatically, so "Name" also covers "Name:".
 # Rebuild the .js files with: python build_i18n.py
@@ -26,7 +26,7 @@ Reverse age	Retroceder edad	Voltar idade
 Menu	Menú	Menu
 Tap anywhere to continue	Toca en cualquier parte para continuar	Toque em qualquer lugar para continuar
 ## --- new life ---
-Become someone else in FreeLife.	Conviértete en otra persona en FreeLife.	Torne-se outra pessoa no FreeLife.
+Become someone else in YourLife.	Conviértete en otra persona en YourLife.	Torne-se outra pessoa no YourLife.
 Start by picking a gender.	Empieza eligiendo un género.	Comece escolhendo um gênero.
 Now, pick someone to become.	Ahora, elige en quién convertirte.	Agora, escolha quem você vai ser.
 How are you playing?	¿Cómo estás jugando?	Como você está jogando?
@@ -35,7 +35,7 @@ Play on Mobile	Jugar en el móvil	Jogar no celular
 LAST USED	ÚLTIMO USADO	ÚLTIMO USADO
 Already open	Ya está abierto	Já está aberto
 Play here	Jugar aquí	Jogar aqui
-FreeLife is already open in another tab. Playing here will save and pause the other tab so your life doesn't get overwritten.	FreeLife ya está abierto en otra pestaña. Si juegas aquí, se guardará y pausará la otra pestaña para que tu vida no se sobrescriba.	O FreeLife já está aberto em outra aba. Jogar aqui vai salvar e pausar a outra aba para que sua vida não seja sobrescrita.
+YourLife is already open in another tab. Playing here will save and pause the other tab so your life doesn't get overwritten.	YourLife ya está abierto en otra pestaña. Si juegas aquí, se guardará y pausará la otra pestaña para que tu vida no se sobrescriba.	O YourLife já está aberto em outra aba. Jogar aqui vai salvar e pausar a outra aba para que sua vida não seja sobrescrita.
 We All Started Somewhere	Todos empezamos en algún lugar	Todos começamos de algum lugar
 Age up for the first time	Cumple años por primera vez	Envelheça pela primeira vez
 Loading	Cargando	Carregando
@@ -419,7 +419,7 @@ Pets	Mascotas	Animais de estimação
 Get a pet	Consigue una mascota	Arrume um bichinho
 Plastic Surgery	Cirugía plástica	Cirurgia plástica
 Go under the knife	Pasa por el quirófano	Entre na faca
-Pray to the FreeLife devs	Rézale a los devs de FreeLife	Reze para os devs do FreeLife
+Pray to the YourLife devs	Rézale a los devs de YourLife	Reze para os devs do YourLife
 Rehab	Rehabilitación	Reabilitação
 Battle your addictions	Lucha contra tus adicciones	Lute contra seus vícios
 Salon & Spa	Salón y spa	Salão e spa
@@ -494,7 +494,7 @@ Fit the game to your computer screen	Ajusta el juego a la pantalla de tu computa
 Pray Button	Botón de rezar	Botão de rezar
 Display the Pray button	Muestra el botón de rezar	Mostra o botão de rezar
 Snow & Ice	Nieve y hielo	Neve e gelo
-Falling snow, snow caps and icicles in Free Life	Nieve cayendo, capas de nieve y carámbanos en Free Life	Neve caindo, montes de neve e pingentes de gelo no Free Life
+Falling snow, snow caps and icicles in Your Life	Nieve cayendo, capas de nieve y carámbanos en Your Life	Neve caindo, montes de neve e pingentes de gelo no Your Life
 Sound Effects	Efectos de sonido	Efeitos sonoros
 Languages	Idiomas	Idiomas
 Mods	Mods	Mods
@@ -504,7 +504,7 @@ Redeem Code	Canjear código	Resgatar código
 Redeem a mod with an 8-digit code	Canjea un mod con un código de 8 dígitos	Resgate um mod com um código de 8 dígitos
 Packs	Paquetes	Pacotes
 UI Pack	Paquete de interfaz	Pacote de interface
-Free Life look	Look de Free Life	Visual do Free Life
+Your Life look	Look de Your Life	Visual do Your Life
 Sound Pack	Paquete de sonidos	Pacote de sons
 Match the theme sounds	Usa los sonidos del tema	Usa os sons do tema
 Icon Pack	Paquete de íconos	Pacote de ícones
@@ -1106,6 +1106,7 @@ I went to an elite chess training camp.	Fui a un campamento de entrenamiento de 
 Too expensive. You'll keep training on your own.	Muy caro. Vas a seguir entrenando por tu cuenta.	Caro demais. Você vai continuar treinando sozinho.
 I skipped an elite chess training camp.	No fui a un campamento de ajedrez de élite.	Não fui a um campo de xadrez de elite.
 Gang Bang	Gang Bang	Gang Bang
+Gun Fight	Tiroteo	Tiroteio
 OG	OG	OG
 Big Homie	Big Homie	Big Homie
 Homie	Homie	Parça

@@ -2302,7 +2302,7 @@ button	button	button
 Are you sure you want to play this mode?	¿Seguro que quieres jugar este modo?	Tem certeza de que quer jogar este modo?
 The PC UI is still buggy and being worked on. You may often find bugs that make the game harder to play.	La interfaz de PC todavía tiene fallos y se está trabajando en ella. Puedes encontrar muchos bugs que hacen el juego más difícil de jugar.	A interface do PC ainda tem bugs e tá sendo trabalhada. Você vai encontrar vários bugs que deixam o jogo mais difícil de jogar.
 Loading your data...	Cargando tus datos...	Carregando seus dados...
-You need an account to play BitLife++.	Necesitas una cuenta para jugar BitLife++.	Você precisa de uma conta pra jogar BitLife++.
+You need an account to play Your Life.	Necesitas una cuenta para jugar Your Life.	Você precisa de uma conta pra jogar Your Life.
 Log in to load your lives and keep playing.	Inicia sesión para cargar tus vidas y seguir jugando.	Entre na conta pra carregar suas vidas e continuar jogando.
 3-20 letters, numbers or underscores	3-20 letras, números o guiones bajos	3 a 20 letras, números ou underlines
 At least 8 characters	Mínimo 8 caracteres	Mínimo de 8 caracteres
@@ -19747,7 +19747,7 @@ Free Life Mode	Modo Free Life	Modo Free Life
 Snowy blue look and the penguin loading screen	Aspecto azul nevado y pantalla de carga del pingüino	Visual azul nevado e tela de carregamento do pinguim
 Free Life Dark Mode	Modo Oscuro de Free Life	Modo Escuro do Free Life
 The snowy blue look on a dark background	El aspecto azul nevado sobre un fondo oscuro	O visual azul nevado sobre um fundo escuro
-The classic red BitLife++ look and loading screen	El clásico aspecto rojo de BitLife++ y su pantalla de carga	O clássico visual vermelho do BitLife++ e sua tela de carregamento
+The classic red Your Life look and loading screen	El clásico aspecto rojo de Your Life y su pantalla de carga	O clássico visual vermelho do Your Life e sua tela de carregamento
 Locked: needs the Unlock All Themes mod	Bloqueado: necesita el mod Unlock All Themes	Bloqueado: precisa do mod Unlock All Themes
 Go dark	Ponte oscuro	Fique escuro
 Go light	Ponte claro	Fique claro
@@ -19822,7 +19822,7 @@ Unlock All Themes	Desbloquear todos los temas	Desbloquear todos os temas
 Use every theme in Main Menu → Themes: Superstar, Halloween, Christmas, Famous, Rainbow and 2018 BitLife	Usa todos los temas en Menú principal → Temas: Superstar, Halloween, Christmas, Famous, Rainbow y 2018 BitLife	Use todos os temas no Menu principal → Temas: Superstar, Halloween, Christmas, Famous, Rainbow e 2018 BitLife
 Make Your Own	Haz el tuyo	Faça o seu
 Make your own mods	Crea tus propios mods	Crie seus próprios mods
-BitLife++ is a fully recoded version, meaning you can download the source code and put it into any AI code editor and get any option you have ever wanted in BitLife. View my source code here!	BitLife++ es una versión recodificada por completo, o sea que puedes descargar el código fuente, meterlo en cualquier editor de código con IA y conseguir cualquier opción que siempre quisiste en BitLife. ¡Mira mi código fuente aquí!	BitLife++ é uma versão totalmente recodificada, ou seja, você pode baixar o código-fonte, colocar em qualquer editor de código com IA e conseguir qualquer opção que sempre quis no BitLife. Veja meu código-fonte aqui!
+Your Life is a fully recoded version, meaning you can download the source code and put it into any AI code editor and get any option you have ever wanted in Your Life. View my source code here!	Your Life es una versión recodificada por completo, o sea que puedes descargar el código fuente, meterlo en cualquier editor de código con IA y conseguir cualquier opción que siempre quisiste en Your Life. ¡Mira mi código fuente aquí!	Your Life é uma versão totalmente recodificada, ou seja, você pode baixar o código-fonte, colocar em qualquer editor de código com IA e conseguir qualquer opção que sempre quis em Your Life. Veja meu código-fonte aqui!
 dragging	arrastrando	arrastando
 wheel	rueda	roda
 prince	príncipe	príncipe
@@ -33907,12 +33907,12 @@ Which icons and emoji the game shows, whatever the look.	Qué iconos y emoji mue
 Free Life (Apple emoji and Free Life art)	Free Life (emoji de Apple y arte de Free Life)	Free Life (emojis da Apple e arte do Free Life)
 BitLife icons	Iconos de BitLife	Ícones do BitLife
 Delete mod	Eliminar mod	Excluir mod
-{1} will be back on the next time BitLife++ loads.	{1} volverá a activarse la próxima vez que cargue BitLife++.	{1} vai voltar a ligar na próxima vez que o BitLife++ carregar.
+{1} will be back on the next time Your Life loads.	{1} volverá a activarse la próxima vez que cargue Your Life.	{1} vai voltar a ligar na próxima vez que o Your Life carregar.
 {1} is now on.	{1} ya está activo.	{1} está ligado agora.
-{1} will be turned off the next time BitLife++ loads.	{1} se desactivará la próxima vez que cargue BitLife++.	{1} vai ser desligado na próxima vez que o BitLife++ carregar.
+{1} will be turned off the next time Your Life loads.	{1} se desactivará la próxima vez que cargue Your Life.	{1} vai ser desligado na próxima vez que o Your Life carregar.
 {1} is now off.	{1} ya está desactivado.	{1} está desligado agora.
 Delete {1}? You'll need its code to port it again.	¿Eliminar {1}? Necesitarás su código para importarlo de nuevo.	Excluir {1}? Você vai precisar do código pra importar de novo.
-It will be fully removed the next time BitLife++ loads.	Se eliminará por completo la próxima vez que cargue BitLife++.	Vai ser removido por completo na próxima vez que o BitLife++ carregar.
+It will be fully removed the next time Your Life loads.	Se eliminará por completo la próxima vez que cargue Your Life.	Vai ser removido por completo na próxima vez que o Your Life carregar.
 {1} was deleted.{2}	{1} fue eliminado.{2}	{1} foi excluído.{2}
 Hill Country Blues	Hill Country Blues	Hill Country Blues
 Rock And Roll	Rock And Roll	Rock And Roll
@@ -40976,9 +40976,9 @@ takeover	tomar el control	assumir o controle
 hello	hola	olá
 here	aquí	aqui
 Playing in another tab	Jugando en otra pestaña	Jogando em outra aba
-You opened BitLife++ in another tab, so this one was paused and your life was saved.	Abriste BitLife++ en otra pestaña, así que esta se pausó y tu vida se guardó.	Você abriu o BitLife++ em outra aba, então esta foi pausada e sua vida foi salva.
+You opened Your Life in another tab, so this one was paused and your life was saved.	Abriste Your Life en otra pestaña, así que esta se pausó y tu vida se guardó.	Você abriu o Your Life em outra aba, então esta foi pausada e sua vida foi salva.
 Already open	Ya abierto	Já aberto
-BitLife++ is already open in another tab. Playing here will save and pause the other tab so your life doesn't get overwritten.	BitLife++ ya está abierto en otra pestaña. Jugar aquí guardará y pausará la otra pestaña para que tu vida no se sobrescriba.	O BitLife++ já está aberto em outra aba. Jogar aqui vai salvar e pausar a outra aba para sua vida não ser sobrescrita.
+Your Life is already open in another tab. Playing here will save and pause the other tab so your life doesn't get overwritten.	Your Life ya está abierto en otra pestaña. Jugar aquí guardará y pausará la otra pestaña para que tu vida no se sobrescriba.	Your Life já está aberto em outra aba. Jogar aqui vai salvar e pausar a outra aba para sua vida não ser sobrescrita.
 Provincial tax	Impuesto provincial	Imposto provincial
 Medicare levy	Impuesto de Medicare	Taxa do Medicare
 Social insurance	Seguro social	Seguro social

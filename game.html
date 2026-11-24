@@ -11400,7 +11400,7 @@
     <script src="heirlooms.js"></script>
     <script src="tax-engine.js?v=1"></script>
     <script src="life-events.js?v=1"></script>
-    <script src="cars.js?v=7"></script>
+    <script src="cars.js?v=9"></script>
     <script src="school-events.js?v=r2"></script>
     <script src="emoji2018.js?v=8"></script>
     <script src="blscroll.js?v=1"></script>
@@ -66601,8 +66601,9 @@
             (!e.par || "cheater" === e.par || aliveParents(e.par).length || aliveParents().length) &&
             ("Cheater" !== e.t || chance(0.12)),
         );
-        if (!e.length || !chance(0.45)) return !1;
+        if (!e.length || !chance(0.45) || !flEventOk("extra")) return !1;
         const t = pickR(e);
+        flEventTake("extra");
         return state.featSeen.add(t.t), queueRoll(() => openEvent(featuredEvent(t))), !0;
       }
       function parentMoment(e, t) {
@@ -66663,6 +66664,16 @@
           const a = evSeen()[t],
             o = evGap(e);
           return null != a && (!o || state.age - a < o);
+        },
+        FL_EVENT_CAPS = { normal: 3, work: 5, extra: 1 },
+        flEventCounts = () => {
+          if (!state.flEventCounts || state.flEventCounts.year !== state.age)
+            state.flEventCounts = { year: state.age, normal: 0, work: 0, extra: 0 };
+          return state.flEventCounts;
+        },
+        flEventOk = (kind) => flEventCounts()[kind] < (FL_EVENT_CAPS[kind] || 0),
+        flEventTake = (kind) => {
+          flEventCounts()[kind]++;
         };
       function openEvent(e) {
         if (state.dead) return;
@@ -66795,8 +66806,9 @@
                   !evSeen()["danger:" + t.t] &&
                   (!e["danger:" + t.t] || !e["danger:" + t.t].when || e["danger:" + t.t].when()),
               );
-            if (((state.nextDanger = state.age + rnd(10, 25)), t.length)) {
+            if (((state.nextDanger = state.age + rnd(10, 25)), t.length && flEventOk("extra"))) {
               const e = any(t);
+              flEventTake("extra");
               return void queueRoll(() => openEvent(dangerEvent(e)), !0);
             }
           }
@@ -66813,8 +66825,9 @@
                 !seenEv(e) &&
                 (!e.ok || e.ok()),
             );
-            if (e.length) {
+            if (e.length && flEventOk("normal")) {
               const t = any(e);
+              flEventTake("normal");
               return void queueRoll(() => {
                 state.school && openEvent(t);
               }, !0);
@@ -66831,15 +66844,19 @@
             },
             n = e && !isMil() ? careerEvents(e).filter(o) : [],
             s = [...t, ...a, ...a, ...n].filter(o);
-          if (s.length && chance(n.length ? 0.45 : 0.35))
+          if (s.length && chance(n.length ? 0.45 : 0.35) && flEventOk("work")) {
+            flEventTake("work");
             return void queueRoll(() => {
               state.job && openEvent(workEvent(any(s)));
             });
+          }
           const r = (window.COWORKER_EVENTS || []).filter(o);
-          if (e && e.coworkers && e.coworkers.length && r.length && !isMil() && chance(0.25))
+          if (e && e.coworkers && e.coworkers.length && r.length && !isMil() && chance(0.25) && flEventOk("work")) {
+            flEventTake("work");
             return void queueRoll(() => {
               state.job && openEvent(workEvent(any(r)));
             });
+          }
           const i = EVENTS.filter(
               (e) =>
                 oldEvOk(e) &&
@@ -66853,9 +66870,11 @@
             l = isOldEra() ? i.filter((e) => e.old) : [],
             c = l.length && chance(0.7) ? any(l) : pickEvent(i);
           c &&
+            flEventOk("normal") &&
+            (flEventTake("normal"),
             queueRoll(() => {
               (c.ok && !c.ok()) || openEvent(c);
-            }, !0);
+            }, !0));
         });
       const EV_PACKS = ["kid", "social", "parent", "fam", "spend", "fight", "hangout"],
         REQUESTED = new Set([
@@ -69843,7 +69862,7 @@
       if (mods.modLoader && !window.__modLoaderInjected) {
         window.__modLoaderInjected = !0;
         const _ml = document.createElement("script");
-        (_ml.src = "modloader.js?v=17"), document.body.appendChild(_ml);
+        (_ml.src = "modloader.js?v=19"), document.body.appendChild(_ml);
       }
       const saveMods = () => {
         try {
@@ -89141,7 +89160,7 @@
     <script src="sof.js?v=1"></script>
     <script src="war-events.js?v=1"></script>
     <script src="kids-media.js?v=1"></script>
-    <script src="acting.js?v=21"></script>
+    <script src="acting.js?v=22"></script>
     <script src="police-events.js?v=1"></script>
     <script src="marriage.js?v=6"></script>
     <script src="rentals.js?v=15"></script>
@@ -89151,10 +89170,10 @@
     <script src="cartel.js?v=13"></script>
     <script src="drugs.js?v=9"></script>
     <script src="mods.js?v=16"></script>
-    <script src="elite-life.js?v=2"></script>
+    <script src="elite-life.js?v=3"></script>
     <script src="vip.js?v=2"></script>
-    <script src="basketball.js?v=25"></script>
-    <script src="fighter.js?v=7"></script>
+    <script src="basketball.js?v=26"></script>
+    <script src="fighter.js?v=8"></script>
     <script src="vampire.js?v=8"></script>
     <script src="serial-clues.js?v=2"></script>
     <script src="serial-killer.js?v=40"></script>

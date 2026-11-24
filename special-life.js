@@ -133,7 +133,7 @@
     const cars = state.cars || [];
     return Number.isInteger(r.car) && cars[r.car] ? cars[r.car] : null;
   };
-  const policeChance = (r = R()) => clamp(0.035 + r.heat / 260 + (r.national ? 0.16 : 0) + (r.rank >= 3 ? 0.04 : 0), 0.035, 0.72);
+  const policeChance = (r = R()) => clamp(0.09 + r.heat / 125 + (r.national ? 0.22 : 0) + (r.rank >= 3 ? 0.05 : 0), 0.09, 0.9);
   const raceSub = () => {
     const r = R();
     if (!r.active) return "Race bought cars on the underground circuit";
@@ -183,6 +183,7 @@
   }
 
   function startRacing() {
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Illegal Street Racer")) return;
     const r = R();
     if (!(state.cars || []).length)
       return typeof notice === "function" && notice("No car", "You need a car before you can race.", openAuction, true);
@@ -525,6 +526,7 @@
     if (state.age < 25) return;
     if (state.stats.Smarts < 55)
       return typeof notice === "function" && notice("Not ready", "You need at least 55 Smarts to become a judge.", null, true);
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Judge")) return;
     const j = J();
     j.active = true;
     j.lastAge = state.age;
@@ -799,6 +801,7 @@
 
   function startArtist() {
     if (state.age < 16) return;
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Artist")) return;
     const a = A();
     a.active = true;
     a.lastAge = state.age;
@@ -1070,7 +1073,7 @@
     const wrapped = function () {
       const result = orig.apply(this, arguments);
       try {
-        if (sList.querySelector("#spRacer, #spJudge, #spArtist")) return result;
+        if (sList.querySelector("#spRacer, #spJudge, #spArtist, #spFootball")) return result;
         const cards =
           row("spRacer", ICON.race, "Illegal Street Racer", raceSub(), state.age < 18) +
           row("spJudge", ICON.judge, "Judge", state.age < 25 ? `Age 25+ · Smarts ${Math.round(state.stats.Smarts || 0)}` : "Hear cases, weigh evidence and sentence the accused", state.age < 25) +
@@ -1087,6 +1090,71 @@
     };
     wrapped.__flSpecialWrapped = true;
     window.openSpecialCareers = wrapped;
+  }
+
+  // ---------------------------------------------------------------- una sola carrera
+  function careerNames(except) {
+    const out = [];
+    if (state.racing && state.racing.active) out.push("Illegal Street Racer");
+    if (state.judge && state.judge.active) out.push("Judge");
+    if (state.art && state.art.active) out.push("Artist");
+    if (state.futbol && state.futbol.active && !state.futbol.retired) out.push("Footballer");
+    if (state.gangLife && state.gangLife.member) out.push("Gang member");
+    if (state.job && state.job.acting) out.push("Actor");
+    if (state.job && state.job.fighter) out.push("Fighter");
+    if (state.job && state.job.politician) out.push("Politician");
+    if (state.job && state.job.athlete) out.push("Pro Athlete");
+    return out.filter((n) => n !== except);
+  }
+  window.FL_CAREERS = {
+    list: () => careerNames(),
+    canStart(name) {
+      const busy = careerNames(name);
+      if (!busy.length) return true;
+      if (typeof notice === "function")
+        notice(
+          "One career at a time",
+          `You are already a ${busy[0]}. Quit that career before starting a new one.`,
+          null,
+          true,
+        );
+      return false;
+    },
+  };
+
+  // "Your Job" opens the same menu the career has in Special Careers.
+  const origJobScreen = window.openJobScreen;
+  if (typeof origJobScreen === "function") {
+    window.openJobScreen = function () {
+      if (state.job && state.job.racing) return openRacing();
+      if (state.job && state.job.judge) return openJudge();
+      if (state.job && state.job.artist) return openArtist();
+      return origJobScreen.apply(this, arguments);
+    };
+  }
+
+  // Police heat meter, right below Fame.
+  const origRenderStats = window.renderStats;
+  if (typeof origRenderStats === "function") {
+    window.renderStats = function () {
+      const out = origRenderStats.apply(this, arguments);
+      try {
+        if (state.racing && state.racing.active) {
+          const st = document.getElementById("stats");
+          if (st && !st.querySelector("#flHeatRow")) {
+            const h = clamp(Math.round(state.racing.heat || 0), 0, 100);
+            st.insertAdjacentHTML(
+              "beforeend",
+              `<div class="stat-l" id="flHeatRow">Police Heat<span class="e"><img src="emoji/1f46e.png" alt="" style="width:24px;height:24px;vertical-align:middle"></span></div>` +
+                `<div class="bar"><div class="bi"><div class="fill ${h >= 65 ? "crit" : h >= 35 ? "low" : ""}" style="width:${h}%"><span class="fin${h >= 75 ? " hi" : ""}">${h}%</span></div></div><span class="pct${h >= 75 ? " in" : ""}">${h}%</span></div>`,
+            );
+          }
+        }
+      } catch (e) {
+        console.warn("[special-life] heat meter", e);
+      }
+      return out;
+    };
   }
 
   function boot() {

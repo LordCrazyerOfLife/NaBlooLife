@@ -9,6 +9,49 @@
   const T = (en) => en;
   const CAREER = T("Gang Bang", "Gang Bang", "Gang Bang"); // nombre de la carrera (cambiar acá)
   const ICON = "special/gangbang.png";
+  // Screen effect functions for gang shootouts
+  let screenShakeActive = false;
+  function screenShake() {
+    if (screenShakeActive) return;
+    screenShakeActive = true;
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes shake {
+        0% { transform: translate(0, 0); }
+        10% { transform: translate(-10px, -10px); }
+        20% { transform: translate(10px, 10px); }
+        30% { transform: translate(-10px, 10px); }
+        40% { transform: translate(10px, -10px); }
+        50% { transform: translate(0, 0); }
+        100% { transform: translate(0, 0); }
+      }
+      body { animation: shake 0.5s ease-in-out; }
+    `;
+    document.head.appendChild(style);
+    setTimeout(() => { screenShakeActive = false; document.head.removeChild(style); }, 500);
+  }
+  function setBloodScreen() {
+    const bloodDiv = document.createElement('div');
+    bloodDiv.style.cssText = `
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(255,0,0,0.3) 0%, rgba(255,0,0,0.1) 50%, transparent 70%);
+      pointer-events: none;
+      z-index: 9999;
+    `;
+    bloodDiv.id = 'blood-screen';
+    document.body.appendChild(bloodDiv);
+    setTimeout(() => bloodDiv.remove(), 300);
+  }
+  function playSound(soundName) {
+    const sounds = {
+      augh: new Audio('sounds/augh.mp3')
+    };
+    const sound = sounds[soundName];
+    if (sound) {
+      sound.play().catch(() => {});
+    }
+  }
   const E = (code) => `emoji/${code}.png`;
   const rnd = Math.random;
   const ri = (a, b) => a + Math.floor(rnd() * (b - a + 1));
@@ -209,6 +252,7 @@
   }
 
   function join(g, i, f, text) {
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Gang member")) return;
     Object.assign(g, { member: true, gang: i, rank: 0, rep: 0, heat: 0, years: 0, left: false, crew: makeCrew() });
     const rows = fx(g, f);
     say(T("I joined a street gang.", "Me uní a una pandilla callejera.", "Entrei para uma gangue de rua."));
@@ -367,7 +411,6 @@
         const sub = locked ? `${T("Requires rank", "Requiere rango", "Requer patente")}: ${RANKS[a.min].t}` : !a.free && left <= 0 ? T("Done for this year", "Ya no más este año", "Chega por este ano") : a.s;
         return row(`gA_${a.id}`, a.icon, a.t, sub, locked || (!a.free && left <= 0));
       }).join("") +
-      `<div class="sec">${T("The Strap", "El fierro", "O ferro")}</div>` +
       WEAPONS.map((w) => {
         const idx = (g.guns || []).findIndex((x) => x.id === w.id);
         const own = idx >= 0;
@@ -638,6 +681,34 @@
       choices: [
         [T("Let him in", "Dejarlo entrar", "Deixar entrar"), (g) => card(T("A Kid Wants In", "Un chamaco quiere entrar", "Um moleque quer entrar"), T("He's loyal and fast. He reminds you of yourself.", "Es leal y rápido. Te recuerda a ti mismo.", "Ele é leal e esperto. Te lembra você mesmo."), fx(g, { rep: 5, H: -4 }))],
         [T("Send him back to school", "Mandarlo de vuelta a la escuela", "Mandar de volta para a escola"), (g) => card(T("A Kid Wants In", "Un chamaco quiere entrar", "Um moleque quer entrar"), T("You told him this life isn't worth it. He listened.", "Le dijiste que esta vida no vale la pena. Te hizo caso.", "Você disse que essa vida não vale a pena. Ele te ouviu."), fx(g, { H: 10 }))],
+      ],
+    },
+    {
+      id: "shootout", when: (g) => g.rank >= 1,
+      title: T("Gun Fight", "Tiroteo", "Tiroteio"),
+      lead: T("A rival gang opened fire on you! Bullets flying everywhere!", "Una pandilla rival te disparó¡! Balas volando por todas partes!", "Uma gangue rival atirou¡! Balas voando por todos os lados!"),
+      choices: [
+        [T("Take cover", "Abrirte paso", "Procurar abrigo"), (g) => {
+          // Screen shake, blood, and augh sound effects
+          if (typeof screenShake !== 'undefined') screenShake();
+          if (typeof setBloodScreen !== 'undefined') setBloodScreen();
+          if (typeof playSound !== 'undefined') playSound('augh');
+          const rows = fx(g, { He: -15, heat: 20 });
+          return card(T("Gun Fight", "Tiroteo", "Tiroteio"), T("You found cover behind a wall. You're hurt but alive.", "Te cobaste detrás de una pared. Estás herido pero vivo.", "Você se abrigou atrás de uma parede. Está ferido mas vivo."), rows, openGang);
+        }],
+        [T("Return fire", "Responder fuego", "Retornar fogo"), (g) => {
+          // Screen shake, blood, and augh sound effects
+          if (typeof screenShake !== 'undefined') screenShake();
+          if (typeof setBloodScreen !== 'undefined') setBloodScreen();
+          if (typeof playSound !== 'undefined') playSound('augh');
+          if (rnd() < 0.5 + g.rank * 0.1) {
+            const rows = fx(g, { rep: 10, money: 500, heat: 20 });
+            return card(T("Gun Fight", "Tiroteo", "Tiroteio"), T("You returned fire and drove them off!", "Respondiste el fuego y los asustaste!", "Você retornou o fogo e espantou-os!"), rows, openGang);
+          } else {
+            const rows = fx(g, { He: -20, heat: 25 });
+            return card(T("Gun Fight", "Tiroteo", "Tiroteio"), T("You exchanged fire but got wounded.", "Intercambiaste fuego pero te heriste.", "Você trocou fogo mas ficou ferido."), rows, openGang);
+          }
+        }],
       ],
     },
   ];
