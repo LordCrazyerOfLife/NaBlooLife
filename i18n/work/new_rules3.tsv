@@ -1,0 +1,5 @@
+^The shell company washed the money: police heat -(\d+)\.$	La empresa fantasma blanqueó el dinero: presión policial -$1.	A empresa de fachada lavou o dinheiro: pressão policial -$1.
+^The house appraised it at (.+)\.$	La casa lo tasó en $1.	A casa avaliou em $1.
+^You have lifetime casino earnings of (.+)\.$	Tienes ganancias de casino de por vida por $1.	Você tem ganhos de cassino vitalícios de $1.
+^You have lifetime casino losses of (.+)\.$	Tienes pérdidas de casino de por vida por $1.	Você tem perdas de cassino vitalícias de $1.
+^You have (.+) on the line\.$	Tienes $1 en juego.	Você tem $1 em jogo.

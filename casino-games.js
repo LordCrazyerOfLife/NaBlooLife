@@ -22,6 +22,8 @@
   const $ = (id) => document.getElementById(id);
   const money = (n) => (typeof usd === "function" ? usd(Math.round(n)) : "$" + Math.round(n).toLocaleString("en-US"));
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  // translate a whole HTML string (bold tags split text nodes, so the DOM dictionary can't see it)
+  const TR = (s) => (window.FL_I18N ? FL_I18N.t(s) : s);
   const sfx2 = (n) => {
     try {
       if (typeof sfx === "function") sfx(n);
@@ -160,7 +162,7 @@
     openModal(
       `<div class="jcw cg-modal"><div class="jm-tag" style="margin-top:12px">${esc(title)}</div>
       <h4><i class="bj-face"></i><span>${esc(name)} (Dealer)</span></h4>
-      <div class="lead">${lead}</div>${body}<div id="cgEnd"></div></div>`,
+      <div class="lead">${TR(lead)}</div>${body}<div id="cgEnd"></div></div>`,
       () => {
         try {
           e.dealerLook ||= randomLook(g, (e.dealerAge ||= rint(24, 55)));
@@ -407,7 +409,7 @@
         const tbl = ev.querySelector(".bj-table");
         const hand = $("hlH");
         const score = () => {
-          $("hlS").innerHTML = `Pot: <b>${money(pot)}</b> &middot; Streak: <b>${streak}</b>`;
+          $("hlS").innerHTML = TR(`Pot: <b>${money(pot)}</b> &middot; Streak: <b>${streak}</b>`);
         };
         score();
         wait(70, () => dealCard(tbl, hand, cur, false));
@@ -502,7 +504,7 @@
               return settle(ctx, dont ? bet * 2 : 0, dont ? "You Won!" : "You Lost!", G.craps);
             }
             point = sum;
-            T.innerHTML = `The point is <b>${point}</b>. Roll it again before a 7.`;
+            T.innerHTML = TR(`The point is <b>${point}</b>. Roll it again before a 7.`);
             return setButtons([["Roll the dice", roll, "cpRoll"]]);
           }
           if (sum === point) {
@@ -513,7 +515,7 @@
             T.innerHTML = `<b>Seven out.</b>`;
             return settle(ctx, dont ? bet * 2 : 0, dont ? "You Won!" : "You Lost!", G.craps);
           }
-          T.innerHTML = `Rolled <b>${sum}</b>. Point is <b>${point}</b>.`;
+          T.innerHTML = TR(`Rolled <b>${sum}</b>. Point is <b>${point}</b>.`);
           setButtons([["Roll again", roll, "cpRoll"]]);
         };
         setButtons([["Roll the dice", roll, "cpRoll"]]);
@@ -537,7 +539,7 @@
         const info = () => {
           const k = picks.size;
           const top = k ? Math.max(...Object.values(KN_PAY[k])) : 0;
-          $("knT").innerHTML = k ? `Picked <b>${k}</b>/10 &middot; top prize <b>x${top}</b>` : "Tap numbers to pick them";
+          $("knT").innerHTML = k ? TR(`Picked <b>${k}</b>/10 &middot; top prize <b>x${top}</b>`) : "Tap numbers to pick them";
           setButtons([
             ["Quick pick 8", () => quick(), "knQ"],
             ...(k ? [[`Draw! (${money(bet)})`, () => draw(), "knD"]] : []),
@@ -586,7 +588,7 @@
                 sfx2("CardFlipFast");
               }
             }
-            $("knT").innerHTML = `Ball <b>${i}</b>/20 &middot; hits: <b>${hits}</b>`;
+            $("knT").innerHTML = TR(`Ball <b>${i}</b>/20 &middot; hits: <b>${hits}</b>`);
             if (i >= 20) {
               clearInterval(iv);
               const mult = KN_PAY[picks.size][hits] || 0;
@@ -663,7 +665,7 @@
             if (min >= 90) {
               clearInterval(iv);
               const res = h > a ? 0 : h === a ? 1 : 2;
-              $("spF").innerHTML = `Full time: <b>${h} - ${a}</b>`;
+              $("spF").innerHTML = TR(`Full time: <b>${h} - ${a}</b>`);
               wait(450, () => settle(ctx, res === pickR ? bet * m.odds[pickR] : 0, res === pickR ? "Your bet landed!" : "You Lost!", G["sports-betting"]));
             }
           }, 42);
@@ -767,7 +769,7 @@
             const mine = best7([...me, ...board]);
             const theirs = best7([...dl, ...board]);
             const c = cmpScore(mine, theirs);
-            say2(`You: <b>${HANDN[mine[0]]}</b> &middot; Dealer: <b>${HANDN[theirs[0]]}</b>`);
+            say2(TR(`You: <b>${HANDN[mine[0]]}</b> &middot; Dealer: <b>${HANDN[theirs[0]]}</b>`));
             wait(650, () => settle(ctx, c > 0 ? pot : c === 0 ? pot / 2 : 0, c > 0 ? "You Won!" : c === 0 ? "Split pot" : "You Lost!", G.texas));
           });
         };
@@ -802,7 +804,7 @@
           if (dealerAct(false) === "bet") {
             pot += ante;
             pt();
-            say2(`The dealer bets <b>${money(ante)}</b>.`);
+            say2(TR(`The dealer bets <b>${money(ante)}</b>.`));
             const list = [];
             if (state.money >= ante)
               list.push([`Call ${money(ante)}`, () => {

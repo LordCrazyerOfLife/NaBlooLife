@@ -324,6 +324,141 @@
     "size": 5,
     "hole_max": 2500
    }
+  },
+  {
+   "src": "DIFERENTES ANIMALES.png",
+   "mode": "segment",
+   "layout": [
+    4,
+    6
+   ],
+   "out": "zoo",
+   "box": [
+    128,
+    96
+   ],
+   "thr": 12,
+   "grow": 6,
+   "names": [
+    "lion",
+    "elephant",
+    "giraffe",
+    "zebra",
+    "rhino",
+    "hippo",
+    "cheetah",
+    "hyena",
+    "gorilla",
+    "tiger"
+   ]
+  },
+  {
+   "src": "INVIERNO.png",
+   "mode": "segment",
+   "layout": [
+    4,
+    4
+   ],
+   "out": "zoo",
+   "box": [
+    128,
+    96
+   ],
+   "thr": 12,
+   "grow": 6,
+   "names": [
+    "polarbear",
+    "penguin",
+    "seal",
+    "walrus",
+    "arcticwolf",
+    "arcticfox",
+    "reindeer",
+    "snowleopard"
+   ]
+  },
+  {
+   "src": "BEARS.png",
+   "cols": 4,
+   "rows": 3,
+   "out": "zoo",
+   "box": [
+    128,
+    96
+   ],
+   "cut": {
+    "it": 4,
+    "thr": 10,
+    "size": 5
+   },
+   "names": [
+    "brownbear",
+    "bear-polar",
+    "blackbear",
+    "panda",
+    "bear-kodiak",
+    "sunbear",
+    "bear-russet",
+    "slothbear",
+    "bear-american",
+    "spectacledbear",
+    "bear-cinnamon",
+    "bear-grey"
+   ]
+  },
+  {
+   "src": "SNAKES.png",
+   "cols": 4,
+   "rows": 3,
+   "out": "zoo",
+   "box": [
+    128,
+    96
+   ],
+   "cut": {
+    "it": 4,
+    "thr": 10,
+    "size": 5
+   },
+   "names": [
+    "snake-green",
+    "cobra",
+    "snake",
+    "coralsnake",
+    "rattlesnake",
+    "snake-banana",
+    "snake-black",
+    "greenpython",
+    "snake-blue-krait",
+    "snake-milk",
+    "hornedviper",
+    "snake-forest-cobra"
+   ]
+  },
+  {
+   "src": "PARA QUE NO USES EMOJIS.png",
+   "mode": "segment",
+   "layout": [
+    4,
+    4
+   ],
+   "out": "zoo",
+   "box": [
+    128,
+    96
+   ],
+   "thr": 12,
+   "grow": 6,
+   "names": [
+    "dolphin",
+    "shark",
+    "parrot",
+    "flamingo",
+    "monkey",
+    "kangaroo",
+    "owl",
+    "lizard"
+   ]
   }
  ]
 }

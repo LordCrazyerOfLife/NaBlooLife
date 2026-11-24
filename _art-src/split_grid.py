@@ -9,12 +9,37 @@ New grid: drop the PNG in _art-src/grids/, add one entry to grids.json (names le
 box = max w,h; tune cut.thr / cut.hole_max / keep_all if a piece comes out eaten or with extra blobs).
 """
 import argparse, json, os, sys
+import numpy as np
+from scipy import ndimage
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from PIL import Image
+from PIL import Image, ImageFilter
 from split_grids2 import cutout, fit, cells, pad  # the shared cut-out helpers
 
 ROOT = os.path.dirname(HERE)
+
+
+def segment(im, g):
+    """Cut animals that do not sit in even cells: label the non-black blobs (grown a little so antlers, tails and
+    tusks stay with their animal), keep the N biggest and order them by rows (g['layout'] = pieces per row)."""
+    a = np.array(im)
+    mask = ndimage.binary_opening(a.max(axis=2) > g.get('thr', 12), iterations=1)
+    lab, k = ndimage.label(ndimage.binary_dilation(mask, iterations=g.get('grow', 6)))
+    n = sum(g['layout'])
+    areas = ndimage.sum(mask, lab, range(1, k + 1))
+    found = []
+    for l in (np.argsort(areas)[::-1][:n] + 1):
+        m = ndimage.binary_fill_holes(ndimage.binary_closing(mask & (lab == l), structure=np.ones((5, 5)), iterations=2))
+        ys, xs = np.where(m)
+        alpha = Image.fromarray((m * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.7))
+        rgba = Image.fromarray(np.dstack([a, np.array(alpha)]), 'RGBA')
+        found.append((ys.mean(), xs.mean(), rgba.crop(rgba.getbbox())))
+    found.sort(key=lambda t: t[0])
+    out, i = [], 0
+    for count in g['layout']:
+        out += [pad(fit(t[2], *g['box'])) for t in sorted(found[i:i + count], key=lambda t: t[1])]
+        i += count
+    return out
 
 
 def piece(cell, g, name):
@@ -40,7 +65,14 @@ def run(only=None, preview=False):
         out_dir = os.path.join(ROOT, g['out'])
         os.makedirs(out_dir, exist_ok=True)
         outs = []
-        for i, cell in cells(im, g['cols'], g['rows']):
+        if g.get('mode') == 'segment':
+            for name, p in zip(g['names'], segment(im, g)):
+                dest = os.path.join(out_dir, name + g.get('suffix', '') + '.png')
+                p.save(dest, optimize=True)
+                outs.append(p)
+                made.append(dest)
+            g = dict(g, cols=max(g['layout']), rows=len(g['layout']))
+        for i, cell in ([] if g.get('mode') == 'segment' else cells(im, g['cols'], g['rows'])):
             dest = os.path.join(out_dir, g['names'][i] + g.get('suffix', '') + '.png')
             p = piece(cell, g, g['names'][i])
             p.save(dest, optimize=True)

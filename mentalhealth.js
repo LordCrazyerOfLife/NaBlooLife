@@ -449,9 +449,9 @@
         }),
       );
     }
-    if (m.th.on && !m.th.lapsed) tot.hap += ri(1, 2);
-    tot.hap = Math.max(-22, tot.hap);
-    tot.hea = Math.max(-12, tot.hea);
+    if (m.th.on && !m.th.lapsed) tot.hap += ri(2, 4);
+    tot.hap = Math.max(-12, tot.hap); // [easy] was -22
+    tot.hea = Math.max(-6, tot.hea); // [easy] was -12
     fxStats({ hap: tot.hap, hea: tot.hea, sma: Math.max(-3, tot.sma), loo: Math.max(-2, tot.loo) });
 
     // job performance (or grades at school)
@@ -479,9 +479,9 @@
   // ------------------------------------------------------------------ stress
   function updateStress() {
     const m = S();
-    let t = 25;
+    let t = 16; // [easy] was 25
     const st = stats();
-    t += (60 - (Number(st.Happiness) || 60)) * 0.35;
+    t += (60 - (Number(st.Happiness) || 60)) * 0.22;
     if (state.prison) t += 18;
     if (!state.job && state.age >= 25 && state.age < 62) t += 6;
     if (state.age >= 20 && (Number(state.money) || 0) < 1000 * ifx()) t += 8;
@@ -494,7 +494,7 @@
       if (typeof isMil === "function" && isMil()) t += 6;
     } catch {}
     m.recent = m.recent.filter((x) => state.age - x.a <= 3);
-    m.recent.forEach((x) => (t += (x.s / 100) * 14 * (1 - (state.age - x.a) / 4)));
+    m.recent.forEach((x) => (t += (x.s / 100) * 9 * (1 - (state.age - x.a) / 4)));
     if (m.th.on && !m.th.lapsed) t -= 6;
     t = cl(t);
     m.stress = Math.round(cl(m.stress + (t - m.stress) * 0.5));
@@ -509,19 +509,19 @@
       m.adhdRoll = true;
       if (age <= 16 && !hasOne("adhd") && ch(0.06 + (famHas("adhd") ? 0.12 : 0))) newCond("adhd", { dx: false });
     }
-    let pDep = 0.008 + 0.0012 * Math.max(0, m.stress - 40) + ((Number(stats().Happiness) || 60) < 35 ? 0.03 : 0) + (famHas("depression") ? 0.04 : 0);
+    let pDep = 0.6 * (0.008 + 0.0012 * Math.max(0, m.stress - 40) + ((Number(stats().Happiness) || 60) < 35 ? 0.03 : 0) + (famHas("depression") ? 0.04 : 0));
     if (m.recent.some((x) => x.k === "loss" || x.k === "violence" || x.k === "abuse")) pDep += 0.05;
     if (m.c.ptsd) pDep += 0.05;
     if (SD().guilt >= 70) pDep += 0.04;
     if (age < 12) pDep *= 0.3;
     if (age >= COND.depression.minAge && !hasOne("depression") && !state.depressed && ch(cl(pDep, 0, 0.35))) newCond("depression", { dx: false });
 
-    let pAnx = 0.01 + 0.0015 * Math.max(0, m.stress - 35) + (famHas("anxiety") || famHas("panic") ? 0.04 : 0) + (m.c.adhd ? 0.03 : 0);
+    let pAnx = 0.6 * (0.01 + 0.0015 * Math.max(0, m.stress - 35) + (famHas("anxiety") || famHas("panic") ? 0.04 : 0) + (m.c.adhd ? 0.03 : 0));
     if (age < 10) pAnx *= 0.5;
     if (age >= COND.anxiety.minAge && !hasOne("anxiety") && ch(cl(pAnx, 0, 0.3))) newCond("anxiety", { dx: false });
 
     if (age >= 15 && age <= 38 && !hasOne("bipolar")) {
-      const pBi = 0.0025 + (m.stress > 60 ? 0.002 : 0) + (famHas("bipolar") ? 0.02 : 0);
+      const pBi = 0.6 * (0.0025 + (m.stress > 60 ? 0.002 : 0) + (famHas("bipolar") ? 0.02 : 0));
       if (ch(pBi)) newCond("bipolar", { dx: false });
     }
   }

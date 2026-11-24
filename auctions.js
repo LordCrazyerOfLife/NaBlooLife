@@ -31,6 +31,8 @@
     }
     return b;
   };
+  // translate a whole sentence, including the parts the DOM dictionary can't see
+  const TR = (s) => (window.FL_I18N ? FL_I18N.t(s) : s);
   const esc = (s) =>
     String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
   const money = (n) => (typeof usd === "function" ? usd(Math.round(n)) : "$" + Math.round(n).toLocaleString("en-US"));
@@ -365,10 +367,10 @@
         c.price = Math.round(c.price * 0.3);
         c.model = `${c.model} (replica)`;
         c.collectible = false;
-        extra = " Bad news: it turned out to be a convincing replica.";
+        extra = "Bad news: it turned out to be a convincing replica.";
       } else if (!lot.col && rnd() < 0.18) {
         c.cond = ri(45, 70);
-        extra = " After the gavel, the inspection found hidden problems: it needs work.";
+        extra = "After the gavel, the inspection found hidden problems: it needs work.";
       }
       c.paid = lot.paid;
       state.cars.push(c);
@@ -376,7 +378,7 @@
       if (forged) {
         lot.item.fake = true;
         lot.item.claim = Math.round(lot.item.claim * 0.05);
-        extra = " Bad news: the stones and the hallmarks are fake.";
+        extra = "Bad news: the stones and the hallmarks are fake.";
       }
       (state.jewelry ||= []).push(lot.item);
     } else {
@@ -384,7 +386,7 @@
       if (forged) {
         p.fake = true;
         p.value = Math.round(p.value * (lot.cat === "nft" ? 0 : 0.03));
-        extra = lot.cat === "nft" ? " It was a copy-mint: worthless." : " An expert spotted it: it's a forgery.";
+        extra = lot.cat === "nft" ? "It was a copy-mint: worthless." : "An expert spotted it: it's a forgery.";
       }
       p.paid = lot.paid;
       ART().push(p);
@@ -412,7 +414,7 @@
         const g = state.gangLife;
         const cut = clampN(Math.round(hammer / ifx() / 25000), 3, 20);
         g.heat = Math.max(0, (g.heat || 0) - cut);
-        cool = ` The shell company washed the money: police heat -${cut}.`;
+        cool = `The shell company washed the money: police heat -${cut}.`;
       }
       if (S.prev && S.prev !== "you") {
         S.prev.st.heat = Math.min(0.3, S.prev.st.heat + 0.06);
@@ -422,18 +424,29 @@
       if (typeof renderStats === "function") renderStats();
       sayIt(`I won the ${lot.name} at auction for ${money(total)}.`);
       const rival = S.prev && S.prev !== "you" ? S.prev.r : null;
-      return notice(
-        "SOLD!",
-        `The ${lot.name} is yours for ${money(hammer)} + ${money(premium)} premium${shell ? ` + ${money(shell)} shell fee` : ""} = ${money(total)}.${extra}${cool}${S.war ? " What a bidding war." : ""}${rival ? ` ${rival.n} ${pick(SULK)}` : ""}`,
-        () => openAuctions(),
-        true,
-      );
+      const base = shell
+        ? TR(`The ${lot.name} is yours for ${money(hammer)} + ${money(premium)} premium + ${money(shell)} shell fee = ${money(total)}.`)
+        : TR(`The ${lot.name} is yours for ${money(hammer)} + ${money(premium)} premium = ${money(total)}.`);
+      const tail = [
+        extra.trim() ? `<span>${extra.trim()}</span>` : "",
+        cool.trim() ? `<span>${cool.trim()}</span>` : "",
+        S.war ? "<span>What a bidding war.</span>" : "",
+        rival ? `${esc(rival.n)} <span>${pick(SULK)}</span>` : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      return notice("SOLD!", base + (tail ? " " + tail : ""), () => openAuctions(), true);
     }
     lot.status = "lost";
     const w = S.leader.r;
     S.leader.st.beat++;
     sayIt(`I lost the ${lot.name} at auction.`);
-    notice("Sold to another bidder", `${w.n} (${w.t}) took the ${lot.name} for ${money(hammer)}. ${w.n} ${pick(GLOAT)}`, () => openAuctions(), true);
+    notice(
+      "Sold to another bidder",
+      TR(`${w.n} (${w.t}) took the ${lot.name} for ${money(hammer)}.`) + ` ${esc(w.n)} <span>${pick(GLOAT)}</span>`,
+      () => openAuctions(),
+      true,
+    );
   }
 
   // ------------------------------------------------------------------ your collection / selling
@@ -466,7 +479,12 @@
     const res = simulateSale(base);
     snd("choice");
     if (!res.sold) {
-      return notice("Reserve not met", `${it.name}: nobody reached the reserve. You keep it.${pv.text ? " " + pv.text : ""}`, () => openAuctions(), true);
+      return notice(
+        "Reserve not met",
+        TR(`${it.name}: nobody reached the reserve. You keep it.`) + (pv.text ? ` <span>${pv.text}</span>` : ""),
+        () => openAuctions(),
+        true,
+      );
     }
     const net = Math.round(res.hammer * 0.88);
     if (it.type === "car") state.cars.splice(state.cars.indexOf(it.ref), 1);
@@ -478,7 +496,9 @@
     sayIt(`I sold my ${it.name} at auction for ${money(net)}.`);
     notice(
       "SOLD!",
-      `${res.winner.n} took the ${it.name} for ${money(res.hammer)}. After the 12% commission you receive ${money(net)}.${it.unappr ? ` The house appraised it at ${money(it.est)}.` : ""}${pv.text ? " " + pv.text : ""}`,
+      TR(`${res.winner.n} took the ${it.name} for ${money(res.hammer)}. After the 12% commission you receive ${money(net)}.`) +
+        (it.unappr ? ` <span>The house appraised it at ${money(it.est)}.</span>` : "") +
+        (pv.text ? ` <span>${pv.text}</span>` : ""),
       () => openAuctions(),
       true,
     );
@@ -504,7 +524,14 @@
           if (i >= 1) ART().push({ id: uid(), kind: "art", name: "Gala donor piece", artist: pick(ARTISTS), img: ART_IMG, value: Math.round(n * 0.4), col: false, fake: false });
           if (typeof renderStats === "function") renderStats();
           sayIt(`I paid ${money(n)} at a charity gala auction.`);
-          notice("Charity gala", `You overpaid on purpose. The room applauds.${i >= 1 ? " You take home a piece worth about 40% of what you gave." : ""} Happiness +${hap}.`, () => openAuctions(), true);
+          notice(
+            "Charity gala",
+            TR("You overpaid on purpose. The room applauds.") +
+              (i >= 1 ? " <span>You take home a piece worth about 40% of what you gave.</span>" : "") +
+              ` <span>Happiness +${hap}.</span>`,
+            () => openAuctions(),
+            true,
+          );
         },
       ]);
     choices.push(["Leave early", () => openAuctions()]);

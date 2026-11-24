@@ -1766,9 +1766,9 @@
           transform 1s cubic-bezier(0.55, 0, 0.85, 0.4);
       }
       #splash .sp-logo {
-        width: 89.3%;
-        left: 5.35%;
-        top: calc(50% + 44px);
+        width: 60%;
+        left: 20%;
+        top: calc(50% + 10px);
       }
       #splash .sp-company {
         width: 87.6%;
@@ -1783,8 +1783,8 @@
         left: calc(50% - var(--sw) * 0.29);
       }
       html.pc #splash .sp-logo {
-        width: calc(var(--sw) * 0.893);
-        left: calc(50% - var(--sw) * 0.4465);
+        width: calc(var(--sw) * 0.6);
+        left: calc(50% - var(--sw) * 0.3);
       }
       html.pc #splash .sp-company {
         width: calc(var(--sw) * 0.876);
@@ -11020,7 +11020,7 @@
     <div class="phone bl-locked">
       <div id="splash">
         <img class="sp-a sp-sperm" src="splash/sperm0.png" alt="" />
-        <img class="sp-a sp-logo" src="splash/logo-pp.png" alt="BitLife++" />
+        <img class="sp-a sp-logo" src="freelife/logo-wide.png" alt="YourLife" />
         <img class="sp-a sp-company" src="splash/company.png" alt="" />
         <div class="sp-text">
           All characters and events in this game are fictional and are randomly generated. Any resemblance to
@@ -11920,6 +11920,57 @@
         return ROY_RANKS[e]["f" === t ? "f" : "m"];
       }
       const CURRENCY = {
+        // Latin America, the Caribbean and the remaining countries: local symbol instead of "$"
+        us: "$",
+        ca: "C$",
+        mx: "MX$",
+        ar: "AR$",
+        cl: "CL$",
+        co: "COL$",
+        pe: "S/",
+        uy: "$U",
+        py: "₲",
+        bo: "Bs ",
+        ve: "Bs.S ",
+        ec: "US$",
+        do: "RD$",
+        cu: "CUP$",
+        pr: "US$",
+        gt: "Q",
+        ni: "C$",
+        cr: "₡",
+        pa: "B/.",
+        sv: "US$",
+        ht: "G ",
+        jm: "J$",
+        bs: "B$",
+        bz: "BZ$",
+        gy: "G$",
+        aw: "Afl ",
+        au: "A$",
+        nz: "NZ$",
+        hk: "HK$",
+        sg: "S$",
+        tw: "NT$",
+        mn: "₮",
+        kz: "₸",
+        ge: "₾",
+        rs: "din ",
+        lb: "LBP ",
+        sy: "SYP ",
+        iq: "IQD ",
+        ir: "IRR ",
+        af: "Af ",
+        ao: "Kz ",
+        cd: "FC ",
+        dj: "Fdj ",
+        dz: "DA ",
+        et: "Br ",
+        tn: "DT ",
+        ug: "USh ",
+        zw: "Z$",
+        ws: "T$",
+        pg: "K ",
         gb: "£",
         jp: "¥",
         cn: "¥",

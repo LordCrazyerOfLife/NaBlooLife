@@ -1361,6 +1361,9 @@
   }
 
   // ------------------------------------------------------------------ scouting
+  function scoutAppeal(f) {
+    return f.skill * 0.65 + (Number(f.fame) || 0) * 0.2 + (Number(f.hype) || 0) * 0.15 + (f.gifted ? 6 : 0);
+  }
   function scoutOffers(f) {
     const home = findLeagueOfClub(f.club) || LEAGUES[0];
     const top = home.clubs.slice().sort((a, b) => b.rep - a.rep);
@@ -1377,16 +1380,27 @@
       if (offers.some((o) => clubKey(o.club) === clubKey(club))) return;
       offers.push({ club, tag });
     };
-    if (f.skill >= 84 || f.gifted) {
-      pushOffer(home, elite, 1, T("First division academy"));
+    // [mod] the better you are at school, the more clubs call and the bigger they are
+    const appeal = scoutAppeal(f);
+    const foreignTop = pick(LEAGUES.filter((l) => l.id !== home.id).sort((a, b) => b.rep - a.rep).slice(0, 4));
+    const topForeign = foreignTop && foreignTop.clubs.slice().sort((a, b) => b.rep - a.rep)[pick([0, 1, 2])];
+    if (appeal >= 85) {
+      top.slice(0, 3).forEach((c) => pushOffer(home, c, 1, T("Elite academy")));
+      pushOffer(foreignTop, topForeign, 1, T("Foreign elite academy"));
+    } else if (appeal >= 72) {
+      pushOffer(home, pick(top.slice(0, 4)), 1, T("First division academy"));
       pushOffer(home, mid, 1, T("First division academy"));
-    } else {
+      pushOffer(foreignLeague, foreign, 1, T("Foreign academy"));
+    } else if (appeal >= 55) {
       pushOffer(home, mid, 1, T("First division academy"));
       pushOffer(home, div2, 2, T("Second division academy"));
+      pushOffer(foreignLeague, foreign, 1, T("Foreign academy"));
+    } else {
+      pushOffer(home, div2, 2, T("Second division academy"));
     }
-    if (offers.length < 2 && foreign) pushOffer(foreignLeague, foreign, 1, T("Foreign academy"));
-    while (offers.length < 2) {
-      const c = randomClubs(1, { min: 55, max: 78, exclude: f.club ? [clubKey(f.club)] : [] })[0];
+    while (offers.length < (appeal >= 55 ? 2 : 1)) {
+      const lo = appeal >= 55 ? 55 : 35;
+      const c = randomClubs(1, { min: lo, max: appeal >= 55 ? 78 : 62, exclude: f.club ? [clubKey(f.club)] : [] })[0];
       if (!c) break;
       const l2 = findLeagueOfClub(c);
       pushOffer(l2, { id: c.id, name: c.name, rep: c.rep, logo: c.logo }, c.division, T("Academy offer"));
@@ -1455,7 +1469,7 @@
         iconSrc: E("1f440"),
         title: T("Scouts at the school gate"),
         lead: T(
-          "Your name is on the academy lists. Three clubs want to sign you before someone else does. This is the meeting that decides your life.",
+          scoutAppeal(f) >= 72 ? "Your name is on every academy list. The big clubs want to sign you before someone else does. This is the meeting that decides your life." : "Your name is on the academy lists. A club wants to sign you before someone else does. This is the meeting that decides your life.",
         ),
         rows: [[T("Your level"), `${Math.round(f.skill)}%`], ...rows],
         choices,
@@ -2971,7 +2985,7 @@
     steps.push(objectiveStep(f));
     const age = state.age;
     const scouted = f.scouted || f.academy;
-    if (!f.pro && !scouted && age >= 15 && (f.skill >= 85 || f.gifted || (f.waitAcademy || 0) > 0 || age >= 18)) {
+    if (!f.pro && !scouted && age >= 15 && (f.skill >= 85 || f.gifted || (f.waitAcademy || 0) > 0 || age >= 18 || (age >= 16 && rnd() < Math.max(0, (scoutAppeal(f) - 60) / 110)))) {
       steps.push(scoutStep(f));
     }
     f.fatigue = Math.max(10, (f.fatigue || 0) - 45); // off-season rest
