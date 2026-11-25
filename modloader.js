@@ -195,10 +195,7 @@
     document.head.append(css);
   })();
 
-  // ---------------------------------------------------------------- pantalla del loader (= el nuevo workshop)
-  // One screen for everything: our script mods, the code mods of the old Workshop (no code needed) and
-  // the Workshop's own switches (re-used as they are, so every special case keeps working).
-  let origWorkshop = null;
+  // ---------------------------------------------------------------- pantalla del loader (standalone, no toca el Workshop)
   const scriptName = (src) => String(src || "").split("?")[0].split("/").pop();
   const PORTED = "bitlifepp-ported";
   const portedList = () => {
@@ -223,19 +220,10 @@
 
   function openModLoader() {
     typeof play === "function" && play("choice");
-    if (typeof origWorkshop === "function") origWorkshop();
-    else sList.innerHTML = "";
+    sList.innerHTML = "";
     (sTitle.textContent = "MOD LOADER"), (sSub.style.display = "none");
     (sBack.innerHTML = typeof BACK_ICON !== "undefined" ? BACK_ICON : "&larr;"),
       (sBack.onclick = () => (typeof openMainMenu === "function" ? openMainMenu() : screen.classList.remove("open")));
-
-    // the Workshop's own "Mod Loader" switch makes no sense here
-    const own = sList.querySelector('[data-mod="modLoader"]');
-    if (own) {
-      const sec = own.previousElementSibling;
-      own.remove();
-      if (sec && sec.classList.contains("sec") && (!sec.nextElementSibling || sec.nextElementSibling.classList.contains("sec"))) sec.remove();
-    }
 
     const ported = portedList();
     const row = (attr, m, on) =>
@@ -243,15 +231,13 @@
       `<span>${on ? "Enabled" : "Disabled"}${m.desc ? ` · ${m.desc}` : ""}</span></div>` +
       `<img class="ck" src="${modBox(on)}"></div>`;
     const reg = registryMods();
-    sList.insertAdjacentHTML(
-      "afterbegin",
-      '<div class="mm-foot" style="padding:8px 14px; text-align:left">Every mod lives here now: turn them on or off. Script mods apply the next time YourLife loads.</div>' +
-        (MODS.length ? '<div class="sec">Mod Loader</div>' + MODS.map((m) => row(`data-ml="${m.id}" data-mlr="1"`, m, isOn(m))).join("") : "") +
-        (reg.length
-          ? '<div class="sec">Special careers &amp; extras</div>' +
-            reg.map((m) => row(`data-rc="${m.code}" data-mlr="1"`, m, !!ported.find((x) => x.code === m.code && x.on))).join("")
-          : ""),
-    );
+    sList.innerHTML =
+      '<div class="mm-foot" style="padding:8px 14px; text-align:left">Toggle mods on or off. Script mods apply the next time NaBlooLife loads.</div>' +
+      (MODS.length ? '<div class="sec">Mod Loader</div>' + MODS.map((m) => row(`data-ml="${m.id}" data-mlr="1"`, m, isOn(m))).join("") : "") +
+      (reg.length
+        ? '<div class="sec">Special careers &amp; extras</div>' +
+          reg.map((m) => row(`data-rc="${m.code}" data-mlr="1"`, m, !!ported.find((x) => x.code === m.code && x.on))).join("")
+        : "");
     const click = (el, fn) =>
       (el.onclick = () => {
         typeof play === "function" && play("choice");
@@ -270,7 +256,7 @@
         typeof notice === "function" &&
           notice(
             nowOn ? "Mod Enabled" : "Mod Disabled",
-            `${m.name || m.src} ${nowOn ? "is loaded now" : "will be skipped the next time YourLife loads"}.`,
+            `${m.name || m.src} ${nowOn ? "is loaded now" : "will be skipped the next time NaBlooLife loads"}.`,
             null,
             !0,
           );
@@ -294,7 +280,7 @@
         typeof notice === "function" &&
           notice(
             it.on ? "Mod Enabled" : "Mod Disabled",
-            `${(m && m.name) || code} ${it.on ? "is loaded now" : "will be off the next time YourLife loads"}.`,
+            `${(m && m.name) || code} ${it.on ? "is loaded now" : "will be off the next time NaBlooLife loads"}.`,
             null,
             !0,
           );
@@ -339,19 +325,9 @@
   }
   function boot() {
     if (!ready()) return setTimeout(boot, 60);
-    // the Mod Loader is the Workshop now: the old on/off switch is gone, so it is always on
-    try {
-      if (typeof mods !== "undefined" && mods && mods.modLoader === false) {
-        mods.modLoader = true;
-        if (typeof saveMods === "function") saveMods();
-      }
-    } catch {}
-    // every place that used to open the Mod Workshop (Settings, main menu) opens the Mod Loader instead
-    if (typeof window.openModSettings === "function" && window.openModSettings !== openModLoader) {
-      origWorkshop = window.openModSettings;
-      window.openModSettings = openModLoader;
-    }
-    hookMenu();
+    // the Workshop's own switch still decides whether the Mods row shows up in the Main Menu
+    const allowed = typeof mods === "undefined" || !mods || mods.modLoader !== false;
+    if (allowed) hookMenu();
     loadAll();
   }
 

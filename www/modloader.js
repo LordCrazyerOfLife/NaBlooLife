@@ -1,4 +1,4 @@
-/* NaBlooLife Mod Loader — adaptado para los mods de Free Life.
+/* NaBlooLife Mod Loader — adaptado para los mods de YourLife.
  *
  * Instalación: copiar este archivo a la raíz del juego (junto a game.html). NaBlooLife
  * lo inyecta solo desde game.html cuando el Mod Loader está activo; en builds viejos
@@ -20,6 +20,20 @@
 
   const MODS = [
     {
+      id: "black-market",
+      name: "Black Market",
+      icon: "blackmarket/bm-07-oni-mask.png",
+      src: "blackmarket.js?v=1",
+      desc: "Activities, Black Market (18+): an Antique Peddler, Arms Dealer, Art Thief and Jewel Fencer sell katanas, watches, chains, crowns, masks and more. Dealers have an attitude (prices, haggling), goods can be fakes until you pay for an appraisal, you can sell to a fence, and the police can raid you.",
+    },
+    {
+      id: "rich-life",
+      name: "Rich Life",
+      icon: "emoji/1f4b8.png",
+      src: "rich-life.js?v=2",
+      desc: "What comes with money: family and friends asking for loans (say no and they get angry), paparazzi headlines when you buy a mansion or a supercar, scams and break-ins, police heat, fans and critics, and a yearly tax season with audits if you cheat.",
+    },
+    {
       id: "chess-career",
       name: "Chess Career",
       icon: "emoji/265f-fe0f.png",
@@ -31,7 +45,7 @@
       id: "gang-bang",
       name: "Gang Bang",
       icon: "special/gangbang.png",
-      src: "gang.js?v=11",
+      src: "gang.js?v=12",
       desc: "Join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
     },
     {
@@ -45,14 +59,14 @@
       id: "special-life",
       name: "Special Life: Racer, Judge & Artist",
       icon: "emoji/1f3ce-fe0f.png",
-      src: "special-life.js?v=1",
+      src: "special-life.js?v=3",
       desc: "Three special careers: illegal street racer with nationwide police heat and an underground exotic-car auction, judge with evidence, sentences, bribes and revenge, and artist with a real drawing canvas whose pieces persist in localStorage.",
     },
     {
       id: "political-career",
       name: "Political Career",
       icon: "special/politician.png",
-      src: "politician.js?v=4",
+      src: "politician.js?v=5",
       desc: "Run for office from School Board to President: ranks, powers, campaigns, elections and scandals. Find it in Occupation, Special Careers.",
     },
     {
@@ -75,6 +89,50 @@
       icon: "emoji/1f575-fe0f.png",
       src: "nk.js?v=1",
       desc: "Country-specific life events for characters born in North Korea: a songbun social class at birth, food rationing, mandatory ideology sessions, the risk of being reported by an informant, and a rare, high-risk chance to attempt leaving the country. Only activates when your country is North Korea.",
+    },
+    {
+      id: "football-career",
+      name: "Football Career",
+      icon: "emoji/26bd.png",
+      src: "futbol.js?v=31",
+      deps: ["futbol-data.js?v=1", "futbol-events.js?v=2", "futbol-events-life.js?v=2"],
+      desc: "A full BitLife-style football life: high-school team, academy, first team, league/cup/continental/national-team competitions, key match decisions, transfers, loans, contracts and a permanent trophy cabinet. Find it in Occupation, Special Careers.",
+    },
+    {
+      id: "auction-house",
+      name: "Auction House",
+      icon: "emoji/1f528.png",
+      src: "auctions.js?v=3",
+      desc: "Auctions at the end of Shopping: a new catalogue every year with collectible hypercars, exotic cars, watches and chains. Bid live against named rivals with private limits and memories, jump-bid to scare them off, and pay a 10% buyer's premium when you win.",
+    },
+    {
+      id: "licenses",
+      name: "Licenses",
+      icon: "cars/ui-license.png",
+      src: "licenses.js?v=2",
+      desc: "License Office in Activities: car, motorcycle, commercial (CDL), boat, private pilot, helicopter and firearm licenses, each with a written exam and a practical test. They unlock sport bikes, boats, planes, helicopters, legal guns and driver jobs.",
+    },
+    {
+      id: "mental-health",
+      name: "Mental Health",
+      icon: "emoji/1f9e0.png",
+      src: "mentalhealth.js?v=6",
+      desc: "A serious mental-health layer: depression, anxiety, ADHD, bipolar disorder and PTSD with hidden symptoms, evaluation, therapy, medication with side effects, and real effects on stats, work and relationships. Military combat can cause PTSD. Also adds a sadistic streak as a personality trait (not a disorder) that ties into Melon and Infamous Killers. Find it in Activities.",
+    },
+    {
+      id: "nba-career",
+      name: "NBA Career",
+      icon: "bball/ball.png",
+      src: "nba.js?v=4",
+      deps: ["nba-data.js?v=1"],
+      desc: "A full NBA life with all 30 teams, coaches, rosters and logos: high school, college offers, the draft lottery, rookie scale and free-agent contracts, playoffs, awards (All-Star, All-NBA, MVP, DPOY, ROY, Finals MVP), sneaker deals, trades, injuries, 25+ events, retirement and the Hall of Fame. Find it in Occupation, Special Careers, Pro Athlete.",
+    },
+    {
+      id: "zookeeper",
+      name: "Zookeeper",
+      icon: "emoji/1f981.png",
+      src: "zoo.js?v=4",
+      desc: "A zoo career from volunteer to director: care for named animals, run shows, breed viral babies, and handle escapes, bites, a child in the gorilla enclosure, activists and inspections. Dark side: animal trafficking, a private big-cat collection and budget cuts. Also exotic pets at home, plus your own zoo: Assets, Zoo. Buy every species (with its art), build enclosures, set staff and tickets, breed viral babies. The career is in Occupation, Special Careers.",
     },
     {
       id: "custom-sources",
@@ -144,48 +202,98 @@
     document.head.append(css);
   })();
 
-  // ---------------------------------------------------------------- pantalla del loader
+  // ---------------------------------------------------------------- pantalla del loader (standalone, no toca el Workshop)
+  const scriptName = (src) => String(src || "").split("?")[0].split("/").pop();
+  const PORTED = "bitlifepp-ported";
+  const portedList = () => {
+    try {
+      return window.BL_MODS && BL_MODS.read ? BL_MODS.read() : [];
+    } catch {
+      return [];
+    }
+  };
+  const savePorted = (list) => {
+    try {
+      localStorage.setItem(PORTED, JSON.stringify(list));
+    } catch {}
+  };
+  const registryMods = () => {
+    const reg = (window.BL_MODS && BL_MODS.REGISTRY) || {};
+    const mine = new Set(MODS.flatMap((m) => [scriptName(m.src), ...(m.deps || []).map(scriptName)]));
+    return Object.entries(reg)
+      .filter(([code, d]) => d && d.src && code !== "11111111" && !mine.has(scriptName(d.src)))
+      .map(([code, d]) => ({ code, ...d }));
+  };
+
   function openModLoader() {
     typeof play === "function" && play("choice");
+    sList.innerHTML = "";
     (sTitle.textContent = "MOD LOADER"), (sSub.style.display = "none");
     (sBack.innerHTML = typeof BACK_ICON !== "undefined" ? BACK_ICON : "&larr;"),
       (sBack.onclick = () => (typeof openMainMenu === "function" ? openMainMenu() : screen.classList.remove("open")));
 
-    if (!MODS.length) {
-      sList.innerHTML =
-        '<div class="sec">Mod Loader</div><div class="row"><div class="t"><b>No mods listed</b>' +
-        "<span>Add entries to MODS in modloader.js</span></div></div>";
-      return;
-    }
-
-    const row = (m) =>
-      `<div class="row" data-ml="${m.id}"><img src="${m.icon || "ui/gear.png"}"><div class="t"><b>${m.name || m.src}</b>` +
-      `<span>${isOn(m) ? "Enabled" : "Disabled"}${m.desc ? ` · ${m.desc}` : ""}</span></div>` +
-      `<img class="ck" src="${modBox(isOn(m))}"></div>`;
-
+    const ported = portedList();
+    const row = (attr, m, on) =>
+      `<div class="row" ${attr}><img src="${m.icon || "ui/gear.png"}" style="object-fit:contain"><div class="t"><b>${m.name || m.src}</b>` +
+      `<span>${on ? "Enabled" : "Disabled"}${m.desc ? ` · ${m.desc}` : ""}</span></div>` +
+      `<img class="ck" src="${modBox(on)}"></div>`;
+    const reg = registryMods();
     sList.innerHTML =
-      '<div class="mm-foot" style="padding:8px 14px; text-align:left">Toggle mods on or off. Changes apply the next time Free Life loads.</div>' +
-      '<div class="sec">Mod Loader</div>' +
-      MODS.map(row).join("");
+      '<div class="mm-foot" style="padding:8px 14px; text-align:left">Toggle mods on or off. Script mods apply the next time NaBlooLife loads.</div>' +
+      (MODS.length ? '<div class="sec">Mod Loader</div>' + MODS.map((m) => row(`data-ml="${m.id}" data-mlr="1"`, m, isOn(m))).join("") : "") +
+      (reg.length
+        ? '<div class="sec">Special careers &amp; extras</div>' +
+          reg.map((m) => row(`data-rc="${m.code}" data-mlr="1"`, m, !!ported.find((x) => x.code === m.code && x.on))).join("")
+        : "");
+    const click = (el, fn) =>
+      (el.onclick = () => {
+        typeof play === "function" && play("choice");
+        fn();
+      });
 
     sList.querySelectorAll("[data-ml]").forEach((el) => {
-      el.onclick = () => {
-        typeof play === "function" && play("choice");
+      click(el, () => {
         const m = MODS.find((x) => x.id === el.dataset.ml),
           nowOn = !isOn(m);
         setOn(m, nowOn);
         el.querySelector(".ck").src = modBox(nowOn);
         const sub = el.querySelector(".t span");
         if (sub) sub.textContent = `${nowOn ? "Enabled" : "Disabled"}${m.desc ? ` · ${m.desc}` : ""}`;
+        if (nowOn) loadOne(m); // load it right now
         typeof notice === "function" &&
           notice(
             nowOn ? "Mod Enabled" : "Mod Disabled",
-            `${m.name || m.src} will be ${nowOn ? "loaded" : "skipped"} the next time Free Life loads.`,
+            `${m.name || m.src} ${nowOn ? "is loaded now" : "will be skipped the next time NaBlooLife loads"}.`,
             null,
             !0,
           );
-      };
+      });
     });
+    sList.querySelectorAll("[data-rc]").forEach((el) => {
+      click(el, () => {
+        const code = el.dataset.rc,
+          list = portedList(),
+          m = reg.find((x) => x.code === code);
+        let it = list.find((x) => x.code === code);
+        if (!it) {
+          it = { code, on: true };
+          list.push(it);
+        } else it.on = !it.on;
+        savePorted(list);
+        if (it.on && window.BL_MODS && BL_MODS.load) BL_MODS.load(code);
+        el.querySelector(".ck").src = modBox(it.on);
+        const sub = el.querySelector(".t span");
+        if (sub) sub.textContent = `${it.on ? "Enabled" : "Disabled"}${m && m.desc ? ` · ${m.desc}` : ""}`;
+        typeof notice === "function" &&
+          notice(
+            it.on ? "Mod Enabled" : "Mod Disabled",
+            `${(m && m.name) || code} ${it.on ? "is loaded now" : "will be off the next time NaBlooLife loads"}.`,
+            null,
+            !0,
+          );
+      });
+    });
+    sList.scrollTop = 0;
   }
 
   // ---------------------------------------------------------------- menú principal + arranque
@@ -224,7 +332,7 @@
   }
   function boot() {
     if (!ready()) return setTimeout(boot, 60);
-    // si el jugador apagó el Mod Loader en Settings, no se agrega la fila ni se carga nada
+    // the Workshop's own switch still decides whether the Mods row shows up in the Main Menu
     const allowed = typeof mods === "undefined" || !mods || mods.modLoader !== false;
     if (allowed) hookMenu();
     loadAll();
