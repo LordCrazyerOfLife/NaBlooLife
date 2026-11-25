@@ -11067,9 +11067,26 @@
         font-style: italic;
         color: #7a5a10;
       }
+      /* top safe-area bar: a fixed black bar matching the device's notch / status-bar height so it
+         never rides along with sliding screens (menus, the family tree) and isn't affected by any
+         zoom/scale mods applied to .phone. Hidden on desktop (html.pc), where there's no notch. */
+      #topSafeBar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: env(safe-area-inset-top, 0px);
+        background: #000;
+        z-index: 2147483647;
+        pointer-events: none;
+      }
+      html.pc #topSafeBar {
+        display: none;
+      }
     </style>
   </head>
   <body>
+    <div id="topSafeBar"></div>
     <div class="phone bl-locked">
       <div id="splash">
         <img class="sp-a sp-sperm" src="splash/sperm0.png" alt="" />
@@ -11338,7 +11355,7 @@
         <div class="s-head">
           <div class="circ" id="sBack"></div>
           <h2 id="sTitle">OCCUPATION</h2>
-          <span class="ver">v3.25.1a</span>
+          <span class="ver">v0.2</span>
           <div class="circ s-help" id="sHelp">?</div>
         </div>
         <div class="s-sub" id="sSub">All</div>
@@ -70214,7 +70231,7 @@
           e("settings", t("gear"), "Settings", "", CHEV, "") +
           e("themes", t("moon-crescent"), "Themes", "") +
           e("redeem", t("star"), "Redeem Code", "Redeem a gift code", DOTS) +
-          '<div class="mm-foot">BitLife++ v3.25.1<br>NO COPYRIGHT PENGUIN UNLOCKS LALA<span class="solo">A solo-made project</span></div>';
+          '<div class="mm-foot">NaBlooLife v0.2<br>99% bug-free. The other 1% is a feature.<span class="solo">Made by Nan089111 and ItzBloodie.dev</span></div>';
         const o = document.querySelector(".phone"),
           n = o.classList.contains("flui") && !o.classList.contains("y2018");
         if (n) {
@@ -70405,7 +70422,7 @@
           });
         const s = LB_COL[e];
         (sList.innerHTML =
-          `<div class="lb-sort"><span>Sort by:</span>${LB_SORTS.map(([t, a]) => `<a data-lb="${t}"${t === e ? ' class="on"' : ""}>${a}</a>`).join("")}</div><div class="sec">Version 3.25.1</div>` +
+          `<div class="lb-sort"><span>Sort by:</span>${LB_SORTS.map(([t, a]) => `<a data-lb="${t}"${t === e ? ' class="on"' : ""}>${a}</a>`).join("")}</div><div class="sec">Version 0.2</div>` +
           (n.length
             ? n
                 .map(

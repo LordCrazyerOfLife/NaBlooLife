@@ -81,7 +81,7 @@
       name: "Display Fix (Scale + Safe Area)",
       icon: "emoji/1f4cf.png",
       src: "displayfix.js?v=1",
-      desc: "Shrinks the whole phone screen down (default 85%, edit SCALE at the top of displayfix.js to adjust) and adds a thin black bar at the very top matching only your device's status bar / notch height (safe-area-inset-top).",
+      desc: "Shrinks the whole phone screen down (default 85%, edit SCALE at the top of displayfix.js to adjust). The notch / status-bar safe-area bar is always on now, built into the page itself.",
     },
     {
       id: "nk",

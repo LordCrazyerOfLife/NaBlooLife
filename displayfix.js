@@ -12,7 +12,6 @@
 
   function init() {
     addScaleStyle();
-    addTopSafeBar();
   }
 
   function addScaleStyle() {
@@ -39,39 +38,6 @@
     document.head.appendChild(style);
   }
 
-  // Menus (#screen, reused for Activities/Occupation/Market/etc.) and the
-  // Family Tree (#ftWrap) slide open/closed with a CSS transform. Putting
-  // the safe-area bar *inside* them meant it rode along with that slide,
-  // which looked like the bar detaching and sliding across the screen
-  // mid-animation. Instead, put ONE bar directly on the real viewport
-  // (fixed position, outside .phone entirely, above everything via a very
-  // high z-index) so it never moves no matter what's animating under it,
-  // and isn't affected by the .phone zoom/scale above either.
-  function addTopSafeBar() {
-    if (document.getElementById("topSafeBar")) return; // already injected
-
-    var style = document.createElement("style");
-    style.id = "topSafeStyle";
-    style.textContent =
-      "#topSafeBar {" +
-      "position: fixed;" +
-      "top: 0;" +
-      "left: 0;" +
-      "right: 0;" +
-      "height: env(safe-area-inset-top, 0px);" +
-      "background: #000;" +
-      "z-index: 2147483647;" +
-      "pointer-events: none;" +
-      "}" +
-      "html.pc #topSafeBar {" +
-      "display: none;" +
-      "}";
-    document.head.appendChild(style);
-
-    var bar = document.createElement("div");
-    bar.id = "topSafeBar";
-    document.body.appendChild(bar);
-  }
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
