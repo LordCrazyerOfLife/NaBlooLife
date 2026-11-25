@@ -1,4 +1,4 @@
-/* [mod] Licenses & license tests for YourLife (local mod).
+/* [mod] Licenses & license tests for NaBlooLife (local mod).
  *
  * License Office: Activities -> Licenses. Seven licenses, each with its own rules:
  *   car (the game's own driving test), motorcycle, commercial (CDL), boat captain,

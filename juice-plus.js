@@ -1,4 +1,4 @@
-/* [mod] Juice Plus for YourLife (local mod). Extends Event Juice.
+/* [mod] Juice Plus for NaBlooLife (local mod). Extends Event Juice.
  *
  *  - Vibration (navigator.vibrate, Android / the APK): a short buzz for arrests and big wins, a long one for death,
  *    a double pulse for a jackpot, picked from what the popup says.

@@ -5,7 +5,7 @@
     <meta name="google" content="notranslate" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>YourLife</title>
+    <title>NaBlooLife</title>
     <link rel="icon" type="image/png" sizes="64x64" href="freelife/favicon-64.png?v=1" />
     <link rel="icon" type="image/png" sizes="256x256" href="freelife/favicon-256.png?v=1" />
     <link rel="apple-touch-icon" href="freelife/favicon-256.png?v=1" />
@@ -34,7 +34,7 @@
             b.onclick = f;
             return b;
           };
-          d.innerHTML = "<div style='font-size:22px'>YourLife is taking too long to load</div><div style='opacity:.8;max-width:420px'>Your connection may be slow, or something blocked a file. Try again; if it keeps happening, repair the local data.</div>";
+          d.innerHTML = "<div style='font-size:22px'>NaBlooLife is taking too long to load</div><div style='opacity:.8;max-width:420px'>Your connection may be slow, or something blocked a file. Try again; if it keeps happening, repair the local data.</div>";
           d.appendChild(mk("Reload", () => location.reload(), "#33b249"));
           d.appendChild(
             mk(
@@ -2104,22 +2104,29 @@
       }
       .bitizen {
         position: relative;
-        width: 54px;
-        height: 37px;
+        width: 44px;
+        height: 44px;
         flex: none;
-        background: url(ui/navbarBitizenSeal.png) center/contain no-repeat;
+        object-fit: contain;
       }
-      .phone.dark .bitizen {
-        background-image: url(ui/navbarBitizenSeal-dm.png);
+      .bitizen-dark {
+        display: none;
+      }
+      .phone.dark .bitizen-light {
+        display: none;
+      }
+      .phone.dark .bitizen-dark {
+        display: block;
       }
       .logo-text {
         font-weight: 900;
         font-size: 23px;
-        color: #ffd21f;
+        color: #ffffff;
         letter-spacing: -0.5px;
         text-shadow:
-          0 2px 0 #b8240f,
-          0 0 1px #b8240f;
+          0 2px 0 #9a0a9a,
+          0 0 1px #9a0a9a,
+          0 0 10px rgba(230, 25, 230, 0.55);
         font-style: italic;
       }
       .pill {
@@ -2340,8 +2347,7 @@
         visibility: hidden;
         pointer-events: none;
       }
-      #heirBtn.hide,
-      #heirBtn:not(.hide) + #commLink {
+      #heirBtn.hide {
         display: none;
       }
       #heirBtn {
@@ -2366,15 +2372,11 @@
         text-align: center;
         padding-right: 18px;
       }
-      #commLink {
+      #discordLink {
         width: 167px;
         text-decoration: none;
-      }
-      #redditLink {
-        width: 167px;
-        text-decoration: none;
-        background: #ff4500;
-        border-bottom-color: #b33000;
+        background: #5865f2;
+        border-bottom-color: #3c45a5;
         color: #fff;
       }
       .phone.dark {
@@ -2573,16 +2575,8 @@
       .phone.gold .menu-btn i {
         display: none;
       }
-      .phone.gold .bitizen {
-        display: none;
-      }
-      .phone.gold .logo::before {
-        content: "";
-        flex: none;
-        width: 58px;
-        height: 40px;
-        background: url(gold/navbarBitizenSeal.png) center/contain no-repeat;
-      }
+      /* gold (superstar) theme used to swap in an old, never-rebranded "BITIZEN" seal
+         image here; now it just keeps the normal crowned NaBlooLife logo. */
       .phone.gold .logo-text {
         color: #5b3510;
         text-shadow:
@@ -6047,28 +6041,8 @@
       .phone.halloween .topbar {
         background: #000;
       }
-      .phone.halloween .bitizen {
-        display: none;
-      }
-      .phone.halloween .logo::before {
-        content: "";
-        flex: none;
-        width: 158px;
-        height: 40px;
-        background: url(halloween/logo.png) left center/contain no-repeat;
-      }
-      .phone.halloween .logo-text {
-        font-size: 0;
-        text-shadow: none;
-      }
-      .phone.halloween .logo-text::after {
-        content: "++";
-        font-size: 23px;
-        color: #ef6a26;
-        font-style: normal;
-        margin-left: -4px;
-        letter-spacing: -1px;
-      }
+      /* halloween theme used to swap in an old "BiTLiFE" wordmark image here; now it
+         just keeps the normal crowned NaBlooLife logo + text. */
       .phone.halloween .profile,
       .phone.halloween .stats,
       .phone.halloween .home,
@@ -6090,28 +6064,8 @@
       .phone.christmas.dark .topbar {
         background: #000 url(christmas/snow.png) 0 0/110px 110px repeat;
       }
-      .phone.christmas .bitizen {
-        display: none;
-      }
-      .phone.christmas .logo::before {
-        content: "";
-        flex: none;
-        width: 162px;
-        height: 42px;
-        background: url(christmas/logo.png) left center/contain no-repeat;
-      }
-      .phone.christmas .logo-text {
-        font-size: 0;
-        text-shadow: none;
-      }
-      .phone.christmas .logo-text::after {
-        content: "++";
-        font-size: 23px;
-        color: #ffeb00;
-        font-style: normal;
-        margin-left: -4px;
-        letter-spacing: -1px;
-      }
+      /* christmas theme used to swap in an old "BiTLiFE" wordmark image here; now it
+         just keeps the normal crowned NaBlooLife logo + text. */
       .phone.y2018 .topbar {
         background: #e8391d;
         justify-content: space-between;
@@ -6132,27 +6086,8 @@
         left: 50%;
         transform: translateX(-50%);
       }
-      .phone.y2018 .bitizen {
-        display: none;
-      }
-      .phone.y2018 .logo::before {
-        content: "";
-        width: 150px;
-        height: 38px;
-        background: url(2018/navbarLogo.png) center/contain no-repeat;
-      }
-      .phone.y2018 .logo-text {
-        font-size: 0;
-        text-shadow: none;
-      }
-      .phone.y2018 .logo-text::after {
-        content: "++";
-        font-size: 21px;
-        color: #ffeb00;
-        font-style: normal;
-        margin-left: -3px;
-        letter-spacing: -1px;
-      }
+      /* y2018 theme used to swap in an old "BiTLiFE" wordmark image here; now it
+         just keeps the normal crowned NaBlooLife logo + text. */
       .phone.y2018 .pill {
         display: none;
       }
@@ -6160,7 +6095,7 @@
         content: "";
         width: 58px;
         height: 40px;
-        background: url(2018/nabvarBitizenSeal.png) center/contain no-repeat;
+        background: url(ui/navbarNabloo.png) center/contain no-repeat;
       }
       .phone.y2018 .profile {
         position: relative;
@@ -6723,7 +6658,7 @@
       .row.cm .t b em {
         font-size: 1em;
       }
-      #commLink {
+      #discordLink {
         cursor: pointer;
       }
       .simon {
@@ -11057,13 +10992,30 @@
         font-style: italic;
         color: #7a5a10;
       }
+      /* top safe-area bar: a fixed black bar matching the device's notch / status-bar height so it
+         never rides along with sliding screens (menus, the family tree) and isn't affected by any
+         zoom/scale mods applied to .phone. Hidden on desktop (html.pc), where there's no notch. */
+      #topSafeBar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: env(safe-area-inset-top, 0px);
+        background: #000;
+        z-index: 2147483647;
+        pointer-events: none;
+      }
+      html.pc #topSafeBar {
+        display: none;
+      }
     </style>
   </head>
   <body>
+    <div id="topSafeBar"></div>
     <div class="phone bl-locked">
       <div id="splash">
         <img class="sp-a sp-sperm" src="splash/sperm0.png" alt="" />
-        <img class="sp-a sp-logo" src="freelife/logo-wide.png" alt="YourLife" />
+        <img class="sp-a sp-logo" src="splash/logo-pp.png" alt="NaBlooLife" />
         <img class="sp-a sp-company" src="splash/company.png" alt="" />
         <div class="sp-text">
           All characters and events in this game are fictional and are randomly generated. Any resemblance to
@@ -11080,8 +11032,9 @@
       <header class="topbar">
         <button class="menu-btn" aria-label="Menu"><i></i></button>
         <div class="logo">
-          <i class="bitizen"></i>
-          <span class="logo-text">BitLife++</span>
+          <img class="bitizen bitizen-light" src="ui/navbarNabloo.png" alt="" />
+          <img class="bitizen bitizen-dark" src="ui/navbarNabloo-dm.png" alt="" />
+          <span class="logo-text">NaBlooLife</span>
         </div>
         <div class="pill stars">
           <svg width="22" height="26" viewBox="0 0 22 26">
@@ -11211,8 +11164,8 @@
             </div>
             <a
               class="community"
-              id="commLink"
-              href="https://discord.com/channels/1574148139177484432/1574148139991048370"
+              id="discordLink"
+              href="https://discord.gg/DbZNtgjxvW"
               target="_blank"
               rel="noopener"
             >
@@ -11227,16 +11180,6 @@
                 />
               </svg>
               <span>JOIN OUR DISCORD</span>
-            </a>
-            <a
-              class="community"
-              id="redditLink"
-              href="https://www.reddit.com/r/FreeLifeSim/"
-              target="_blank"
-              rel="noopener"
-            >
-              <img src="freelife/reddit.png" alt="" style="width: 18px; height: 15px; object-fit: contain" />
-              <span>JOIN OUR REDDIT</span>
             </a>
           </div>
           <div class="pray hide" id="pray">
@@ -11328,7 +11271,7 @@
         <div class="s-head">
           <div class="circ" id="sBack"></div>
           <h2 id="sTitle">OCCUPATION</h2>
-          <span class="ver">v3.25.1a</span>
+          <span class="ver">v0.2</span>
           <div class="circ s-help" id="sHelp">?</div>
         </div>
         <div class="s-sub" id="sSub">All</div>
@@ -11504,10 +11447,6 @@
         } catch {}
         const r = () => {};
         let i = !1;
-        try {
-          const l = JSON.parse(localStorage.getItem("bitlifepp-settings") || "{}");
-          i = !(!l.bitlifeLoader && !l.bitlifeMode);
-        } catch {}
         function startSplash() {
           if (!i && window.FreeLifeSplash) return FreeLifeSplash(a, r);
           const e = a.querySelector(".sp-sperm"),
@@ -11642,26 +11581,29 @@
             : addEventListener("DOMContentLoaded", p, { once: !0 });
         }
       }
-      const PENGUIN = [
-        "                  :-===-::::",
-        "                 -*=:::-=+#+",
-        "                 #=     -=::",
-        "                :#*==-=#-",
-        "                :@-:--:#- :",
-        "               :*#     *-:",
-        "              -*@-     ++==",
-        "            :+=*=      :#:=*:",
-        "           =+--#:       += -*-",
-        "         :+=:=#=        +=: :*=",
-        "        -*==+-++        #--+= =+",
-        "       -#*+-  ++       :#: :=*:=+",
-        "       +%=    -#       +=    :++%:",
-        "       ::     :@-     -%:      ::",
-        "               #%:   :#-",
-        "             :-*=#=-=*-:=-:",
-        "            -*#===---:==+*+:",
-        "             :::",
-      ];
+                  const PENGUIN = [
+  "              @@@       @@              ",
+  "             @@@@      @@@@             ",
+  "      @@@     @@@@    @@@@              ",
+  "     @@@@    @@@@@@@@@@@@ ::            ",
+  "       @@@@@@@@@@@@@@@@@@........       ",
+  "        @@@@@@@@@::...    :........     ",
+  "     @@@@ @@............-      .....:   ",
+  "   @@@@@ ................-       :....  ",
+  "  @@@@  .................-         ...: ",
+  " @@@@   .................           ...:",
+  "@@@@@   :..............:            :...",
+  "@@@@     :............. ::     ...  -...",
+  "@@@@       ..........: ....  ...... -...",
+  "@@@@      :.......:: ..... ........=:...",
+  "@@@@@     ..............:.......... ...:",
+  " @@@@@    :...........:...........-:... ",
+  "  @@@@@    ..................:...::...  ",
+  "    @@@@@   .................-......:   ",
+  "      @@@@@@  .............: ......     ",
+  "        @@@@@@@@@::.....:    ...:       ",
+  "            @@@@@@                      ",
+];
       let chN = 0;
       const chs = (e) =>
         [...e].map((e) => (" " === e ? " " : `<span class="ch" style="--i:${chN++}">${e}</span>`)).join("");
@@ -11669,7 +11611,7 @@
         chN = 0;
         const e = document.createElement("div");
         (e.id = "penguin"),
-          (e.innerHTML = `<canvas class="pg-snow"></canvas>\n      <div class="pg-stage"><pre class="pg-ball"></pre><pre class="pg-pow"></pre><pre class="pg-art"></pre></div>\n      <div class="pg-white"></div><div class="pg-cred"><div class="pg-type">${chs("BitLife recreated by")}</div>\n      <div class="pg-links"><b>${chs("Please look at READ ME .TXT")}</b></div></div>`),
+          (e.innerHTML = `<canvas class="pg-snow"></canvas>\n      <div class="pg-stage"><pre class="pg-ball"></pre><pre class="pg-pow"></pre><pre class="pg-art"></pre></div>\n      <div class="pg-white"></div><div class="pg-cred"><div class="pg-type">${chs("BitLife recreated by Nan089111 and Itzbloodie")}</div>\n      <div class="pg-links"><b>${chs("Please look at READ ME .TXT")}</b></div></div>`),
           document.querySelector(".phone").append(e);
         const t = e.querySelector(".pg-art"),
           a = (e.querySelector(".pg-type"), e.querySelector(".pg-snow")),
@@ -11698,7 +11640,7 @@
                   (e.x += Math.sin(e.sway) * e.sw * n * 0.5),
                   e.y > a.height + 10 && Object.assign(e, s(!0)),
                   (o.globalAlpha = e.a),
-                  (o.fillStyle = "#fff"),
+                  (o.fillStyle = "#ff00ff"),
                   o.beginPath(),
                   o.arc(e.x, e.y, e.r, 0, 6.283),
                   o.fill();
@@ -11736,7 +11678,7 @@
           y = e.querySelector(".pg-ball"),
           b = e.querySelector(".pg-pow"),
           v = e.querySelector(".pg-white");
-        (y.textContent = " .-.\n( * )\n '-'"), (b.textContent = " .'*'.\n*:@@@:*\n '.*.'");
+        (y.textContent = "  *  \n *** \n*****\n * * \n*   *"), (b.textContent = " .'*'.\n*:@@@:*\n '.*.'");
         const w = (e, t) => m.push(setTimeout(t, e)),
           k = () => {
             if (p) return;
@@ -11772,7 +11714,7 @@
                 );
             }),
               w(1500, () => {
-                (y.style.opacity = 0),
+                y.animate([{ transform: `translate(${r[0]}px, ${r[1]}px) rotate(-520deg) scale(1)`, opacity: 1 }, { transform: `translate(${r[0]}px, ${r[1]}px) rotate(-650deg) scale(2.6)`, opacity: 0 }], { duration: 260, easing: "ease-out", fill: "forwards" }),
                   (b.style.cssText = `opacity:1;transform:translate(${a}px, ${o}px)`),
                   b.animate(
                     [
@@ -70277,7 +70219,7 @@
           e("settings", t("gear"), "Settings", "", CHEV, "") +
           e("themes", t("moon-crescent"), "Themes", "") +
           e("redeem", t("star"), "Redeem Code", "Redeem a gift code", DOTS) +
-          '<div class="mm-foot">BitLife++ v3.25.1<br>NO COPYRIGHT PENGUIN UNLOCKS LALA<span class="solo">A solo-made project</span></div>';
+          '<div class="mm-foot">NaBlooLife v0.2<br>99% bug-free. The other 1% is a feature.<span class="solo">Made by Nan089111 and ItzBloodie.dev</span></div>';
         const o = document.querySelector(".phone"),
           n = o.classList.contains("flui") && !o.classList.contains("y2018");
         if (n) {
@@ -70468,7 +70410,7 @@
           });
         const s = LB_COL[e];
         (sList.innerHTML =
-          `<div class="lb-sort"><span>Sort by:</span>${LB_SORTS.map(([t, a]) => `<a data-lb="${t}"${t === e ? ' class="on"' : ""}>${a}</a>`).join("")}</div><div class="sec">Version 3.25.1</div>` +
+          `<div class="lb-sort"><span>Sort by:</span>${LB_SORTS.map(([t, a]) => `<a data-lb="${t}"${t === e ? ' class="on"' : ""}>${a}</a>`).join("")}</div><div class="sec">Version 0.2</div>` +
           (n.length
             ? n
                 .map(
@@ -70496,7 +70438,7 @@
             null,
             !0,
           ));
-      for (const J of ["commLink", "redditLink"])
+      for (const J of ["discordLink"])
         document.getElementById(J).addEventListener("click", (e) => {
           overlayOpen() ? e.preventDefault() : play("choice");
         });
@@ -70643,14 +70585,14 @@
           n(
             "freelife",
             "freelife/penguin1.png",
-            "YourLife Mode",
+            "NaBlooLife Mode",
             "Snowy blue look and the penguin loading screen",
             !o && !s,
           ) +
           n(
             "freelife-dark",
             "freelife/penguin1.png",
-            "YourLife Dark Mode",
+            "NaBlooLife Dark Mode",
             "The snowy blue look on a dark background",
             !o && s,
           ) +
@@ -85011,10 +84953,10 @@
               return setTimeout(Re, 400);
             notice(
               "WELCOME TO YOURLIFE!",
-              "YourLife is a <b>FREE</b> life simulator with no in-game purchases, made for entertainment and heavily inspired by BitLife. It was recoded from scratch by a single person. YourLife isn't made for profit: it's entirely self-funded by one person.<br><br>YourLife will never charge you for in-game features or show ads. If you'd like to support the project and get your name on the site and in the Discord, click the button below. You may also get early access to features being tested.",
+              "NaBlooLife is a <b>FREE</b> life simulator with no in-game purchases, made for entertainment and heavily inspired by BitLife. It was recoded from scratch by a single person. NaBlooLife isn't made for profit: it's entirely self-funded by one person.<br><br>NaBlooLife will never charge you for in-game features or show ads. If you'd like to support the project and get your name on the site and in the Discord, click the button below. You may also get early access to features being tested.",
               null,
               !0,
-              '<button class="jm-apply ev-btn" id="flSupport" style="margin-top:20px;width:100%">Support YourLife</button>',
+              '<button class="jm-apply ev-btn" id="flSupport" style="margin-top:20px;width:100%">Support NaBlooLife</button>',
             );
             const e = document.getElementById("flSupport");
             e &&

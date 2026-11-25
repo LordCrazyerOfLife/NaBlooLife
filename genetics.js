@@ -1,4 +1,4 @@
-/* [mod] Family genetics for YourLife (local mod).
+/* [mod] Family genetics for NaBlooLife (local mod).
  *
  * The base game rolls skin color separately for you, your parents, siblings, grandparents, cousins and some babies,
  * so a white player could have black parents or a black baby with a white partner. This keeps families coherent:

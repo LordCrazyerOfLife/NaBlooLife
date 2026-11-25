@@ -1,4 +1,4 @@
-﻿/* [mod] Chess Career — carrera de ajedrez para YourLife (mod local).
+﻿/* [mod] Chess Career — carrera de ajedrez para NaBlooLife (mod local).
  * Fase 1: rating FIDE (Elo real), títulos con normas, torneos simulados, coach, clases, Pawnder (online simulado).
  * Diseño: ver AJEDREZ.md. Se carga como mod (mods.js, código 64646464) y no toca game.html.
  * Estado: state.chess (JSON puro, se crea perezosamente; cada vida tiene el suyo).

@@ -1,4 +1,4 @@
-/* [mod] NBA Career for YourLife (local mod).
+/* [mod] NBA Career for NaBlooLife (local mod).
  *
  * Occupation -> Special Careers -> Pro Athlete -> NBA Career.
  * High school (14-17) -> college offers (18-21) -> draft lottery and pick -> NBA contract (rookie scale,

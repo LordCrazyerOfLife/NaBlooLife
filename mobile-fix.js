@@ -1,4 +1,4 @@
-/* [mod] Mobile fixes for YourLife (local mod).
+/* [mod] Mobile fixes for NaBlooLife (local mod).
  *
  *  1. Modals fit: popups, cards and notices never get taller than the screen (they scroll inside instead of
  *     running off the edge), and the whole game uses the *visible* viewport height (100dvh), so the bottom is

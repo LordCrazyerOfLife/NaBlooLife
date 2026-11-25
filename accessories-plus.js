@@ -1,4 +1,4 @@
-/* [base] Accessories+ for YourLife.
+/* [base] Accessories+ for NaBlooLife.
  *
  * Activities -> Accessories gets two new sections under the usual eyewear / scars / headwear rows:
  *  - Jewelry: see what you are wearing right now (neck, wrist, grillz, ears), pick any piece you own for each slot

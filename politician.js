@@ -1,4 +1,4 @@
-/* [mod] Carrera política ("Political Career") para YourLife (mod local).
+/* [mod] Carrera política ("Political Career") para NaBlooLife (mod local).
  * Se activa con el código 17760704 (mods.js). Aparece en Ocupación → Special Careers.
  * No toca game.html: envuelve openSpecialCareers y openJobScreen, y se engancha a #ageBtn.
  * Estado: state.politics (JSON puro, por vida).

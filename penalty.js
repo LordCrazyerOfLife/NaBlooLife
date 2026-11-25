@@ -1,4 +1,4 @@
-/* [base] Penalty kicks for YourLife: a canvas minigame.
+/* [base] Penalty kicks for NaBlooLife: a canvas minigame.
  *
  * You see your player from behind, the keeper in the goal and the crowd all around. Click (or tap) where you want the
  * ball to go. Your skill decides how far the ball strays from where you aimed; corners are safer from the keeper but

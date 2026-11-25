@@ -1,4 +1,4 @@
-/* [mod] Football Career for YourLife (local mod).
+/* [mod] Football Career for NaBlooLife (local mod).
  *
  * A full BitLife-style football life: high-school team, academy, first team,
  * yearly training, league/cup/continental/national-team competitions, key

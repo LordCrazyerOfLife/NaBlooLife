@@ -1,4 +1,4 @@
-/* [mod] Crime Extras for YourLife (local mod).
+/* [mod] Crime Extras for NaBlooLife (local mod).
  *
  * Turns on the four Crime rows the base game lists but never finished:
  *  - Trespassing:     urban exploring, pools, rooftops, a military base, the zoo after hours.

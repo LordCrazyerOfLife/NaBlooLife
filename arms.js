@@ -1,4 +1,4 @@
-/* [mod] Vendedores de armas para YourLife (mod local). Lo carga gang.js (código 13131313).
+/* [mod] Vendedores de armas para NaBlooLife (mod local). Lo carga gang.js (código 13131313).
  * Tienda legal (pistolas, escopetas, armas de caza) + dealers de la calle (Draco, Mini Draco, switches,
  * accesorios y cargadores sueltos). Estado: state.arms (JSON puro, por vida).
  * Usar un arma en algo ilegal suma un cargo extra al arresto (busted()). Se conecta a la pandilla con window.FL_ARMS.

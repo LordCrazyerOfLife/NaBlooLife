@@ -1,4 +1,4 @@
-/* [mod] Rich Life for YourLife (local mod).
+/* [mod] Rich Life for NaBlooLife (local mod).
  *
  * What happens when you get rich:
  *  - Money requests: family and friends text you for a loan; say no and they get angry (relationship drops).

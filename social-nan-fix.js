@@ -1,4 +1,4 @@
-/* [mod] Social NaN fix for YourLife (local mod).
+/* [mod] Social NaN fix for NaBlooLife (local mod).
  *
  * Posting on social media could show "NaN views / NaN likes" (and "NaN followers" in the list). One bad number in an
  * account (subs, fake, momentum, views... missing or NaN) poisons every later post, because NaN + anything = NaN, so it

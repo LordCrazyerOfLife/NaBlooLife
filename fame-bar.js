@@ -1,4 +1,4 @@
-/* [mod] Fame bar for YourLife (local mod).
+/* [mod] Fame bar for NaBlooLife (local mod).
  *
  * Adds a "Fame" bar under Looks on the main screen. The base game only shows one for artists; this one follows any
  * career that tracks fame (football, NBA, zoo...): it shows the highest fame found in your state (0-100).

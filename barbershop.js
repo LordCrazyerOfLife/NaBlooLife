@@ -1,4 +1,4 @@
-/* [mod] Barbershop prices for YourLife (local mod).
+/* [mod] Barbershop prices for NaBlooLife (local mod).
  *
  * In the base game the Salon & Spa is free. With this mod the barber, hair stylist, dye job and shave
  * charge you when you actually change something: the price shows under the preview, and if you pick the look

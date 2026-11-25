@@ -1,0 +1,1943 @@
+# Free Life UI dictionary. Columns: english<TAB>español<TAB>português (BR). Lines starting with # are comments.
+# Matching is case-insensitive; ALL-CAPS screen titles are upper-cased automatically.
+# Trailing ":" "!" "?" "." "..." are handled automatically, so "Name" also covers "Name:".
+# Rebuild the .js files with: python build_i18n.py
+## --- main screen ---
+Age	Edad	Idade
+1 Week	1 semana	1 semana
+Assets	Bienes	Bens
+Relationships	Relaciones	Relacionamentos
+Activities	Actividades	Atividades
+Occupation	Ocupación	Ocupação
+Infant	Bebé	Bebê
+Bank Balance	Saldo bancario	Saldo bancário
+Cash	Efectivo	Dinheiro
+Pray	Rezar	Rezar
+Happiness	Felicidad	Felicidade
+Health	Salud	Saúde
+Smarts	Inteligencia	Inteligência
+Looks	Apariencia	Aparência
+JOIN OUR DISCORD	ÚNETE A NUESTRO DISCORD	ENTRE NO NOSSO DISCORD
+JOIN OUR REDDIT	ÚNETE A NUESTRO REDDIT	ENTRE NO NOSSO REDDIT
+New Heirloom!	¡Nueva reliquia!	Nova relíquia!
+Become a	Conviértete en	Torne-se um
+TIME TRAVELER	VIAJERO DEL TIEMPO	VIAJANTE DO TEMPO
+Reverse age	Retroceder edad	Voltar idade
+Menu	Menú	Menu
+Tap anywhere to continue	Toca en cualquier parte para continuar	Toque em qualquer lugar para continuar
+## --- new life ---
+Become someone else in FreeLife.	Conviértete en otra persona en FreeLife.	Torne-se outra pessoa no FreeLife.
+Start by picking a gender.	Empieza eligiendo un género.	Comece escolhendo um gênero.
+Now, pick someone to become.	Ahora, elige en quién convertirte.	Agora, escolha quem você vai ser.
+How are you playing?	¿Cómo estás jugando?	Como você está jogando?
+Play on PC	Jugar en PC	Jogar no PC
+Play on Mobile	Jugar en el móvil	Jogar no celular
+LAST USED	ÚLTIMO USADO	ÚLTIMO USADO
+Already open	Ya está abierto	Já está aberto
+Play here	Jugar aquí	Jogar aqui
+FreeLife is already open in another tab. Playing here will save and pause the other tab so your life doesn't get overwritten.	FreeLife ya está abierto en otra pestaña. Si juegas aquí, se guardará y pausará la otra pestaña para que tu vida no se sobrescriba.	O FreeLife já está aberto em outra aba. Jogar aqui vai salvar e pausar a outra aba para que sua vida não seja sobrescrita.
+We All Started Somewhere	Todos empezamos en algún lugar	Todos começamos de algum lugar
+Age up for the first time	Cumple años por primera vez	Envelheça pela primeira vez
+Loading	Cargando	Carregando
+Loading assets	Cargando recursos	Carregando recursos
+Loading sounds	Cargando sonidos	Carregando sons
+Building the world	Construyendo el mundo	Construindo o mundo
+Generating people	Generando personas	Gerando pessoas
+Setting up your life	Preparando tu vida	Preparando sua vida
+Almost ready	Casi listo	Quase pronto
+Ready	Listo	Pronto
+Done	Listo	Pronto
+Starting your life	Empezando tu vida	Começando sua vida
+## --- profile / general ---
+You	Tú	Você
+Profile	Perfil	Perfil
+Gender	Género	Gênero
+Male	Hombre	Homem
+Female	Mujer	Mulher
+Education	Educación	Educação
+None	Ninguna	Nenhuma
+Location	Ubicación	Localização
+Name	Nombre	Nome
+Status	Estado	Status
+Title	Título	Título
+Rank	Rango	Patente
+Type	Tipo	Tipo
+Price	Precio	Preço
+Cost	Costo	Custo
+Salary	Salario	Salário
+Income	Ingresos	Renda
+Net Worth	Patrimonio neto	Patrimônio líquido
+Properties	Propiedades	Propriedades
+Cars	Carros	Carros
+Condition	Condición	Condição
+Quality	Calidad	Qualidade
+Amount	Cantidad	Valor
+Balance	Saldo	Saldo
+Money	Dinero	Dinheiro
+Year	Año	Ano
+This Year	Este año	Este ano
+Day	Día	Dia
+Alive	Vivo	Vivo
+♥ Alive	♥ Vivo	♥ Vivo
+Deceased	Fallecido	Falecido
+Famous	Famoso	Famoso
+★ FAMOUS	★ FAMOSO	★ FAMOSO
+Royal	Realeza	Realeza
+Here's where you stand financially.	Así estás financieramente.	Assim está sua situação financeira.
+My finances	Mis finanzas	Minhas finanças
+Social media	Redes sociales	Redes sociais
+Social Media	Redes sociales	Redes sociais
+Manage your online identity	Administra tu identidad en línea	Gerencie sua identidade online
+## --- buttons / common choices ---
+OK	OK	OK
+Yes	Sí	Sim
+No	No	Não
+Back	Atrás	Voltar
+Next	Siguiente	Próximo
+Continue	Continuar	Continuar
+Cancel	Cancelar	Cancelar
+Confirm	Confirmar	Confirmar
+Close	Cerrar	Fechar
+Save	Guardar	Salvar
+Edit	Editar	Editar
+Delete	Borrar	Excluir
+Rename	Renombrar	Renomear
+Search	Buscar	Pesquisar
+Help	Ayuda	Ajuda
+Start	Empezar	Começar
+Play	Jugar	Jogar
+Accept	Aceptar	Aceitar
+Accept it	Aceptarlo	Aceitar
+Decline	Rechazar	Recusar
+Declined	Rechazado	Recusado
+Refuse	Negarse	Recusar
+Refused	Se negó	Recusou
+Rejected	Rechazado	Rejeitado
+Denied	Denegado	Negado
+Never mind	No importa	Deixa pra lá
+Actually, never mind	Pensándolo bien, no importa	Pensando bem, deixa pra lá
+Not now	Ahora no	Agora não
+Not today	Hoy no	Hoje não
+Not yet	Todavía no	Ainda não
+Not interested	No me interesa	Não tenho interesse
+No thanks	No, gracias	Não, obrigado
+Not again	Otra vez no	De novo não
+Maybe later	Quizás después	Talvez depois
+Surprise me!	¡Sorpréndeme!	Me surpreenda!
+Pick Random	Elegir al azar	Escolher aleatório
+Let's go!	¡Vamos!	Vamos lá!
+Ignore it	Ignorarlo	Ignorar
+Ignore them	Ignorarlos	Ignorar
+Ignored	Ignorado	Ignorado
+Walk away	Irse	Ir embora
+Walked away	Se fue	Foi embora
+Say no	Decir que no	Dizer não
+Stay home	Quedarse en casa	Ficar em casa
+Let it go	Dejarlo pasar	Deixar pra lá
+Skip it	Saltarlo	Pular
+Laugh it off	Tomarlo a risa	Levar na brincadeira
+Leave it alone	Dejarlo en paz	Deixar quieto
+Leave them alone	Dejarlos en paz	Deixar em paz
+Hand it over	Entregarlo	Entregar
+Buy it	Comprarlo	Comprar
+Buy it with cash	Comprarlo en efectivo	Comprar com dinheiro
+Sell	Vender	Vender
+Sell it	Venderlo	Vender
+Sold	Vendido	Vendido
+Sold!	¡Vendido!	Vendido!
+Keep it	Quedártelo	Ficar com ele
+Lend it	Prestarlo	Emprestar
+Steal it	Robarlo	Roubar
+Eat it	Comértelo	Comer
+Report it	Reportarlo	Denunciar
+Done deal	Trato hecho	Negócio fechado
+No deal	No hay trato	Sem acordo
+Deal	Trato	Negócio
+Offer	Oferta	Oferta
+Trade Offer	Oferta de intercambio	Proposta de troca
+Fight back	Defenderse	Revidar
+Fought back	Se defendió	Revidou
+Run	Correr	Correr
+Run away	Huir	Fugir
+Run for it	Salir corriendo	Sair correndo
+Give up	Rendirse	Desistir
+Surrender	Rendirse	Render-se
+Surrender...	Rendirse...	Render-se...
+Apologize	Disculparse	Pedir desculpas
+Compliment	Halagar	Elogiar
+Insult	Insultar	Insultar
+Argue	Discutir	Discutir
+Laugh	Reírse	Rir
+Laugh along	Reírse también	Rir junto
+Cry	Llorar	Chorar
+Scream	Gritar	Gritar
+Change the subject	Cambiar de tema	Mudar de assunto
+Confront them	Confrontarlos	Confrontá-los
+Scare them	Asustarlos	Assustá-los
+Stay quiet	Quedarse callado	Ficar quieto
+Say thanks	Dar las gracias	Agradecer
+Snitch	Delatar	Dedurar
+Bad idea	Mala idea	Má ideia
+Not enough money	No tienes suficiente dinero	Dinheiro insuficiente
+Not Enough Money	No tienes suficiente dinero	Dinheiro insuficiente
+Not enough	No alcanza	Não é suficiente
+Flat broke	Sin un peso	Completamente falido
+Broke	Arruinado	Falido
+Too young	Muy joven	Muito novo
+Too Young	Muy joven	Muito novo
+Not allowed	No permitido	Não permitido
+Coming soon	Próximamente	Em breve
+What will you do?	¿Qué vas a hacer?	O que você vai fazer?
+Will you take it?	¿Lo aceptas?	Você aceita?
+Will you drink it?	¿Te lo vas a tomar?	Você vai beber?
+Welcome back!	¡Bienvenido de nuevo!	Bem-vindo de volta!
+Welcome	Bienvenido	Bem-vindo
+Error	Error	Erro
+Failed	Falló	Falhou
+Success	Éxito	Sucesso
+Victory	Victoria	Vitória
+No luck	Sin suerte	Sem sorte
+Unknown	Desconocido	Desconhecido
+Nothing	Nada	Nada
+Free	Gratis	Grátis
+New	Nuevo	Novo
+Gone	Ya no está	Foi embora
+You own this	Ya tienes esto	Você já tem isso
+Not for sale	No está a la venta	Não está à venda
+Pick your target	Elige tu objetivo	Escolha seu alvo
+Pick your victim	Elige a tu víctima	Escolha sua vítima
+Pick your method	Elige tu método	Escolha seu método
+Pick your move	Elige tu jugada	Escolha sua jogada
+Pick your time	Elige tu momento	Escolha seu momento
+## --- assets ---
+Investments	Inversiones	Investimentos
+Manage your investment portfolio	Administra tu portafolio de inversiones	Gerencie sua carteira de investimentos
+Bank	Banco	Banco
+Payment Apps	Apps de pago	Apps de pagamento
+PayPal, Venmo, Cash App and more	PayPal, Venmo, Cash App y más	PayPal, Venmo, Cash App e mais
+Family	Familia	Família
+View Family Tree	Ver árbol genealógico	Ver árvore genealógica
+Your bloodline, back to your great-great-great-grandparents	Tu linaje, hasta tus tatara-tatarabuelos	Sua linhagem, até seus tataravós
+Misc.	Varios	Diversos
+Email	Correo	E-mail
+Make an email address	Crea un correo electrónico	Crie um endereço de e-mail
+Gaming Platforms	Plataformas de juegos	Plataformas de jogos
+Manage your gaming accounts	Administra tus cuentas de juegos	Gerencie suas contas de jogos
+Subscription Services	Suscripciones	Assinaturas
+Manage your streaming subscriptions	Administra tus suscripciones de streaming	Gerencie suas assinaturas de streaming
+Go Shopping	Ir de compras	Ir às compras
+Vehicles	Vehículos	Veículos
+Bicycles	Bicicletas	Bicicletas
+Instruments	Instrumentos	Instrumentos
+Jewelry	Joyas	Joias
+Property	Propiedad	Imóvel
+Deposit	Depositar	Depositar
+Withdraw	Retirar	Sacar
+Deposit Cash	Depositar efectivo	Depositar dinheiro
+Withdraw Cash	Retirar efectivo	Sacar dinheiro
+Stock	Acciones	Ações
+Current Price	Precio actual	Preço atual
+Realized Profit	Ganancia realizada	Lucro realizado
+## --- family tree ---
+FAMILY TREE	ÁRBOL GENEALÓGICO	ÁRVORE GENEALÓGICA
+Family Tree	Árbol genealógico	Árvore genealógica
+Map	Mapa	Mapa
+Traits	Rasgos	Traços
+All	Todos	Todos
+Ancestors	Ancestros	Ancestrais
+WORLD MAP	MAPA MUNDIAL	MAPA MUNDI
+World map	Mapa mundial	Mapa mundi
+Drag to spin · tap a country	Arrastra para girar · toca un país	Arraste para girar · toque em um país
+Where your family came from	De dónde viene tu familia	De onde sua família veio
+Your Generation	Tu generación	Sua geração
+Modern Day	Actualidad	Dias atuais
+Parents, Aunts & Uncles	Padres, tíos y tías	Pais, tios e tias
+Grandparents	Abuelos	Avós
+Great-Grandparents	Bisabuelos	Bisavós
+Great-Great-Grandparents	Tatarabuelos	Trisavós
+Great-Great-Great-Grandparents	Trastatarabuelos	Tetravós
+Stone Age Ancestors	Ancestros de la Edad de Piedra	Ancestrais da Idade da Pedra
+Stone Age · Ice Age hunter-gatherers	Edad de Piedra · cazadores-recolectores de la Edad de Hielo	Idade da Pedra · caçadores-coletores da Era do Gelo
+Mid-Century · Post-War America	Mediados de siglo · América de posguerra	Meados do século · América pós-guerra
+1970s–90s · Disco to Dial-Up	Años 70–90 · de la disco al dial-up	Anos 70–90 · da disco à internet discada
+Early 1900s · Jazz Age & World Wars	Principios de 1900 · era del jazz y guerras mundiales	Início dos anos 1900 · era do jazz e guerras mundiais
+Late 1800s · Victorian Era	Finales de 1800 · era victoriana	Final dos anos 1800 · era vitoriana
+Early 1800s · Romantic Era	Principios de 1800 · Romanticismo	Início dos anos 1800 · Romantismo
+1700s · Age of Enlightenment	Años 1700 · Ilustración	Anos 1700 · Iluminismo
+★ Famous Generation · Early 1800s · Romantic Era	★ Generación famosa · principios de 1800 · Romanticismo	★ Geração famosa · início dos anos 1800 · Romantismo
+Family History	Historia familiar	Histórico familiar
+Life Story	Historia de vida	História de vida
+Hereditary Traits	Rasgos hereditarios	Traços hereditários
+No Hereditary Traits	Sin rasgos hereditarios	Sem traços hereditários
+All Inheritable Traits	Todos los rasgos heredables	Todos os traços herdáveis
+Military Service	Servicio militar	Serviço militar
+No family history	Sin historial familiar	Sem histórico familiar
+Famous History	Historia de fama	Histórico de fama
+She got lucky in the family lottery	Le tocó la lotería familiar	Ela tirou a sorte grande na loteria familiar
+He got lucky in the family lottery	Le tocó la lotería familiar	Ele tirou a sorte grande na loteria familiar
+## --- relatives ---
+Father	Padre	Pai
+Mother	Madre	Mãe
+Your Father	Tu padre	Seu pai
+Your Mother	Tu madre	Sua mãe
+Parents	Padres	Pais
+Son	Hijo	Filho
+Daughter	Hija	Filha
+Children	Hijos	Filhos
+Baby	Bebé	Bebê
+Brother	Hermano	Irmão
+Siblings	Hermanos	Irmãos
+Older Brother	Hermano mayor	Irmão mais velho
+Older Sister	Hermana mayor	Irmã mais velha
+Younger Brother	Hermano menor	Irmão mais novo
+Younger Sister	Hermana menor	Irmã mais nova
+Grandpa	Abuelo	Vovô
+Grandma	Abuela	Vovó
+Grandfather	Abuelo	Avô
+Grandmother	Abuela	Avó
+Your Grandfather	Tu abuelo	Seu avô
+Great-Grandfather	Bisabuelo	Bisavô
+Great-Grandmother	Bisabuela	Bisavó
+Uncle	Tío	Tio
+Aunt	Tía	Tia
+Your Uncle	Tu tío	Seu tio
+Aunts & Uncles	Tíos y tías	Tios e tias
+Cousin	Primo	Primo
+Friend	Amigo	Amigo
+Best Friend	Mejor amigo	Melhor amigo
+New Friend	Nuevo amigo	Novo amigo
+Classmate	Compañero de clase	Colega de classe
+Coworker	Compañero de trabajo	Colega de trabalho
+Co-Workers	Compañeros de trabajo	Colegas de trabalho
+Partner	Pareja	Parceiro
+Stranger	Desconocido	Estranho
+Late Relationships	Relaciones fallecidas	Relacionamentos falecidos
+Relationship	Relación	Relacionamento
+Ancient Ancestor	Ancestro antiguo	Ancestral antigo
+Ancient Forefather	Antepasado antiguo	Antepassado antigo
+Ancient Foremother	Antepasada antigua	Antepassada antiga
+Ancestor	Ancestro	Ancestral
+Forefather	Antepasado	Antepassado
+Foremother	Antepasada	Antepassada
+Ancient	Antiguo	Antigo
+Clan Elder	Anciano del clan	Ancião do clã
+Their Son	Su hijo	Filho deles
+Maternal	Materno	Materno
+Paternal	Paterno	Paterno
+## --- relationship actions ---
+Ask for Money	Pedir dinero	Pedir dinheiro
+Ask him for money	Pedirle dinero	Pedir dinheiro a ele
+Ask her for money	Pedirle dinero	Pedir dinheiro a ela
+Pay him a compliment	Hacerle un cumplido	Fazer um elogio a ele
+Pay her a compliment	Hacerle un cumplido	Fazer um elogio a ela
+Conversation	Conversar	Conversar
+Have a conversation with him	Conversar con él	Conversar com ele
+Have a conversation with her	Conversar con ella	Conversar com ela
+Sell something to him	Venderle algo	Vender algo a ele
+Sell something to her	Venderle algo	Vender algo a ela
+Gift	Regalo	Presente
+Give him a gift	Darle un regalo	Dar um presente a ele
+Give her a gift	Darle un regalo	Dar um presente a ela
+Give Money	Dar dinero	Dar dinheiro
+Give him some money	Darle algo de dinero	Dar um dinheiro a ele
+Give her some money	Darle algo de dinero	Dar um dinheiro a ela
+Insult him	Insultarlo	Insultá-lo
+Insult her	Insultarla	Insultá-la
+Movie Theater	Cine	Cinema
+Go to the movies with him	Ir al cine con él	Ir ao cinema com ele
+Go to the movies with her	Ir al cine con ella	Ir ao cinema com ela
+Recruit	Reclutar	Recrutar
+Recruit him for your cult	Reclutarlo para tu secta	Recrutá-lo para sua seita
+Recruit her for your cult	Reclutarla para tu secta	Recrutá-la para sua seita
+Spend Time	Pasar tiempo	Passar tempo
+Spend time with him	Pasar tiempo con él	Passar tempo com ele
+Spend time with her	Pasar tiempo con ella	Passar tempo com ela
+Spy	Espiar	Espionar
+Spy on him	Espiarlo	Espioná-lo
+Spy on her	Espiarla	Espioná-la
+Switch Lives	Cambiar de vida	Trocar de vida
+Play as him	Jugar como él	Jogar como ele
+Play as her	Jugar como ella	Jogar como ela
+Edit him	Editarlo	Editá-lo
+Edit her	Editarla	Editá-la
+View his profile	Ver su perfil	Ver o perfil dele
+View her profile	Ver su perfil	Ver o perfil dela
+How he lived and died	Cómo vivió y murió	Como ele viveu e morreu
+How she lived and died	Cómo vivió y murió	Como ela viveu e morreu
+Genetic risk for everything in his era	Riesgo genético de todo lo de su época	Risco genético de tudo da época dele
+Genetic risk for everything in her era	Riesgo genético de todo lo de su época	Risco genético de tudo da época dela
+Send flowers	Enviar flores	Enviar flores
+Send a card	Enviar una tarjeta	Enviar um cartão
+Hook Up	Ligar	Ficar
+Proposal	Propuesta	Pedido
+Wedding	Boda	Casamento
+Divorced	Divorciado	Divorciado
+Single	Soltero	Solteiro
+## --- activities ---
+Premium Activities	Actividades premium	Atividades premium
+Vampire Mode	Modo vampiro	Modo vampiro
+Become a vampire	Conviértete en vampiro	Torne-se um vampiro
+Accessories	Accesorios	Acessórios
+Accessorize yourself	Ponte accesorios	Use acessórios
+Adoption	Adopción	Adoção
+Adopt a child	Adopta un niño	Adote uma criança
+Crime	Crimen	Crime
+Commit a crime	Comete un crimen	Cometa um crime
+Doctor	Doctor	Médico
+Visit the doctor	Ve al doctor	Vá ao médico
+Emigrate	Emigrar	Emigrar
+Move to another country	Múdate a otro país	Mude-se para outro país
+Fertility	Fertilidad	Fertilidade
+Visit a fertility clinic	Ve a una clínica de fertilidad	Vá a uma clínica de fertilidade
+Fight Betting	Apuestas de peleas	Apostas em lutas
+Bet on an Ultimate Fighting League match	Apuesta en una pelea de la Ultimate Fighting League	Aposte em uma luta da Ultimate Fighting League
+Gamble	Apostar	Apostar
+Visit a local casino	Ve a un casino local	Vá a um cassino local
+Horse Races	Carreras de caballos	Corridas de cavalos
+Go to the horse track	Ve al hipódromo	Vá ao hipódromo
+Hunting & Fishing	Caza y pesca	Caça e pesca
+Hunt game, fish, and sell what you catch	Caza, pesca y vende lo que atrapes	Cace, pesque e venda o que pegar
+Identity	Identidad	Identidade
+Define your identity	Define tu identidad	Defina sua identidade
+Lawsuit	Demanda	Processo
+Sue someone	Demanda a alguien	Processe alguém
+Licenses	Licencias	Licenças
+Manage your licenses	Administra tus licencias	Gerencie suas licenças
+Loan	Préstamo	Empréstimo
+Borrow money	Pide dinero prestado	Peça dinheiro emprestado
+Lottery	Lotería	Loteria
+Play the lottery	Juega la lotería	Jogue na loteria
+Love	Amor	Amor
+Find someone to love	Encuentra a alguien a quien amar	Encontre alguém para amar
+Mind & Body	Mente y cuerpo	Mente e corpo
+Work on self-improvement	Trabaja en mejorarte	Trabalhe no autoaperfeiçoamento
+Movies	Cine	Cinema
+Go to the movies	Ve al cine	Vá ao cinema
+Nightlife	Vida nocturna	Vida noturna
+Go clubbing	Sal de fiesta	Vá para a balada
+Pets	Mascotas	Animais de estimação
+Get a pet	Consigue una mascota	Arrume um bichinho
+Plastic Surgery	Cirugía plástica	Cirurgia plástica
+Go under the knife	Pasa por el quirófano	Entre na faca
+Pray to the FreeLife devs	Rézale a los devs de FreeLife	Reze para os devs do FreeLife
+Rehab	Rehabilitación	Reabilitação
+Battle your addictions	Lucha contra tus adicciones	Lute contra seus vícios
+Salon & Spa	Salón y spa	Salão e spa
+Take time for yourself	Tómate un tiempo para ti	Tire um tempo para você
+Shopping	Compras	Compras
+Sweepstakes	Sorteos	Sorteios
+Enter the sweepstakes	Participa en los sorteos	Participe dos sorteios
+Therapy	Terapia	Terapia
+Work on your mental health	Trabaja en tu salud mental	Cuide da sua saúde mental
+Time Machine	Máquina del tiempo	Máquina do tempo
+Travel back in time	Viaja al pasado	Volte no tempo
+Vacation	Vacaciones	Férias
+Go on a vacation	Vete de vacaciones	Saia de férias
+Will & Testament	Testamento	Testamento
+Manage your legacy	Administra tu legado	Gerencie seu legado
+Eyewear	Gafas	Óculos
+Put on some eyewear	Ponte unas gafas	Coloque uns óculos
+Scars	Cicatrices	Cicatrizes
+Get a scar on your face	Hazte una cicatriz en la cara	Faça uma cicatriz no rosto
+Eye Patch	Parche en el ojo	Tapa-olho
+Put on an eye patch	Ponte un parche en el ojo	Coloque um tapa-olho
+Headwear	Sombreros	Chapéus
+Put on some headwear	Ponte algo en la cabeza	Coloque algo na cabeça
+## --- main menu ---
+MAIN MENU	MENÚ PRINCIPAL	MENU PRINCIPAL
+My Lives	Mis vidas	Minhas vidas
+New Life	Nueva vida	Nova vida
+Save this life and start a new one	Guarda esta vida y empieza otra	Salve esta vida e comece outra
+Save Life	Guardar vida	Salvar vida
+Save this life in this browser	Guarda esta vida en este navegador	Salve esta vida neste navegador
+View Past Lives	Ver vidas pasadas	Ver vidas passadas
+Switch between your saved lives	Cambia entre tus vidas guardadas	Alterne entre suas vidas salvas
+My Stuff	Mis cosas	Minhas coisas
+Use your account-wide perks	Usa las ventajas de tu cuenta	Use as vantagens da sua conta
+Stats	Estadísticas	Estatísticas
+Cemetery	Cementerio	Cemitério
+Compare your past lives	Compara tus vidas pasadas	Compare suas vidas passadas
+Configure	Configurar	Configurar
+Settings	Ajustes	Configurações
+Themes	Temas	Temas
+A solo-made project	Un proyecto hecho por una sola persona	Um projeto feito por uma pessoa só
+## --- settings ---
+Accessibility	Accesibilidad	Acessibilidade
+Turn on voice navigation	Activa la navegación por voz	Ative a navegação por voz
+Age Down Button	Botón para bajar edad	Botão de diminuir idade
+Display the age down button	Muestra el botón para bajar edad	Mostra o botão de diminuir idade
+Announce Challenges	Anunciar desafíos	Anunciar desafios
+Display new challenges	Muestra los desafíos nuevos	Mostra novos desafios
+Bigger Text	Texto más grande	Texto maior
+Increase log text size	Agranda el texto del registro	Aumenta o texto do registro
+BitLife Loading Theme	Pantalla de carga de BitLife	Tela de carregamento do BitLife
+Use the classic BitLife loading screen	Usa la pantalla de carga clásica de BitLife	Usa a tela de carregamento clássica do BitLife
+BitLife Mode	Modo BitLife	Modo BitLife
+The classic red BitLife++ look and loading screen	El look rojo clásico de BitLife++ y su pantalla de carga	O visual vermelho clássico do BitLife++ e sua tela de carregamento
+Boosts	Impulsos	Impulsos
+Show boost opportunities	Muestra oportunidades de impulso	Mostra oportunidades de impulso
+Half-Year Age Up	Cumplir medio año	Envelhecer meio ano
+Two age up's per year	Dos cumpleaños por año	Dois aniversários por ano
+Two age ups per year	Dos cumpleaños por año	Dois aniversários por ano
+Haptics	Vibración	Vibração
+Good vibrations	Buenas vibras	Boas vibrações
+Mini-Games	Minijuegos	Minijogos
+Mini-games, mega-fun	Minijuegos, megadiversión	Minijogos, mega diversão
+NPC Accessories	Accesorios de NPC	Acessórios de NPC
+NPC's can wear accessories	Los NPC pueden usar accesorios	NPCs podem usar acessórios
+NPCs can wear accessories	Los NPC pueden usar accesorios	NPCs podem usar acessórios
+NPC Masks	Máscaras de NPC	Máscaras de NPC
+NPC's can wear masks	Los NPC pueden usar máscaras	NPCs podem usar máscaras
+NPCs can wear masks	Los NPC pueden usar máscaras	NPCs podem usar máscaras
+PC Mode	Modo PC	Modo PC
+Fit the game to your computer screen	Ajusta el juego a la pantalla de tu computadora	Ajusta o jogo à tela do seu computador
+Pray Button	Botón de rezar	Botão de rezar
+Display the Pray button	Muestra el botón de rezar	Mostra o botão de rezar
+Snow & Ice	Nieve y hielo	Neve e gelo
+Falling snow, snow caps and icicles in Free Life	Nieve cayendo, capas de nieve y carámbanos en Free Life	Neve caindo, montes de neve e pingentes de gelo no Free Life
+Sound Effects	Efectos de sonido	Efeitos sonoros
+Languages	Idiomas	Idiomas
+Mods	Mods	Mods
+Mod Workshop	Taller de mods	Oficina de mods
+Browse and enable every mod	Explora y activa todos los mods	Explore e ative todos os mods
+Redeem Code	Canjear código	Resgatar código
+Redeem a mod with an 8-digit code	Canjea un mod con un código de 8 dígitos	Resgate um mod com um código de 8 dígitos
+Packs	Paquetes	Pacotes
+UI Pack	Paquete de interfaz	Pacote de interface
+Free Life look	Look de Free Life	Visual do Free Life
+Sound Pack	Paquete de sonidos	Pacote de sons
+Match the theme sounds	Usa los sonidos del tema	Usa os sons do tema
+Icon Pack	Paquete de íconos	Pacote de ícones
+Match the theme icons	Usa los íconos del tema	Usa os ícones do tema
+Restore Earlier Purchase	Restaurar compra anterior	Restaurar compra anterior
+## --- traits / conditions ---
+Persistent Low Mood	Ánimo bajo persistente	Humor baixo persistente
+Seasonal Depression	Depresión estacional	Depressão sazonal
+Mood Swings	Cambios de humor	Mudanças de humor
+Anxiety	Ansiedad	Ansiedade
+Panic Disorder	Trastorno de pánico	Transtorno do pânico
+Social Anxiety	Ansiedad social	Ansiedade social
+Anger Issues	Problemas de ira	Problemas de raiva
+Schizophrenia	Esquizofrenia	Esquizofrenia
+Insomnia	Insomnio	Insônia
+Migraines	Migrañas	Enxaquecas
+Depression	Depresión	Depressão
+Alcohol Addiction	Adicción al alcohol	Vício em álcool
+Smoking Addiction	Adicción al tabaco	Vício em cigarro
+Vaping Addiction	Adicción al vapeo	Vício em vape
+Weed Addiction	Adicción a la marihuana	Vício em maconha
+Meth Addiction	Adicción a la metanfetamina	Vício em metanfetamina
+Opioid Addiction	Adicción a los opioides	Vício em opioides
+Prescription Pill Addiction	Adicción a pastillas recetadas	Vício em remédios controlados
+LSD Habit	Hábito de LSD	Hábito de LSD
+Gambling Addiction	Adicción al juego	Vício em jogos de azar
+Caffeine Dependence	Dependencia de la cafeína	Dependência de cafeína
+Internet & Social Media Addiction	Adicción a internet y redes sociales	Vício em internet e redes sociais
+Super Taster	Supercatador	Superdegustador
+Chimera Body	Cuerpo quimera	Corpo quimera
+LRP5 Super Bones	Superhuesos LRP5	Superossos LRP5
+Werewolf Syndrome	Síndrome del hombre lobo	Síndrome do lobisomem
+DEC2 Short Sleeper	Dormilón corto DEC2	Dorminhoco curto DEC2
+cigarettes	cigarrillos	cigarros
+horse racing and casinos	carreras de caballos y casinos	corridas de cavalos e cassinos
+heroin	heroína	heroína
+weed	marihuana	maconha
+vodka	vodka	vodka
+whiskey	whisky	uísque
+hashish	hachís	haxixe
+dice and cards	dados y cartas	dados e cartas
+chewing tobacco and cigars	tabaco de mascar y puros	tabaco de mascar e charutos
+## --- school / jobs / misc frequent ---
+School	Escuela	Escola
+High School	Secundaria	Ensino médio
+Middle School	Escuela intermedia	Ensino fundamental II
+University	Universidad	Universidade
+College	Universidad	Faculdade
+Community College	Colegio comunitario	Faculdade comunitária
+Graduate School	Posgrado	Pós-graduação
+Law School	Escuela de derecho	Faculdade de direito
+Medical School	Escuela de medicina	Faculdade de medicina
+Student	Estudiante	Estudante
+Teacher	Maestro	Professor
+Professor	Profesor	Professor universitário
+Grades	Notas	Notas
+Job	Trabajo	Emprego
+Jobs	Trabajos	Empregos
+Career	Carrera	Carreira
+Unemployed	Desempleado	Desempregado
+Retired	Jubilado	Aposentado
+Retire	Jubilarse	Aposentar-se
+Quit	Renunciar	Pedir demissão
+Fired	Despedido	Demitido
+Hired	Contratado	Contratado
+Promotion	Ascenso	Promoção
+Work Harder	Trabajar más duro	Trabalhar mais
+Performance	Desempeño	Desempenho
+Your Performance	Tu desempeño	Seu desempenho
+Apply for this open position today!	¡Aplica hoy a este puesto vacante!	Candidate-se hoje a esta vaga!
+Apply for this position	Aplicar a este puesto	Candidatar-se a esta vaga
+Military	Militar	Militar
+Army	Ejército	Exército
+Navy	Marina	Marinha
+Air Force	Fuerza Aérea	Força Aérea
+Marines	Infantería de Marina	Fuzileiros Navais
+Coast Guard	Guardia Costera	Guarda Costeira
+Prison	Prisión	Prisão
+Arrested	Arrestado	Preso
+Busted!	¡Atrapado!	Pego!
+Escape	Escapar	Fugir
+Police	Policía	Polícia
+Fame	Fama	Fama
+Notoriety	Notoriedad	Notoriedade
+Respect	Respeto	Respeito
+Reputation	Reputación	Reputação
+Popularity	Popularidad	Popularidade
+Craziness	Locura	Loucura
+Discipline	Disciplina	Disciplina
+Stress	Estrés	Estresse
+Skill	Habilidad	Habilidade
+Strength	Fuerza	Força
+Fitness	Estado físico	Condicionamento físico
+Gym	Gimnasio	Academia
+Hospital	Hospital	Hospital
+Surgery	Cirugía	Cirurgia
+Mental Health	Salud mental	Saúde mental
+Death	Muerte	Morte
+Birthday	Cumpleaños	Aniversário
+Party	Fiesta	Festa
+Achievement	Logro	Conquista
+Achievements	Logros	Conquistas
+Legendary	Legendario	Lendário
+Rare	Raro	Raro
+Uncommon	Poco común	Incomum
+Common	Común	Comum
+Heirloom	Reliquia	Relíquia
+Dog	Perro	Cachorro
+Cat	Gato	Gato
+Horse	Caballo	Cavalo
+Car	Carro	Carro
+Pet	Mascota	Bicho de estimação
+Password	Contraseña	Senha
+Username	Usuario	Usuário
+Log In	Iniciar sesión	Entrar
+Login	Iniciar sesión	Entrar
+Sign in	Iniciar sesión	Entrar
+Sign In	Iniciar sesión	Entrar
+Sign Up	Registrarse	Cadastrar-se
+Sign up	Registrarse	Cadastrar-se
+Register	Registrarse	Registrar
+Create an account	Crear una cuenta	Criar uma conta
+Need an account?	¿Necesitas una cuenta?	Precisa de uma conta?
+Forgot your password?	¿Olvidaste tu contraseña?	Esqueceu sua senha?
+Retype password	Repite la contraseña	Digite a senha novamente
+This field is required	Este campo es obligatorio	Este campo é obrigatório
+You can't leave this empty.	No puedes dejar esto vacío.	Você não pode deixar isso vazio.
+Date of Birth	Fecha de nacimiento	Data de nascimento
+Privacy Policy	Política de privacidad	Política de privacidade
+Terms of Service	Términos del servicio	Termos de serviço
+Terms of Use	Términos de uso	Termos de uso
+Learn more	Más información	Saiba mais
+Feedback	Comentarios	Feedback
+Sexuality	Sexualidad	Sexualidade
+Straight	Heterosexual	Hétero
+Gay	Gay	Gay
+Bisexual	Bisexual	Bissexual
+## --- found while testing ---
+Your new life has begun!	¡Tu nueva vida ha comenzado!	Sua nova vida começou!
+Insanity	Locura	Insanidade
+Premium Activities	Actividades premium	Atividades premium
+Go to the movies	Ve al cine	Vá ao cinema
+Bank Balance:	Saldo bancario:	Saldo bancário:
+Two age-ups per year	Dos cumpleaños por año	Dois aniversários por ano
+## --- chess mod (chess.js) ---
+Play, train and compete	Juega, entrena y compite	Jogue, treine e compita
+My Chess	Mi ajedrez	Meu xadrez
+Improve	Mejorar	Melhorar
+Tournaments	Torneos	Torneios
+Puzzles	Problemas	Problemas
+Train your tactics	Entrena tu táctica	Treine sua tática
+No coach	Sin entrenador	Sem treinador
+Club coach	Entrenador de club	Treinador de clube
+IM coach	Entrenador MI	Treinador MI
+GM coach	Entrenador GM	Treinador GM
+Final Rounds	Rondas finales	Rodadas finais
+Always simulate	Simular siempre	Simular sempre
+Ask me to play them	Preguntarme si las juego	Perguntar se eu quero jogar
+Give Lessons	Dar clases	Dar aulas
+Play Live	Jugar en vivo	Jogar ao vivo
+Rapid	Rápida	Rápida
+Titled players only	Solo jugadores titulados	Só jogadores titulados
+Stream	Transmitir	Fazer live
+Join Pawnder	Únete a Pawnder	Entre no Pawnder
+Play chess online	Juega ajedrez en línea	Jogue xadrez online
+FIDE Unrated	FIDE sin rating	FIDE sem rating
+FIDE: Unrated	FIDE: sin rating	FIDE: sem rating
+Unrated	Sin rating	Sem rating
+Still unrated	Todavía sin rating	Ainda sem rating
+Local Club Open	Abierto del club local	Aberto do clube local
+National Youth Championship	Campeonato Nacional Juvenil	Campeonato Nacional Juvenil
+Regional Open	Abierto Regional	Aberto Regional
+National Championship	Campeonato Nacional	Campeonato Nacional
+International Open	Abierto Internacional	Aberto Internacional
+Super Grandmaster Invitational	Torneo de invitación de súper GMs	Torneio de convidados de super GMs
+Candidates Tournament	Torneo de Candidatos	Torneio de Candidatos
+Grandmaster	Gran Maestro	Grande Mestre
+International Master	Maestro Internacional	Mestre Internacional
+FIDE Master	Maestro FIDE	Mestre FIDE
+Candidate Master	Candidato a Maestro	Candidato a Mestre
+Woman Grandmaster	Gran Maestra Femenina	Grande Mestra Feminina
+Woman International Master	Maestra Internacional Femenina	Mestra Internacional Feminina
+Woman FIDE Master	Maestra FIDE Femenina	Mestra FIDE Feminina
+Woman Candidate Master	Candidata a Maestra Femenina	Candidata a Mestra Feminina
+Final Round	Ronda final	Rodada final
+Your rating	Tu rating	Seu rating
+Opponent	Rival	Adversário
+Play the game	Jugar la partida	Jogar a partida
+Simulate it	Simularla	Simular
+Prize	Premio	Prêmio
+Norm	Norma	Norma
+Champion!	¡Campeón!	Campeão!
+New Title!	¡Nuevo título!	Novo título!
+Awesome	Genial	Demais
+Titles are for life.	Los títulos son de por vida.	Os títulos são vitalícios.
+World Championship Match	Match por el Campeonato Mundial	Match pelo Campeonato Mundial
+You won the Candidates! You've earned the right to challenge the World Champion in a 14-game match.	¡Ganaste el Torneo de Candidatos! Te ganaste el derecho de retar al Campeón del Mundo en un match a 14 partidas.	Você venceu o Torneio de Candidatos! Conquistou o direito de desafiar o Campeão Mundial num match de 14 partidas.
+Play the match	Jugar el match	Jogar o match
+I declined my World Championship match. People think I'm crazy.	Rechacé mi match por el Campeonato Mundial. La gente cree que estoy loco.	Recusei meu match pelo Campeonato Mundial. O pessoal acha que eu enlouqueci.
+World Champion!	¡Campeón del mundo!	Campeão mundial!
+So close	Tan cerca	Foi por pouco
+You are the new World Chess Champion!	¡Eres el nuevo Campeón Mundial de Ajedrez!	Você é o novo Campeão Mundial de Xadrez!
+The champion kept the crown.	El campeón retuvo la corona.	O campeão manteve a coroa.
+Final score	Marcador final	Placar final
+Burned out	Quemado	Esgotado
+You've already studied a lot this year.	Ya estudiaste bastante este año.	Você já estudou bastante este ano.
+Study session	Sesión de estudio	Sessão de estudo
+I studied endgames.	Estudié finales.	Estudei finais.
+I solved tactics puzzles.	Resolví problemas de táctica.	Resolvi problemas de tática.
+I went over grandmaster games.	Repasé partidas de grandes maestros.	Revisei partidas de grandes mestres.
+I worked on my openings.	Trabajé mis aperturas.	Trabalhei minhas aberturas.
+I analyzed my losses.	Analicé mis derrotas.	Analisei minhas derrotas.
+I practiced calculation.	Practiqué cálculo.	Pratiquei cálculo.
+You studied endgames. Your chess is improving.	Estudiaste finales. Tu ajedrez está mejorando.	Você estudou finais. Seu xadrez está melhorando.
+You solved tactics puzzles. Your chess is improving.	Resolviste problemas de táctica. Tu ajedrez está mejorando.	Você resolveu problemas de tática. Seu xadrez está melhorando.
+You went over grandmaster games. Your chess is improving.	Repasaste partidas de grandes maestros. Tu ajedrez está mejorando.	Você revisou partidas de grandes mestres. Seu xadrez está melhorando.
+You worked on your openings. Your chess is improving.	Trabajaste tus aperturas. Tu ajedrez está mejorando.	Você trabalhou suas aberturas. Seu xadrez está melhorando.
+You analyzed your losses. Your chess is improving.	Analizaste tus derrotas. Tu ajedrez está mejorando.	Você analisou suas derrotas. Seu xadrez está melhorando.
+You practiced calculation. Your chess is improving.	Practicaste cálculo. Tu ajedrez está mejorando.	Você praticou cálculo. Seu xadrez está melhorando.
+Hire a Coach	Contratar entrenador	Contratar treinador
+A good coach makes you improve much faster. Paid every year.	Un buen entrenador te hace mejorar mucho más rápido. Se paga cada año.	Um bom treinador faz você melhorar muito mais rápido. É pago todo ano.
+I stopped working with my chess coach.	Dejé de trabajar con mi entrenador de ajedrez.	Parei de trabalhar com meu treinador de xadrez.
+I couldn't afford my chess coach anymore.	Ya no me alcanzaba para pagar a mi entrenador de ajedrez.	Não consegui mais pagar meu treinador de xadrez.
+Not yet	Todavía no	Ainda não
+You need at least an 1800 rating to give chess lessons.	Necesitas al menos 1800 de rating para dar clases de ajedrez.	Você precisa de pelo menos 1800 de rating para dar aulas de xadrez.
+Booked	Agenda llena	Agenda cheia
+You already have your students for this year.	Ya tienes tus alumnos para este año.	Você já tem seus alunos para este ano.
+Parents won't hire a kid as a chess coach.	Ningún papá va a contratar a un niño como profe de ajedrez.	Nenhum pai vai contratar uma criança como professor de xadrez.
+Chess lessons	Clases de ajedrez	Aulas de xadrez
+You're too young to make an account.	Eres muy chiquito para crearte una cuenta.	Você é novo demais para criar uma conta.
+I made an account on Pawnder.	Me hice una cuenta en Pawnder.	Criei uma conta no Pawnder.
+Welcome to Pawnder! Your ratings start at 800 and move fast at first.	¡Bienvenido a Pawnder! Tus ratings empiezan en 800 y al principio se mueven rápido.	Bem-vindo ao Pawnder! Seus ratings começam em 800 e no início mudam rápido.
+You've played enough online this year.	Ya jugaste bastante en línea este año.	Você já jogou bastante online este ano.
+Only titled players can play Titled Tuesdays.	Solo los jugadores titulados pueden jugar los Titled Tuesday.	Só jogadores titulados podem jogar o Titled Tuesday.
+11 rounds of 5-minute blitz against the best titled players online.	11 rondas de blitz a 5 minutos contra los mejores titulados en línea.	11 rodadas de blitz de 5 minutos contra os melhores titulados online.
+Nobody watches a stream from an unknown player. Get to 1800 online or earn a title first.	Nadie ve el stream de un desconocido. Llega a 1800 en línea o gana un título primero.	Ninguém assiste live de um desconhecido. Chegue a 1800 online ou conquiste um título antes.
+You've already done your streaming for this year.	Ya hiciste tus streams de este año.	Você já fez suas lives deste ano.
+Pawnder stream	Stream en Pawnder	Live no Pawnder
+Pawnder · Rapid 5+3	Pawnder · Rápida 5+3	Pawnder · Rápida 5+3
+I played live rapid games on Pawnder.	Jugué partidas rápidas en vivo en Pawnder.	Joguei partidas rápidas ao vivo no Pawnder.
+I spent some time solving chess puzzles.	Pasé un rato resolviendo problemas de ajedrez.	Passei um tempo resolvendo problemas de xadrez.
+Too many tournaments	Demasiados torneos	Torneios demais
+Opponent is thinking…	El rival está pensando…	O adversário está pensando…
+Check! Your move.	¡Jaque! Te toca.	Xeque! Sua vez.
+Your move.	Te toca.	Sua vez.
+Correct! Keep going.	¡Correcto! Sigue.	Correto! Continue.
+Solved (with a hint).	Resuelto (con pista).	Resolvido (com dica).
+Solved!	¡Resuelto!	Resolvido!
+Next puzzle	Siguiente problema	Próximo problema
+Promote to	Coronar a	Promover para
+Hint	Pista	Dica
+Resign?	¿Te rindes?	Abandonar?
+This counts as a loss.	Esto cuenta como derrota.	Isso conta como derrota.
+You resigned.	Te rendiste.	Você abandonou.
+Keep playing	Seguir jugando	Continuar jogando
+Offer draw	Ofrecer tablas	Oferecer empate
+You just offered a draw. Wait a few moves.	Acabas de ofrecer tablas. Espera unas jugadas.	Você acabou de oferecer empate. Espere alguns lances.
+Your opponent accepted the draw.	Tu rival aceptó las tablas.	Seu adversário aceitou o empate.
+Your opponent declined the draw.	Tu rival rechazó las tablas.	Seu adversário recusou o empate.
+Simulate	Simular	Simular
+You have the white pieces. Your move.	Llevas las blancas. Te toca.	Você está de brancas. Sua vez.
+You have the black pieces.	Llevas las negras.	Você está de pretas.
+You won!	¡Ganaste!	Você venceu!
+You lost	Perdiste	Você perdeu
+Checkmate!	¡Jaque mate!	Xeque-mate!
+You got checkmated.	Te dieron jaque mate.	Você levou xeque-mate.
+You ran out of time.	Se te acabó el tiempo.	Seu tempo acabou.
+Draw by stalemate.	Tablas por ahogado.	Empate por afogamento.
+Draw by insufficient material.	Tablas por material insuficiente.	Empate por material insuficiente.
+Draw by 50-move rule.	Tablas por la regla de las 50 jugadas.	Empate pela regra dos 50 lances.
+Draw by threefold repetition.	Tablas por triple repetición.	Empate por repetição tripla.
+White to move. Checkmate in 1.	Juegan blancas. Mate en 1.	Brancas jogam. Mate em 1.
+White to move. Checkmate in 2.	Juegan blancas. Mate en 2.	Brancas jogam. Mate em 2.
+White to move. Find the best move.	Juegan blancas. Encuentra la mejor jugada.	Brancas jogam. Encontre o melhor lance.
+Black to move. Checkmate in 1.	Juegan negras. Mate en 1.	Pretas jogam. Mate em 1.
+Black to move. Checkmate in 2.	Juegan negras. Mate en 2.	Pretas jogam. Mate em 2.
+Black to move. Find the best move.	Juegan negras. Encuentra la mejor jugada.	Pretas jogam. Encontre o melhor lance.
+The chess board is still loading. Try again in a second.	El tablero todavía está cargando. Intenta de nuevo en un segundo.	O tabuleiro ainda está carregando. Tente de novo em um segundo.
+No puzzles available.	No hay problemas disponibles.	Não há problemas disponíveis.
+Resign game	Rendirse	Abandonar
+It's a draw	Tablas	Empate
+Score	Puntos	Pontos
+Result	Resultado	Resultado
+Match score	Marcador del match	Placar do match
+Games played	Partidas jugadas	Partidas jogadas
+Simulate this game	Simular esta partida	Simular esta partida
+Simulate the rest	Simular el resto	Simular o resto
+You have the white pieces.	Tienes las piezas blancas.	Você tem as peças brancas.
+You have the black pieces.	Tienes las piezas negras.	Você tem as peças pretas.
+My chess league team released me.	Mi equipo de la liga de ajedrez me dejó ir.	Meu time da liga de xadrez me dispensou.
+english	español	português
+Rating	Rating	Rating
+Followers	Seguidores	Seguidores
+Online rating	Rating en línea	Rating online
+Banned	Suspendido	Suspenso
+Sponsor	Patrocinador	Patrocinador
+League contract	Contrato de liga	Contrato de liga
+Chess Life	Vida de ajedrez	Vida no xadrez
+years	años	anos
+per year	por año	por ano
+Account closed	Cuenta cerrada	Conta encerrada
+Ended	Terminado	Encerrado
+Shady Offer	Oferta turbia	Oferta suspeita
+A shady guy offers you a tiny earpiece connected to a chess engine for your next tournament.	Un tipo turbio te ofrece un audífono diminuto conectado a un motor de ajedrez para tu próximo torneo.	Um cara suspeito te oferece um fone minúsculo ligado a um motor de xadrez para o seu próximo torneio.
+Use it	Usarlo	Usar
+Nobody noticed. You crushed the field, but you know the truth.	Nadie se dio cuenta. Arrasaste en el torneo, pero tú sabes la verdad.	Ninguém percebeu. Você arrasou no torneio, mas sabe a verdade.
+I cheated with an engine in a tournament and got away with it.	Hice trampa con un motor en un torneo y no me atraparon.	Trapaceei com um motor num torneio e não me pegaram.
+The arbiter found the earpiece. FIDE banned you and everyone knows.	El árbitro encontró el audífono. La FIDE te suspendió y todo el mundo se enteró.	O árbitro achou o fone. A FIDE te suspendeu e todo mundo ficou sabendo.
+I got caught cheating with an engine and FIDE banned me.	Me atraparon haciendo trampa con un motor y la FIDE me suspendió.	Fui pego trapaceando com um motor e a FIDE me suspendeu.
+You told him to get lost. You'd rather lose honestly.	Lo mandaste a volar. Prefieres perder con honestidad.	Você mandou ele sumir. Prefere perder com honestidade.
+I turned down an offer to cheat at chess.	Rechacé una oferta para hacer trampa en el ajedrez.	Recusei uma oferta para trapacear no xadrez.
+Report him	Denunciarlo	Denunciar
+The federation thanked you. Your name came up in the news as the honest one.	La federación te dio las gracias. Saliste en las noticias como el honesto de la historia.	A federação te agradeceu. Você apareceu nas notícias como o honesto da história.
+I reported a guy who was selling chess cheating devices.	Denuncié a un tipo que vendía aparatos para hacer trampa en el ajedrez.	Denunciei um cara que vendia aparelhos para trapacear no xadrez.
+Cheating Accusation	Acusación de trampa	Acusação de trapaça
+After a great result, a well-known player publicly accuses you of cheating. You didn't.	Después de un gran resultado, un jugador conocido te acusa públicamente de hacer trampa. No lo hiciste.	Depois de um ótimo resultado, um jogador conhecido te acusa publicamente de trapaça. Você não trapaceou.
+Sue him	Demandarlo	Processar
+You won the lawsuit. He had to pay and apologize publicly.	Ganaste la demanda. Tuvo que pagarte y pedirte perdón en público.	Você ganhou o processo. Ele teve que pagar e pedir desculpas em público.
+I sued a player who falsely accused me of cheating and won.	Demandé a un jugador que me acusó de trampa sin pruebas y gané.	Processei um jogador que me acusou de trapaça sem provas e ganhei.
+The judge threw out the case. Your lawyer still sent you the bill.	El juez desestimó el caso. Igual tu abogado te mandó la factura.	O juiz arquivou o caso. Mesmo assim seu advogado mandou a conta.
+I lost a lawsuit against a player who accused me of cheating.	Perdí una demanda contra un jugador que me acusó de trampa.	Perdi um processo contra um jogador que me acusou de trapaça.
+It died down after a few weeks, but some people still whisper.	Se calmó después de unas semanas, pero todavía hay gente que murmura.	Acalmou depois de algumas semanas, mas ainda tem gente cochichando.
+I ignored a cheating accusation against me.	Ignoré una acusación de trampa en mi contra.	Ignorei uma acusação de trapaça contra mim.
+Make a video about it	Hacer un video sobre eso	Fazer um vídeo sobre isso
+Your response video blew up. Drama is good for views.	Tu video de respuesta explotó. El drama da vistas.	Seu vídeo de resposta bombou. Drama dá views.
+I made a viral video answering a cheating accusation.	Hice un video viral respondiendo a una acusación de trampa.	Fiz um vídeo viral respondendo a uma acusação de trapaça.
+A Rivalry Is Born	Nace una rivalidad	Nasce uma rivalidade
+You keep getting paired against the same player at every tournament. People are calling it a rivalry.	Te toca el mismo rival en todos los torneos. La gente ya lo llama una rivalidad.	Você sempre pega o mesmo adversário em todos os torneios. O pessoal já chama de rivalidade.
+Trash talk him online	Tirarle en redes	Provocar nas redes
+The beef got you fired up. You've never studied harder.	El pique te motivó. Nunca habías estudiado tanto.	A treta te motivou. Você nunca estudou tanto.
+I started a public rivalry with another chess player.	Empecé una rivalidad pública con otro ajedrecista.	Comecei uma rivalidade pública com outro enxadrista.
+He crushed you in your next game and the internet roasted you.	Te aplastó en la siguiente partida y el internet te funó.	Ele te esmagou na partida seguinte e a internet te zoou.
+I trash talked a rival and then lost to him.	Le tiré a un rival y después perdí contra él.	Provoquei um rival e depois perdi para ele.
+Show respect	Mostrar respeto	Mostrar respeito
+You shook hands and grabbed a coffee. Turns out he's pretty cool.	Se dieron la mano y fueron por un café. Resulta que es buena gente.	Vocês apertaram as mãos e tomaram um café. Ele é gente boa.
+I made peace with my chess rival.	Hice las paces con mi rival de ajedrez.	Fiz as pazes com meu rival de xadrez.
+Study his games	Estudiar sus partidas	Estudar as partidas dele
+You found the holes in his repertoire. Next time you'll be ready.	Encontraste los huecos de su repertorio. La próxima vez vas a estar listo.	Você achou os furos no repertório dele. Na próxima vez vai estar pronto.
+I studied every game of my chess rival.	Estudié todas las partidas de mi rival.	Estudei todas as partidas do meu rival.
+Time Trouble	Apuro de tiempo	Apuro de tempo
+You're winning, but you only have 10 seconds left on your clock.	Vas ganando, pero solo te quedan 10 segundos en el reloj.	Você está ganhando, mas só tem 10 segundos no relógio.
+Play fast and go for mate	Jugar rápido y buscar el mate	Jogar rápido e buscar o mate
+Checkmate with one second left! The crowd went wild.	¡Jaque mate con un segundo en el reloj! El público se volvió loco.	Xeque-mate com um segundo no relógio! A plateia foi à loucura.
+I checkmated my opponent with one second left on my clock.	Le di jaque mate a mi rival con un segundo en el reloj.	Dei xeque-mate no meu adversário com um segundo no relógio.
+Your flag fell. You lost a completely winning game.	Se te cayó la bandera. Perdiste una partida que tenías ganada.	Seu tempo acabou. Você perdeu uma partida ganha.
+I lost a winning chess game on time.	Perdí por tiempo una partida que tenía ganada.	Perdi no tempo uma partida que estava ganha.
+Trade pieces and play safe	Cambiar piezas y jugar seguro	Trocar peças e jogar seguro
+You simplified into an easy endgame and won it slowly.	Simplificaste a un final fácil y lo ganaste con calma.	Você simplificou para um final fácil e venceu com calma.
+I won a tense chess game by playing it safe.	Gané una partida tensa jugando seguro.	Venci uma partida tensa jogando seguro.
+Offer a draw	Ofrecer tablas	Oferecer empate
+Your opponent accepted instantly. You'll never know if you would've won.	Tu rival aceptó al instante. Nunca vas a saber si ganabas.	Seu adversário aceitou na hora. Você nunca vai saber se teria vencido.
+I offered a draw in a winning position.	Ofrecí tablas en una posición ganadora.	Ofereci empate numa posição ganha.
+Quick Draw?	¿Tablas rápidas?	Empate rápido?
+In the last round, a draw qualifies both you and your opponent. He whispers an offer to agree to a draw before the game.	En la última ronda, unas tablas clasifican a los dos. Tu rival te susurra que pacten las tablas antes de jugar.	Na última rodada, um empate classifica os dois. Seu adversário sussurra para combinarem o empate antes do jogo.
+Agree to the draw	Pactar las tablas	Combinar o empate
+Ten moves and a handshake. You both qualified.	Diez jugadas y un apretón de manos. Los dos clasificaron.	Dez lances e um aperto de mão. Os dois se classificaram.
+I agreed to a quick draw to qualify for the next event.	Pacté unas tablas rápidas para clasificar.	Combinei um empate rápido para me classificar.
+The arbiter noticed. Both of you were fined and disqualified.	El árbitro se dio cuenta. Los dos fueron multados y descalificados.	O árbitro percebeu. Os dois foram multados e desclassificados.
+I got disqualified for arranging a draw.	Me descalificaron por pactar unas tablas.	Fui desclassificado por combinar um empate.
+Play to win	Jugar a ganar	Jogar para vencer
+You won the game and the tournament. Fortune favors the bold.	Ganaste la partida y el torneo. La suerte favorece a los valientes.	Você venceu a partida e o torneio. A sorte favorece os ousados.
+I refused a draw and won the tournament.	Rechacé las tablas y gané el torneo.	Recusei o empate e venci o torneio.
+You pushed too hard and lost. Now neither of you is happy.	Te arriesgaste demasiado y perdiste. Ahora ninguno de los dos está contento.	Você arriscou demais e perdeu. Agora nenhum dos dois está feliz.
+I refused a draw offer and lost the game.	Rechacé las tablas y perdí la partida.	Recusei o empate e perdi a partida.
+Tell the arbiter	Decírselo al árbitro	Contar ao árbitro
+He got a warning. Half the players think you're a snitch, the other half respect you.	Le dieron una advertencia. La mitad de los jugadores te ve como soplón y la otra mitad te respeta.	Ele levou uma advertência. Metade dos jogadores te acha dedo-duro, a outra metade te respeita.
+I reported an illegal draw offer to the arbiter.	Denuncié una oferta ilegal de tablas al árbitro.	Denunciei uma oferta ilegal de empate ao árbitro.
+Prep Leak	Filtración	Vazamento
+Your secret opening preparation leaked online right before a big tournament.	Tu preparación secreta de aperturas se filtró en internet justo antes de un torneo importante.	Sua preparação secreta de aberturas vazou na internet bem antes de um torneio importante.
+Change your whole repertoire	Cambiar todo tu repertorio	Mudar todo o repertório
+You spent weeks learning new lines. Exhausting, but nobody saw it coming.	Pasaste semanas aprendiendo líneas nuevas. Agotador, pero nadie se lo esperaba.	Você passou semanas aprendendo linhas novas. Cansativo, mas ninguém esperava.
+I rebuilt my whole opening repertoire after a leak.	Rehice todo mi repertorio de aperturas después de una filtración.	Refiz todo o meu repertório de aberturas depois de um vazamento.
+Play it anyway	Jugarla igual	Jogar mesmo assim
+Your opponents prepared for the leak, but you had a twist ready. It worked.	Tus rivales se prepararon para la filtración, pero tenías una sorpresa lista. Funcionó.	Seus adversários se prepararam para o vazamento, mas você tinha uma surpresa pronta. Funcionou.
+I used my leaked preparation anyway and it worked.	Usé igual mi preparación filtrada y me salió bien.	Usei minha preparação vazada mesmo assim e deu certo.
+Everyone knew your moves. It was a disaster.	Todo el mundo se sabía tus jugadas. Fue un desastre.	Todo mundo sabia seus lances. Foi um desastre.
+My leaked preparation got punished at the board.	Me castigaron la preparación filtrada en el tablero.	Minha preparação vazada foi punida no tabuleiro.
+Find who leaked it	Buscar quién la filtró	Descobrir quem vazou
+It was your own second. You fired him.	Fue tu propio segundo. Lo despediste.	Foi seu próprio auxiliar. Você o demitiu.
+I fired my chess second for leaking my preparation.	Despedí a mi segundo por filtrar mi preparación.	Demiti meu auxiliar por vazar minha preparação.
+Sponsorship Offer	Oferta de patrocinio	Proposta de patrocínio
+A brand wants to sponsor you and put their logo on your stream and your tournament jacket.	Una marca quiere patrocinarte y poner su logo en tu stream y en tu chaqueta de torneo.	Uma marca quer te patrocinar e colocar o logo dela na sua live e na sua jaqueta de torneio.
+Sign the deal	Firmar el contrato	Assinar o contrato
+You're officially a sponsored player. Money every year!	Ya eres oficialmente un jugador patrocinado. ¡Plata todos los años!	Agora você é oficialmente um jogador patrocinado. Dinheiro todo ano!
+I signed a sponsorship deal for my chess career.	Firmé un contrato de patrocinio para mi carrera de ajedrez.	Assinei um contrato de patrocínio para minha carreira no xadrez.
+You didn't like the brand. You'd rather stay independent.	No te gustó la marca. Prefieres seguir independiente.	Você não gostou da marca. Prefere continuar independente.
+I turned down a chess sponsorship.	Rechacé un patrocinio de ajedrez.	Recusei um patrocínio de xadrez.
+Sponsor Pulled Out	El patrocinador se fue	O patrocinador saiu
+Your sponsor pulled out after a scandal at their own company.	Tu patrocinador se retiró después de un escándalo en su propia empresa.	Seu patrocinador saiu depois de um escândalo na própria empresa.
+Look for a new sponsor	Buscar otro patrocinador	Procurar outro patrocinador
+You found a smaller sponsor. It's something.	Conseguiste un patrocinador más chico. Algo es algo.	Você conseguiu um patrocinador menor. Já é alguma coisa.
+I found a new chess sponsor.	Conseguí un nuevo patrocinador de ajedrez.	Consegui um novo patrocinador de xadrez.
+Nobody bit. You're on your own for now.	Nadie mordió el anzuelo. Por ahora estás solo.	Ninguém topou. Por enquanto você está sozinho.
+I lost my chess sponsor.	Perdí a mi patrocinador de ajedrez.	Perdi meu patrocinador de xadrez.
+Cut your expenses	Recortar gastos	Cortar gastos
+No more business class flights. You'll survive.	Se acabaron los vuelos en primera clase. Vas a sobrevivir.	Chega de voos de classe executiva. Você vai sobreviver.
+I lost my chess sponsor and cut my expenses.	Perdí a mi patrocinador de ajedrez y recorté gastos.	Perdi meu patrocinador de xadrez e cortei gastos.
+The Student Wins	El alumno gana	O aluno vence
+One of your teenage students just beat you in a blitz game, and he's grinning.	Uno de tus alumnos adolescentes te acaba de ganar una partida de blitz, y está sonriendo.	Um dos seus alunos adolescentes acabou de te vencer numa partida de blitz, e está sorrindo.
+Congratulate him	Felicitarlo	Parabenizar
+Nothing makes a coach prouder. His parents doubled your fee.	No hay nada que enorgullezca más a un entrenador. Sus papás te doblaron la tarifa.	Nada deixa um treinador mais orgulhoso. Os pais dele dobraram seu pagamento.
+One of my chess students beat me and I was proud.	Uno de mis alumnos de ajedrez me ganó y me sentí orgulloso.	Um dos meus alunos de xadrez me venceu e fiquei orgulhoso.
+Challenge him to a rematch	Retarlo a la revancha	Desafiar para uma revanche
+You won the rematch 5-0. Lesson learned, kid.	Ganaste la revancha 5-0. Lección aprendida, chamaco.	Você venceu a revanche por 5 a 0. Lição aprendida, garoto.
+I beat my chess student in a rematch.	Le gané la revancha a mi alumno de ajedrez.	Venci meu aluno de xadrez na revanche.
+He won again. Maybe he should be teaching you.	Volvió a ganar. Tal vez él debería darte clases a ti.	Ele venceu de novo. Talvez ele devesse te dar aula.
+My chess student beat me twice.	Mi alumno de ajedrez me ganó dos veces.	Meu aluno de xadrez me venceu duas vezes.
+Send him to a stronger coach	Mandarlo con un entrenador más fuerte	Mandar para um treinador mais forte
+You lost a student, but gained a lot of respect.	Perdiste un alumno, pero ganaste mucho respeto.	Você perdeu um aluno, mas ganhou muito respeito.
+I sent my best student to a stronger coach.	Mandé a mi mejor alumno con un entrenador más fuerte.	Mandei meu melhor aluno para um treinador mais forte.
+Chess Dad	Papá ajedrecista	Pai do xadrez
+Your dad wants to quit his job to become your full-time chess manager.	Tu papá quiere dejar su trabajo para ser tu mánager de ajedrez a tiempo completo.	Seu pai quer largar o emprego para ser seu empresário de xadrez em tempo integral.
+Let him	Dejarlo	Deixar
+He drives you everywhere and books every tournament. You're improving fast, but it's a lot of pressure.	Te lleva a todos lados y te inscribe en todos los torneos. Mejoras rápido, pero es mucha presión.	Ele te leva para todo lado e te inscreve em todos os torneios. Você melhora rápido, mas é muita pressão.
+My dad quit his job to manage my chess career.	Mi papá dejó su trabajo para manejar mi carrera de ajedrez.	Meu pai largou o emprego para cuidar da minha carreira no xadrez.
+Tell him no	Decirle que no	Dizer não
+You want chess to stay fun. He was a little hurt, but he understood.	Quieres que el ajedrez siga siendo divertido. Le dolió un poco, pero lo entendió.	Você quer que o xadrez continue divertido. Ele ficou um pouco chateado, mas entendeu.
+I told my dad I didn't want him managing my chess.	Le dije a mi papá que no quería que manejara mi ajedrez.	Disse ao meu pai que não queria que ele cuidasse do meu xadrez.
+Burnout	Agotamiento	Esgotamento
+You're exhausted. You see chess positions when you close your eyes.	Estás agotado. Ves posiciones de ajedrez cuando cierras los ojos.	Você está exausto. Vê posições de xadrez quando fecha os olhos.
+Take a break	Tomarte un descanso	Fazer uma pausa
+A few months away from the board did wonders for your mind.	Unos meses lejos del tablero te hicieron mucho bien.	Alguns meses longe do tabuleiro fizeram muito bem para você.
+I took a break from chess to recover from burnout.	Me tomé un descanso del ajedrez para recuperarme del agotamiento.	Dei uma pausa no xadrez para me recuperar do esgotamento.
+Push through	Seguir de largo	Seguir em frente
+You found a second wind. Champions are made like this.	Te llegó un segundo aire. Así se hacen los campeones.	Você ganhou um novo fôlego. É assim que se fazem campeões.
+I pushed through chess burnout and got stronger.	Seguí a pesar del agotamiento y me hice más fuerte.	Segui apesar do esgotamento e fiquei mais forte.
+You crashed hard. Your health and your chess both suffered.	Te estrellaste feo. Tu salud y tu ajedrez lo pagaron.	Você desabou feio. Sua saúde e seu xadrez pagaram o preço.
+I ignored my chess burnout and crashed.	Ignoré el agotamiento y me derrumbé.	Ignorei o esgotamento e desabei.
+Just play casually online	Jugar tranquilo en línea	Jogar só por diversão online
+Silly bullet games with friends reminded you why you love chess.	Partidas de bullet con amigos te recordaron por qué amas el ajedrez.	Partidas de bullet com amigos te lembraram por que você ama xadrez.
+I played casual online chess to beat burnout.	Jugué ajedrez en línea por diversión para salir del agotamiento.	Joguei xadrez online por diversão para sair do esgotamento.
+A team in a European chess league offers you a contract to play a few weekends a year.	Un equipo de una liga europea de ajedrez te ofrece un contrato para jugar unos fines de semana al año.	Um time de uma liga europeia de xadrez te oferece um contrato para jogar alguns fins de semana por ano.
+Sign	Firmar	Assinar
+Free hotels, a salary and good teammates. Not bad at all.	Hotel gratis, sueldo y buenos compañeros. Nada mal.	Hotel de graça, salário e bons colegas de time. Nada mal.
+I signed with a team in a European chess league.	Firmé con un equipo de una liga europea de ajedrez.	Assinei com um time de uma liga europeia de xadrez.
+Negotiate	Negociar	Negociar
+They raised the offer. You're worth it.	Subieron la oferta. Lo vales.	Eles aumentaram a proposta. Você vale isso.
+I negotiated a better chess league contract.	Negocié un mejor contrato de liga.	Negociei um contrato de liga melhor.
+They signed someone else instead.	Firmaron a otro en tu lugar.	Eles contrataram outra pessoa.
+I lost a chess league contract by negotiating too hard.	Perdí un contrato de liga por negociar demasiado.	Perdi um contrato de liga por negociar demais.
+You'd rather focus on individual events.	Prefieres enfocarte en los torneos individuales.	Você prefere focar nos torneios individuais.
+I turned down a chess league contract.	Rechacé un contrato de liga de ajedrez.	Recusei um contrato de liga de xadrez.
+Viral Game	Partida viral	Partida viral
+One of your games went viral because of a crazy queen sacrifice.	Una de tus partidas se hizo viral por un sacrificio de dama loquísimo.	Uma das suas partidas viralizou por causa de um sacrifício de dama maluco.
+Stream about it	Hacer stream sobre eso	Fazer live sobre isso
+Thousands of people watched you explain the game. New fans everywhere.	Miles de personas te vieron explicar la partida. Fans nuevos por todos lados.	Milhares de pessoas te viram explicar a partida. Fãs novos por todo lado.
+One of my chess games went viral and I streamed about it.	Una de mis partidas se hizo viral e hice stream sobre eso.	Uma das minhas partidas viralizou e eu fiz live sobre isso.
+Stay humble	Mantener la humildad	Manter a humildade
+You let the game speak for itself.	Dejaste que la partida hablara por sí sola.	Você deixou a partida falar por si.
+One of my chess games went viral.	Una de mis partidas de ajedrez se hizo viral.	Uma das minhas partidas de xadrez viralizou.
+Suspicious Trips	Viajes sospechosos	Idas suspeitas
+Your opponent goes to the bathroom after every single move.	Tu rival va al baño después de cada jugada.	Seu adversário vai ao banheiro depois de cada lance.
+You beat him anyway. Maybe he just drinks a lot of water.	Le ganaste igual. Tal vez solo toma mucha agua.	Você venceu mesmo assim. Talvez ele só beba muita água.
+I beat a suspicious opponent anyway.	Le gané igual a un rival sospechoso.	Venci um adversário suspeito mesmo assim.
+He played like a computer and beat you.	Jugó como una computadora y te ganó.	Ele jogou como um computador e te venceu.
+I lost to an opponent who was probably cheating.	Perdí contra un rival que probablemente hacía trampa.	Perdi para um adversário que provavelmente trapaceava.
+They found a phone hidden in the bathroom. He was expelled.	Encontraron un teléfono escondido en el baño. Lo expulsaron.	Acharam um celular escondido no banheiro. Ele foi expulso.
+I caught an opponent cheating with a phone in the bathroom.	Atrapé a un rival haciendo trampa con un teléfono en el baño.	Peguei um adversário trapaceando com um celular no banheiro.
+They found nothing. He just has a small bladder. Awkward.	No encontraron nada. Solo tiene la vejiga chiquita. Qué incómodo.	Não acharam nada. Ele só tem a bexiga pequena. Que constrangedor.
+I wrongly accused an opponent of cheating.	Acusé injustamente a un rival de hacer trampa.	Acusei injustamente um adversário de trapaça.
+Focus Pills	Pastillas para concentrarse	Remédio para foco
+A teammate offers you pills that supposedly help you focus during long tournaments.	Un compañero te ofrece unas pastillas que supuestamente ayudan a concentrarse en torneos largos.	Um colega te oferece uns comprimidos que supostamente ajudam a focar em torneios longos.
+Take them	Tomarlas	Tomar
+You played the best chess of your life. Your heart was racing for days.	Jugaste el mejor ajedrez de tu vida. Tu corazón estuvo acelerado por días.	Você jogou o melhor xadrez da sua vida. Seu coração ficou acelerado por dias.
+I took focus pills during a chess tournament.	Tomé pastillas para concentrarme en un torneo de ajedrez.	Tomei remédio para foco durante um torneio de xadrez.
+You failed a random drug test and got suspended.	Saliste positivo en un control antidopaje y te suspendieron.	Você foi pego num antidoping e foi suspenso.
+I got suspended from chess for failing a drug test.	Me suspendieron del ajedrez por dar positivo en un control antidopaje.	Fui suspenso do xadrez por falhar num antidoping.
+Stick to coffee	Quedarte con el café	Ficar no café
+Lots of coffee. Your hands were shaking, but you held on.	Mucho café. Te temblaban las manos, pero aguantaste.	Muito café. Suas mãos tremiam, mas você aguentou.
+I survived a long chess tournament on coffee.	Sobreviví a un torneo largo a punta de café.	Sobrevivi a um torneio longo na base do café.
+Sleep well instead	Mejor dormir bien	Dormir bem
+Eight hours of sleep every night. Old school, but it works.	Ocho horas de sueño cada noche. A la antigua, pero funciona.	Oito horas de sono toda noite. Das antigas, mas funciona.
+I turned down focus pills and slept well instead.	Rechacé las pastillas y mejor dormí bien.	Recusei os comprimidos e dormi bem.
+Time to Retire?	¿Hora de retirarse?	Hora de se aposentar?
+You've been playing worse every year. Maybe it's time to retire from competitive chess.	Cada año juegas peor. Tal vez es hora de retirarte del ajedrez competitivo.	Você joga pior a cada ano. Talvez seja hora de se aposentar do xadrez competitivo.
+Retire with dignity	Retirarte con dignidad	Se aposentar com dignidade
+You played your farewell game in front of your family. Everyone stood up and clapped.	Jugaste tu partida de despedida frente a tu familia. Todos se pararon a aplaudir.	Você jogou sua partida de despedida na frente da família. Todos se levantaram para aplaudir.
+I retired from competitive chess.	Me retiré del ajedrez competitivo.	Me aposentei do xadrez competitivo.
+Keep fighting	Seguir peleando	Continuar lutando
+Age is just a number. You booked three more tournaments.	La edad es solo un número. Te inscribiste en tres torneos más.	Idade é só um número. Você se inscreveu em mais três torneios.
+I refused to retire from chess.	Me negué a retirarme del ajedrez.	Me recusei a me aposentar do xadrez.
+Little Prodigy	Pequeño prodigio	Pequeno prodígio
+A 9-year-old prodigy beat you during a simultaneous exhibition. The video is everywhere.	Un prodigio de 9 años te ganó en una simultánea. El video está en todas partes.	Um prodígio de 9 anos te venceu numa simultânea. O vídeo está em todo lugar.
+You posted the clip yourself with a crying emoji. People loved it.	Tú mismo subiste el clip con un emoji llorando. A la gente le encantó.	Você mesmo postou o vídeo com um emoji chorando. O pessoal adorou.
+A 9-year-old beat me at chess and I laughed about it online.	Un niño de 9 años me ganó al ajedrez y me reí de eso en redes.	Uma criança de 9 anos me venceu no xadrez e eu ri disso nas redes.
+Offer to coach the kid	Ofrecerte a entrenarlo	Se oferecer para treinar a criança
+The parents said yes. You might be coaching a future champion.	Los papás dijeron que sí. Puede que estés entrenando a un futuro campeón.	Os pais aceitaram. Talvez você esteja treinando um futuro campeão.
+I started coaching a 9-year-old chess prodigy.	Empecé a entrenar a un prodigio de ajedrez de 9 años.	Comecei a treinar um prodígio de xadrez de 9 anos.
+Demand a rematch	Exigir la revancha	Exigir revanche
+You won the rematch, but beating a child didn't look great.	Ganaste la revancha, pero ganarle a un niño no se vio muy bien.	Você venceu a revanche, mas vencer uma criança não pegou bem.
+I demanded a rematch against a 9-year-old.	Le exigí la revancha a un niño de 9 años.	Exigi revanche contra uma criança de 9 anos.
+Book Deal	Contrato de libro	Contrato de livro
+A publisher wants you to write a chess book.	Una editorial quiere que escribas un libro de ajedrez.	Uma editora quer que você escreva um livro de xadrez.
+Write it	Escribirlo	Escrever
+It took a year, but your book is out. Chess players love it.	Te tomó un año, pero tu libro ya salió. A los ajedrecistas les encanta.	Levou um ano, mas seu livro saiu. Os enxadristas adoraram.
+I wrote a chess book.	Escribí un libro de ajedrez.	Escrevi um livro de xadrez.
+You'd rather play than write about playing.	Prefieres jugar que escribir sobre jugar.	Você prefere jogar a escrever sobre jogar.
+I turned down a chess book deal.	Rechacé un contrato para escribir un libro de ajedrez.	Recusei um contrato de livro de xadrez.
+School Exhibition	Exhibición en una escuela	Exibição numa escola
+A school invites you to play a simultaneous exhibition against 20 kids at once.	Una escuela te invita a jugar una simultánea contra 20 niños a la vez.	Uma escola te convida para jogar uma simultânea contra 20 crianças ao mesmo tempo.
+You won 19 games and let the shyest kid get a draw. Best day ever.	Ganaste 19 partidas y dejaste que el niño más tímido sacara tablas. El mejor día.	Você venceu 19 partidas e deixou a criança mais tímida empatar. Melhor dia.
+I played a chess exhibition against 20 kids at a school.	Jugué una simultánea contra 20 niños en una escuela.	Joguei uma simultânea contra 20 crianças numa escola.
+You were too busy this week.	Estabas muy ocupado esa semana.	Você estava muito ocupado nessa semana.
+I turned down a school chess exhibition.	Rechacé una exhibición de ajedrez en una escuela.	Recusei uma exibição de xadrez numa escola.
+Park Hustler	El estafador del parque	O malandro da praça
+A chess hustler in the park challenges you to a blitz game for $20.	Un tahúr del ajedrez en el parque te reta a una partida de blitz por $20.	Um malandro do xadrez na praça te desafia para um blitz valendo $20.
+Play him	Jugarle	Jogar
+You took his money and his pride. He wants a rematch tomorrow.	Le quitaste la plata y el orgullo. Quiere la revancha mañana.	Você levou o dinheiro e o orgulho dele. Ele quer revanche amanhã.
+I beat a chess hustler in the park.	Le gané a un tahúr del ajedrez en el parque.	Venci um malandro do xadrez na praça.
+He talked trash the whole game and beat you. Classic hustler.	Te habló basura toda la partida y te ganó. Típico tahúr.	Ele provocou a partida inteira e te venceu. Malandro clássico.
+A chess hustler in the park took my money.	Un tahúr del ajedrez en el parque me sacó la plata.	Um malandro do xadrez na praça levou meu dinheiro.
+You kept walking. He called you chicken.	Seguiste caminando. Te gritó gallina.	Você seguiu andando. Ele te chamou de frouxo.
+I ignored a chess hustler in the park.	Ignoré a un tahúr del ajedrez en el parque.	Ignorei um malandro do xadrez na praça.
+Big Bet	Apuesta grande	Aposta alta
+A rich guy at your chess club bets $1,000 that he can beat you.	Un tipo con plata de tu club apuesta $1,000 a que te gana.	Um ricaço do seu clube aposta $1.000 que consegue te vencer.
+Take the bet	Aceptar la apuesta	Aceitar a aposta
+Easy money. He paid up with a smile.	Plata fácil. Te pagó sonriendo.	Dinheiro fácil. Ele pagou sorrindo.
+I won a $1,000 chess bet.	Gané una apuesta de ajedrez de $1,000.	Ganhei uma aposta de xadrez de $1.000.
+He was way better than he looked. Ouch.	Era mucho mejor de lo que parecía. Auch.	Ele era bem melhor do que parecia. Ai.
+I lost a $1,000 chess bet.	Perdí una apuesta de ajedrez de $1,000.	Perdi uma aposta de xadrez de $1.000.
+You don't gamble on chess.	Tú no apuestas en el ajedrez.	Você não aposta no xadrez.
+I turned down a chess bet.	Rechacé una apuesta de ajedrez.	Recusei uma aposta de xadrez.
+Your Own Opening	Tu propia apertura	Sua própria abertura
+A new opening line you played so often is now officially named after you.	Una línea de apertura que jugaste tantas veces ahora lleva oficialmente tu nombre.	Uma linha de abertura que você jogou tantas vezes agora leva oficialmente o seu nome.
+Thank the chess world	Agradecerle al mundo del ajedrez	Agradecer ao mundo do xadrez
+Your name will live forever in opening books.	Tu nombre va a vivir para siempre en los libros de aperturas.	Seu nome vai viver para sempre nos livros de aberturas.
+A chess opening was named after me.	Le pusieron mi nombre a una apertura de ajedrez.	Uma abertura de xadrez ganhou o meu nome.
+Brag about it	Presumirlo	Se gabar
+You made it your whole personality. Your friends are tired of hearing it.	Lo convertiste en toda tu personalidad. Tus amigos ya están cansados de oírlo.	Isso virou toda a sua personalidade. Seus amigos já cansaram de ouvir.
+A chess opening was named after me and I won't stop talking about it.	Le pusieron mi nombre a una apertura y no dejo de hablar de eso.	Uma abertura ganhou o meu nome e eu não paro de falar disso.
+Stream Trolls	Trolls en el stream	Trolls na live
+Trolls are spamming your stream chat and calling you a fraud.	Unos trolls están llenando el chat de tu stream y diciendo que eres un fraude.	Uns trolls estão lotando o chat da sua live e te chamando de fraude.
+Ban them all	Banearlos a todos	Banir todos
+Clean chat, happy viewers.	Chat limpio, espectadores contentos.	Chat limpo, espectadores felizes.
+I banned trolls from my chess stream.	Baneé a los trolls de mi stream de ajedrez.	Bani os trolls da minha live de xadrez.
+Roast them back	Devolverles la burla	Zoar de volta
+You roasted them so hard the clip went viral.	Te burlaste tan fuerte de ellos que el clip se hizo viral.	Você zoou tanto que o clipe viralizou.
+I roasted trolls on my chess stream and it went viral.	Me burlé de los trolls en mi stream y se hizo viral.	Zoei os trolls na minha live e viralizou.
+You ignored them, but it still got under your skin.	Los ignoraste, pero igual te afectó.	Você ignorou, mas mesmo assim te afetou.
+Trolls ruined my chess stream.	Los trolls me arruinaron el stream de ajedrez.	Os trolls estragaram minha live de xadrez.
+Commentator Gig	Trabajo de comentarista	Trabalho de comentarista
+A big tournament wants you as a live commentator.	Un torneo importante te quiere como comentarista en vivo.	Um grande torneio quer você como comentarista ao vivo.
+You were funny and sharp on air. They already want you back next year.	Estuviste chistoso y certero en vivo. Ya te quieren de vuelta el año que viene.	Você foi engraçado e afiado ao vivo. Já querem você de volta no ano que vem.
+I worked as a live chess commentator.	Trabajé como comentarista de ajedrez en vivo.	Trabalhei como comentarista de xadrez ao vivo.
+You'd rather be the one playing.	Prefieres ser tú el que juega.	Você prefere ser quem joga.
+I turned down a chess commentator job.	Rechacé un trabajo de comentarista de ajedrez.	Recusei um trabalho de comentarista de xadrez.
+Chess Olympiad	Olimpiada de Ajedrez	Olimpíada de Xadrez
+Your national federation selected you for the Chess Olympiad team.	Tu federación nacional te seleccionó para el equipo de la Olimpiada de Ajedrez.	Sua federação nacional te convocou para o time da Olimpíada de Xadrez.
+Represent your country	Representar a tu país	Representar o seu país
+You scored great on your board and your country celebrated.	Hiciste un gran resultado en tu tablero y tu país lo celebró.	Você fez um ótimo resultado no seu tabuleiro e o país comemorou.
+I represented my country at the Chess Olympiad.	Representé a mi país en la Olimpiada de Ajedrez.	Representei meu país na Olimpíada de Xadrez.
+A tough event, but wearing your country's colors was special.	Fue un torneo difícil, pero llevar los colores de tu país fue especial.	Foi um torneio difícil, mas vestir as cores do seu país foi especial.
+The federation was not happy with you.	La federación no quedó nada contenta contigo.	A federação não ficou nada feliz com você.
+I turned down a spot on my country's Olympiad team.	Rechacé un lugar en el equipo olímpico de mi país.	Recusei uma vaga no time olímpico do meu país.
+Club in Trouble	El club en problemas	Clube em apuros
+Your local chess club is about to close because it can't pay the rent.	Tu club de ajedrez local está por cerrar porque no puede pagar el alquiler.	Seu clube de xadrez local está para fechar porque não consegue pagar o aluguel.
+Donate money	Donar dinero	Doar dinheiro
+You saved the club. They hung your photo on the wall.	Salvaste el club. Colgaron tu foto en la pared.	Você salvou o clube. Penduraram sua foto na parede.
+I donated money to save my chess club.	Doné dinero para salvar mi club de ajedrez.	Doei dinheiro para salvar meu clube de xadrez.
+Organize a fundraiser tournament	Organizar un torneo benéfico	Organizar um torneio beneficente
+Half the city showed up. The club is saved.	Llegó media ciudad. El club se salvó.	Meia cidade apareceu. O clube está salvo.
+I organized a tournament to save my chess club.	Organicé un torneo para salvar mi club de ajedrez.	Organizei um torneio para salvar meu clube de xadrez.
+The club closed. It's not the same playing at home.	El club cerró. No es lo mismo jugar en casa.	O clube fechou. Não é a mesma coisa jogar em casa.
+My chess club closed down.	Mi club de ajedrez cerró.	Meu clube de xadrez fechou.
+Tournament Romance	Romance de torneo	Romance de torneio
+You hit it off with another player during the tournament's free day.	Hiciste clic con otro jugador durante el día libre del torneo.	Você se deu bem com outro jogador no dia de folga do torneio.
+Ask them out	Invitarlo a salir	Chamar para sair
+You spent the whole night talking about openings. A perfect date.	Se pasaron la noche entera hablando de aperturas. Una cita perfecta.	Vocês passaram a noite inteira falando de aberturas. Um encontro perfeito.
+I went on a date with another chess player.	Salí con otro ajedrecista.	Saí com outro enxadrista.
+They said they only date grandmasters. Brutal.	Te dijeron que solo salen con grandes maestros. Brutal.	Disseram que só saem com grandes mestres. Brutal.
+Another chess player turned me down.	Otro ajedrecista me rechazó.	Outro enxadrista me recusou.
+Stay focused on chess	Enfocarte en el ajedrez	Focar no xadrez
+No distractions. You won your next game.	Nada de distracciones. Ganaste la siguiente partida.	Sem distrações. Você venceu a partida seguinte.
+I chose chess over romance.	Elegí el ajedrez antes que el romance.	Escolhi o xadrez em vez do romance.
+Terrible Blunder	Error garrafal	Erro grotesco
+You blundered your queen in a winning position and lost the game.	Dejaste colgada la dama en una posición ganadora y perdiste la partida.	Você entregou a dama numa posição ganha e perdeu a partida.
+Shake hands politely	Dar la mano con educación	Apertar a mão com educação
+It hurt, but you handled it like a pro.	Dolió, pero lo manejaste como un profesional.	Doeu, mas você lidou como um profissional.
+I lost a chess game after a terrible blunder.	Perdí una partida por un error garrafal.	Perdi uma partida por um erro grotesco.
+Throw a tantrum	Hacer un berrinche	Dar um chilique
+You knocked the pieces over. Someone filmed it, of course.	Tiraste las piezas al piso. Alguien lo grabó, obviamente.	Você derrubou as peças. Alguém filmou, claro.
+I threw a tantrum after losing a chess game and it got filmed.	Hice un berrinche después de perder una partida y me grabaron.	Dei um chilique depois de perder uma partida e me filmaram.
+Analyze what went wrong	Analizar qué salió mal	Analisar o que deu errado
+You'll never make that mistake again.	Nunca vas a volver a cometer ese error.	Você nunca mais vai cometer esse erro.
+I learned from a painful chess blunder.	Aprendí de un error doloroso en el ajedrez.	Aprendi com um erro doloroso no xadrez.
+Account Hacked	Cuenta hackeada	Conta hackeada
+Someone hacked your Pawnder account and lost dozens of games on purpose.	Alguien hackeó tu cuenta de Pawnder y perdió decenas de partidas a propósito.	Alguém hackeou sua conta do Pawnder e perdeu dezenas de partidas de propósito.
+Contact support	Contactar a soporte	Falar com o suporte
+They restored your account, but not your ratings.	Te devolvieron la cuenta, pero no los ratings.	Devolveram sua conta, mas não os ratings.
+My Pawnder account got hacked.	Me hackearon la cuenta de Pawnder.	Hackearam minha conta do Pawnder.
+Make a new account	Hacer una cuenta nueva	Criar uma conta nova
+Fresh start. Your new ratings climbed back fast.	Borrón y cuenta nueva. Tus ratings nuevos subieron rápido.	Começo do zero. Seus novos ratings subiram rápido.
+I made a new Pawnder account after getting hacked.	Me hice una cuenta nueva de Pawnder después del hackeo.	Criei uma conta nova no Pawnder depois do hack.
+Elite Training Camp	Campamento de élite	Campo de treinamento de elite
+An elite chess training camp with grandmasters invites you. It costs $3,000.	Un campamento de entrenamiento de élite con grandes maestros te invita. Cuesta $3,000.	Um campo de treinamento de elite com grandes mestres te convida. Custa $3.000.
+Go	Ir	Ir
+Two weeks of intense training with the best. You came back a different player.	Dos semanas de entrenamiento intenso con los mejores. Volviste siendo otro jugador.	Duas semanas de treino intenso com os melhores. Você voltou outro jogador.
+I went to an elite chess training camp.	Fui a un campamento de entrenamiento de ajedrez de élite.	Fui a um campo de treinamento de xadrez de elite.
+Too expensive. You'll keep training on your own.	Muy caro. Vas a seguir entrenando por tu cuenta.	Caro demais. Você vai continuar treinando sozinho.
+I skipped an elite chess training camp.	No fui a un campamento de ajedrez de élite.	Não fui a um campo de xadrez de elite.
+Gang Bang	Gang Bang	Gang Bang
+OG	OG	OG
+Big Homie	Big Homie	Big Homie
+Homie	Homie	Parça
+Lil Homie	Lil Homie	Pivete
+Rapper	Rapero	Rapper
+Hustler	Buscavidas	Corre-certo
+Prospect	Aspirante	Aspirante
+Soldier	Soldado	Soldado
+Enforcer	Matón	Executor
+Lieutenant	Teniente	Tenente
+Shot Caller	El que manda	Chefe de área
+Boss	Jefe	Chefão
+Glock	Glock	Glock
+Draco	Draco	Draco
+Gang	Pandilla	Gangue
+Police heat	Calor policial	Atenção da polícia
+Your cut this year	Tu parte este año	Sua parte este ano
+Role	Papel	Papel
+Bond	Confianza	Confiança
+Run with a street gang. Rise from Prospect to Boss.	Únete a una pandilla callejera. Sube de aspirante a jefe.	Entre para uma gangue de rua. Suba de aspirante a chefão.
+The police confiscated my gun.	La policía me quitó el arma.	A polícia apreendeu minha arma.
+possession of an illegal firearm	posesión ilegal de arma de fuego	porte ilegal de arma de fogo
+You're too young to run with a gang.	Eres muy chiquito para andar en una pandilla.	Você é novo demais para andar com uma gangue.
+Join a Gang	Unirte a una pandilla	Entrar para uma gangue
+Three crews run the streets in your city. Which one do you want to roll with?	Tres pandillas controlan las calles de tu ciudad. ¿Con cuál quieres andar?	Três gangues mandam nas ruas da sua cidade. Com qual você quer andar?
+Gang:	Pandilla:	Gangue:
+Approach them	Acercarte a ellos	Chegar neles
+Initiation	Iniciación	Iniciação
+The crew says nobody gets in for free. You have to prove yourself.	La pandilla dice que nadie entra gratis. Tienes que demostrar lo que vales.	A gangue diz que ninguém entra de graça. Você tem que provar seu valor.
+Get jumped in	Aguantar la golpiza de entrada	Aguentar a surra de entrada
+They beat you for thirteen seconds. You took it without falling. You're in.	Te dieron golpes durante trece segundos. Aguantaste sin caerte. Ya estás adentro.	Te bateram por treze segundos. Você aguentou sem cair. Está dentro.
+Do a job for them	Hacerles un trabajo	Fazer um serviço para eles
+You tagged a rival's wall in broad daylight. They were impressed.	Pintaste la pared de los rivales a plena luz del día. Quedaron impresionados.	Você pichou o muro dos rivais em plena luz do dia. Eles ficaram impressionados.
+Back out	Echarte para atrás	Desistir
+You walked away. Maybe it's for the best.	Te fuiste. Tal vez es lo mejor.	Você foi embora. Talvez seja o melhor.
+I joined a street gang.	Me uní a una pandilla callejera.	Entrei para uma gangue de rua.
+Welcome to the crew	Bienvenido a la pandilla	Bem-vindo à gangue
+Hustle the Block	Mover en la esquina	Fazer corre na quebrada
+Make money on the corner	Hacer plata en la esquina	Fazer dinheiro na esquina
+I hustled on the corner for my gang.	Moví mercancía en la esquina para mi pandilla.	Fiz corre na esquina para a minha gangue.
+A long night on the corner, but the money was good.	Una noche larga en la esquina, pero la plata estuvo buena.	Uma noite longa na esquina, mas o dinheiro foi bom.
+Tag Territory	Marcar territorio	Marcar território
+Spray your colors on the walls	Pintar tus colores en las paredes	Pichar suas cores nos muros
+I tagged my gang's territory.	Marqué el territorio de mi pandilla.	Marquei o território da minha gangue.
+Everybody on the block knows whose streets these are now.	Ahora todo el barrio sabe de quién son estas calles.	Agora todo o bairro sabe de quem são essas ruas.
+Collect Protection Money	Cobrar protección	Cobrar proteção
+Shake down local businesses	Sacarle plata a los negocios del barrio	Cobrar dos comércios do bairro
+I collected protection money from local businesses.	Cobré protección a los negocios del barrio.	Cobrei proteção dos comércios do bairro.
+The shop owners paid. They didn't look happy about it.	Los dueños de los negocios pagaron. No se veían nada contentos.	Os donos das lojas pagaram. Não pareciam nada felizes.
+Rob a Rival	Robarle a un rival	Roubar um rival
+Hit a rival gang's stash	Asaltar el escondite de otra pandilla	Atacar o esconderijo de outra gangue
+I robbed a rival gang's stash.	Le robé el escondite a una pandilla rival.	Roubei o esconderijo de uma gangue rival.
+You got in and out clean. The crew is talking about you.	Entraste y saliste limpio. La pandilla no deja de hablar de ti.	Você entrou e saiu sem problemas. A gangue só fala de você.
+A robbery against a rival gang went wrong.	Un robo a una pandilla rival salió mal.	Um roubo contra uma gangue rival deu errado.
+They were waiting for you. You barely made it out.	Te estaban esperando. Saliste de milagro.	Eles estavam te esperando. Você escapou por pouco.
+Turf War	Guerra por territorio	Guerra por território
+Fight a rival crew for a block	Pelear con otra pandilla por una cuadra	Brigar com outra gangue por um quarteirão
+My gang won a turf war.	Mi pandilla ganó una guerra por territorio.	Minha gangue venceu uma guerra por território.
+Your crew took the block. You've got bruises, but it was worth it.	Tu pandilla se quedó con la cuadra. Quedaste golpeado, pero valió la pena.	Sua gangue ficou com o quarteirão. Você ficou machucado, mas valeu a pena.
+My gang lost a turf war.	Mi pandilla perdió una guerra por territorio.	Minha gangue perdeu uma guerra por território.
+The other crew had more people. You ended up in the hospital.	La otra pandilla tenía más gente. Terminaste en el hospital.	A outra gangue tinha mais gente. Você foi parar no hospital.
+Bring new blood into the crew	Meter gente nueva a la pandilla	Trazer gente nova para a gangue
+I recruited new members for my gang.	Recluté miembros nuevos para mi pandilla.	Recrutei novos membros para a minha gangue.
+A few kids from the neighborhood are now under your wing.	Unos chamacos del barrio ahora están bajo tu cuidado.	Uns moleques do bairro agora estão sob suas ordens.
+Run the Operation	Manejar el negocio	Comandar a operação
+Big money, big risk	Mucha plata, mucho riesgo	Muito dinheiro, muito risco
+I ran my gang's whole operation this year.	Manejé todo el negocio de mi pandilla este año.	Comandei toda a operação da minha gangue este ano.
+Everything goes through you now. The money keeps coming.	Ahora todo pasa por tus manos. La plata no deja de entrar.	Agora tudo passa por você. O dinheiro não para de entrar.
+Lay Low	Esconderte un tiempo	Ficar na moita
+Cool down the police heat	Bajarle al calor de la policía	Baixar a atenção da polícia
+I laid low for a while.	Me escondí por un tiempo.	Fiquei na moita por um tempo.
+You stayed home and kept your head down. The cops moved on.	Te quedaste en casa sin llamar la atención. La policía se olvidó de ti.	Você ficou em casa sem chamar atenção. A polícia te esqueceu.
+Leave the Gang	Salirte de la pandilla	Sair da gangue
+People don't just walk away from the crew. Are you sure?	De la pandilla no se sale así nomás. ¿Estás seguro?	Ninguém sai da gangue assim do nada. Tem certeza?
+I left my gang.	Me salí de mi pandilla.	Saí da minha gangue.
+Out of the Gang	Fuera de la pandilla	Fora da gangue
+They didn't let you go easy. You got beaten badly on your way out.	No te dejaron ir fácil. Te dieron una golpiza al salir.	Não te deixaram sair fácil. Você levou uma surra na saída.
+You told them you're done. Nobody stopped you.	Les dijiste que ya no más. Nadie te detuvo.	Você disse que estava fora. Ninguém te impediu.
+You can't do that from prison.	No puedes hacer eso desde la cárcel.	Você não pode fazer isso da prisão.
+My Gang	Mi pandilla	Minha gangue
+The Crew	La gente	A rapaziada
+members	miembros	membros
+Street Business	Negocios de la calle	Negócios da rua
+Requires rank	Requiere rango	Requer patente
+Done for this year	Ya no más este año	Chega por este ano
+The Strap	El fierro	O ferro
+Carrying it	La llevas encima	Está com você
+Tap to carry it	Toca para llevarla	Toque para levar
+Buy	Comprar	Comprar
+Gun Dealers	Vendedores de armas	Vendedores de armas
+Legal store, street dealers, attachments and mags	Tienda legal, dealers de la calle, accesorios y cargadores	Loja legal, dealers da rua, acessórios e pentes
+Put It Away	Guardarla	Guardar
+Stop carrying a gun	Dejar de andar armado	Parar de andar armado
+Get Out	Salirte	Sair
+Walk away from the life	Dejar esta vida	Largar essa vida
+I started carrying a different gun.	Empecé a andar con otra arma.	Comecei a andar com outra arma.
+You don't have enough money for that.	No te alcanza para eso.	Você não tem dinheiro para isso.
+I bought a gun on the street.	Compré un arma en la calle.	Comprei uma arma na rua.
+You got it from a guy who knows a guy. Now you're carrying it.	Te la consiguió un pana de un pana. Ahora la llevas encima.	Você conseguiu com um conhecido de um conhecido. Agora está com ela.
+Hang out	Pasar el rato	Dar um rolê
+You already chilled with him this year.	Ya pasaron el rato este año.	Vocês já deram um rolê este ano.
+I hung out with one of my homies from the gang.	Pasé el rato con uno de mis homies de la pandilla.	Dei um rolê com um dos meus parças da gangue.
+You chilled on the block, talked about life and laughed for hours.	Se sentaron en la cuadra, hablaron de la vida y se rieron por horas.	Vocês ficaram na quebrada, falaram da vida e riram por horas.
+Ask for advice	Pedirle consejo	Pedir conselho
+He already gave you game this year.	Ya te aconsejó este año.	Ele já te aconselhou este ano.
+An OG from my gang gave me advice.	Un OG de mi pandilla me dio consejos.	Um OG da minha gangue me deu conselhos.
+He told you how to move smart and stay out of the cops' radar. Real game.	Te explicó cómo moverte inteligente y no llamar la atención de la policía. Consejo de verdad.	Ele te ensinou a agir esperto e ficar longe do radar da polícia. Papo reto.
+He looked at you and said you've got a lot to learn. Then he walked off.	Te miró y te dijo que tienes mucho que aprender. Después se fue.	Ele te olhou e disse que você tem muito a aprender. Depois foi embora.
+Hop on his track	Meterte en su canción	Participar da música dele
+You two already recorded this year.	Ya grabaron juntos este año.	Vocês já gravaram juntos este ano.
+I recorded a verse on a song with a rapper from my gang.	Grabé un verso en una canción con un rapero de mi pandilla.	Gravei um verso numa música com um rapper da minha gangue.
+The song blew up in the city. Everyone knows your verse now.	La canción pegó en toda la ciudad. Ahora todo el mundo se sabe tu verso.	A música estourou na cidade. Agora todo mundo sabe o seu verso.
+The song got some plays around the neighborhood.	La canción sonó un poco en el barrio.	A música tocou um pouco no bairro.
+Ask to get put on	Pedirle que te meta al negocio	Pedir para entrar no esquema
+He already put you on this year.	Ya te metió al negocio este año.	Ele já te colocou no esquema este ano.
+A hustler from my gang put me on a money move.	Un buscavidas de mi pandilla me metió en un negocio.	Um corre-certo da minha gangue me colocou num esquema.
+He showed you a quick money move. It paid off.	Te enseñó un negocio rápido. Salió bien.	Ele te mostrou um esquema rápido. Deu certo.
+One of my homies from the gang got locked up.	Agarraron preso a uno de mis homies de la pandilla.	Prenderam um dos meus parças da gangue.
+One of my homies left the gang life.	Uno de mis homies dejó la vida de pandilla.	Um dos meus parças largou a vida do crime.
+Police Raid	Redada policial	Batida policial
+The police raided your crew's hangout at dawn.	La policía hizo una redada en el punto de tu pandilla al amanecer.	A polícia fez uma batida no ponto da sua gangue de madrugada.
+You jumped a fence and got away.	Saltaste una cerca y te escapaste.	Você pulou uma cerca e escapou.
+Hide the stash	Esconder la mercancía	Esconder a mercadoria
+They found nothing. The crew owes you one.	No encontraron nada. La pandilla te debe una.	Não acharam nada. A gangue te deve uma.
+Ambush	Emboscada	Emboscada
+A rival crew jumped you on your way home.	Una pandilla rival te cayó encima de camino a casa.	Uma gangue rival te pegou no caminho de casa.
+You fought them off. Word spread fast.	Te los quitaste de encima. La noticia corrió rápido.	Você deu conta deles. A notícia se espalhou rápido.
+There were too many of them.	Eran demasiados.	Eram muitos.
+You got away, but the crew heard you ran.	Te escapaste, pero la pandilla se enteró de que corriste.	Você escapou, mas a gangue soube que você correu.
+Snitch in the Crew	Un soplón en la pandilla	Um X9 na gangue
+You find out one of your crew has been talking to the cops.	Te enteras de que alguien de tu pandilla ha estado hablando con la policía.	Você descobre que alguém da sua gangue anda falando com a polícia.
+Tell the boss	Decirle al jefe	Contar para o chefe
+The boss handled it. He won't forget you warned him.	El jefe se encargó. No va a olvidar que le avisaste.	O chefe resolveu. Ele não vai esquecer que você avisou.
+Keep quiet	Quedarte callado	Ficar quieto
+A few weeks later, the police knew everything.	Unas semanas después, la policía sabía todo.	Algumas semanas depois, a polícia sabia de tudo.
+Cop's Offer	La oferta del policía	A proposta do policial
+A detective offers to make your charges disappear if you become his informant.	Un detective te ofrece borrar tus cargos si te vuelves su informante.	Um detetive oferece sumir com suas acusações se você virar informante dele.
+Become an informant	Volverte informante	Virar informante
+The heat is off. But you sleep with one eye open now.	Ya no te persiguen. Pero ahora duermes con un ojo abierto.	A polícia saiu do seu pé. Mas agora você dorme com um olho aberto.
+The crew found out you were snitching. They beat you and kicked you out.	La pandilla descubrió que eras soplón. Te dieron una golpiza y te echaron.	A gangue descobriu que você era X9. Te bateram e te expulsaram.
+You told him you don't know anything. He promised he'd be watching.	Le dijiste que no sabes nada. Te prometió que te iba a estar vigilando.	Você disse que não sabe de nada. Ele prometeu ficar de olho em você.
+Mom Found Out	Tu mamá se enteró	Sua mãe descobriu
+Your mom found your gang colors in your room. She's crying.	Tu mamá encontró tus colores de la pandilla en tu cuarto. Está llorando.	Sua mãe achou as cores da gangue no seu quarto. Ela está chorando.
+Promise to quit	Prometerle que te sales	Prometer que vai sair
+She hugged you. Now you have to decide if you meant it.	Te abrazó. Ahora te toca decidir si lo dijiste en serio.	Ela te abraçou. Agora você tem que decidir se falou sério.
+Tell her it's your life	Decirle que es tu vida	Dizer que a vida é sua
+She stopped talking to you for weeks.	Dejó de hablarte por semanas.	Ela parou de falar com você por semanas.
+Loyalty Test	Prueba de lealtad	Teste de lealdade
+The crew asks you to hold a bag for them, no questions asked.	La pandilla te pide que les guardes una bolsa, sin hacer preguntas.	A gangue pede para você guardar uma bolsa, sem fazer perguntas.
+Hold it	Guardarla	Guardar
+They came back for it a week later. You passed the test.	Volvieron por ella una semana después. Pasaste la prueba.	Voltaram para buscar uma semana depois. Você passou no teste.
+They didn't like that. You're on thin ice now.	No les gustó. Ahora estás en la cuerda floja.	Eles não gostaram. Agora você está na corda bamba.
+Bail Money	Dinero para la fianza	Dinheiro da fiança
+One of your boys got locked up and needs $2,000 for bail.	Agarraron a uno de tus muchachos y necesita $2,000 para la fianza.	Prenderam um dos seus parceiros e ele precisa de $2.000 para a fiança.
+Pay his bail	Pagarle la fianza	Pagar a fiança
+He's out, and he'll never forget it.	Ya salió, y nunca lo va a olvidar.	Ele saiu e nunca vai esquecer.
+Leave him in there	Dejarlo adentro	Deixar ele lá
+The crew thinks you're cold.	La pandilla cree que no tienes corazón.	A gangue acha que você não tem coração.
+Truce Offer	Oferta de tregua	Proposta de trégua
+A rival gang leader wants to meet and talk about a truce.	El líder de una pandilla rival quiere reunirse para hablar de una tregua.	O líder de uma gangue rival quer se encontrar para falar de uma trégua.
+Accept the truce	Aceptar la tregua	Aceitar a trégua
+The streets got quieter. Business is better without the war.	Las calles se calmaron. El negocio va mejor sin la guerra.	As ruas ficaram mais calmas. O negócio vai melhor sem a guerra.
+It's a trap	Es una trampa	É uma armadilha
+You didn't show up. Maybe you were right, maybe not.	No fuiste. Tal vez tenías razón, tal vez no.	Você não apareceu. Talvez estivesse certo, talvez não.
+Message Received	Mensaje recibido	Recado dado
+Somebody smashed every window of your car and left a rival gang sign.	Alguien te rompió todas las ventanas del carro y dejó la seña de una pandilla rival.	Alguém quebrou todos os vidros do seu carro e deixou o símbolo de uma gangue rival.
+Get revenge	Vengarte	Se vingar
+You paid them back twice as hard.	Se la devolviste el doble de fuerte.	Você devolveu em dobro.
+You fixed your car and moved on. Some say you've gone soft.	Arreglaste el carro y seguiste. Algunos dicen que te ablandaste.	Você consertou o carro e seguiu em frente. Tem gente dizendo que você amoleceu.
+A Kid Wants In	Un chamaco quiere entrar	Um moleque quer entrar
+A 13-year-old from your block begs you to let him join the crew.	Un chamaco de 13 años de tu cuadra te ruega que lo dejes entrar a la pandilla.	Um moleque de 13 anos do seu quarteirão implora para entrar na gangue.
+Let him in	Dejarlo entrar	Deixar entrar
+He's loyal and fast. He reminds you of yourself.	Es leal y rápido. Te recuerda a ti mismo.	Ele é leal e esperto. Te lembra você mesmo.
+Send him back to school	Mandarlo de vuelta a la escuela	Mandar de volta para a escola
+You told him this life isn't worth it. He listened.	Le dijiste que esta vida no vale la pena. Te hizo caso.	Você disse que essa vida não vale a pena. Ele te ouviu.
+I got promoted in my gang.	Me ascendieron en la pandilla.	Fui promovido na gangue.
+The crew respects you more than ever.	La pandilla te respeta más que nunca.	A gangue te respeita mais do que nunca.
+Glock 19	Glock 19	Glock 19
+Revolver .38	Revólver .38	Revólver .38
+.45 Pistol	Pistola .45	Pistola .45
+Pump Shotgun	Escopeta de bombeo	Escopeta pump
+Double-Barrel Shotgun	Escopeta de dos cañones	Escopeta de dois canos
+Tactical Shotgun	Escopeta táctica	Escopeta tática
+.22 Rifle	Rifle .22	Rifle .22
+Deer Rifle .308	Rifle de venado .308	Rifle de veado .308
+Hunting Bow	Arco de caza	Arco de caça
+Street Glock	Glock de la calle	Glock da rua
+Mini Draco	Mini Draco	Mini Draco
+Pistols	Pistolas	Pistolas
+Shotguns	Escopetas	Escopetas
+Hunting	Caza	Caça
+Glock Extended Mag (33 rounds)	Cargador extendido de Glock (33 balas)	Pente estendido de Glock (33 balas)
+Glock Drum Mag (50 rounds)	Cargador de tambor de Glock (50 balas)	Pente tambor de Glock (50 balas)
+Draco Extended Mag (40 rounds)	Cargador extendido de Draco (40 balas)	Pente estendido de Draco (40 balas)
+Draco Drum Mag (75 rounds)	Cargador de tambor de Draco (75 balas)	Pente tambor de Draco (75 balas)
+Standard mag (17 rounds)	Cargador estándar (17 balas)	Pente padrão (17 balas)
+Standard mag (30 rounds)	Cargador estándar (30 balas)	Pente padrão (30 balas)
+Optic	Mira	Mira
+Muzzle	Boca del cañón	Boca do cano
+Grip	Empuñadura	Empunhadura
+Rail	Riel	Trilho
+Trigger	Gatillo	Gatilho
+Red Dot Sight	Mira de punto rojo	Mira de ponto vermelho
+Suppressor	Silenciador	Silenciador
+Switch	Switch	Switch
+Auto Sear	Auto sear	Auto sear
+Red	Rojo	Vermelho
+Blue	Azul	Azul
+Green	Verde	Verde
+Gold	Dorado	Dourado
+Pink	Rosado	Rosa
+Purple	Morado	Roxo
+Orange	Naranja	Laranja
+White	Blanco	Branco
+Glock 19 · Tactical	Glock 19 · Táctica	Glock 19 · Tática
+Glock · Switched	Glock · Con switch	Glock · Com switch
+Glock · Full Kit	Glock · Kit completo	Glock · Kit completo
+Draco · Optic Pack	Draco · Paquete con mira	Draco · Pacote com mira
+Draco · Full Auto	Draco · Automático	Draco · Automático
+Mini Draco · Compact Kit	Mini Draco · Kit compacto	Mini Draco · Kit compacto
+Gun Store	Tienda de armas	Loja de armas
+Pistols, shotguns and hunting gear. Everything legal.	Pistolas, escopetas y armas de caza. Todo legal.	Pistolas, escopetas e armas de caça. Tudo legal.
+Lil Ray	Lil Ray	Lil Ray
+Corner guy. Glocks, switches and Glock mags.	El de la esquina. Glocks, switches y cargadores de Glock.	O cara da esquina. Glocks, switches e pentes de Glock.
+Mr. Ortiz	Don Ortiz	Seu Ortiz
+Gun runner. Dracos, big and mini.	Traficante de armas. Dracos, grandes y mini.	Traficante de armas. Dracos, grandes e mini.
+Ghost	Ghost	Ghost
+Parts guy. Attachments and magazines for everything.	El de las piezas. Accesorios y cargadores para todo.	O cara das peças. Acessórios e pentes para tudo.
+Automatic	Automática	Automática
+Illegal	Ilegal	Ilegal
+Legal	Legal	Legal
+Street Dealers	Dealers de la calle	Dealers da rua
+My Arsenal	Mi arsenal	Meu arsenal
+No guns yet	Todavía sin armas	Ainda sem armas
+Buy one from a dealer	Compra una con un vendedor	Compre uma com um vendedor
+Power	Poder	Poder
+Magazines & Parts	Cargadores y piezas	Pentes e peças
+Magazines	Cargadores	Pentes
+Parts	Piezas	Peças
+Go Hunting	Ir de cacería	Ir caçar
+Hunting license: yes	Licencia de caza: sí	Licença de caça: sim
+You'll need a license	Vas a necesitar licencia	Você vai precisar de licença
+You need a hunting weapon	Necesitas un arma de caza	Você precisa de uma arma de caça
+He doesn't know you. Prices are 40% higher.	No te conoce. Los precios están 40% más altos.	Ele não te conhece. Os preços estão 40% mais altos.
+Guns	Armas	Armas
+Attachments	Accesorios	Acessórios
+Fits everything	Sirve para todas	Serve em todas
+Glocks	Glocks	Glocks
+Dracos	Dracos	Dracos
+Ready-Made (with attachments)	Ya armadas (con accesorios)	Já montadas (com acessórios)
+You have to be at least	Tienes que tener al menos	Você precisa ter pelo menos
+years old to buy that.	años para comprar eso.	anos para comprar isso.
+I bought a gun legally.	Compré un arma legalmente.	Comprei uma arma legalmente.
+I bought some gear from a street dealer.	Compré equipo con un dealer de la calle.	Comprei equipamento com um dealer da rua.
+Background check cleared. It's all yours.	Pasó la verificación de antecedentes. Es toda tuya.	Passou na verificação de antecedentes. É toda sua.
+You got it from a guy who knows a guy. No receipt, no questions.	Te lo consiguió un pana de un pana. Sin factura y sin preguntas.	Você conseguiu com um conhecido de um conhecido. Sem nota e sem perguntas.
+A dealer took my money and disappeared.	Un dealer se llevó mi plata y desapareció.	Um dealer pegou meu dinheiro e sumiu.
+Scammed	Te estafaron	Você foi enganado
+He took your cash and never showed up. Lesson learned.	Se llevó tu plata y nunca apareció. Aprendiste la lección.	Ele pegou seu dinheiro e nunca apareceu. Lição aprendida.
+It was a police sting.	Era una trampa de la policía.	Era uma armadilha da polícia.
+Pick the color of the switch.	Elige el color del switch.	Escolha a cor do switch.
+Color:	Color:	Cor:
+Carry It	Llevarla encima	Levar com você
+You're armed	Andas armado	Você está armado
+Only one gun at a time	Solo una arma a la vez	Só uma arma por vez
+Magazine	Cargador	Pente
+Tap to change	Toca para cambiarlo	Toque para trocar
+Empty. Tap to install	Vacío. Toca para instalar	Vazio. Toque para instalar
+Get Rid of It	Deshacerte de ella	Se livrar dela
+I started carrying a gun.	Empecé a andar armado.	Comecei a andar armado.
+Sell it for half of what it's worth? Attachments and the magazine go back to your stock.	¿Venderla por la mitad de lo que vale? Los accesorios y el cargador vuelven a tu inventario.	Vender pela metade do valor? Os acessórios e o pente voltam para o seu estoque.
+I sold a gun.	Vendí un arma.	Vendi uma arma.
+You don't have any other magazines for this gun. Buy some from a dealer.	No tienes otros cargadores para esta arma. Cómpralos con un dealer.	Você não tem outros pentes para esta arma. Compre com um dealer.
+Load a Magazine	Cargar un cargador	Carregar um pente
+The magazine you're using goes back to your stock.	El cargador que traes puesto vuelve a tu inventario.	O pente que está em uso volta para o seu estoque.
+Magazine:	Cargador:	Pente:
+Load it	Cargarlo	Carregar
+I changed the magazine.	Cambié el cargador.	Troquei o pente.
+Take it off? It goes back to your parts stock.	¿Quitarla? Vuelve a tu inventario de piezas.	Tirar? Ela volta para o seu estoque de peças.
+Remove it	Quitarla	Tirar
+You don't have any parts for this slot. Ghost and the other dealers sell them.	No tienes piezas para este lugar. Ghost y los otros dealers las venden.	Você não tem peças para este lugar. O Ghost e os outros dealers vendem.
+Pick what to install.	Elige qué instalar.	Escolha o que instalar.
+Part:	Pieza:	Peça:
+Install it	Instalarla	Instalar
+I put an attachment on my gun.	Le puse un accesorio a mi arma.	Coloquei um acessório na minha arma.
+No magazines	Sin cargadores	Sem pentes
+Buy some from a dealer	Cómpralos con un dealer	Compre com um dealer
+No parts	Sin piezas	Sem peças
+You need a hunting weapon.	Necesitas un arma de caza.	Você precisa de uma arma de caça.
+You've already been hunting twice this year. The season's over.	Ya fuiste de cacería dos veces este año. Se acabó la temporada.	Você já foi caçar duas vezes este ano. A temporada acabou.
+I got hurt in a hunting accident.	Me lastimé en un accidente de cacería.	Me machuquei num acidente de caça.
+Hunting Accident	Accidente de cacería	Acidente de caça
+You slipped in the woods and got hurt badly.	Te resbalaste en el monte y te lastimaste feo.	Você escorregou no mato e se machucou feio.
+I went hunting and caught something big.	Fui de cacería y cacé algo grande.	Fui caçar e peguei algo grande.
+Good Hunt	Buena cacería	Boa caçada
+You came back with a trophy and a freezer full of meat.	Volviste con un trofeo y un congelador lleno de carne.	Você voltou com um troféu e um freezer cheio de carne.
+I went hunting but came back empty-handed.	Fui de cacería pero volví con las manos vacías.	Fui caçar mas voltei de mãos vazias.
+Empty-Handed	Con las manos vacías	De mãos vazias
+You sat in the cold all day and saw nothing. Still, it was peaceful.	Pasaste el día en el frío sin ver nada. Aun así, fue tranquilo.	Você passou o dia no frio sem ver nada. Mesmo assim, foi tranquilo.
+Hunting License	Licencia de caza	Licença de caça
+You need a license to hunt legally.	Necesitas una licencia para cazar legalmente.	Você precisa de uma licença para caçar legalmente.
+Buy the license	Comprar la licencia	Comprar a licença
+Legal store, street dealers and your arsenal	Tienda legal, dealers de la calle y tu arsenal	Loja legal, dealers da rua e seu arsenal
+Political Career	Carrera Política	Carreira Política
+Unity Party	Partido Unidad	Partido Unidade
+Liberty Party	Partido Libertad	Partido Liberdade
+Independent	Independiente	Independente
+Environment	Medio Ambiente	Meio Ambiente
+Corruption	Corrupción	Corrupção
+Economy	Economía	Economia
+Healthcare	Sanidad	Saúde
+Immigration	Inmigración	Imigração
+Infrastructure	Infraestructura	Infraestrutura
+Taxes	Impuestos	Impostos
+Housing	Vivienda	Moradia
+Employment	Empleo	Emprego
+Civil Rights	Derechos Civiles	Direitos Civis
+Topic	Tema	Tema
+My Campaign	Mi campaña	Minha campanha
+School Board Member	Miembro de la Junta Escolar	Membro do Conselho Escolar
+School District	Distrito Escolar	Distrito Escolar
+Set school policy	Fijar la política escolar	Definir a política escolar
+Approve the curriculum	Aprobar el currículo	Aprovar o currículo
+Hire the superintendent	Contratar al superintendente	Contratar o superintendente
+City Councilor	Concejal Municipal	Vereador
+City Hall	Ayuntamiento	Prefeitura
+Pass city ordinances	Aprobar ordenanzas municipales	Aprovar ordenanças municipais
+Approve the city budget	Aprobar el presupuesto municipal	Aprovar o orçamento municipal
+Decide zoning	Decidir la zonificación	Decidir o zoneamento
+Mayor	Alcalde	Prefeito
+Veto ordinances	Vetar ordenanzas	Vetar ordenanças
+Issue executive orders	Emitir órdenes ejecutivas	Emitir ordens executivas
+Appoint city officials	Nombrar funcionarios municipales	Nomear funcionários municipais
+Run the city budget	Manejar el presupuesto municipal	Comandar o orçamento municipal
+State Representative	Representante Estatal	Deputado Estadual
+State Assembly	Asamblea Estatal	Assembleia Estadual
+File state bills	Presentar proyectos estatales	Apresentar projetos estaduais
+Vote on state laws	Votar las leyes estatales	Votar as leis estaduais
+Serve on committees	Trabajar en comisiones	Atuar em comissões
+State Senator	Senador Estatal	Senador Estadual
+State Senate	Senado Estatal	Senado Estadual
+Confirm appointments	Confirmar nombramientos	Confirmar nomeações
+Filibuster	Hacer filibusterismo	Fazer obstrução
+Governor	Gobernador	Governador
+State Capitol	Capitolio Estatal	Capitólio Estadual
+Veto state bills	Vetar proyectos estatales	Vetar projetos estaduais
+Pardon convicts	Indultar convictos	Indultar condenados
+Appoint judges	Nombrar jueces	Nomear juízes
+U.S. Representative	Representante Federal	Deputado Federal
+U.S. House	Cámara de Representantes	Câmara dos Deputados
+File federal bills	Presentar proyectos federales	Apresentar projetos federais
+Vote on federal laws	Votar las leyes federales	Votar as leis federais
+Vote on impeachment	Votar el impeachment	Votar o impeachment
+U.S. Senator	Senador Federal	Senador Federal
+U.S. Senate	Senado Federal	Senado Federal
+Confirm judges and cabinet picks	Confirmar jueces y ministros	Confirmar juízes e ministros
+President	Presidente	Presidente
+The White House	La Casa Blanca	A Casa Branca
+Veto federal bills	Vetar proyectos federales	Vetar projetos federais
+Appoint Supreme Court justices	Nombrar jueces de la Corte Suprema	Nomear juízes da Suprema Corte
+Give the State of the Union	Dar el Estado de la Unión	Fazer o Discurso do Estado da União
+Campaign funds	Fondos de campaña	Fundos de campanha
+Approval	Aprobación	Aprovação
+Laws passed	Leyes aprobadas	Leis aprovadas
+Bills filed	Proyectos presentados	Projetos apresentados
+Choose a Topic	Elige un tema	Escolha um tema
+What will you focus on?	¿En qué te vas a enfocar?	Em que você vai se concentrar?
+Action	Acción	Ação
+Name Your Campaign	Ponle nombre a tu campaña	Dê um nome à sua campanha
+This is the name voters will see on the ballot and in the news.	Este es el nombre que los votantes verán en la papeleta y en las noticias.	Este é o nome que os eleitores verão na cédula e nas notícias.
+Campaign name:	Nombre de la campaña:	Nome da campanha:
+Use this name	Usar este nombre	Usar este nome
+You don't have any personal money to put into the campaign.	No tienes dinero personal para poner en la campaña.	Você não tem dinheiro pessoal para colocar na campanha.
+Add Personal Funds	Añadir fondos personales	Adicionar fundos pessoais
+Personal money	Dinero personal	Dinheiro pessoal
+Amount to transfer:	Cantidad a transferir:	Valor a transferir:
+Transfer to campaign	Transferir a la campaña	Transferir para a campanha
+You don't have that much personal money.	No tienes tanto dinero personal.	Você não tem tanto dinheiro pessoal.
+Campaign Funded	Campaña financiada	Campanha financiada
+You moved your own money into the campaign.	Moviste tu propio dinero a la campaña.	Você moveu seu próprio dinheiro para a campanha.
+Political office	Cargo político	Cargo político
+Campaign	Campaña	Campanha
+Your share	Tu porcentaje	Sua porcentagem
+Opponent share	Porcentaje del rival	Porcentagem do rival
+I won the election for	Gané la elección para	Venci a eleição para
+You lost.	Perdiste.	Você perdeu.
+I lost the election for	Perdí la elección para	Perdi a eleição para
+Election Night	Noche de Elecciones	Noite de Eleições
+The results are in. You won.	Ya salieron los resultados. Ganaste.	Os resultados saíram. Você venceu.
+The results are in. You lost.	Ya salieron los resultados. Perdiste.	Os resultados saíram. Você perdeu.
+Give a Speech	Dar un discurso	Fazer um discurso
+Win over the crowd	Ganarte al público	Conquistar o público
+What will your speech be about?	¿Sobre qué va a ser tu discurso?	Sobre o que será seu discurso?
+A Bad Speech	Un mal discurso	Um discurso ruim
+You stumbled over your words and the clip went viral for the wrong reason.	Te trabaste y el clip se hizo viral por la razón equivocada.	Você tropeçou nas palavras e o clipe viralizou pelo motivo errado.
+You gave a strong speech and the room applauded.	Diste un discurso fuerte y la sala aplaudió.	Você fez um discurso forte e a sala aplaudiu.
+Town Hall	Audiencia pública	Assembleia pública
+Meet your constituents	Conoce a tus votantes	Encontre seus eleitores
+What will you hear from constituents about?	¿Sobre qué te van a hablar tus votantes?	Sobre o que seus eleitores vão falar?
+You listened to complaints about potholes, schools and taxes. People felt heard.	Escuchaste quejas sobre baches, escuelas e impuestos. La gente se sintió escuchada.	Você ouviu reclamações sobre buracos, escolas e impostos. As pessoas se sentiram ouvidas.
+Fundraiser	Recaudar fondos	Arrecadar fundos
+Fill the campaign war chest	Llenar la caja de campaña	Encher o caixa de campanha
+What will you pitch to donors?	¿Qué les vas a vender a los donantes?	O que você vai apresentar aos doadores?
+Donors wrote checks. Some of them will expect favors later.	Los donantes firmaron cheques. Algunos van a esperar favores después.	Os doadores assinaram cheques. Alguns vão esperar favores depois.
+Press Interview	Entrevista de prensa	Entrevista à imprensa
+Face the media	Enfrenta a los medios	Enfrente a mídia
+What will you talk about in the interview?	¿De qué vas a hablar en la entrevista?	Sobre o que você vai falar na entrevista?
+You handled the questions well and the headline was friendly.	Manejaste las preguntas bien y el titular fue amistoso.	Você lidou bem com as perguntas e a manchete foi amigável.
+You got defensive and the interviewer kept pressing. It looked bad.	Te pusiste a la defensiva y el entrevistador siguió presionando. Se vio mal.	Você ficou na defensiva e o entrevistador continuou pressionando. Ficou feio.
+Campaign Rally	Mitin de campaña	Comício de campanha
+Spend campaign funds to fire up voters	Gasta fondos para encender a los votantes	Gaste fundos para animar os eleitores
+What will your rally focus on?	¿En qué se va a enfocar tu mitin?	Em que seu comício vai se concentrar?
+You couldn't afford a real rally. A few volunteers still showed up.	No te alcanzó para un mitin de verdad. Igual llegaron unos voluntarios.	Você não tinha dinheiro para um comício de verdade. Alguns voluntários apareceram.
+The rally was packed. Your name is on everyone's lips.	El mitin se llenó. Tu nombre está en boca de todos.	O comício lotou. Seu nome está na boca de todos.
+Debate Your Opponent	Debatir con tu rival	Debater com seu rival
+High risk, high reward	Mucho riesgo, mucha recompensa	Muito risco, muita recompensa
+Check the Polls	Ver las encuestas	Ver as pesquisas
+See where you stand	Mira cómo vas	Veja como você está
+Projected share	Porcentaje proyectado	Porcentagem projetada
+The Polls	Las encuestas	As pesquisas
+Polls are a snapshot, not a prophecy. Campaigning still matters.	Las encuestas son una foto, no una profecía. La campaña todavía importa.	As pesquisas são uma foto, não uma profecia. A campanha ainda importa.
+File a Bill	Presentar un proyecto	Apresentar um projeto
+Write a law and fight for it	Escribe una ley y pelea por ella	Escreva uma lei e lute por ela
+What should your bill focus on?	¿En qué se debe enfocar tu proyecto?	Em que seu projeto deve se concentrar?
+Bill	Proyecto	Projeto
+Bill Passed	Proyecto aprobado	Projeto aprovado
+Your bill made it through. Your name is on a real law now.	Tu proyecto pasó. Tu nombre está en una ley de verdad.	Seu projeto passou. Seu nome está numa lei de verdade.
+Bill Failed	Proyecto rechazado	Projeto rejeitado
+The bill died in committee. You'll need more support next time.	El proyecto murió en comisión. Vas a necesitar más apoyo la próxima vez.	O projeto morreu na comissão. Você vai precisar de mais apoio na próxima vez.
+Vote on a Bill	Votar un proyecto	Votar um projeto
+Take a side on the floor	Toma partido en el pleno	Tome partido no plenário
+What is the bill about?	¿De qué trata el proyecto?	Sobre o que é o projeto?
+A controversial bill is on the floor. Your vote will be remembered.	Hay un proyecto controvertido en el pleno. Tu voto se va a recordar.	Há um projeto polêmico no plenário. Seu voto será lembrado.
+Omnibus Reform Act	Ley de Reforma Ómnibus	Lei de Reforma Abrangente
+Vote Yes	Votar sí	Votar sim
+You voted yes. Your allies are happy, your opponents are not.	Votaste sí. Tus aliados están contentos, tus opositores no.	Você votou sim. Seus aliados estão felizes, seus opositores não.
+Vote No	Votar no	Votar não
+You voted no. Some people call it principle, others call it obstruction.	Votaste no. Unos lo llaman principio, otros lo llaman obstrucción.	Você votou não. Alguns chamam de princípio, outros de obstrução.
+Committee Hearing	Audiencia en comisión	Audiência na comissão
+Build support for your next bill	Construye apoyo para tu próximo proyecto	Construa apoio para seu próximo projeto
+What will the hearing focus on?	¿En qué se va a enfocar la audiencia?	Em que a audiência vai se concentrar?
+You questioned witnesses and made your case. Your next bill has a better shot.	Interrogaste testigos y defendiste tu caso. Tu próximo proyecto tiene mejor chance.	Você questionou testemunhas e defendeu seu caso. Seu próximo projeto tem mais chance.
+Block a bill with your voice	Bloquea un proyecto con tu voz	Bloqueie um projeto com sua voz
+What will you speak about?	¿Sobre qué vas a hablar?	Sobre o que você vai falar?
+You held the floor for hours. The bill is stalled, and the cameras loved it.	Te quedaste con la palabra por horas. El proyecto quedó estancado, y las cámaras lo amaron.	Você segurou o plenário por horas. O projeto parou, e as câmeras adoraram.
+Veto a Bill	Vetar un proyecto	Vetar um projeto
+Kill a law you oppose	Mata una ley que te opones	Mate uma lei que você se opõe
+The legislature passed a bill you don't like. You can veto it or sign it.	La legislatura aprobó un proyecto que no te gusta. Puedes vetarlo o firmarlo.	A legislatura aprovou um projeto que você não gosta. Você pode vetar ou assinar.
+Veto it	Vetarlo	Vetar
+Vetoed	Vetado	Vetado
+You vetoed the bill. Your base cheered; the other side called you a tyrant.	Vetaste el proyecto. Tu base celebró; el otro lado te llamó tirano.	Você vetou o projeto. Sua base comemorou; o outro lado chamou você de tirano.
+Sign it	Firmarlo	Assinar
+Signed	Firmado	Assinado
+You signed the bill into law. Compromise is rarely popular with everyone.	Firmaste el proyecto como ley. El compromiso rara vez es popular con todos.	Você assinou o projeto como lei. O compromisso raramente agrada a todos.
+Executive Order	Orden ejecutiva	Ordem executiva
+Act without the legislature	Actúa sin la legislatura	Aja sem a legislatura
+What will your order do?	¿Qué va a hacer tu orden?	O que sua ordem vai fazer?
+You signed an order and it took effect immediately. Your supporters loved the speed.	Firmaste una orden y entró en vigor de inmediato. Tus seguidores amaron la rapidez.	Você assinou uma ordem e ela entrou em vigor imediatamente. Seus apoiadores adoraram a rapidez.
+Critics called it an abuse of power. The courts may get involved.	Los críticos lo llamaron abuso de poder. Los tribunales podrían meterse.	Os críticos chamaram de abuso de poder. Os tribunais podem se envolver.
+Appoint an Official	Nombrar un funcionario	Nomear um funcionário
+Put your people in power	Pon a tu gente en el poder	Coloque sua gente no poder
+What policy area will your appointee handle?	¿Qué área política va a manejar tu nombrado?	Qual área política seu nomeado vai cuidar?
+You don't have enough money for the appointments and favors this requires.	No tienes suficiente dinero para los nombramientos y favores que esto requiere.	Você não tem dinheiro suficiente para as nomeações e favores que isso exige.
+You appointed a loyal ally. They'll remember who gave them the job.	Nombraste a un aliado leal. Van a recordar quién les dio el puesto.	Você nomeou um aliado leal. Eles vão lembrar quem lhes deu o cargo.
+Pardon a Convict	Indultar a un convicto	Indultar um condenado
+Use your clemency power	Usa tu poder de clemencia	Use seu poder de clemência
+What is the clemency case about?	¿De qué trata el caso de clemencia?	Sobre o que é o caso de clemência?
+Pardon Scandal	Escándalo de indulto	Escândalo de indulto
+The person you pardoned was connected to a donor. The press is digging.	La persona que indultaste estaba conectada a un donante. La prensa está investigando.	A pessoa que você indultou estava ligada a um doador. A imprensa está investigando.
+You granted clemency. Someone got a second chance, and someone else is angry.	Concediste clemencia. Alguien tuvo una segunda oportunidad, y alguien más está enojado.	Você concedeu clemência. Alguém ganhou uma segunda chance, e outra pessoa está furiosa.
+Present a Budget	Presentar un presupuesto	Apresentar um orçamento
+Put your priorities in the numbers	Pon tus prioridades en los números	Coloque suas prioridades nos números
+What will your budget prioritize?	¿Qué va a priorizar tu presupuesto?	O que seu orçamento vai priorizar?
+Budget	Presupuesto	Orçamento
+Your budget passed. Every number is a political choice, and everyone noticed.	Tu presupuesto pasó. Cada número es una decisión política, y todos lo notaron.	Seu orçamento passou. Cada número é uma escolha política, e todos notaram.
+State of the Union	Estado de la Unión	Estado da União
+Address the nation once a year	Habla al país una vez al año	Fale à nação uma vez por ano
+What will be the centerpiece of your speech?	¿Cuál será el tema central de tu discurso?	Qual será o tema central do seu discurso?
+You stood before Congress and the country. The speech will be replayed for years.	Te paraste frente al Congreso y al país. El discurso se va a repetir por años.	Você ficou diante do Congresso e do país. O discurso será reprisado por anos.
+Jobs and the Economy	Empleo y Economía	Emprego e Economia
+What is your plan to create good-paying jobs?	¿Cuál es tu plan para crear empleos bien pagados?	Qual é seu plano para criar empregos bem remunerados?
+Invest in small businesses and job training.	Invertir en pequeñas empresas y capacitación laboral.	Investir em pequenas empresas e capacitação profissional.
+Cut taxes for the wealthy and wait for it to trickle down.	Bajar impuestos a los ricos y esperar que gotee.	Cortar impostos dos ricos e esperar que escorram.
+Jobs are a state issue, not my problem.	El empleo es un tema estatal, no mi problema.	Emprego é uma questão estadual, não meu problema.
+How will you address climate change?	¿Cómo vas a enfrentar el cambio climático?	Como você vai enfrentar as mudanças climáticas?
+Clean energy investments and stricter pollution rules.	Inversión en energía limpia y reglas de contaminación más estrictas.	Investimento em energia limpa e regras de poluição mais rígidas.
+Climate rules kill jobs, so I will weaken them.	Las reglas climáticas matan empleos, así que las voy a debilitar.	Regras climáticas matam empregos, então vou enfraquecê-las.
+I don't believe the science.	No creo en la ciencia.	Não acredito na ciência.
+What will you do about violent crime?	¿Qué vas a hacer con el crimen violento?	O que você vai fazer com o crime violento?
+Fund police and prevention programs together.	Financiar a la policía y los programas de prevención juntos.	Financiar a polícia e programas de prevenção juntos.
+Build more prisons and cut everything else.	Construir más prisiones y recortar todo lo demás.	Construir mais prisões e cortar todo o resto.
+Blame the other party.	Culpar al otro partido.	Culpar o outro partido.
+A donor is under investigation. What will you do?	Un donante está bajo investigación. ¿Qué vas a hacer?	Um doador está sob investigação. O que você vai fazer?
+Return the money and cooperate fully.	Devolver el dinero y cooperar totalmente.	Devolver o dinheiro e cooperar plenamente.
+Deny everything and attack the press.	Negarlo todo y atacar a la prensa.	Negar tudo e atacar a imprensa.
+Say the investigation is a partisan witch hunt.	Decir que la investigación es una cacería política.	Dizer que a investigação é uma caça às bruxas partidária.
+How will you fix rising healthcare costs?	¿Cómo vas a arreglar el aumento de los costos de salud?	Como você vai resolver o aumento dos custos de saúde?
+Negotiate drug prices and expand coverage.	Negociar precios de medicamentos y ampliar la cobertura.	Negociar preços de medicamentos e ampliar a cobertura.
+Let the market decide everything.	Dejar que el mercado decida todo.	Deixar o mercado decidir tudo.
+Repeal coverage and call it freedom.	Derogar la cobertura y llamarlo libertad.	Revogar a cobertura e chamar de liberdade.
+Are public schools getting enough funding?	¿Las escuelas públicas reciben suficiente financiamiento?	As escolas públicas recebem financiamento suficiente?
+Raise teacher pay and fund classrooms.	Subir el salario docente y financiar las aulas.	Aumentar o salário dos professores e financiar as salas.
+Cut taxes and hope schools figure it out.	Bajar impuestos y esperar que las escuelas se arreglen.	Cortar impostos e esperar que as escolas se resolvam.
+Parents should pay for public school.	Los padres deberían pagar la escuela pública.	Os pais deveriam pagar pela escola pública.
+Rents are out of control. What is your plan?	Los alquileres están por las nubes. ¿Cuál es tu plan?	Os aluguéis estão fora de controle. Qual é seu plano?
+Build more housing and protect renters.	Construir más vivienda y proteger a los inquilinos.	Construir mais moradias e proteger os inquilinos.
+Deregulate everything and hope prices fall.	Desregular todo y esperar que bajen los precios.	Desregulamentar tudo e esperar que os preços caiam.
+It is not my problem.	No es mi problema.	Não é meu problema.
+How will you fix roads and bridges?	¿Cómo vas a arreglar las carreteras y los puentes?	Como você vai consertar estradas e pontes?
+A funded infrastructure plan with local workers.	Un plan de infraestructura financiado con trabajadores locales.	Um plano de infraestrutura financiado com trabalhadores locais.
+Wait for the federal government to pay.	Esperar que pague el gobierno federal.	Esperar que o governo federal pague.
+Tax cuts will fix the roads somehow.	Los recortes de impuestos arreglarán las carreteras de alguna forma.	Cortes de impostos vão consertar as estradas de alguma forma.
+Factory Dumping	Vertido de la fábrica	Despejo da fábrica
+A factory has been dumping waste into the river. The cameras are waiting for your response.	Una fábrica ha estado vertiendo residuos al río. Las cámaras esperan tu respuesta.	Uma fábrica vem despejando resíduos no rio. As câmeras esperam sua resposta.
+Fund a cleanup	Financiar una limpieza	Financiar uma limpeza
+Cleanup Announced	Limpieza anunciada	Limpeza anunciada
+You sent crews to the river. Families can fish there again, and the photos are good.	Enviaste cuadrillas al río. Las familias pueden pescar otra vez, y las fotos son buenas.	Você enviou equipes ao rio. As famílias podem pescar de novo, e as fotos são boas.
+Make the factory pay	Hacer que la fábrica pague	Fazer a fábrica pagar
+Factory Pays	La fábrica paga	A fábrica paga
+You forced the company to fund the cleanup. It wrote a check, and its lawyers are watching you.	Obligaste a la empresa a financiar la limpieza. Firmó un cheque, y sus abogados te están vigilando.	Você forçou a empresa a financiar a limpeza. Ela assinou um cheque, e seus advogados estão de olho em você.
+Ignore the report	Ignorar el informe	Ignorar o relatório
+River Still Toxic	El río sigue tóxico	O rio continua tóxico
+The story grew for weeks. Voters noticed the silence.	La historia creció durante semanas. Los votantes notaron el silencio.	A história cresceu por semanas. Os eleitores notaram o silêncio.
+Donor Investigation	Investigación a un donante	Investigação de um doador
+A major donor is under investigation. Reporters want to know what you knew.	Un gran donante está bajo investigación. Los periodistas quieren saber qué sabías.	Um grande doador está sob investigação. Os repórteres querem saber o que você sabia.
+Cooperate fully	Cooperar totalmente	Cooperar plenamente
+Full Cooperation	Cooperación total	Cooperação total
+You released the records and answered every question. It cost you a donor, not your credibility.	Publicaste los registros y respondiste todo. Te costó un donante, no tu credibilidad.	Você divulgou os registros e respondeu tudo. Custou um doador, não sua credibilidade.
+Deny everything	Negarlo todo	Negar tudo
+Denials Everywhere	Negaciones por todas partes	Negações por toda parte
+Your denials held for a day. Then a second document surfaced.	Tus negaciones duraron un día. Luego apareció un segundo documento.	Suas negações duraram um dia. Depois surgiu um segundo documento.
+Return the donation	Devolver la donación	Devolver a doação
+Money Returned	Dinero devuelto	Dinheiro devolvido
+You returned the money and called for transparency. The story lost steam.	Devolviste el dinero y pediste transparencia. La historia perdió fuerza.	Você devolveu o dinheiro e pediu transparência. A história perdeu força.
+Crime Wave	Ola de crimen	Onda de crime
+Violent crime is up and the evening news leads with it every night.	El crimen violento aumentó y las noticias de la noche lo ponen primero cada día.	O crime violento aumentou e o noticiário da noite abre com isso toda noite.
+Hire more police	Contratar más policías	Contratar mais policiais
+More Officers	Más agentes	Mais agentes
+You funded new patrols. The police union is grateful, and so are nervous voters.	Financiaste nuevas patrullas. El sindicato policial está agradecido, y los votantes nerviosos también.	Você financiou novas patrulhas. O sindicato da polícia agradece, e os eleitores nervosos também.
+Fund prevention programs	Financiar programas de prevención	Financiar programas de prevenção
+Prevention First	Prevención primero	Prevenção em primeiro lugar
+You invested in youth centers and job programs. It will take years, but families feel heard.	Invertiste en centros juveniles y programas de empleo. Tardará años, pero las familias se sienten escuchadas.	Você investiu em centros juvenis e programas de emprego. Vai levar anos, mas as famílias se sentem ouvidas.
+Blame your opponent	Culpar a tu rival	Culpar seu rival
+Attack Mode	Modo ataque	Modo ataque
+The attack played well on partisan media and badly everywhere else.	El ataque funcionó en medios partidistas y mal en todo lo demás.	O ataque funcionou na mídia partidária e mal em todo o resto.
+Teachers' Strike	Huelga de maestros	Greve dos professores
+Teachers walked out over pay. Schools are closed and parents are furious.	Los maestros se fueron a la huelga por el salario. Las escuelas están cerradas y los padres están furiosos.	Os professores entraram em greve por salário. As escolas estão fechadas e os pais estão furiosos.
+Raise teacher pay	Subir el salario docente	Aumentar o salário dos professores
+Deal Reached	Acuerdo alcanzado	Acordo alcançado
+You funded a raise and the strike ended. Parents are relieved.	Financiaste un aumento y la huelga terminó. Los padres están aliviados.	Você financiou um aumento e a greve acabou. Os pais estão aliviados.
+Replace the teachers	Reemplazar a los maestros	Substituir os professores
+Classrooms Empty	Aulas vacías	Salas vazias
+Substitutes could not cover the gap. The photos of empty classrooms hurt you.	Los sustitutos no cubrieron el hueco. Las fotos de aulas vacías te hicieron daño.	Os substitutos não cobriram a lacuna. As fotos de salas vazias te machucaram.
+Wait them out	Esperar a que se rindan	Esperar que desistam
+Strike Drags On	La huelga se alarga	A greve se arrasta
+The strike lasted three weeks. Everyone blamed you.	La huelga duró tres semanas. Todos te culparon.	A greve durou três semanas. Todos culparam você.
+Hospital Closure	Cierre de hospital	Fechamento de hospital
+The only hospital in a poor neighborhood is closing. Thousands will lose care.	El único hospital de un barrio pobre está cerrando. Miles perderán atención.	O único hospital de um bairro pobre está fechando. Milhares perderão atendimento.
+Bail out the hospital	Rescatar el hospital	Salvar o hospital
+Hospital Saved	Hospital salvado	Hospital salvo
+You found the money. Nurses cheered and patients wrote thank-you notes.	Encontraste el dinero. Las enfermeras celebraron y los pacientes escribieron notas de agradecimiento.	Você encontrou o dinheiro. As enfermeiras comemoraram e os pacientes escreveram cartas de agradecimento.
+Sell it to a private buyer	Venderlo a un comprador privado	Vender a um comprador privado
+Private Buyer	Comprador privado	Comprador privado
+The hospital reopened with fewer beds and higher bills. The new owner donated to your campaign.	El hospital reabrió con menos camas y facturas más altas. El nuevo dueño donó a tu campaña.	O hospital reabriu com menos leitos e contas mais altas. O novo dono doou para sua campanha.
+Visit for a photo op	Visitar para una foto	Visitar para uma foto
+Photo Op	Foto para la prensa	Foto para a imprensa
+You toured the ward and left. Nothing changed.	Recorriste la sala y te fuiste. Nada cambió.	Você visitou a ala e foi embora. Nada mudou.
+Hurricane Relief	Ayuda por el huracán	Ajuda pelo furacão
+A hurricane flattened entire neighborhoods. The state is asking what you will do.	Un huracán arrasó barrios enteros. El estado pregunta qué vas a hacer.	Um furacão arrasou bairros inteiros. O estado pergunta o que você vai fazer.
+Release emergency funds	Liberar fondos de emergencia	Liberar fundos de emergência
+Relief Arrives	Llega la ayuda	A ajuda chega
+You moved fast and people noticed. Shelters opened within hours.	Actuaste rápido y la gente lo notó. Los refugios abrieron en horas.	Você agiu rápido e as pessoas notaram. Os abrigos abriram em horas.
+Visit the damage	Visitar los daños	Visitar os danos
+On the Ground	En el terreno	No local
+You spent the day with victims. It was symbolic, but it mattered.	Pasaste el día con las víctimas. Fue simbólico, pero importó.	Você passou o dia com as vítimas. Foi simbólico, mas importou.
+Blame the federal government	Culpar al gobierno federal	Culpar o governo federal
+Washington Blame	Culpa a Washington	Culpa a Washington
+Your base liked it. The victims did not.	A tu base le gustó. A las víctimas no.	Sua base gostou. As vítimas não.
+Border Surge	Aumento en la frontera	Aumento na fronteira
+A surge at the border is dominating the news. Both sides want a clear answer.	Un aumento en la frontera domina las noticias. Ambos lados quieren una respuesta clara.	Um aumento na fronteira domina as notícias. Os dois lados querem uma resposta clara.
+Pass a border security bill	Aprobar una ley de seguridad fronteriza	Aprovar uma lei de segurança na fronteira
+Security Bill	Ley de seguridad	Lei de segurança
+You passed a tough bill. It satisfied some voters and angered others.	Aprobaste una ley dura. Satisfizo a algunos votantes y enojó a otros.	Você aprovou uma lei dura. Satisfez alguns eleitores e irritou outros.
+Border Security Act	Ley de Seguridad Fronteriza	Lei de Segurança da Fronteira
+Fund humanitarian aid	Financiar ayuda humanitaria	Financiar ajuda humanitária
+Aid Approved	Ayuda aprobada	Ajuda aprovada
+You sent aid to shelters and processing centers. Advocates praised you.	Enviaste ayuda a refugios y centros de procesamiento. Los defensores te elogiaron.	Você enviou ajuda a abrigos e centros de processamento. Os defensores elogiaram você.
+Avoid the issue	Evitar el tema	Evitar o assunto
+No Comment	Sin comentarios	Sem comentários
+The silence became the story.	El silencio se convirtió en la historia.	O silêncio virou a história.
+Housing Crisis	Crisis de vivienda	Crise de moradia
+Rents are rising faster than wages. Families are being priced out.	Los alquileres suben más rápido que los salarios. Las familias no pueden pagar.	Os aluguéis sobem mais rápido que os salários. As famílias estão sendo expulsas.
+Cap rents	Limitar los alquileres	Limitar os aluguéis
+Rent Cap Passed	Tope de alquiler aprobado	Teto de aluguel aprovado
+Tenants celebrated. Developers warned of fewer projects.	Los inquilinos celebraron. Los desarrolladores advirtieron menos proyectos.	Os inquilinos comemoraram. Os incorporadores avisaram sobre menos projetos.
+Give developers incentives	Dar incentivos a los desarrolladores	Dar incentivos aos incorporadores
+Building Boom	Auge de construcción	Boom de construção
+New towers broke ground. The developers remembered your help.	Nuevas torres empezaron a construirse. Los desarrolladores recordaron tu ayuda.	Novas torres começaram a ser construídas. Os incorporadores lembraram da sua ajuda.
+Create a task force	Crear un grupo de trabajo	Criar uma força-tarefa
+Task Force	Grupo de trabajo	Força-tarefa
+The task force will report next year. Nobody is holding their breath.	El grupo de trabajo presentará su informe el próximo año. Nadie se aguanta la respiración.	A força-tarefa vai relatar no próximo ano. Ninguém está ansioso.
+Transit Strike	Huelga de transporte	Greve do transporte
+Bus and train workers are on strike. The city is crawling.	Los trabajadores de autobuses y trenes están en huelga. La ciudad avanza a paso de tortuga.	Os trabalhadores de ônibus e trens estão em greve. A cidade está engatinhando.
+Fund the transit authority	Financiar la autoridad de transporte	Financiar a autoridade de transporte
+Buses Roll Again	Los autobuses vuelven	Os ônibus voltam
+You brokered a deal and service resumed. Commuters are grateful.	Negociaste un acuerdo y el servicio volvió. Los pasajeros están agradecidos.	Você intermediou um acordo e o serviço voltou. Os passageiros agradecem.
+Promote rideshare	Promocionar el transporte compartido	Promover o transporte compartilhado
+Rideshare Push	Empuje al transporte compartido	Impulso ao transporte compartilhado
+The app discounts helped some commuters and annoyed the union.	Los descuentos de la app ayudaron a algunos pasajeros y molestaron al sindicato.	Os descontos do app ajudaram alguns passageiros e irritaram o sindicato.
+Let them strike	Dejar que sigan en huelga	Deixar que continuem em greve
+City Gridlock	Ciudad bloqueada	Cidade parada
+Traffic was a nightmare for weeks. Voters remembered.	El tráfico fue una pesadilla durante semanas. Los votantes lo recordaron.	O trânsito foi um pesadelo por semanas. Os eleitores lembraram.
+Police Protest	Protesta policial	Protesto policial
+A controversial police shooting has sparked nightly protests.	Un tiroteo policial controvertido ha provocado protestas nocturnas.	Um tiroteio policial controverso provocou protestos noturnos.
+Order an independent review	Ordenar una revisión independiente	Ordenar uma revisão independente
+Independent Review	Revisión independiente	Revisão independente
+You called for a transparent investigation. Both sides are watching.	Pediste una investigación transparente. Ambos lados están mirando.	Você pediu uma investigação transparente. Os dois lados estão observando.
+Back the police	Apoyar a la policía	Apoiar a polícia
+Backing the Blue	Apoyo a la policía	Apoio à polícia
+The police union endorsed you. Protesters promised to remember.	El sindicato policial te respaldó. Los manifestantes prometieron recordarlo.	O sindicato da polícia apoiou você. Os manifestantes prometeram lembrar.
+Impose a curfew	Imponer un toque de queda	Impor um toque de recolher
+Curfew	Toque de queda	Toque de recolher
+The curfew stopped some marches and inflamed others.	El toque de queda detuvo algunas marchas e inflamó otras.	O toque de recolher parou algumas marchas e inflamou outras.
+Wildfire Season	Temporada de incendios	Temporada de incêndios
+Wildfires are spreading across the state. The air is hazardous.	Los incendios se extienden por el estado. El aire es peligroso.	Os incêndios estão se espalhando pelo estado. O ar é perigoso.
+Pass a climate bill	Aprobar una ley climática	Aprovar uma lei climática
+Climate Bill	Ley climática	Lei climática
+You tied recovery to long-term climate action. Activists cheered.	Vinculaste la recuperación a la acción climática a largo plazo. Los activistas celebraron.	Você vinculou a recuperação à ação climática de longo prazo. Os ativistas comemoraram.
+Climate Resilience Act	Ley de Resiliencia Climática	Lei de Resiliência Climática
+Open logging jobs	Abrir empleos forestales	Abrir empregos florestais
+Logging Jobs	Empleos forestales	Empregos florestais
+The timber industry praised you. Environmental groups did not.	La industria maderera te elogió. Los grupos ambientalistas no.	A indústria madeireira elogiou você. Os grupos ambientalistas não.
+Request federal aid	Pedir ayuda federal	Pedir ajuda federal
+Federal Aid	Ayuda federal	Ajuda federal
+Washington sent help. You shared the credit.	Washington envió ayuda. Compartiste el crédito.	Washington enviou ajuda. Você compartilhou o crédito.
+Tech Tax Break	Exención fiscal tecnológica	Isenção fiscal tecnológica
+A tech giant wants a tax break in exchange for building a campus.	Un gigante tecnológico quiere una exención fiscal a cambio de construir un campus.	Uma gigante da tecnologia quer uma isenção fiscal em troca de construir um campus.
+Give the break	Dar la exención	Dar a isenção
+Deal Signed	Acuerdo firmado	Acordo assinado
+The campus is coming. So is a large donation to your campaign.	El campus viene. También una gran donación a tu campaña.	O campus está vindo. Também uma grande doação para sua campanha.
+Refuse the deal	Rechazar el acuerdo	Recusar o acordo
+No Special Deal	Sin acuerdo especial	Sem acordo especial
+You said no. Small businesses applauded.	Dijiste no. Las pequeñas empresas aplaudieron.	Você disse não. As pequenas empresas aplaudiram.
+Negotiate terms	Negociar condiciones	Negociar termos
+Negotiated Deal	Acuerdo negociado	Acordo negociado
+You traded the break for local hiring and a smaller subsidy.	Cambiaste la exención por contratación local y un subsidio menor.	Você trocou a isenção por contratação local e um subsídio menor.
+School Book Fight	Pelea por un libro escolar	Briga por um livro escolar
+A parent group wants a book removed from school libraries.	Un grupo de padres quiere retirar un libro de las bibliotecas escolares.	Um grupo de pais quer remover um livro das bibliotecas escolares.
+Ban the book	Prohibir el libro	Proibir o livro
+Book Banned	Libro prohibido	Livro proibido
+The group celebrated. Students and teachers protested.	El grupo celebró. Estudiantes y maestros protestaron.	O grupo comemorou. Estudantes e professores protestaram.
+Defend the library	Defender la biblioteca	Defender a biblioteca
+Library Defended	Biblioteca defendida	Biblioteca defendida
+You stood with librarians and free speech groups.	Te pusiste del lado de bibliotecarios y grupos de libertad de expresión.	Você ficou ao lado de bibliotecários e grupos de liberdade de expressão.
+Let the school decide	Dejar que decida la escuela	Deixar a escola decidir
+Local Control	Control local	Controle local
+You left it to the school board. Most people accepted the answer.	Lo dejaste en manos de la junta escolar. La mayoría aceptó la respuesta.	Você deixou para o conselho escolar. A maioria aceitou a resposta.
+Opioid Epidemic	Epidemia de opioides	Epidemia de opioides
+Overdose deaths are rising. The county is asking for help.	Las muertes por sobredosis aumentan. El condado pide ayuda.	As mortes por overdose estão aumentando. O condado pede ajuda.
+Fund treatment centers	Financiar centros de tratamiento	Financiar centros de tratamento
+Treatment Funded	Tratamiento financiado	Tratamento financiado
+You expanded treatment and naloxone access. Health workers praised you.	Ampliaste el tratamiento y el acceso a naloxona. Los trabajadores de salud te elogiaron.	Você ampliou o tratamento e o acesso à naloxona. Os profissionais de saúde elogiaram você.
+Arrest the dealers	Arrestar a los traficantes	Prender os traficantes
+Crackdown	Operativo	Operação
+Police made arrests. Families said you ignored the root cause.	La policía hizo arrestos. Las familias dijeron que ignoraste la causa de fondo.	A polícia fez prisões. As famílias disseram que você ignorou a causa raiz.
+Overdoses Rise	Aumentan las sobredosis	Overdoses aumentam
+The death toll kept climbing and the story followed you.	El número de muertes siguió subiendo y la historia te persiguió.	O número de mortes continuou subindo e a história te seguiu.
+Union Endorsement	Respaldo sindical	Apoio sindical
+The largest union in the state is deciding whether to endorse you.	El sindicato más grande del estado decide si te va a respaldar.	O maior sindicato do estado está decidindo se vai apoiar você.
+Accept the endorsement	Aceptar el respaldo	Aceitar o apoio
+You accepted the endorsement and promised to protect workers.	Aceptaste el respaldo y prometiste proteger a los trabajadores.	Você aceitou o apoio e prometeu proteger os trabalhadores.
+Reject it	Rechazarlo	Recusar
+No Endorsement	Sin respaldo	Sem apoio
+You said you would not be owned by anyone. Business groups liked that.	Dijiste que no serías propiedad de nadie. A los grupos empresariales les gustó.	Você disse que não seria propriedade de ninguém. Os grupos empresariais gostaram.
+Stay neutral	Mantenerte neutral	Manter-se neutro
+Neutral Ground	Terreno neutral	Terreno neutro
+You thanked the union but stayed quiet. Nobody got a headline.	Agradeciste al sindicato pero te quedaste callado. Nadie tuvo titular.	Você agradeceu ao sindicato mas ficou quieto. Ninguém teve manchete.
+Newspaper Endorsement	Respaldo del periódico	Apoio do jornal
+The city's biggest newspaper is endorsing you. The editorial board wants a meeting.	El periódico más grande de la ciudad te va a respaldar. La junta editorial quiere una reunión.	O maior jornal da cidade está apoiando você. O conselho editorial quer uma reunião.
+Endorsed	Respaldado	Apoiado
+The front page called you the serious choice.	La primera plana te llamó la opción seria.	A primeira página chamou você de escolha séria.
+Demand a retraction	Exigir una retractación	Exigir uma retratação
+War With the Press	Guerra con la prensa	Guerra com a imprensa
+The paper published the demand and made you look thin-skinned.	El periódico publicó la exigencia y te hizo ver susceptible.	O jornal publicou a exigência e fez você parecer suscetível.
+The endorsement ran without your comment. It still helped.	El respaldo salió sin tu comentario. Igual ayudó.	O apoio saiu sem seu comentário. Ainda ajudou.
+Attack Ad	Anuncio de ataque	Anúncio de ataque
+Your opponent released an ad questioning your honesty.	Tu rival lanzó un anuncio cuestionando tu honestidad.	Seu rival lançou um anúncio questionando sua honestidade.
+Answer with your own ad	Responder con tu propio anuncio	Responder com seu próprio anúncio
+Counter Ad	Contraanuncio	Contra-anúncio
+Your ad hit back with receipts. The race tightened.	Tu anuncio respondió con pruebas. La carrera se apretó.	Seu anúncio respondeu com provas. A corrida apertou.
+No Response	Sin respuesta	Sem resposta
+The ad ran unanswered for a week.	El anuncio estuvo una semana sin respuesta.	O anúncio ficou uma semana sem resposta.
+Counterattack	Contraatacar	Contra-atacar
+Attack Politics	Política de ataque	Política de ataque
+You went personal. Some voters loved it; others were disgusted.	Te fuiste a lo personal. A algunos votantes les encantó; a otros les dio asco.	Você partiu para o pessoal. Alguns eleitores adoraram; outros ficaram enojados.
+Leaked Audio	Audio filtrado	Áudio vazado
+A recording of you complaining about voters just surfaced.	Acaba de aparecer una grabación en la que te quejas de los votantes.	Acabou de surgir uma gravação em que você reclama dos eleitores.
+Apology Accepted	Disculpa aceptada	Desculpas aceitas
+You apologized and took questions. The story faded faster than expected.	Te disculpaste y aceptaste preguntas. La historia se apagó más rápido de lo esperado.	Você pediu desculpas e aceitou perguntas. A história sumiu mais rápido do que o esperado.
+Deny it	Negarlo	Negar
+Denial	Negación	Negação
+The audio was clear. Your denial made it worse.	El audio era claro. Tu negación lo empeoró.	O áudio era claro. Sua negação piorou tudo.
+Blame editing	Culpar a la edición	Culpar a edição
+Edited Clip	Clip editado	Clipe editado
+Your supporters believed you. Everyone else did not.	Tus seguidores te creyeron. Todos los demás no.	Seus apoiadores acreditaram em você. Todos os outros não.
+Farm Drought	Sequía agrícola	Seca agrícola
+A drought is destroying crops. Farmers are asking for emergency aid.	Una sequía está destruyendo las cosechas. Los agricultores piden ayuda de emergencia.	Uma seca está destruindo as colheitas. Os agricultores pedem ajuda de emergência.
+Aid the farmers	Ayudar a los agricultores	Ajudar os agricultores
+Farm Aid	Ayuda agrícola	Ajuda agrícola
+You approved relief and visited the fields. Rural voters noticed.	Aprobaste ayuda y visitaste los campos. Los votantes rurales lo notaron.	Você aprovou ajuda e visitou os campos. Os eleitores rurais notaram.
+Order water restrictions	Ordenar restricciones de agua	Ordenar restrições de água
+Water Restrictions	Restricciones de agua	Restrições de água
+The restrictions helped the reservoir and angered suburban voters.	Las restricciones ayudaron al embalse y enojaron a los votantes suburbanos.	As restrições ajudaram o reservatório e irritaram os eleitores suburbanos.
+Pray for rain	Rezar por lluvia	Rezar por chuva
+Prayers for Rain	Oraciones por lluvia	Orações por chuva
+You held a prayer service. It rained a week later.	Hiciste un servicio de oración. Llovió una semana después.	Você fez um culto de oração. Choveu uma semana depois.
+Cyberattack	Ciberataque	Ciberataque
+Hackers breached city computers and stole residents' data.	Los hackers entraron a las computadoras de la ciudad y robaron datos de los residentes.	Hackers invadiram os computadores da cidade e roubaram dados dos moradores.
+Invest in cybersecurity	Invertir en ciberseguridad	Investir em cibersegurança
+Security Upgraded	Seguridad mejorada	Segurança melhorada
+You funded a rebuild and notified every victim.	Financiaste una reconstrucción y avisaste a cada víctima.	Você financiou uma reconstrução e avisou cada vítima.
+Cover it up	Encubrirlo	Acobertar
+Cover-Up	Encubrimiento	Acobertamento
+The breach leaked anyway. The cover-up became the bigger scandal.	La brecha se filtró igual. El encubrimiento se volvió el escándalo más grande.	A invasão vazou de qualquer forma. O encobrimento virou o escândalo maior.
+Blame the hackers	Culpar a los hackers	Culpar os hackers
+Hackers Blamed	Culpa a los hackers	Culpa aos hackers
+You blamed foreign hackers. It played well for a day.	Culpaste a hackers extranjeros. Funcionó bien por un día.	Você culpou hackers estrangeiros. Funcionou bem por um dia.
+Homeless Camp	Campamento de personas sin hogar	Acampamento de moradores de rua
+A large homeless camp has appeared downtown. Businesses want it gone.	Un gran campamento de personas sin hogar apareció en el centro. Los comercios quieren que se vaya.	Um grande acampamento de moradores de rua apareceu no centro. As empresas querem que ele suma.
+Open a shelter	Abrir un refugio	Abrir um abrigo
+Shelter Opens	Abre el refugio	O abrigo abre
+You funded a shelter with services. Advocates called it humane.	Financiaste un refugio con servicios. Los defensores lo llamaron humano.	Você financiou um abrigo com serviços. Os defensores chamaram de humano.
+Clear the camp	Despejar el campamento	Limpar o acampamento
+Camp Cleared	Campamento despejado	Acampamento limpo
+Police cleared the camp. The people did not disappear.	La policía despejó el campamento. Las personas no desaparecieron.	A polícia limpou o acampamento. As pessoas não desapareceram.
+The task force will study the problem for months.	El grupo de trabajo estudiará el problema durante meses.	A força-tarefa vai estudar o problema por meses.
+Minimum Wage Protest	Protesta por el salario mínimo	Protesto pelo salário mínimo
+Workers are marching for a higher minimum wage.	Los trabajadores marchan por un salario mínimo más alto.	Os trabalhadores estão marchando por um salário mínimo mais alto.
+Raise the minimum wage	Subir el salario mínimo	Aumentar o salário mínimo
+Wage Raised	Salario aumentado	Salário aumentado
+You signed the increase. Workers cheered and business groups warned of costs.	Firmaste el aumento. Los trabajadores celebraron y los grupos empresariales advirtieron sobre costos.	Você assinou o aumento. Os trabalhadores comemoraram e os grupos empresariais alertaram sobre custos.
+Oppose the raise	Oponerte al aumento	Opor-se ao aumento
+Wage Frozen	Salario congelado	Salário congelado
+You argued the economy could not absorb it. The marchers booed.	Argumentaste que la economía no podía absorberlo. Los manifestantes te abuchearon.	Você argumentou que a economia não podia absorver. Os manifestantes vaiaram.
+Commission a study	Encargar un estudio	Encomendar um estudo
+Study Ordered	Estudio encargado	Estudo encomendado
+You bought time. Both sides called it a dodge.	Compraste tiempo. Ambos lados lo llamaron evasión.	Você comprou tempo. Os dois lados chamaram de fuga.
+Candidate for	Candidato a	Candidato a
+Office	Cargo	Cargo
+Round	Ronda	Rodada
+Debate	Debate	Debate
+You won the debate	Ganaste el debate	Você venceu o debate
+The debate was a draw	El debate fue un empate	O debate foi um empate
+You lost the debate	Perdiste el debate	Você perdeu o debate
+Debate Result	Resultado del debate	Resultado do debate
+You controlled the room and landed the closing line.	Controlaste la sala y diste el golpe final.	Você controlou a sala e deu o golpe final.
+Neither side landed a decisive blow.	Ningún lado dio un golpe decisivo.	Nenhum lado deu um golpe decisivo.
+Your opponent was sharper on the night.	Tu rival estuvo más afilado esa noche.	Seu rival foi mais afiado naquela noite.
+Last Election	Última elección	Última eleição
+Last Result	Último resultado	Último resultado
+You resigned from office.	Renunciaste al cargo.	Você renunciou ao cargo.
+You left politics for another job.	Dejaste la política por otro trabajo.	Você deixou a política por outro trabalho.
+You lost your last election.	Perdiste tu última elección.	Você perdeu sua última eleição.
+Politics	Política	Política
+Start a Political Career	Empezar una carrera política	Começar uma carreira política
+Run for School Board and climb the ladder	Postúlate a la junta escolar y sube la escalera	Candidate-se ao conselho escolar e suba a escada
+The Political Ladder	La escalera política	A escada política
+Ranks, powers, terms and salaries	Rangos, poderes, términos y salarios	Cargos, poderes, mandatos e salários
+Career History	Historial de la carrera	Histórico da carreira
+Events and laws from your political career	Eventos y leyes de tu carrera política	Eventos e leis da sua carreira política
+You can't run for office from prison.	No puedes postularte desde la cárcel.	Você não pode se candidatar da prisão.
+You must be at least 18 to run for office.	Tienes que tener al menos 18 años para postularte.	Você precisa ter pelo menos 18 anos para se candidatar.
+Run for Office	Postúlate a un cargo	Candidate-se a um cargo
+Every political career starts somewhere. Pick a party and announce your first run for the School Board.	Toda carrera política empieza en algún lugar. Elige un partido y anuncia tu primera candidatura a la junta escolar.	Toda carreira política começa em algum lugar. Escolha um partido e anuncie sua primeira candidatura ao conselho escolar.
+Political party:	Partido político:	Partido político:
+Announce my candidacy	Anunciar mi candidatura	Anunciar minha candidatura
+You must be at least	Tienes que tener al menos	Você precisa ter pelo menos
+to run for this office.	para postularte a este cargo.	para se candidatar a este cargo.
+You need a university degree to run for this office.	Necesitas un título universitario para postularte a este cargo.	Você precisa de um diploma universitário para se candidatar a este cargo.
+I announced my candidacy for	Anuncié mi candidatura para	Anunciei minha candidatura para
+Announcement	Anuncio	Anúncio
+You announced your candidacy. You have one year to campaign before Election Night.	Anunciaste tu candidatura. Tienes un año para hacer campaña antes de la Noche de Elecciones.	Você anunciou sua candidatura. Tem um ano para fazer campanha antes da Noite de Eleições.
+Political party	Partido político	Partido político
+Election	Elección	Eleição
+Start campaigning	Empezar la campaña	Começar a campanha
+From local school boards to the White House. Each office has its own term, salary and powers.	De las juntas escolares locales a la Casa Blanca. Cada cargo tiene su término, salario y poderes.	Dos conselhos escolares locais à Casa Branca. Cada cargo tem seu mandato, salário e poderes.
+Term in office	Mandato	Mandato
+Powers	Poderes	Poderes
+Next election	Próxima elección	Próxima eleição
+Not in office	No estás en el cargo	Você não está no cargo
+Law	Ley	Lei
+Event	Evento	Evento
+No history yet	Todavía no hay historial	Ainda não há histórico
+Events and laws will appear here.	Los eventos y las leyes van a aparecer aquí.	Os eventos e as leis vão aparecer aqui.
+Your annual events and the laws you passed, newest first.	Tus eventos anuales y las leyes que aprobaste, primero lo más reciente.	Seus eventos anuais e as leis que você aprovou, primeiro o mais recente.
+Campaign Name	Nombre de la campaña	Nome da campanha
+Put your own money into the campaign	Pon tu propio dinero en la campaña	Coloque seu próprio dinheiro na campanha
+Election in	Elección en	Eleição em
+Election this year	Elección este año	Eleição este ano
+Campaign Actions	Acciones de campaña	Ações de campanha
+left	restantes	restantes
+No actions left this year	No te quedan acciones este año	Não restam ações este ano
+Withdraw Candidacy	Retirar la candidatura	Retirar a candidatura
+End your campaign	Termina tu campaña	Encerre sua campanha
+Withdrawing ends your campaign. You can run again next year.	Si te retiras, termina tu campaña. Puedes postularte otra vez el próximo año.	Se desistir, sua campanha termina. Você pode se candidatar de novo no próximo ano.
+Campaign Over	Campaña terminada	Campanha encerrada
+You withdrew from the race.	Te retiraste de la contienda.	Você desistiu da disputa.
+You already hold the highest office.	Ya tienes el cargo más alto.	Você já tem o cargo mais alto.
+You need a university degree.	Necesitas un título universitario.	Você precisa de um diploma universitário.
+You need at least	Necesitas al menos	Você precisa de pelo menos
+approval.	de aprobación.	de aprovação.
+Running for	Postulado a	Candidato a
+Tap to switch back to re-election	Toca para volver a la reelección	Toque para voltar à reeleição
+Run for Re-election	Postúlate a la reelección	Candidate-se à reeleição
+Ask the voters for another term	Pídele a los votantes otro término	Peça aos eleitores outro mandato
+Run for	Postúlate a	Candidate-se a
+Risk your seat for a higher office	Arriesga tu escaño por un cargo más alto	Arrisque seu assento por um cargo mais alto
+My Office	Mi cargo	Meu cargo
+Powers of the Office	Poderes del cargo	Poderes do cargo
+Actions	Acciones	Ações
+Leave Office	Salir del cargo	Sair do cargo
+Resign	Renunciar	Renunciar
+End your political career	Termina tu carrera política	Encerre sua carreira política
+Re-election	Reelección	Reeleição
+You will run for re-election when your term ends.	Vas a ir a la reelección cuando termine tu término.	Você vai disputar a reeleição quando seu mandato terminar.
+You switched back to running for re-election.	Volviste a postularte a la reelección.	Você voltou a disputar a reeleição.
+Higher Office	Cargo más alto	Cargo mais alto
+You will run for the higher office when your term ends. If you lose, you lose your current seat too.	Vas a postularte al cargo más alto cuando termine tu término. Si pierdes, también pierdes tu escaño actual.	Você vai disputar o cargo mais alto quando seu mandato terminar. Se perder, também perde sua cadeira atual.
+Resigning ends your political career. Are you sure?	Si renuncias, termina tu carrera política. ¿Estás seguro?	Se renunciar, sua carreira política termina. Tem certeza?
+I resigned as	Renuncié como	Renunciei como
+Resigned	Renunciaste	Renunciou
+You can't run a political career from prison.	No puedes manejar una carrera política desde la cárcel.	Você não pode tocar uma carreira política da prisão.
+You have no actions left this year.	No te quedan acciones este año.	Não restam ações este ano.
+I left politics to take another job.	Dejé la política por otro trabajo.	Deixei a política por outro trabalho.
+Run for office and climb the political ladder	Postúlate y sube la escalera política	Candidate-se e suba a escada política

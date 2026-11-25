@@ -1,4 +1,4 @@
-/* [base] Business Empire for YourLife.
+/* [base] Business Empire for NaBlooLife.
  *
  * Activities -> Business gets a "Business Empire" section on top (modern era, 18+). It is a second layer next to the
  * old era businesses: real chains and local shops that grow from one store to a global company.

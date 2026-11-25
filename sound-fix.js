@@ -1,4 +1,4 @@
-/* [mod] Stat sound fix for YourLife (local mod).
+/* [mod] Stat sound fix for NaBlooLife (local mod).
  *
  * The base game plays the stat-up or stat-down sound by adding up every stat that moved in the last redraw:
  * a good outcome that also costs some Health, Smarts or Looks used to play the "bad" sound, and the other way around.

@@ -51,12 +51,12 @@
       { err: !0, shown: !0 },
     ],
     ["bigText", "settings/bigtext.png", "Bigger Text", "Increase log text size"],
-    ["bitlifeLoader", "splash/sperm0.png", "Your Life Loading Theme", "Use the classic BitLife loading screen"],
+    ["bitlifeLoader", "splash/sperm0.png", "NaBlooLife Loading Theme", "Use the classic BitLife loading screen"],
     [
       "bitlifeMode",
-      "ui/navbarBitizenSeal.png",
-      "Your Life Mode",
-      "The classic red Your Life look and loading screen",
+      "ui/navbarNabloo.png",
+      "NaBlooLife Mode",
+      "The classic red NaBlooLife look and loading screen",
     ],
     ["boosts", "settings/boosts.png", "Boosts", "Show boost opportunities"],
     [
@@ -72,7 +72,7 @@
     ["npcMasks", "emoji/1f383.png", "NPC Masks", "NPCs can wear masks"],
     ["pcMode", "emoji/1f5a5-fe0f.png", "PC Mode", "Fit the game to your computer screen"],
     ["pray", "emoji/1f64f.png", "Pray Button", "Display the Pray button"],
-    ["snow", "emoji/2744-fe0f.png", "Snow & Ice", "Falling snow, snow caps and icicles in YourLife"],
+    ["snow", "emoji/2744-fe0f.png", "Snow & Ice", "Falling snow, snow caps and icicles in NaBlooLife"],
     ["sound", "settings/sound.png", "Sound Effects", ""],
     ["languages", "emoji/1f30e.png", "Languages", "", { dots: !0 }],
   ];
@@ -111,8 +111,8 @@
     const n = document.querySelector(".topbar .logo-text");
     n &&
       (n.innerHTML = t.bitlifeMode
-        ? "Your Life"
-        : '<img class="fl-hlogo" src="freelife/logo-wide.png" alt="YourLife">'),
+        ? "NaBlooLife"
+        : '<img class="fl-hlogo" src="freelife/logo-wide.png" alt="NaBlooLife">'),
       t.bitlifeMode ||
         (l(".topbar"),
         l(".nav"),

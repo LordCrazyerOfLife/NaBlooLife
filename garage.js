@@ -1,4 +1,4 @@
-/* [base] Garage for YourLife.
+/* [base] Garage for NaBlooLife.
  *
  * Assets -> Garage: every vehicle you own lives here, split in four sections:
  *   Cars (state.cars), Motorcycles, Marina (boats) and Hangar (planes and helicopters) (state.eliteVehicles).
