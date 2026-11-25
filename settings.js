@@ -111,7 +111,7 @@
     const n = document.querySelector(".topbar .logo-text");
     n &&
       (n.innerHTML = t.bitlifeMode
-        ? "BitLife++"
+        ? "NaBlooLife"
         : '<img class="fl-hlogo" src="freelife/logo-wide.png" alt="Free Life">'),
       t.bitlifeMode ||
         (l(".topbar"),

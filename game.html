@@ -2061,8 +2061,8 @@
       }
       .bitizen {
         position: relative;
-        width: 54px;
-        height: 37px;
+        width: 44px;
+        height: 44px;
         flex: none;
         background: url(ui/navbarBitizenSeal.png) center/contain no-repeat;
       }
@@ -2072,11 +2072,12 @@
       .logo-text {
         font-weight: 900;
         font-size: 23px;
-        color: #ffd21f;
+        color: #ffffff;
         letter-spacing: -0.5px;
         text-shadow:
-          0 2px 0 #b8240f,
-          0 0 1px #b8240f;
+          0 2px 0 #9a0a9a,
+          0 0 1px #9a0a9a,
+          0 0 10px rgba(230, 25, 230, 0.55);
         font-style: italic;
       }
       .pill {
@@ -11011,7 +11012,7 @@
     <div class="phone bl-locked">
       <div id="splash">
         <img class="sp-a sp-sperm" src="splash/sperm0.png" alt="" />
-        <img class="sp-a sp-logo" src="splash/logo-pp.png" alt="BitLife++" />
+        <img class="sp-a sp-logo" src="splash/logo-pp.png" alt="NaBlooLife" />
         <img class="sp-a sp-company" src="splash/company.png" alt="" />
         <div class="sp-text">
           All characters and events in this game are fictional and are randomly generated. Any resemblance to
@@ -11029,7 +11030,7 @@
         <button class="menu-btn" aria-label="Menu"><i></i></button>
         <div class="logo">
           <i class="bitizen"></i>
-          <span class="logo-text">BitLife++</span>
+          <span class="logo-text">NaBlooLife</span>
         </div>
         <div class="pill stars">
           <svg width="22" height="26" viewBox="0 0 22 26">
@@ -11457,10 +11458,6 @@
         } catch {}
         const r = () => {};
         let i = !1;
-        try {
-          const l = JSON.parse(localStorage.getItem("bitlifepp-settings") || "{}");
-          i = !(!l.bitlifeLoader && !l.bitlifeMode);
-        } catch {}
         function startSplash() {
           if (!i && window.FreeLifeSplash) return FreeLifeSplash(a, r);
           const e = a.querySelector(".sp-sperm"),
@@ -11595,26 +11592,29 @@
             : addEventListener("DOMContentLoaded", p, { once: !0 });
         }
       }
-      const PENGUIN = [
-        "                  :-===-::::",
-        "                 -*=:::-=+#+",
-        "                 #=     -=::",
-        "                :#*==-=#-",
-        "                :@-:--:#- :",
-        "               :*#     *-:",
-        "              -*@-     ++==",
-        "            :+=*=      :#:=*:",
-        "           =+--#:       += -*-",
-        "         :+=:=#=        +=: :*=",
-        "        -*==+-++        #--+= =+",
-        "       -#*+-  ++       :#: :=*:=+",
-        "       +%=    -#       +=    :++%:",
-        "       ::     :@-     -%:      ::",
-        "               #%:   :#-",
-        "             :-*=#=-=*-:=-:",
-        "            -*#===---:==+*+:",
-        "             :::",
-      ];
+                  const PENGUIN = [
+  "              @@@       @@              ",
+  "             @@@@      @@@@             ",
+  "      @@@     @@@@    @@@@              ",
+  "     @@@@    @@@@@@@@@@@@ ::            ",
+  "       @@@@@@@@@@@@@@@@@@........       ",
+  "        @@@@@@@@@::...    :........     ",
+  "     @@@@ @@............-      .....:   ",
+  "   @@@@@ ................-       :....  ",
+  "  @@@@  .................-         ...: ",
+  " @@@@   .................           ...:",
+  "@@@@@   :..............:            :...",
+  "@@@@     :............. ::     ...  -...",
+  "@@@@       ..........: ....  ...... -...",
+  "@@@@      :.......:: ..... ........=:...",
+  "@@@@@     ..............:.......... ...:",
+  " @@@@@    :...........:...........-:... ",
+  "  @@@@@    ..................:...::...  ",
+  "    @@@@@   .................-......:   ",
+  "      @@@@@@  .............: ......     ",
+  "        @@@@@@@@@::.....:    ...:       ",
+  "            @@@@@@                      ",
+];
       let chN = 0;
       const chs = (e) =>
         [...e].map((e) => (" " === e ? " " : `<span class="ch" style="--i:${chN++}">${e}</span>`)).join("");
@@ -11622,7 +11622,7 @@
         chN = 0;
         const e = document.createElement("div");
         (e.id = "penguin"),
-          (e.innerHTML = `<canvas class="pg-snow"></canvas>\n      <div class="pg-stage"><pre class="pg-ball"></pre><pre class="pg-pow"></pre><pre class="pg-art"></pre></div>\n      <div class="pg-white"></div><div class="pg-cred"><div class="pg-type">${chs("BitLife recreated by")}</div>\n      <div class="pg-links"><b>${chs("Please look at READ ME .TXT")}</b></div></div>`),
+          (e.innerHTML = `<canvas class="pg-snow"></canvas>\n      <div class="pg-stage"><pre class="pg-ball"></pre><pre class="pg-pow"></pre><pre class="pg-art"></pre></div>\n      <div class="pg-white"></div><div class="pg-cred"><div class="pg-type">${chs("BitLife recreated by Nan089111 and Itzbloodie")}</div>\n      <div class="pg-links"><b>${chs("Please look at READ ME .TXT")}</b></div></div>`),
           document.querySelector(".phone").append(e);
         const t = e.querySelector(".pg-art"),
           a = (e.querySelector(".pg-type"), e.querySelector(".pg-snow")),
@@ -11651,7 +11651,7 @@
                   (e.x += Math.sin(e.sway) * e.sw * n * 0.5),
                   e.y > a.height + 10 && Object.assign(e, s(!0)),
                   (o.globalAlpha = e.a),
-                  (o.fillStyle = "#fff"),
+                  (o.fillStyle = "#ff00ff"),
                   o.beginPath(),
                   o.arc(e.x, e.y, e.r, 0, 6.283),
                   o.fill();
@@ -11689,7 +11689,7 @@
           y = e.querySelector(".pg-ball"),
           b = e.querySelector(".pg-pow"),
           v = e.querySelector(".pg-white");
-        (y.textContent = " .-.\n( * )\n '-'"), (b.textContent = " .'*'.\n*:@@@:*\n '.*.'");
+        (y.textContent = "  *  \n *** \n*****\n * * \n*   *"), (b.textContent = " .'*'.\n*:@@@:*\n '.*.'");
         const w = (e, t) => m.push(setTimeout(t, e)),
           k = () => {
             if (p) return;
@@ -11725,7 +11725,7 @@
                 );
             }),
               w(1500, () => {
-                (y.style.opacity = 0),
+                y.animate([{ transform: `translate(${r[0]}px, ${r[1]}px) rotate(-520deg) scale(1)`, opacity: 1 }, { transform: `translate(${r[0]}px, ${r[1]}px) rotate(-650deg) scale(2.6)`, opacity: 0 }], { duration: 260, easing: "ease-out", fill: "forwards" }),
                   (b.style.cssText = `opacity:1;transform:translate(${a}px, ${o}px)`),
                   b.animate(
                     [

@@ -56,18 +56,18 @@
       desc: "Run for office from School Board to President: ranks, powers, campaigns, elections and scandals. Find it in Occupation, Special Careers.",
     },
     {
-      id: "melon",
-      name: "Melon",
-      icon: "emoji/1f46e.png",
-      src: "melon.js?v=1",
-      desc: "Automatic Brutality and Disguise meters for Crime, plus a chance to start life as a human/animal hybrid or with a disgraced family name. Get brutal and well-disguised enough and the police can't pin you down; get brutal and sloppy and they'll hunt you down. Find your meters at the top of the Crime screen.",
-    },
-    {
       id: "cheat",
       name: "Cheat Menu",
       icon: "emoji/1f4b0.png",
       src: "cheat.js?v=1",
       desc: "Adds a small draggable button floating on screen. Tap it to open a panel of cheats: add money, set cash to $0, max or min all four stats, full heal, and age up on demand.",
+    },
+    {
+      id: "displayfix",
+      name: "Display Fix (Scale + Safe Area)",
+      icon: "emoji/1f4cf.png",
+      src: "displayfix.js?v=1",
+      desc: "Shrinks the whole phone screen down (default 85%, edit SCALE at the top of displayfix.js to adjust) and adds a thin black bar at the very top matching only your device's status bar / notch height (safe-area-inset-top).",
     },
     {
       id: "nk",
