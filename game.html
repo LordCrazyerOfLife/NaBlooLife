@@ -11067,6 +11067,22 @@
         font-style: italic;
         color: #7a5a10;
       }
+      /* optional screen scale-down (Display Fix mod): "zoom" also shrinks anything sized in
+         viewport units (like .phone's height: 100vh), so the height is pre-inflated by
+         1 / scale so it lands back on exactly 100% of the real screen height after the zoom
+         shrink. Inert by default -- the Display Fix mod just adds the .ui-scaled class when
+         it's turned on; edit --ui-scale below to change the amount. */
+      :root {
+        --ui-scale: 0.85;
+      }
+      .phone.ui-scaled {
+        zoom: var(--ui-scale) !important;
+        height: calc(100vh / var(--ui-scale)) !important;
+      }
+      html.pc .phone.ui-scaled {
+        zoom: 1 !important;
+        height: 100vh !important;
+      }
       /* top safe-area bar: a fixed black bar matching the device's notch / status-bar height so it
          never rides along with sliding screens (menus, the family tree) and isn't affected by any
          zoom/scale mods applied to .phone. Hidden on desktop (html.pc), where there's no notch. */

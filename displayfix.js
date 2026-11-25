@@ -1,43 +1,17 @@
 (function () {
-  // Change this to taste: 1 = no change, 0.85 = 15% smaller, 0.75 = 25% smaller, etc.
-  var SCALE = 0.85;
-
+  // The actual scaling (the --ui-scale CSS var + the .phone.ui-scaled rule) now lives
+  // permanently in game.html itself. This script's only job, when the Display Fix mod
+  // is turned on in the Mod Loader, is to switch that scaling on by adding the class.
+  // Turning the mod off again (Mod Loader) takes effect the next time NaBlooLife loads,
+  // same as every other script mod.
   function boot() {
-    if (!document.body) {
+    var phone = document.querySelector(".phone");
+    if (!phone) {
       setTimeout(boot, 50);
       return;
     }
-    init();
+    phone.classList.add("ui-scaled");
   }
-
-  function init() {
-    addScaleStyle();
-  }
-
-  function addScaleStyle() {
-    if (document.getElementById("uiScaleStyle")) return; // already injected
-
-    var style = document.createElement("style");
-    style.id = "uiScaleStyle";
-    // "zoom" (Chromium/Android WebView) shrinks the rendered size, but it
-    // also shrinks anything sized in viewport units (like .phone's
-    // height: 100vh), so without compensating, the phone frame ends up
-    // smaller than the real screen and leaves blank space / a wrong
-    // aspect ratio. The fix (same trick this game already uses for its
-    // own PC/desktop zoom mode): pre-inflate the height by 1 / scale so
-    // that after the zoom shrink it lands back on exactly 100% of the
-    // real screen height.
-    style.textContent =
-      ":root { --ui-scale: " +
-      SCALE +
-      "; }" +
-      ".phone {" +
-      "zoom: var(--ui-scale) !important;" +
-      "height: calc(100vh / var(--ui-scale)) !important;" +
-      "}";
-    document.head.appendChild(style);
-  }
-
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", boot);
