@@ -568,3 +568,12 @@
 6. **i18n del juego:** primera tanda hecha (ver "Mundial jugable + i18n genérico"); falta lo de la lista "Sigue pendiente".
 7. **Limpieza:** borrar los `*.bak` / `*.bak-*` de `i18n\` cuando todo esté estable. Quedaron abiertos un `python -m
    http.server 8765` y un Brave de debug (puerto 9333) de la sesión: cerrarlos si no se usan.
+
+## Casas nuevas (2026-11-24)
+- `GRIDS/MAS CASAS.png` y `GRIDS/Casas2.png` (estilo plano, realista) copiadas a `_art-src/grids/CASAS6.png` y `CASAS5.png`, entradas en `grids.json`, cortadas con `split_grid.py --only CASAS` -> `houses/realhome-01..24.png` (01-12 = MAS CASAS, 13-24 = Casas2). Agregadas al final de `HOUSES` en `houses.js?v=3` ($185k-$790k, 3-5 br). Las casas viejas CASAS..CASAS4 (home-/mansion-) ya estaban todas en el juego. **No visto en el navegador.**
+
+## Landlord (2026-11-24, `landlord.js?v=1`, base: script en el bloque `[base]` de game.html)
+- Assets -> Landlord (reemplaza la fila "coming soon"; solo propiedades no `old`/`royal`). Estado: `p.ll` por propiedad (`mode` rent/off, `rent`, `tenant`, `issues[]`, `mgr`, `ins`, `lost`, `vacYears`, `earned`) y `state.landlord` (`tickAge`, `total`).
+- Cada propiedad tiene switch de rentar/no rentar (se puede cambiar cuando sea). Al Age up (+1.1s): aplicantes (1-3, background check $60, aceptar/rechazar), pago de renta (12 meses menos meses vacíos/perdidos, manager se lleva 10%), mood del inquilino (renta vs mercado `value*0.0055/mes`, problemas abiertos), lease (renovación), se va si está harto, problemas de mantenimiento (14 tipos, algunos ocultos hasta inspeccionar; contratista / handyman barato 70% / DIY 50%; sin arreglar baja condición y puede acabar en demanda), manager e insurance (75% menos daños) por propiedad, renovar (cosmético/mayor).
+- Actividades con inquilino: chat (1/año), inspeccionar, desalojar (legal, puede perder), cash for keys. 20 eventos random en `EVENTS` (late, party, noise, pet, upgrade, leaveearly, prepay, burglary, pipe, fire, shady/ilegal con heat de `FL_RICH`, neighbor, code, baby, skip, lawsuit, referral, tax, squatters y vandalismo en vacías). Debug: `FL_LAND.open()`, `FL_LAND.tick()`, `FL_LAND.event(p, "late")`.
+- Textos en inglés, sin i18n. Probado con stubs en Node (40 años, 3 casas, todos los eventos y todas las opciones sin errores); **no visto en el navegador**.

@@ -526,6 +526,64 @@
     "bm-21-lv-duffel-black",
     "bm-19-karambit"
    ]
+  },
+  {
+   "src": "CASAS6.png",
+   "cols": 4,
+   "rows": 3,
+   "out": "houses",
+   "names": [
+    "realhome-01",
+    "realhome-02",
+    "realhome-03",
+    "realhome-04",
+    "realhome-05",
+    "realhome-06",
+    "realhome-07",
+    "realhome-08",
+    "realhome-09",
+    "realhome-10",
+    "realhome-11",
+    "realhome-12"
+   ],
+   "box": [
+    120,
+    120
+   ],
+   "cut": {
+    "it": 4,
+    "size": 5,
+    "hole_max": 2500
+   }
+  },
+  {
+   "src": "CASAS5.png",
+   "cols": 4,
+   "rows": 3,
+   "out": "houses",
+   "names": [
+    "realhome-13",
+    "realhome-14",
+    "realhome-15",
+    "realhome-16",
+    "realhome-17",
+    "realhome-18",
+    "realhome-19",
+    "realhome-20",
+    "realhome-21",
+    "realhome-22",
+    "realhome-23",
+    "realhome-24"
+   ],
+   "box": [
+    120,
+    120
+   ],
+   "cut": {
+    "it": 4,
+    "size": 5,
+    "hole_max": 2500
+   }
   }
  ]
 }
