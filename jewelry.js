@@ -211,6 +211,42 @@
         ["chains", "Cuban Link Chain", "chain", "Sterling Silver", [300, 45e3], 3],
         ["charm-yellow-pearl", "Gold Pearl Charm", "charm", "18K Gold", [150, 2500], 1],
         ["charm-white-pearl", "Silver Pearl Charm", "charm", "Sterling Silver", [60, 800], 1],
+        ["grillz-gold", "Gold Grillz", "grillz", "18K Gold", [900, 14000], 1],
+        ["grillz-silver", "Silver Grillz", "grillz", "Sterling Silver", [250, 3000], 1],
+        ["grillz-diamond", "Diamond Grillz", "grillz", "18K White Gold", [12000, 450000], 0.5],
+        ["grill1", "Gold Grillz No. 1", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill2", "Iced Gold Grillz No. 2", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill3", "Silver Grillz No. 3", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill4", "Two-Tone Grillz No. 4", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill5", "Silver Grillz No. 5", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill6", "Two-Tone Grillz No. 6", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill7", "Silver Grillz No. 7", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill8", "Silver Grillz No. 8", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill9", "Two-Tone Grillz No. 9", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill10", "Gold Grillz No. 10", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill11", "Gold Grillz No. 11", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill12", "Two-Tone Grillz No. 12", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill13", "Gold Grillz No. 13", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill14", "Iced Gold Grillz No. 14", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill15", "Gold Grillz No. 15", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill16", "Two-Tone Grillz No. 16", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill17", "Iced Gold Grillz No. 17", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill18", "Silver Grillz No. 18", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill19", "Black Diamond Grillz No. 19", "grillz", "18K White Gold", [60000, 900000], 0.5],
+        ["grill20", "Gold Grillz No. 20", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill21", "Iced Gold Grillz No. 21", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill22", "Silver Grillz No. 22", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill23", "Iced Gold Grillz No. 23", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill24", "Ruby & Sapphire Grillz No. 24", "grillz", "18K White Gold", [60000, 900000], 0.4],
+        ["grill25", "Emerald Gold Grillz No. 25", "grillz", "18K Gold", [40000, 600000], 0.5],
+        ["grill26", "Diamond Grillz No. 26", "grillz", "18K White Gold", [15000, 500000], 0.8],
+        ["grill27", "Two-Tone Grillz No. 27", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill28", "Diamond Grillz No. 28", "grillz", "18K White Gold", [15000, 500000], 0.8],
+        ["grill29", "Silver Grillz No. 29", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill30", "Ruby Grillz No. 30", "grillz", "18K White Gold", [40000, 700000], 0.5],
+        ["grill31", "Iced Gold Grillz No. 31", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill32", "Emerald Grillz No. 32", "grillz", "18K White Gold", [40000, 600000], 0.5],
+        ["grill33", "Gold Grillz No. 33", "grillz", "18K Gold", [1200, 25000], 1.3],
         ["watch", "Basic Watch", "watch", "Plastic", [20, 150], 1],
         ["watch-white", "Two-Tone Watch", "watch", "Stainless Steel", [500, 9e3], 2],
         ["watch-gold", "Gold Watch", "watch", "18K Gold", [2500, 6e4], 2],
@@ -233,6 +269,62 @@
         ],
         ["watch-marie-antoinette", "Antique Royal Pocket Watch", "watch", "18K Gold", [2e6, 3e7], 0.3],
         ["watch-hallucination", "Rainbow Diamond Watch", "watch", "Platinum", [5e6, 55e6], 0.3],
+        ["watch-01-datejust-steel", "Steel Dress Watch", "watch", "Stainless Steel", [4000, 25000], 1],
+        ["watch-02-chrono-gold", "Gold Chronograph", "watch", "18K Gold", [20000, 300000], 1],
+        ["watch-03-octagon-blue", "Octagon Sport Watch", "watch", "Stainless Steel", [30000, 500000], 1],
+        ["watch-04-nautilus-rose", "Rose Gold Sport Watch", "watch", "18K Rose Gold", [40000, 900000], 1],
+        ["watch-05-skeleton-tonneau", "Skeleton Tonneau Watch", "watch", "Titanium", [150000, 2500000], 1],
+        ["watch-06-square-roman", "Square Roman Watch", "watch", "Stainless Steel", [3000, 20000], 1],
+        ["watch-07-diver-black", "Diver Watch", "watch", "Stainless Steel", [5000, 30000], 1],
+        ["watch-08-prx-blue", "Blue Dial Dress Watch", "watch", "Stainless Steel", [500, 3000], 1],
+        ["watch-09-pilot-chrono", "Pilot Chronograph", "watch", "Stainless Steel", [4000, 25000], 1],
+        ["watch-10-speed-chrono", "Moonwatch Chronograph", "watch", "Stainless Steel", [5000, 40000], 1],
+        ["watch-11-daydate-green", "Green Dial Gold Watch", "watch", "18K Gold", [30000, 400000], 1],
+        ["watch-12-tank-leather", "Leather Strap Watch", "watch", "Stainless Steel", [3000, 30000], 1],
+        ["cuban-01", "Gold Cuban Chain", "chain", "18K Gold", [800, 12000], 1.5],
+        ["cuban-02", "Heavy Gold Cuban Chain", "chain", "18K Gold", [3000, 60000], 1],
+        ["cuban-03", "Iced Cuban Chain", "chain", "18K White Gold", [30000, 900000], 0.6],
+        ["cuban-04", "Heavy Gold Cuban Chain", "chain", "18K Gold", [3000, 60000], 1],
+        ["cuban-05", "Gold Cuban Chain", "chain", "18K Gold", [800, 12000], 1.5],
+        ["cuban-06", "Iced Cuban Chain", "chain", "18K White Gold", [30000, 900000], 0.6],
+        ["cuban-07", "Box Clasp Cuban Chain", "chain", "18K Gold", [2000, 30000], 1],
+        ["cuban-08", "Heavy Gold Cuban Chain", "chain", "18K Gold", [3000, 60000], 1],
+        ["cuban-09", "Iced Cuban Chain", "chain", "18K White Gold", [30000, 900000], 0.6],
+        ["cuban-10", "Diamond Clasp Cuban Chain", "chain", "18K Gold", [150000, 2500000], 0.4],
+        ["cuban-11", "Heavy Gold Cuban Chain", "chain", "18K Gold", [3000, 60000], 1],
+        ["cuban-12", "Iced Cuban Chain", "chain", "18K White Gold", [30000, 900000], 0.6],
+        ["cuban-13", "Box Clasp Cuban Chain", "chain", "18K Gold", [2000, 30000], 1],
+        ["cuban-14", "Heavy Gold Cuban Chain", "chain", "18K Gold", [3000, 60000], 1],
+        ["cuban-15", "Iced Cuban Chain", "chain", "18K White Gold", [30000, 900000], 0.6],
+        ["cuban-16", "Gold Cuban Chain", "chain", "18K Gold", [800, 12000], 1.5],
+        ["cuban-17", "Diamond Clasp Cuban Chain", "chain", "18K Gold", [150000, 2500000], 0.4],
+        ["cuban-18", "Gold Cuban Chain", "chain", "18K Gold", [800, 12000], 1.5],
+        ["cuban-19", "Iced Cuban Chain", "chain", "18K White Gold", [30000, 900000], 0.6],
+        ["cuban-20", "Heavy Gold Cuban Chain", "chain", "18K Gold", [3000, 60000], 1],
+        ["gem-01-solitaire-ring", "Diamond Solitaire Ring", "ring", "Platinum", [4000, 90000], 1.2],
+        ["gem-02-emerald-pendant", "Emerald Pendant Necklace", "necklace", "18K Gold", [3000, 60000], 1],
+        ["gem-03-tennis-bracelet", "Diamond Tennis Bracelet", "bracelet", "18K Gold", [6000, 150000], 1],
+        ["gem-04-sapphire-studs", "Sapphire Stud Earrings", "earrings", "18K Gold", [1500, 40000], 1],
+        ["gem-05-lion-signet", "Lion Signet Ring", "ring", "18K Gold", [900, 12000], 1],
+        ["gem-06-ruby-halo-ring", "Ruby Halo Ring", "ring", "Platinum", [5000, 120000], 0.9],
+        ["gem-07-pearl-bracelet", "Pearl Bracelet", "bracelet", "18K White Gold", [800, 15000], 1],
+        ["gem-08-heart-pendant", "Pink Heart Pendant", "necklace", "18K Gold", [600, 9000], 1],
+        ["gem-09-diamond-watch", "Diamond Pave Watch", "watch", "18K White Gold", [40000, 600000], 0.6],
+        ["gem-10-sapphire-gold-ring", "Sapphire Gold Ring", "ring", "18K Gold", [3500, 80000], 0.9],
+        ["gem-11-drop-earrings", "Diamond Drop Earrings", "earrings", "Platinum", [8000, 200000], 0.8],
+        ["gem-12-gold-bangle", "Gold Bangle", "bracelet", "18K Gold", [700, 18000], 1.2],
+        ["anc-01-falcon-collar", "Ancient Falcon Collar", "necklace", "24K Gold", [250000, 6000000], 0.25],
+        ["anc-02-royal-crown", "Royal Pearl Crown", "crown", "22K Gold", [500000, 12000000], 0.15],
+        ["anc-03-lapis-seal-ring", "Lapis Seal Ring", "ring", "22K Gold", [60000, 1500000], 0.3],
+        ["anc-04-jade-mask-pendant", "Jade Mask Pendant", "necklace", "Jade", [80000, 2000000], 0.25],
+        ["anc-05-lion-cuff", "Lion Cuff", "bracelet", "22K Gold", [120000, 3000000], 0.25],
+        ["anc-06-ruby-pearl-brooch", "Ruby Pearl Brooch", "brooch", "Silver", [90000, 2500000], 0.25],
+        ["anc-07-coin-necklace", "Ancient Coin Necklace", "necklace", "22K Gold", [40000, 900000], 0.3],
+        ["anc-08-emerald-ring", "Emerald Seal Ring", "ring", "22K Gold", [150000, 3500000], 0.2],
+        ["anc-09-pearl-collar", "Pearl Collar", "necklace", "Pearl", [120000, 3000000], 0.25],
+        ["anc-10-lion-bangle", "Lion Bangle", "bracelet", "22K Gold", [70000, 1800000], 0.3],
+        ["anc-11-ruby-brooch", "Ruby Cross Brooch", "brooch", "22K Gold", [100000, 2200000], 0.25],
+        ["anc-12-dragon-cuff", "Dragon Cuff", "bracelet", "22K Gold", [200000, 5000000], 0.2],
       ].map((e) => ({ type: "plain", p: e, w: e[5] })),
     ],
     m = () => Math.random().toString(36).slice(2);
@@ -312,7 +404,7 @@
     v = (e) => {
       const a = e ? "fakeStock" : "jewelStock",
         n = state[a];
-      if (n && n.age === state.age && 5 === n.v) return n.list;
+      if (n && n.age === state.age && 6 === n.v) return n.list;
       const t = e
         ? Array.from({ length: rint(55, 64) }, C)
         : [
@@ -325,7 +417,7 @@
           (e.price = D(e)), e.fake && (e.value = K(e.price));
         }),
         t.sort((e, a) => a.price - e.price),
-        (state[a] = { age: state.age, v: 5, list: t }),
+        (state[a] = { age: state.age, v: 6, list: t }),
         t
       );
     };
@@ -450,11 +542,15 @@
         donate: "stat-emoji/face-halo.png",
         gift: e("gift"),
         sell: "cars/ui-hand-waving.png",
+        wear: "emoji/1f48e.png",
       },
       r = (e, a, n) =>
         `<div class="row" data-ra="${e}"><img src="${l[e]}" style="object-fit:contain"><div class="t"><b>${a}</b><span>${n}</span></div>${DOTS}</div>`;
     (sList.innerHTML =
       `<div class="row jv" data-ra="view"><img src="${y(n)}" style="object-fit:contain"><div class="t"><b>${$(n)}${S(n)}</b><span>View ${i}</span></div>${DOTS}</div><div class="sec">Activities</div>` +
+      (window.FL_JEWEL_WEAR && FL_JEWEL_WEAR.slot(n)
+        ? r("wear", FL_JEWEL_WEAR.worn(n) ? "Take off" : "Wear", `Wear ${o} on your ${FL_JEWEL_WEAR.slot(n)}`)
+        : "") +
       r("appraise", "Appraise", `Get ${o} appraised`) +
       r("clean", "Clean", `Get ${o} cleaned`) +
       r("discard", "Discard", `Get rid of ${o}`) +
@@ -713,6 +809,7 @@
                     ],
                   });
                 })(n),
+              wear: () => (FL_JEWEL_WEAR.toggle(n), T(n)),
               clean: () =>
                 (function (e) {
                   if (e.cond >= 100)

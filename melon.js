@@ -186,10 +186,11 @@
       const r = origOpenCrime.apply(this, arguments);
       try {
         const m = melon(),
-          bar = (label, v) =>
+          barOld = (label, v) =>
             `<div style="margin:4px 0"><b style="font-size:13px">${label}: ${v}</b>` +
             `<i style="display:block;height:8px;border-radius:4px;background:#0002;overflow:hidden;margin-top:2px">` +
             `<u style="display:block;height:100%;width:${Math.max(3, v)}%;background:${tierColor(v)}"></u></i></div>`;
+        const bar = (label, v) => (window.FL_BARS ? FL_BARS.html(label, v, tierColor(v) === "#2fa03b" ? "" : v >= 70 ? "crit" : "low") : barOld(label, v));
         const t = tier(),
           tierLabel =
             t === "ghost"
@@ -201,7 +202,7 @@
         if (m.hybridSpecies) traitBits.push(`${m.hybridSpecies} Hybrid`);
         if (m.disgraced) traitBits.push("Disgraced Name");
         const traitLine = traitBits.length
-          ? `<span style="font-size:12px;opacity:.75;display:block">${traitBits.join(" &middot; ")}</span>`
+          ? `<span class="fl-sub" style="font-size:12px;display:block">${traitBits.join(" &middot; ")}</span>`
           : "";
         sList.insertAdjacentHTML(
           "afterbegin",
@@ -209,7 +210,7 @@
             traitLine +
             bar("Brutality", m.brutality) +
             bar("Disguise", m.disguise) +
-            `<span style="font-size:12px;opacity:.75;margin-top:2px">${tierLabel}</span></div>`,
+            `<span class="fl-sub" style="font-size:12px;margin-top:2px">${tierLabel}</span></div>`,
         );
       } catch (e) {
         console.warn("[melon] crime screen", e);

@@ -255,7 +255,7 @@
       n = (a.overtime || 0) + (a.tips || 0) + (a.commission || 0) + (a.bonus || 0);
     return { base: l(t), extras: l(n), total: l(t + n), payroll: "pension" !== a.payType };
   }
-  function u({ country: a = "us", usState: r = null, jobs: c = [], pretax: u = 0, kids: m = 0 } = {}) {
+  function u0({ country: a = "us", usState: r = null, jobs: c = [], pretax: u = 0, kids: m = 0 } = {}) {
     const p = ((a) => t[a] || t.default)(a),
       h = c.filter((a) => !1 !== a.active).map((a) => ({ job: a, ...d(a) })),
       y = h.reduce((a, e) => a + e.total, 0),
@@ -295,6 +295,36 @@
       net: N,
       effective: y ? f / y : 0,
       jobs: h.map((a) => ({ title: a.job.title, base: a.base, extras: a.extras, total: a.total })),
+    };
+  }
+  // [mod] brackets, deductions and credits are 2026 dollars: deflate the income, tax it, inflate the result,
+  // so 3%/yr wage inflation does not push everybody into the top bracket.
+  function u(opts = {}) {
+    const k = typeof a.inflFx === "function" ? a.inflFx() : 1;
+    if (!k || k === 1 || !isFinite(k)) return u0(opts);
+    const dj = (j) => ({
+      ...j,
+      annualSalary: (j.annualSalary || 0) / k,
+      overtime: (j.overtime || 0) / k,
+      tips: (j.tips || 0) / k,
+      commission: (j.commission || 0) / k,
+      bonus: (j.bonus || 0) / k,
+    });
+    const r = u0({ ...opts, jobs: (opts.jobs || []).map(dj), pretax: (opts.pretax || 0) / k });
+    const up = (x) => Math.round((x || 0) * k);
+    return {
+      ...r,
+      gross: up(r.gross),
+      pretax: up(r.pretax),
+      taxable: up(r.taxable),
+      credits: up(r.credits),
+      incomeTax: up(r.incomeTax),
+      regionalTax: up(r.regionalTax),
+      payroll: up(r.payroll),
+      payrollLines: r.payrollLines.map((l) => ({ ...l, amount: up(l.amount) })),
+      totalTax: up(r.totalTax),
+      net: up(r.net),
+      jobs: r.jobs.map((j) => ({ ...j, base: up(j.base), extras: up(j.extras), total: up(j.total) })),
     };
   }
   const m = {

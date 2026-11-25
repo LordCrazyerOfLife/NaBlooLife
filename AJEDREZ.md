@@ -1,4 +1,4 @@
-# Ajedrez en Free Life — investigación y diseño
+# Ajedrez en YourLife — investigación y diseño
 
 > Documento de trabajo. Fecha: 2026-11-21. Investiga el dominio real (títulos, Elo, plata, la
 > plataforma online, edad) y cierra con la decisión técnica del minijuego y cómo encajarlo en el juego.
@@ -394,7 +394,7 @@ hacerte famoso.
 
 **Regla dura**: nada de "chess.com", nada de su logo (el peón verde), nada de su verde característico
 (#81b64c), nada de su dominio ni de sus nombres de torneo. Igual que el juego hace con BitLife
-("Free Life"), Ultimate Fighting, Walmart, etc.
+("YourLife"), Ultimate Fighting, Walmart, etc.
 
 Propuestas (ordenadas por mi preferencia):
 
@@ -629,7 +629,7 @@ Así, si el motor se atrasa, el modo carrera ya es jugable y el jugador puede *s
 
 ---
 
-## 8. Cómo encaja en Free Life (resumen técnico)
+## 8. Cómo encaja en YourLife (resumen técnico)
 
 | Pieza | Dónde | Nota |
 |---|---|---|

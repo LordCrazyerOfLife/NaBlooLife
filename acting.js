@@ -1,4 +1,4 @@
-/*! Copyright (c) 2026 Free Life. All rights reserved. Unauthorized copying, re-hosting or redistribution of this code is prohibited. */
+/*! Copyright (c) 2026 Your Life. All rights reserved. Unauthorized copying, re-hosting or redistribution of this code is prohibited. */
 (() => {
   const e = (e) => `emoji/${e}.png`,
     t = {
@@ -262,6 +262,7 @@
   }
   function R() {
     if (state.age < 18) return;
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Actor")) return;
     const e = w() >= 40 ? `Famous ${k()}` : k();
     state.job && state.job.acting
       ? (state.job.t = e)
@@ -630,7 +631,7 @@
       studio: T,
       quality: C,
       budget: L,
-      pay: v(localPrice(Math.round(Y))),
+      pay: v(localPrice(Math.round(Y * (typeof window.inflFx === "function" ? window.inflFx() : 1)))),
       eps: B,
       director: `${P.first} ${P.last}`,
       dir: P,

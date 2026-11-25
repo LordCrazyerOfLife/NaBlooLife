@@ -64,19 +64,12 @@
         desc: "Help an adult male friend explore his feminine side: clothes, a new name, coming out, transition, and a few very direct attempts to seduce you. Find it on an adult male friend in Relationships.",
         src: "femboy.js?v=2",
       },
-      // [mod] test mod (test-mod.js) - diagnostic only, confirms mod loading works
-      99990000: {
-        name: "Test Mod",
-        icon: "emoji/1f9ea.png",
-        desc: "Diagnostic mod: confirms the mod-loading mechanism works and lists which base-game globals it can see. Makes no permanent changes.",
-        src: "test-mod.js?v=1",
-      },
       // [mod] loader simple sin codigos de 8 digitos (modloader.js)
       11111111: {
         name: "Mod Loader",
         icon: "ui/gear.png",
         desc: "Loads extra mod scripts from a simple list in modloader.js, no 8-digit code needed per mod. Also on by default via Settings -> Mod Workshop -> Mods.",
-        src: "modloader.js?v=17",
+        src: "modloader.js?v=22",
       },
     },
     t = "bitlifepp-ported",
@@ -183,9 +176,9 @@
       const c = o(),
         p = window.SETTINGS_UI,
         f = p ? p.settings : {},
-        u = (e) => ("bitlife" === e ? "BitLife" : "freelife" === e ? "Free Life" : "Match the theme");
+        u = (e) => ("bitlife" === e ? "BitLife" : "freelife" === e ? "YourLife" : "Match the theme");
       (t.outerHTML =
-        `<div class="sec">Mods</div><div class="row" id="setWorkshop"><img src="ui/gear.png"><div class="t"><b>Mod Workshop</b><span>Browse and enable every mod</span></div>${CHEV}</div><div class="row" id="setRedeem"><img src="emoji/2b50.png"><div class="t"><b>Redeem Code</b><span>Redeem a mod with an 8-digit code</span></div>${DOTS}</div>` +
+        `<div class="sec">Mods</div><div class="row" id="setWorkshop"><img src="ui/gear.png"><div class="t"><b>Mod Loader</b><span>Browse and enable every mod</span></div>${CHEV}</div><div class="row" id="setRedeem"><img src="emoji/2b50.png"><div class="t"><b>Redeem Code</b><span>Redeem a mod with an 8-digit code</span></div>${DOTS}</div>` +
         c
           .map((t) => {
             const o = e[t.code];
@@ -193,7 +186,7 @@
           })
           .join("") +
         '<div class="sec">Packs</div>' +
-        `<div class="row" id="pkUi"><img src="ui/navbarBitizenSeal.png" style="object-fit:contain"><div class="t"><b>UI Pack</b><span>${f.bitlifeMode ? "BitLife" : "Free Life"} look</span></div>${DOTS}</div>` +
+        `<div class="row" id="pkUi"><img src="ui/navbarBitizenSeal.png" style="object-fit:contain"><div class="t"><b>UI Pack</b><span>${f.bitlifeMode ? "BitLife" : "YourLife"} look</span></div>${DOTS}</div>` +
         `<div class="row" id="pkSnd"><img src="settings/sound.png" style="object-fit:contain"><div class="t"><b>Sound Pack</b><span>${u(f.soundPack)} sounds</span></div>${DOTS}</div>` +
         `<div class="row" id="pkIco"><img src="emoji/1f60a.png" style="object-fit:contain"><div class="t"><b>Icon Pack</b><span>${u(f.iconPack)} icons</span></div>${DOTS}</div>`),
         (document.getElementById("setWorkshop").onclick = () => {
@@ -222,7 +215,7 @@
               "UI Pack",
               "The whole look of the game: menus, bars, buttons and popups.",
               [
-                [!1, "Free Life (penguin theme)"],
+                [!1, "YourLife (penguin theme)"],
                 [!0, "BitLife (classic red)"],
               ],
               !!f.bitlifeMode,
@@ -237,7 +230,7 @@
                 "Which sounds the game plays, whatever the look.",
                 [
                   ["auto", "Match the theme"],
-                  ["freelife", "Free Life sounds"],
+                  ["freelife", "YourLife sounds"],
                   ["bitlife", "BitLife sounds"],
                 ],
                 f.soundPack || "auto",
@@ -252,7 +245,7 @@
                 "Which icons and emoji the game shows, whatever the look.",
                 [
                   ["auto", "Match the theme"],
-                  ["freelife", "Free Life (Apple emoji and Free Life art)"],
+                  ["freelife", "YourLife (Apple emoji and YourLife art)"],
                   ["bitlife", "BitLife icons"],
                 ],
                 f.iconPack || "auto",

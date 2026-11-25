@@ -1,4 +1,4 @@
-/* [mod] Special Life: Illegal Street Racer, Judge y Artist para Free Life.
+/* [mod] Special Life: Illegal Street Racer, Judge y Artist para YourLife.
  *
  * Se carga desde modloader.js y se engancha a Occupation -> Special Careers.
  * No modifica game.html: usa state (JSON por vida), jCard/notice y los coches
@@ -27,6 +27,7 @@
   const pick = (a) => a[Math.floor(rnd() * a.length)];
   const esc = (s) =>
     String(s ?? "").replace(/[&<>\"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '\"': "&quot;", "'": "&#39;" })[c]);
+  const ip = (n) => Math.round(n * (typeof window.inflFx === "function" ? window.inflFx() : 1));
   const money = (n) =>
     typeof usd === "function" ? usd(Math.round(n)) : "$" + Math.round(n).toLocaleString("en-US");
   const back = (fn) => (typeof fn === "function" ? fn : () => window.openSpecialCareers());
@@ -133,7 +134,7 @@
     const cars = state.cars || [];
     return Number.isInteger(r.car) && cars[r.car] ? cars[r.car] : null;
   };
-  const policeChance = (r = R()) => clamp(0.035 + r.heat / 260 + (r.national ? 0.16 : 0) + (r.rank >= 3 ? 0.04 : 0), 0.035, 0.72);
+  const policeChance = (r = R()) => clamp(0.09 + r.heat / 125 + (r.national ? 0.22 : 0) + (r.rank >= 3 ? 0.05 : 0), 0.09, 0.9);
   const raceSub = () => {
     const r = R();
     if (!r.active) return "Race bought cars on the underground circuit";
@@ -183,13 +184,14 @@
   }
 
   function startRacing() {
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Illegal Street Racer")) return;
     const r = R();
     if (!(state.cars || []).length)
       return typeof notice === "function" && notice("No car", "You need a car before you can race.", openAuction, true);
     r.active = true;
     r.lastAge = state.age;
     if (!Number.isInteger(r.car) || !state.cars[r.car]) r.car = 0;
-    setJob({ t: RANKS[r.rank].n, c: "Motorsport", emp: "Underground circuit", pay: RANKS[r.rank].pay, icon: ICON.race, racing: true, perf: clamp(40 + r.rep / 4, 0, 100) });
+    setJob({ t: RANKS[r.rank].n, c: "Motorsport", emp: "Underground circuit", pay: ip(RANKS[r.rank].pay), icon: ICON.race, racing: true, perf: clamp(40 + r.rep / 4, 0, 100) });
     if (typeof say === "function") say("I joined the illegal street racing circuit.");
     openRacing();
   }
@@ -257,7 +259,7 @@
       r.rank = next;
       if (state.job && state.job.racing) {
         state.job.t = RANKS[next].n;
-        state.job.pay = RANKS[next].pay;
+        state.job.pay = ip(RANKS[next].pay);
       }
       if (show && typeof notice === "function")
         notice("Promoted", `You are now a ${RANKS[next].n}.`, null, true);
@@ -525,11 +527,12 @@
     if (state.age < 25) return;
     if (state.stats.Smarts < 55)
       return typeof notice === "function" && notice("Not ready", "You need at least 55 Smarts to become a judge.", null, true);
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Judge")) return;
     const j = J();
     j.active = true;
     j.lastAge = state.age;
     newCase();
-    setJob({ t: JUDGE_RANKS[j.rank].n, c: "Legal", emp: "The Court", pay: JUDGE_RANKS[j.rank].pay, icon: ICON.judge, judge: true, perf: j.approval });
+    setJob({ t: JUDGE_RANKS[j.rank].n, c: "Legal", emp: "The Court", pay: ip(JUDGE_RANKS[j.rank].pay), icon: ICON.judge, judge: true, perf: j.approval });
     if (typeof say === "function") say("I became a judge.");
     openJudge();
   }
@@ -712,7 +715,7 @@
       j.rank = rank;
       if (state.job && state.job.judge) {
         state.job.t = JUDGE_RANKS[rank].n;
-        state.job.pay = JUDGE_RANKS[rank].pay;
+        state.job.pay = ip(JUDGE_RANKS[rank].pay);
       }
       if (typeof notice === "function")
         notice("Promoted", `You are now a ${JUDGE_RANKS[rank].n}.`, null, true);
@@ -799,6 +802,7 @@
 
   function startArtist() {
     if (state.age < 16) return;
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Artist")) return;
     const a = A();
     a.active = true;
     a.lastAge = state.age;
@@ -1022,9 +1026,9 @@
       if (r.lastAge !== state.age) {
         r.lastAge = state.age;
         if (state.job && state.job.racing) state.job.yrs = (state.job.yrs || 0) + 1;
-        r.earned += RANKS[r.rank].pay;
-        if (RANKS[r.rank].pay) {
-          state.money += RANKS[r.rank].pay;
+        r.earned += ip(RANKS[r.rank].pay);
+        if (ip(RANKS[r.rank].pay)) {
+          state.money += ip(RANKS[r.rank].pay);
           if (typeof renderStats === "function") renderStats();
         }
         updateRacingRank(true);
@@ -1035,8 +1039,8 @@
       if (j.lastAge !== state.age) {
         j.lastAge = state.age;
         if (state.job && state.job.judge) state.job.yrs = (state.job.yrs || 0) + 1;
-        j.earned += JUDGE_RANKS[j.rank].pay;
-        state.money += JUDGE_RANKS[j.rank].pay;
+        j.earned += ip(JUDGE_RANKS[j.rank].pay);
+        state.money += ip(JUDGE_RANKS[j.rank].pay);
         if (typeof renderStats === "function") renderStats();
         if (j.corruption > 0 && rnd() < clamp(j.corruption / 320, 0, 0.35)) {
           j.active = false;
@@ -1070,7 +1074,7 @@
     const wrapped = function () {
       const result = orig.apply(this, arguments);
       try {
-        if (sList.querySelector("#spRacer, #spJudge, #spArtist")) return result;
+        if (sList.querySelector("#spRacer, #spJudge, #spArtist, #spFootball")) return result;
         const cards =
           row("spRacer", ICON.race, "Illegal Street Racer", raceSub(), state.age < 18) +
           row("spJudge", ICON.judge, "Judge", state.age < 25 ? `Age 25+ · Smarts ${Math.round(state.stats.Smarts || 0)}` : "Hear cases, weigh evidence and sentence the accused", state.age < 25) +
@@ -1087,6 +1091,71 @@
     };
     wrapped.__flSpecialWrapped = true;
     window.openSpecialCareers = wrapped;
+  }
+
+  // ---------------------------------------------------------------- una sola carrera
+  function careerNames(except) {
+    const out = [];
+    if (state.racing && state.racing.active) out.push("Illegal Street Racer");
+    if (state.judge && state.judge.active) out.push("Judge");
+    if (state.art && state.art.active) out.push("Artist");
+    if (state.futbol && state.futbol.active && !state.futbol.retired) out.push("Footballer");
+    if (state.gangLife && state.gangLife.member) out.push("Gang member");
+    if (state.job && state.job.acting) out.push("Actor");
+    if (state.job && state.job.fighter) out.push("Fighter");
+    if (state.job && state.job.politician) out.push("Politician");
+    if (state.job && state.job.athlete) out.push("Pro Athlete");
+    return out.filter((n) => n !== except);
+  }
+  window.FL_CAREERS = {
+    list: () => careerNames(),
+    canStart(name) {
+      const busy = careerNames(name);
+      if (!busy.length) return true;
+      if (typeof notice === "function")
+        notice(
+          "One career at a time",
+          `You are already a ${busy[0]}. Quit that career before starting a new one.`,
+          null,
+          true,
+        );
+      return false;
+    },
+  };
+
+  // "Your Job" opens the same menu the career has in Special Careers.
+  const origJobScreen = window.openJobScreen;
+  if (typeof origJobScreen === "function") {
+    window.openJobScreen = function () {
+      if (state.job && state.job.racing) return openRacing();
+      if (state.job && state.job.judge) return openJudge();
+      if (state.job && state.job.artist) return openArtist();
+      return origJobScreen.apply(this, arguments);
+    };
+  }
+
+  // Police heat meter, right below Fame.
+  const origRenderStats = window.renderStats;
+  if (typeof origRenderStats === "function") {
+    window.renderStats = function () {
+      const out = origRenderStats.apply(this, arguments);
+      try {
+        if (state.racing && state.racing.active) {
+          const st = document.getElementById("stats");
+          if (st && !st.querySelector("#flHeatRow")) {
+            const h = clamp(Math.round(state.racing.heat || 0), 0, 100);
+            st.insertAdjacentHTML(
+              "beforeend",
+              `<div class="stat-l" id="flHeatRow">Police Heat<span class="e"><img src="emoji/1f46e.png" alt="" style="width:24px;height:24px;vertical-align:middle"></span></div>` +
+                `<div class="bar"><div class="bi"><div class="fill ${h >= 65 ? "crit" : h >= 35 ? "low" : ""}" style="width:${h}%"><span class="fin${h >= 75 ? " hi" : ""}">${h}%</span></div></div><span class="pct${h >= 75 ? " in" : ""}">${h}%</span></div>`,
+            );
+          }
+        }
+      } catch (e) {
+        console.warn("[special-life] heat meter", e);
+      }
+      return out;
+    };
   }
 
   function boot() {

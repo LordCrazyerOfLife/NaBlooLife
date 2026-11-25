@@ -564,6 +564,7 @@
       renderStats();
   }
   function E(e, t, a) {
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Fighter")) return;
     const o = athleticism(),
       n = ("function" == typeof MB ? MB().martial : {}) || {},
       r = (e) => n[e] || 0,

@@ -134,7 +134,7 @@
       e.classList.add("flw"),
       e.insertAdjacentHTML(
         "beforeend",
-        `<div class="fl-back"></div><div class="fl-stage">\n      <canvas class="w-dustb"></canvas><div class="w-sun"></div><div class="w-lamp"></div>\n      <div class="fl-lw"><img class="fl-logo" src="${t}logo-west.png" alt="Free Life"></div>\n      <div class="fl-load"><div class="fl-txt">Loading<i></i></div><div class="fl-bar"><div class="fl-fill"></div></div><div class="fl-step"><span>Saddling up</span><em>0 / 0</em></div></div>\n      <div class="w-tw"><img src="${t}tumbleweed.png" alt=""></div><canvas class="w-dustf"></canvas></div><div class="fl-black"></div>`,
+        `<div class="fl-back"></div><div class="fl-stage">\n      <canvas class="w-dustb"></canvas><div class="w-sun"></div><div class="w-lamp"></div>\n      <div class="fl-lw"><img class="fl-logo" src="${t}logo-west.png" alt="NaBlooLife"></div>\n      <div class="fl-load"><div class="fl-txt">Loading<i></i></div><div class="fl-bar"><div class="fl-fill"></div></div><div class="fl-step"><span>Saddling up</span><em>0 / 0</em></div></div>\n      <div class="w-tw"><img src="${t}tumbleweed.png" alt=""></div><canvas class="w-dustf"></canvas></div><div class="fl-black"></div>`,
       );
     const n = e.querySelector(".fl-stage"),
       l = e.querySelector(".fl-fill"),
@@ -614,7 +614,7 @@
       r.classList.add("fl"),
       r.insertAdjacentHTML(
         "beforeend",
-        `<div class="fl-back"></div><div class="fl-stage">\n      <div class="fl-haze"></div><canvas class="fl-lights"></canvas><canvas class="fl-bloom"></canvas><div class="fl-mglow"></div><div class="fl-moon"></div>\n      <div class="fl-lw"><img class="fl-logo" src="${t}logo.png" alt="Free Life"></div>\n      <div class="fl-load"><div class="fl-txt">Loading<i></i></div><div class="fl-bar"><div class="fl-fill"></div></div>\n        <div class="fl-step"><span>Loading assets</span><em>0 / 0</em></div><div class="fl-file"></div></div>\n      <div class="fl-ground"><div class="fl-pg"><img src="${e[0]}" alt=""></div></div>\n      <canvas class="fl-snow"></canvas></div><div class="fl-black"></div>`,
+        `<div class="fl-back"></div><div class="fl-stage">\n      <div class="fl-haze"></div><canvas class="fl-lights"></canvas><canvas class="fl-bloom"></canvas><div class="fl-mglow"></div><div class="fl-moon"></div>\n      <div class="fl-lw"><img class="fl-logo" src="${t}logo.png" alt="NaBlooLife"></div>\n      <div class="fl-load"><div class="fl-txt">Loading<i></i></div><div class="fl-bar"><div class="fl-fill"></div></div>\n        <div class="fl-step"><span>Loading assets</span><em>0 / 0</em></div><div class="fl-file"></div></div>\n      <div class="fl-ground"><div class="fl-pg"><img src="${e[0]}" alt=""></div></div>\n      <canvas class="fl-snow"></canvas></div><div class="fl-black"></div>`,
       );
     const d = r.querySelector(".fl-stage"),
       f = r.querySelector(".fl-fill"),

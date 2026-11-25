@@ -1,4 +1,4 @@
-/* [mod] Vendedores de armas para Free Life (mod local). Lo carga gang.js (código 13131313).
+/* [mod] Vendedores de armas para YourLife (mod local). Lo carga gang.js (código 13131313).
  * Tienda legal (pistolas, escopetas, armas de caza) + dealers de la calle (Draco, Mini Draco, switches,
  * accesorios y cargadores sueltos). Estado: state.arms (JSON puro, por vida).
  * Usar un arma en algo ilegal suma un cargo extra al arresto (busted()). Se conecta a la pandilla con window.FL_ARMS.
@@ -328,6 +328,7 @@
     const def = kit ? { n: kit.n, price: kitPrice(kit), icon: pic(kitGun(kit)), age: GUNS[kit.base].age, illegal: stats(kitGun(kit)).illegal } : kind === "g" ? GUNS[key] : kind === "m" ? MAGS[key] : PARTS[key];
     const cost = Math.round(price(def.price) * premium(d));
     if ((kind === "g" || kind === "k") && state.age < (def.age || 16)) return plain(`${T("You have to be at least", "Tienes que tener al menos", "Você precisa ter pelo menos")} ${def.age} ${T("years old to buy that.", "años para comprar eso.", "anos para comprar isso.")}`);
+    if (d.legal && (kind === "g" || kind === "k") && window.FL_LICENSES && !FL_LICENSES.has("firearm")) return FL_LICENSES.need("firearm");
     if (state.money < cost) return plain(T("You don't have enough money for that.", "No te alcanza para eso.", "Você não tem dinheiro para isso."));
     const done = (extra) => {
       state.money -= cost;

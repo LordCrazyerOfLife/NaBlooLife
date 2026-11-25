@@ -46,7 +46,7 @@ const loadIndex = () =>
     }));
 
 self.addEventListener("install", (e) => {
-  e.waitUntil(loadIndex().then(() => self.skipWaiting()));
+  e.waitUntil(loadIndex().then(() => self.skipWaiting(), () => self.skipWaiting())); // [fix] install even if the pack index cannot be fetched
 });
 self.addEventListener("activate", (e) => {
   e.waitUntil(
@@ -119,7 +119,8 @@ async function asset(key, entry, packs) {
 }
 
 async function serve(req, rel) {
-  const d = await loadIndex();
+  const d = await loadIndex().catch(() => null);
+  if (!d) return fetch(req); // [fix] no index: plain network
   const key = d.f[rel] ? rel : d.lower.get(rel.toLowerCase());
   if (!key) return fetch(req);
   const data = await asset(key, d.f[key], d.p);

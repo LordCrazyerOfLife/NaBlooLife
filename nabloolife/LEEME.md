@@ -1,6 +1,6 @@
 # Mod Loader NaBlooLife
 
-Instala en NaBlooLife los mods de Free Life sin duplicar scripts ni parchear a mano:
+Instala en NaBlooLife los mods de YourLife sin duplicar scripts ni parchear a mano:
 
 - **Chess Career** (`chess.js` + motor, puzzles y eventos)
 - **Gang Bang** (`gang.js` + vendedores de armas y assets)
