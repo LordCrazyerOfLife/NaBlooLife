@@ -1,4 +1,4 @@
-/* [mod] Black Market for YourLife (local mod).
+/* [mod] Black Market for NaBlooLife (local mod).
  *
  * Activities -> Black Market (18+). Four dealers with their own stock, drawn from the art in blackmarket/
  * (cut from GRIDS/BLACK MARKET*.png with _art-src/split_grid.py):

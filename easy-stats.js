@@ -1,4 +1,4 @@
-/* [mod] Easier Life for YourLife (local mod).
+/* [mod] Easier Life for NaBlooLife (local mod).
  *
  * Keeping Happiness, Health and mental health up was a grind. Every birthday this gives a small push back
  * toward "okay": a few points of Happiness and Health when they are low, a little less when they are fine, and

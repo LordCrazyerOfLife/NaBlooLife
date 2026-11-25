@@ -1,4 +1,4 @@
-/* [mod] Carrera política ("Political Career") para Free Life (mod local).
+/* [mod] Carrera política ("Political Career") para NaBlooLife (mod local).
  * Se activa con el código 17760704 (mods.js). Aparece en Ocupación → Special Careers.
  * No toca game.html: envuelve openSpecialCareers y openJobScreen, y se engancha a #ageBtn.
  * Estado: state.politics (JSON puro, por vida).
@@ -1312,6 +1312,7 @@
   }
 
   function startCareer() {
+    if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Politician")) return;
     if (state.prison) return notice(CAREER, T("You can't run for office from prison.", "No puedes postularte desde la cárcel.", "Você não pode se candidatar da prisão."), null, true);
     if (state.age < 18) return notice(CAREER, T("You must be at least 18 to run for office.", "Tienes que tener al menos 18 años para postularte.", "Você precisa ter pelo menos 18 anos para se candidatar."), null, true);
     const p = P();

@@ -1,4 +1,4 @@
-﻿/* [mod] Carrera especial "Gang Bang" para YourLife (mod local). Se activa con el código 13131313 (mods.js).
+﻿/* [mod] Carrera especial "Gang Bang" para NaBlooLife (mod local). Se activa con el código 13131313 (mods.js).
  * Aparece en Ocupación → Special Careers. No toca game.html: envuelve openSpecialCareers y se engancha a #ageBtn.
  * Estado: state.gangLife (JSON puro, por vida). Los arrestos usan arrest() del juego (juicio y cárcel normales).
  * Textos: T("english", "español", "português"); add_chess_i18n.py los pasa al ui.tsv.

@@ -1,4 +1,4 @@
-/* [mod] Auction House v2 for YourLife (local mod).
+/* [mod] Auction House v2 for NaBlooLife (local mod).
  *
  * Entry: Shopping -> Auctions (last section), 18+.
  * BUY: yearly catalogue (collectible hypercars, exotic/used cars, watches & chains, paintings, digital

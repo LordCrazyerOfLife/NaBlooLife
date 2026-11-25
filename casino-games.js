@@ -1,4 +1,4 @@
-/* [mod] Casino Games for YourLife (local mod).
+/* [mod] Casino Games for NaBlooLife (local mod).
  *
  * Unlocks the "Premium Casino Games" that the game lists but never shipped (they all open "coming soon"):
  * Roulette, Slots, High-Low, Craps, Keno, Sports Betting and Texas Hold'em.

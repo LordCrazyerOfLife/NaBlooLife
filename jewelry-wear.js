@@ -1,4 +1,4 @@
-/* [mod] Wear your jewelry for YourLife (local mod).
+/* [mod] Wear your jewelry for NaBlooLife (local mod).
  *
  * Slots on the avatar: NECK (chains, necklaces, pendants), WRIST (watches, bracelets),
  * MOUTH (grillz) and EARS (earrings). Open a piece in Assets -> Jewelry -> pick it -> "Wear".

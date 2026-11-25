@@ -1,4 +1,4 @@
-/* [base] Landlord for YourLife.
+/* [base] Landlord for NaBlooLife.
  *
  * Assets -> Landlord (replaces the old "coming soon" row). Rent out the houses you own:
  *  - Every property has a yearly switch: rent it out or leave it empty. You can flip it any time.

@@ -1,4 +1,4 @@
-/* [mod] Mental Health for YourLife (local mod).
+/* [mod] Mental Health for NaBlooLife (local mod).
  *
  * A serious mental-health layer on top of the game's own mood system (state.mind, state.depressed, the
  * Anxiety / ADHD / PTSD illnesses). It does NOT make jokes out of anything and it never glamorizes harm.

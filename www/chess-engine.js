@@ -1,4 +1,4 @@
-﻿/* [mod] Motor de ajedrez para el mod Chess Career (Free Life). Original, sin dependencias.
+﻿/* [mod] Motor de ajedrez para el mod Chess Career (NaBlooLife). Original, sin dependencias.
  * Tablero 0x88 (a8 = 0, h1 = 119), generación de movidas legales, reglas completas
  * (enroque, al paso, promoción, mate, ahogado, material insuficiente, 50 movidas, triple repetición),
  * SAN, FEN, y un bot negamax + alpha-beta + quiescencia con fuerza ajustable por Elo.

@@ -1,4 +1,4 @@
-/* [mod] Femboy Journey para Free Life / NaBlooLife.
+/* [mod] Femboy Journey para NaBlooLife / NaBlooLife.
  *
  * Un amigo hombre adulto puede explorar su lado femenino contigo: ropa, nombre,
  * salir del armario, transición, citas y un par de intentos de seducción.

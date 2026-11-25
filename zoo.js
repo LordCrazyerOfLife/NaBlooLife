@@ -1,4 +1,4 @@
-/* [mod] Zookeeper career for YourLife (local mod).
+/* [mod] Zookeeper career for NaBlooLife (local mod).
  *
  * Occupation -> Special Careers -> Zookeeper. Volunteer -> Junior Keeper -> Zone Keeper (savanna, jungle,
  * aquarium, arctic, aviary) -> Head Keeper -> Zoo Director. It is a real job (state.job.zoo): the game pays

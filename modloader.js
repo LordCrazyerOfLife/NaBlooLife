@@ -1,4 +1,4 @@
-/* NaBlooLife Mod Loader — adaptado para los mods de YourLife.
+/* NaBlooLife Mod Loader — adaptado para los mods de NaBlooLife.
  *
  * Instalación: copiar este archivo a la raíz del juego (junto a game.html). NaBlooLife
  * lo inyecta solo desde game.html cuando el Mod Loader está activo; en builds viejos

@@ -1,4 +1,4 @@
-/* [mod] Special Life: Illegal Street Racer, Judge y Artist para YourLife.
+/* [mod] Special Life: Illegal Street Racer, Judge y Artist para NaBlooLife.
  *
  * Se carga desde modloader.js y se engancha a Occupation -> Special Careers.
  * No modifica game.html: usa state (JSON por vida), jCard/notice y los coches

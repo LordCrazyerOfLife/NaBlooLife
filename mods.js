@@ -176,7 +176,7 @@
       const c = o(),
         p = window.SETTINGS_UI,
         f = p ? p.settings : {},
-        u = (e) => ("bitlife" === e ? "BitLife" : "freelife" === e ? "YourLife" : "Match the theme");
+        u = (e) => ("bitlife" === e ? "BitLife" : "freelife" === e ? "NaBlooLife" : "Match the theme");
       (t.outerHTML =
         `<div class="sec">Mods</div><div class="row" id="setWorkshop"><img src="ui/gear.png"><div class="t"><b>Mod Loader</b><span>Browse and enable every mod</span></div>${CHEV}</div><div class="row" id="setRedeem"><img src="emoji/2b50.png"><div class="t"><b>Redeem Code</b><span>Redeem a mod with an 8-digit code</span></div>${DOTS}</div>` +
         c
@@ -186,7 +186,7 @@
           })
           .join("") +
         '<div class="sec">Packs</div>' +
-        `<div class="row" id="pkUi"><img src="ui/navbarBitizenSeal.png" style="object-fit:contain"><div class="t"><b>UI Pack</b><span>${f.bitlifeMode ? "BitLife" : "YourLife"} look</span></div>${DOTS}</div>` +
+        `<div class="row" id="pkUi"><img src="ui/navbarBitizenSeal.png" style="object-fit:contain"><div class="t"><b>UI Pack</b><span>${f.bitlifeMode ? "BitLife" : "NaBlooLife"} look</span></div>${DOTS}</div>` +
         `<div class="row" id="pkSnd"><img src="settings/sound.png" style="object-fit:contain"><div class="t"><b>Sound Pack</b><span>${u(f.soundPack)} sounds</span></div>${DOTS}</div>` +
         `<div class="row" id="pkIco"><img src="emoji/1f60a.png" style="object-fit:contain"><div class="t"><b>Icon Pack</b><span>${u(f.iconPack)} icons</span></div>${DOTS}</div>`),
         (document.getElementById("setWorkshop").onclick = () => {
@@ -215,7 +215,7 @@
               "UI Pack",
               "The whole look of the game: menus, bars, buttons and popups.",
               [
-                [!1, "YourLife (penguin theme)"],
+                [!1, "NaBlooLife (penguin theme)"],
                 [!0, "BitLife (classic red)"],
               ],
               !!f.bitlifeMode,
@@ -230,7 +230,7 @@
                 "Which sounds the game plays, whatever the look.",
                 [
                   ["auto", "Match the theme"],
-                  ["freelife", "YourLife sounds"],
+                  ["freelife", "NaBlooLife sounds"],
                   ["bitlife", "BitLife sounds"],
                 ],
                 f.soundPack || "auto",
@@ -245,7 +245,7 @@
                 "Which icons and emoji the game shows, whatever the look.",
                 [
                   ["auto", "Match the theme"],
-                  ["freelife", "YourLife (Apple emoji and YourLife art)"],
+                  ["freelife", "NaBlooLife (Apple emoji and NaBlooLife art)"],
                   ["bitlife", "BitLife icons"],
                 ],
                 f.iconPack || "auto",

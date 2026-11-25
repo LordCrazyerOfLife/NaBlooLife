@@ -1,4 +1,4 @@
-/* [base] Family gifts for YourLife.
+/* [base] Family gifts for NaBlooLife.
  *
  * Relationships -> a family member -> Gift: besides buying a present, you can now GIVE SOMETHING YOU OWN to your
  * family: jewelry, cars and houses. The base game already let you give a car or a piece of jewelry from the item's own

@@ -1,4 +1,4 @@
-/* [mod] UI bars + font for YourLife (local mod).
+/* [mod] UI bars + font for NaBlooLife (local mod).
  *
  * One place for how the mods draw bars and text, so everything looks like the game:
  *  - FL_BARS.html(label, value, color, hint): a stat bar in the game's own style (dark track, colored fill, the

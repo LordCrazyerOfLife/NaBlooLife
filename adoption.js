@@ -1,4 +1,4 @@
-/* [mod] Adoption agency for YourLife (local mod).
+/* [mod] Adoption agency for NaBlooLife (local mod).
  *
  * Replaces the game's adoption popup (huge faces, "Flat broke" popping up over and over) with a menu:
  * Activities -> Adoption lists children waiting at the agency, each with an age, a nationality, a short
