@@ -38,7 +38,15 @@
     }
     return a.slice(0, n);
   };
-  const playSnd = (n) => typeof play === "function" && play(n);
+  // The game's SND table has no "chaChing" or "achievement": play() would throw on them and kill the callback.
+  const SND_ALIAS = { chaChing: "coins", achievement: "ding" };
+  const playSnd = (n) => {
+    try {
+      return typeof play === "function" && play(SND_ALIAS[n] || n);
+    } catch {
+      return false;
+    }
+  };
   const sayIt = (s) => typeof say === "function" && say(s);
   // [mod] the life log used to say "Event title: choice". Now it tells what happened, in the first person.
   const firstPerson = (txt) => {
@@ -3250,15 +3258,14 @@
     const play = document.getElementById("fbPlay");
     if (tab === "today") {
       const st = document.getElementById("fbStatus");
-      const col = (v) => (v >= 65 ? "#2fa03b" : v >= 35 ? "#f5841f" : "#b3261e");
-      const bar = (label, v, hint, color) =>
-        `<div style="margin:5px 0"><div style="display:flex;justify-content:space-between;font-size:12px"><b>${esc(label)}</b><span style="opacity:.75">${esc(hint)} · ${Math.round(v)}%</span></div><i style="display:block;height:8px;border-radius:5px;background:#0002;overflow:hidden;margin-top:3px"><u style="display:block;height:100%;width:${Math.max(3, v)}%;background:${color}"></u></i></div>`;
+      const col = (v) => (v >= 35 ? "#2fa03b" : v >= 15 ? "#f5841f" : "#b3261e");
+      const bar = (label, v, hint, color) => (window.FL_BARS ? FL_BARS.html(label, v, color, hint) : `<div style="margin:5px 0"><b>${esc(label)}</b> ${Math.round(v)}% ${esc(hint)}</div>`);
       const coachTxt = f.coachRel >= 75 ? T("He trusts you") : f.coachRel >= 45 ? T("Fine") : f.coachRel >= 20 ? T("On thin ice") : T("Frozen out");
       const clubTxt = f.clubRel >= 75 ? T("They want you") : f.clubRel >= 45 ? T("Fine") : f.clubRel >= 25 ? T("Cooling") : T("They want you gone");
       if (st)
         st.insertAdjacentHTML(
           "afterend",
-          `<div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:8px 14px">${bar(T("Coach relationship"), f.coachRel, coachTxt, col(f.coachRel))}${bar(T("Club relationship"), f.clubRel, clubTxt, col(f.clubRel))}${bar(T("Fitness"), f.fit, f.injury ? T("Injured") : fatigueLabel(f.fatigue || 0), col(f.fit))}${bar(T("Fame"), f.fame || 0, T("Fans"), "#6b2f8f")}<div style="font-size:11px;opacity:.65;margin-top:2px">${esc(T("The coach decides your minutes. The club decides your contract and your next move."))}</div></div>`,
+          `<div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:8px 14px">${bar(T("Coach relationship"), f.coachRel, coachTxt, col(f.coachRel))}${bar(T("Club relationship"), f.clubRel, clubTxt, col(f.clubRel))}${bar(T("Fitness"), f.fit, f.injury ? T("Injured") : fatigueLabel(f.fatigue || 0), col(f.fit))}${bar(T("Fame"), f.fame || 0, T("Fans"), "fame")}<div style="font-size:11px;opacity:.65;margin-top:2px">${esc(T("The coach decides your minutes. The club decides your contract and your next move."))}</div></div>`,
         );
     }
     if (play && tab === "today") {
@@ -3809,6 +3816,7 @@ tap("fbCountryLeague", () => {
           T("Pay for the clinic"),
           () => {
             state.money -= cost;
+            if (typeof renderStats === "function") renderStats();
             f.injury.weeks = Math.max(0, f.injury.weeks - weeks);
             if (f.injury.weeks <= 0) f.injury = null;
             playSnd("chaChing");

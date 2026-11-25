@@ -11,7 +11,7 @@
  *  - Treatment: one therapy plan (weekly / every two weeks / monthly / support group) with a clinician you pick,
  *    plus medication per condition from a psychiatrist (response differs per person, side effects, adherence,
  *    stopping on your own backfires, antidepressants alone can tip bipolar into mania). Self-care, telling a
- *    trusted person, telling your employer and a crisis flow with real-world help text.
+ *    trusted person, telling your employer and a crisis flow.
  *  - Military Expanded: combat events (IED, ambush, mortars, a buddy killed...) are trauma exposures that can
  *    become PTSD. Active duty and veterans get their care at no charge.
  *
@@ -1104,18 +1104,13 @@
     conds().forEach((r) => ((r.id === "depression" || r.id === "anxiety") && (r.lvl = cl(r.lvl - 3))));
     notice("You opened up", "You finally told someone close to you how bad things have been. They listened, and they did not judge you. It does not fix everything, but the weight is lighter.", next || null, true);
   }
-  function openCrisisInfo() {
-    now({
-      iconSrc: "emoji/1f4de.png",
-      title: "If you are struggling",
-      lead: "If you or someone you know is in crisis or thinking about suicide, you are not alone and help is available right now. In real life, contact your local emergency number, or a crisis line: in the United States call or text 988; elsewhere, findahelpline.com lists services by country. Talking to someone is not weakness.",
-      ok: () => {},
-    });
-  }
 
   // ------------------------------------------------------------------ the Mental Health screen
-  function bar(label, v, color) {
+  function barOld(label, v, color) {
     return `<div style="margin:3px 0"><span style="font-size:12px;opacity:.8">${esc(label)} ${Math.round(v)}%</span><i style="display:block;height:7px;border-radius:4px;background:#0002;overflow:hidden;margin-top:2px"><u style="display:block;height:100%;width:${Math.max(3, v)}%;background:${color}"></u></i></div>`;
+  }
+  function bar(label, v, color) {
+    return window.FL_BARS ? FL_BARS.html(label, v, color) : barOld(label, v, color);
   }
   function openMH() {
     if (typeof screen === "undefined" || typeof sList === "undefined") return;
@@ -1145,7 +1140,6 @@
     h += row("therapy", "emoji/1f6cb-fe0f.png", "Therapy", m.th.on ? `${MODES[m.th.mode].n}${m.th.lapsed ? " (paused)" : ""}` : "Talk therapy and support groups");
     h += row("selfcare", "emoji/1f9d8.png", "Self-care", m.care === state.age ? "Done for this year" : "One healthy habit per year");
     h += row("talk", "emoji/1f4ac.png", "Talk to someone close", "Open up to the people who matter");
-    h += row("crisis", "emoji/1f4de.png", "Crisis and support", "Where to find help right now");
     const s = SD();
     if (s.known) {
       h += `<div class="sec">Personality</div><div class="row" data-mh="sad" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px"><b>Sadistic streak</b>${bar("Intensity", s.v, "#6b2f8f")}${bar("Urge", s.urge, s.urge >= 60 ? "#b3261e" : "#f5841f")}${bar("Remorse", s.guilt, "#3d7ea6")}<span style="font-size:12px;opacity:.75">Not a diagnosis. A trait that makes cruelty feel rewarding and guilt faint. It builds an urge you can resist, redirect, or act on.</span></div>`;
@@ -1153,7 +1147,6 @@
     if (m.hist.length) {
       h += `<div class="sec">Recent</div>` + m.hist.slice(0, 6).map((x) => `<div class="row sm dis"><div class="t"><b style="font-weight:600">${esc(x.t)}</b><span>Age ${x.a}</span></div></div>`).join("");
     }
-    h += `<div class="mm-foot" style="padding:10px 14px;text-align:left">Mental health conditions are real, common and treatable. This is a simplified simulation, not medical advice. If you are struggling in real life, please reach out to a professional.</div>`;
     sList.innerHTML = h;
     sList.querySelectorAll("[data-mh]").forEach((el) => {
       const k = el.dataset.mh;
@@ -1164,7 +1157,6 @@
         if (k === "therapy") return openTherapy();
         if (k === "selfcare") return selfCare();
         if (k === "talk") return talkToSomeone(() => openMH());
-        if (k === "crisis") return openCrisisInfo();
         if (k === "sad") return sadCard();
       };
     });
@@ -1449,7 +1441,7 @@
     card({
       iconSrc: "emoji/1f4de.png",
       title: "A crisis point",
-      lead: "Things have gotten very dark. You have been feeling like you cannot go on, and it is frightening. This is the kind of moment where telling someone matters most. In real life, if you feel this way, contact your local emergency number or a crisis line (988 in the United States).",
+      lead: "Things have gotten very dark. You have been feeling like you cannot go on, and it is frightening. This is the kind of moment where telling someone matters most.",
       choices: [
         ["Call a crisis line", () => {
           S().stress = cl(S().stress - 10);

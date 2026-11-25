@@ -459,6 +459,73 @@
     "owl",
     "lizard"
    ]
+  },
+  {
+   "src": "BLACK MARKET.png",
+   "cols": 4,
+   "rows": 3,
+   "out": "blackmarket",
+   "names": [
+    "bm-01-katana-black",
+    "bm-02-rolex-submariner",
+    "bm-03-jesus-piece-chain",
+    "bm-04-royal-crown",
+    "bm-05-dragon-pistol",
+    "bm-06-ap-diamond-watch",
+    "bm-07-oni-mask",
+    "bm-08-lv-duffel-brown",
+    "bm-09-roman-bust",
+    "bm-10-scorpion-ring",
+    "bm-11-dragon-nunchucks",
+    "bm-12-knight-helmet"
+   ],
+   "box": [
+    120,
+    120
+   ],
+   "cut": {
+    "it": 4,
+    "size": 5,
+    "hole_max": 2500
+   },
+   "keep_all": [
+    "bm-01-katana-black",
+    "bm-11-dragon-nunchucks"
+   ]
+  },
+  {
+   "src": "BLACK MARKET2.png",
+   "cols": 4,
+   "rows": 3,
+   "out": "blackmarket",
+   "names": [
+    "bm-13-katana-gold-dragon",
+    "bm-14-rolex-submariner-steel",
+    "bm-15-panther-chain",
+    "bm-16-pharaoh-mask",
+    "bm-17-ap-royal-oak",
+    "bm-18-diamond-cross-chain",
+    "bm-19-karambit",
+    "bm-20-patek-nautilus-gold",
+    "bm-21-lv-duffel-black",
+    "bm-22-dragon-statue",
+    "bm-23-diamond-crown",
+    "bm-24-diamond-glock"
+   ],
+   "box": [
+    120,
+    120
+   ],
+   "cut": {
+    "it": 4,
+    "size": 5,
+    "hole_max": 2500
+   },
+   "keep_all": [
+    "bm-13-katana-gold-dragon",
+    "bm-21-lv-duffel-black",
+    "bm-19-karambit"
+   ]
   }
  ]
 }

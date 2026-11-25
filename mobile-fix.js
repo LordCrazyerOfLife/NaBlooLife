@@ -48,7 +48,7 @@ html,body{overscroll-behavior-y:contain}
 }
 /* the "tap to show title" toast */
 #flTip{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);max-width:86vw;background:rgba(20,22,28,.94);color:#fff;
-  padding:9px 14px;border-radius:12px;font:600 14px/1.3 system-ui,sans-serif;z-index:2147483000;pointer-events:none;text-align:center}
+  padding:9px 14px;border-radius:12px;font:800 14px/1.3 "Avenir Next","Mulish","Nunito",system-ui,sans-serif;z-index:2147483000;pointer-events:none;text-align:center}
 `;
   const style = document.createElement("style");
   style.id = "flMobileCss";

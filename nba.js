@@ -820,7 +820,8 @@
   }
 
   // ------------------------------------------------------------------ screens
-  const bar = (label, v, color) => `<div style="margin:3px 0"><span style="font-size:12px;opacity:.8">${esc(label)} ${Math.round(v)}%</span><i style="display:block;height:7px;border-radius:4px;background:#0002;overflow:hidden;margin-top:2px"><u style="display:block;height:100%;width:${Math.max(3, v)}%;background:${color}"></u></i></div>`;
+  const barOld = (label, v, color) => `<div style="margin:3px 0"><span style="font-size:12px;opacity:.8">${esc(label)} ${Math.round(v)}%</span><i style="display:block;height:7px;border-radius:4px;background:#0002;overflow:hidden;margin-top:2px"><u style="display:block;height:100%;width:${Math.max(3, v)}%;background:${color}"></u></i></div>`;
+  const bar = (label, v, color, hint) => (window.FL_BARS ? FL_BARS.html(label, v, color, hint) : barOld(label, v, color));
   const col = (v) => (v >= 70 ? "#2fa03b" : v >= 45 ? "#f5841f" : "#b3261e");
   const openScreen = (title, back) => {
     if (typeof screen === "undefined" || typeof sList === "undefined") return false;

@@ -8,7 +8,7 @@ I18N = os.path.dirname(WORK)
 UI_FILES = ["new_futbol_ui.tsv", "new_futbol_events.tsv", "new_licenses.tsv",
             "new_casino.tsv", "new_auctions.tsv", "new_misc.tsv", "new_extra_ui.tsv",
             "new_fix.tsv", "new_rest.tsv", "new_futbol_moments1.tsv",
-            "new_futbol_moments2.tsv", "new_mods_ui.tsv", "new_last.tsv", "new_zoo_adoption.tsv", "new_mentalhealth.tsv"]
+            "new_futbol_moments2.tsv", "new_mods_ui.tsv", "new_last.tsv", "new_zoo_adoption.tsv", "new_mentalhealth.tsv", "new_pending.tsv", "new_rich.tsv", "new_bm.tsv"]
 RULE_FILES = ["new_rules.tsv", "new_rules2.tsv", "new_rules3.tsv"]
 
 def rows(path):

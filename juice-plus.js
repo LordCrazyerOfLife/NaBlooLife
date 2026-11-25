@@ -383,7 +383,7 @@
 
   // ------------------------------------------------------------------ boot
   const css = `
-#flTicker{display:flex;align-items:center;gap:8px;height:24px;padding:0 10px;background:#101820;color:#e9f1f7;font:600 12.5px/24px system-ui,sans-serif;overflow:hidden;cursor:pointer;flex:0 0 auto}
+#flTicker{display:flex;align-items:center;gap:8px;height:24px;padding:0 10px;background:#101820;color:#e9f1f7;font:800 12.5px/24px "Avenir Next","Mulish","Nunito",system-ui,sans-serif;overflow:hidden;cursor:pointer;flex:0 0 auto}
 #flTicker .tk-tag{background:#e2401f;color:#fff;padding:0 7px;border-radius:4px;font-size:10.5px;letter-spacing:.8px;line-height:17px;flex:0 0 auto}
 #flTicker .tk-win{overflow:hidden;flex:1;min-width:0}
 #flTicker .tk-track{display:inline-flex;white-space:nowrap;animation:flTk 60s linear infinite}
@@ -391,7 +391,7 @@
 #flTicker .tk-track span::before{content:"\\25CF";color:#e2401f;margin-right:8px;font-size:8px;vertical-align:middle}
 @keyframes flTk{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){#flTicker .tk-track{animation:none}}
-#flMsg{position:absolute;left:10px;right:10px;top:10px;z-index:60;background:rgba(245,246,248,.97);color:#111;border-radius:14px;padding:10px 14px;box-shadow:0 6px 20px rgba(0,0,0,.35);cursor:pointer;animation:flMsgIn .3s cubic-bezier(.2,1.2,.3,1);font:500 14px/1.3 system-ui,sans-serif}
+#flMsg{position:absolute;left:10px;right:10px;top:10px;z-index:60;background:rgba(245,246,248,.97);color:#111;border-radius:14px;padding:10px 14px;box-shadow:0 6px 20px rgba(0,0,0,.35);cursor:pointer;animation:flMsgIn .3s cubic-bezier(.2,1.2,.3,1);font:700 14px/1.3 "Avenir Next","Mulish","Nunito",system-ui,sans-serif}
 #flMsg b{display:block;font-size:12.5px;color:#1a6fd1;margin-bottom:2px}
 #flMsg span{display:block}
 @keyframes flMsgIn{from{transform:translateY(-120%);opacity:0}to{transform:none;opacity:1}}
@@ -427,6 +427,6 @@
     draw();
     console.log("[juice-plus] loaded");
   }
-  window.FL_JUICE2 = { confetti, celebrate, vibrate: vib, news: () => J().news, message: () => maybeMessage(), headlines, say: (c, t) => banner(c, t) };
+  window.FL_JUICE2 = { addNews: (t) => { const j = J(); j.news.unshift({ y: (state.birthYear || 2000) + (state.age || 0), t }); j.news = j.news.slice(0, 28); draw(); }, confetti, celebrate, vibrate: vib, news: () => J().news, message: () => maybeMessage(), headlines, say: (c, t) => banner(c, t) };
   boot();
 })();
