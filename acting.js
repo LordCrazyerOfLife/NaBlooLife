@@ -1520,7 +1520,7 @@
                         ? "upn"
                         : "cw"
                       : null;
-      return "Fox" === e ? "networks/fox.png?v=2" : a ? `networks/${a}.svg` : null;
+      return "Fox" === e ? "networks/fox.png?v=2" : a ? `networks/${a}.png` : null;
     },
     ce = (t, a = "ka-net") => {
       const o = le(t);

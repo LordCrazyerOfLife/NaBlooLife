@@ -251,7 +251,10 @@
   }
   function begin(pos) {
     const old = state.nba && state.nba.retired ? state.nba.legacy : null;
-    state.nba = { active: true, retired: false, pos, stage: "hs", sk: {}, seasons: [], awards: [], champs: 0, allstar: 0, trust: 55, fame: 6, hype: 0, inj: null, trainLeft: 4, last: state.age, yrsPro: 0, contract: null, team: null, endorse: null, legacy: old };
+    const past = state.nba && Array.isArray(state.nba.past) ? state.nba.past.slice() : [];
+    if (state.nba && state.nba.retired && state.nba.seasons && state.nba.seasons.length)
+      past.push({ y: old ? old.y : yr(), pos: state.nba.pos, seasons: state.nba.seasons.length, champs: state.nba.champs, allstar: state.nba.allstar, how: old ? old.how : "retired" });
+    state.nba = { active: true, retired: false, pos, stage: "hs", sk: {}, seasons: [], awards: [], champs: 0, allstar: 0, trust: 55, fame: 6, hype: 0, inj: null, trainLeft: 4, last: state.age, yrsPro: 0, contract: null, team: null, endorse: null, legacy: old, past };
     const n = state.nba;
     const hl = (Number(state.stats && state.stats.Health) || 55) / 100;
     const sm = (Number(state.stats && state.stats.Smarts) || 50) / 100;
@@ -320,12 +323,22 @@
           sayIt(`I signed a two-way contract with the ${t.name}.`);
           card({ iconSrc: t.logo, title: "Two-way contract", lead: `The ${t.name} sign you to a two-way deal. It is not much, but it is the NBA.`, ok: () => openNba() });
         } else {
-          n.active = false;
-          n.retired = true;
+          endCareer(n, "unsigned after college");
           note("No offers", "Nobody called. The dream ends here, for now.");
         }
-      }], ["Walk away", () => { n.active = false; n.retired = true; }]],
+      }], ["Walk away", () => { endCareer(n, "walked away"); }]],
     });
+  }
+  // [fix] every way a career can end (no offers, walked away, overseas...) keeps its history in n.legacy; before, only the
+  // formal retirement did, so an unsigned player lost everything and came back as a rookie.
+  function endCareer(n, how) {
+    n.retired = true;
+    n.active = false;
+    clearJob();
+    if (!n.legacy || n.legacy.y !== yr()) {
+      const sc = legacy(n);
+      n.legacy = { score: sc, hof: false, champs: n.champs, how: how || "retired", seasons: n.seasons.filter((s) => s.w != null).length, allstar: n.allstar, y: yr() };
+    }
   }
   function signDeal(n, t, c) {
     n.team = t.abbr;
@@ -353,13 +366,13 @@
         title: "Draft night",
         lead: "Sixty names are called and yours is not one of them. Your phone is still quiet.",
         choices: [["Sign a two-way deal after the draft", () => {
-          if (ovr(n) < 46 && ch(0.5)) { n.active = false; n.retired = true; return note('No team', 'No team picked up your contract. It is over.'); }
+          if (ovr(n) < 46 && ch(0.5)) { endCareer(n, "no team after the draft"); return note('No team', 'No team picked up your contract. It is over.'); }
           const t = pick(D());
           signDeal(n, t, { yrs: 2, sal: Math.round(650000 * ifx()), two: true, kind: "Two-way deal" });
           n.pickNo = 0;
           sayIt(`I signed a two-way deal with the ${t.name}.`);
           card({ iconSrc: t.logo, title: "Welcome", lead: `The ${t.name} take a chance on you with a two-way deal.`, ok: () => openNba() });
-        }], ["Play overseas (retire from the NBA dream)", () => { n.active = false; n.retired = true; }]],
+        }], ["Play overseas (retire from the NBA dream)", () => { endCareer(n, "went overseas"); }]],
       });
     }
     const t = pickNo <= 30 ? order[pickNo - 1] : order[60 - pickNo];
@@ -588,7 +601,7 @@
   function freeAgency(n, next) {
     const o = ovr(n);
     if (o < 52 && (n.contract ? n.contract.yrs <= 0 : true) && (n.contract && (n.contract.two || n.yrsPro >= 3))) {
-      return card({ iconSrc: ICON, title: "No offers", lead: "Your contract expires and nobody calls. The league has moved on.", ok: () => { n.retired = true; n.active = false; clearJob(); sayIt("My NBA career ended when no team offered me a contract."); } });
+      return card({ iconSrc: ICON, title: "No offers", lead: "Your contract expires and nobody calls. The league has moved on.", ok: () => { endCareer(n, "no offers in free agency"); sayIt("My NBA career ended when no team offered me a contract."); } });
     }
     const val = FASAL(o) * (1 + (n.fame - 40) / 400);
     const offers = [];
@@ -871,10 +884,11 @@
     const n = N();
     if (!openScreen("NBA CAREER", () => (typeof openSpecialCareers === "function" ? openSpecialCareers() : screen.classList.remove("open")))) return;
     let h = `<div class="sec">NBA</div>`;
-    if (n.retired && n.legacy) h += row("legacy", n.legacy.hof ? "bball/hof.png" : ICON, "Your last career", n.legacy.hof ? `Hall of Famer · ${n.legacy.champs} titles` : `Legacy score ${n.legacy.score}`);
+    if (n.retired && n.legacy) h += row("legacy", n.legacy.hof ? "bball/hof.png" : ICON, "Your last career", n.legacy.hof ? `Hall of Famer · ${n.legacy.champs} titles` : `Legacy score ${n.legacy.score}${n.legacy.how && n.legacy.how !== "retired" ? " · " + n.legacy.how : ""}`);
+    if (n.retired && n.seasons && n.seasons.length) h += row("hist", ICON, "Career history", `${n.seasons.length} season${n.seasons.length === 1 ? "" : "s"} on record`);
     h += row("start", ICON, "Start an NBA career", "High school, college, the draft and the league (age 14-28)");
     sList.innerHTML = h;
-    wire({ start: () => startCareer(), legacy: () => note("NBA", n.legacy.hof ? "You are in the Hall of Fame." : "A career worth remembering.") });
+    wire({ start: () => startCareer(), hist: () => openStats(), legacy: () => note("NBA", n.legacy.hof ? "You are in the Hall of Fame." : "A career worth remembering.") });
   }
   function openTrain() {
     const n = N();

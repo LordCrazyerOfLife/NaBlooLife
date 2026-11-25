@@ -1101,6 +1101,7 @@
     if (state.art && state.art.active) out.push("Artist");
     if (state.futbol && state.futbol.active && !state.futbol.retired) out.push("Footballer");
     if (state.gangLife && state.gangLife.member) out.push("Gang member");
+    if (state.drift && state.drift.active) out.push("Drift Boy");
     if (state.job && state.job.acting) out.push("Actor");
     if (state.job && state.job.fighter) out.push("Fighter");
     if (state.job && state.job.politician) out.push("Politician");

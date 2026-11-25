@@ -30,6 +30,8 @@ html,body{overscroll-behavior-y:contain}
 .notice{max-height:calc(100% - 28px);overflow-y:auto;box-sizing:border-box}
 .jcw{max-width:100%;box-sizing:border-box}
 .jcw img,.ev img,.jm img{max-width:100%}
+/* the Find Heirloom darkness ring is 230% of the scene on purpose: capping it at 100% made the dark patch slide with the flashlight */
+.jm .hl-scene img{max-width:none}
 @media (max-height:700px){
   .jcw .lead{font-size:14.5px;line-height:1.3}
   .jcw h4{font-size:20px}

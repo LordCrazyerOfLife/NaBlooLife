@@ -68,7 +68,7 @@
     }
   };
   const alive = () => !!(typeof state === "object" && state && !state.dead);
-  const active = () => alive() && !era1800();
+  const active = () => alive() && !era1800() && !(window.FL_noMH && FL_noMH());
   const famHas = (id) => Array.isArray(state.conds) && state.conds.some((c) => c && c.id === id);
   const minor = () => state.age < 18 && typeof parentsAlive === "function" && parentsAlive().length > 0;
   const costFree = () => {
@@ -1756,7 +1756,7 @@
     let live = false;
     setTimeout(() => (live = true), 2500);
     new MutationObserver((muts) => {
-      if (!live || !active()) return;
+      if (!live || !active() || window.FL_RESTORING) return;
       let last = "";
       for (const mu of muts)
         for (const n of mu.addedNodes) {

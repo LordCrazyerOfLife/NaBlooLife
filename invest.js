@@ -792,7 +792,7 @@
       return H(e, !0), $.forEach((t) => W(e, t)), K(e), q(e), e;
     };
   function q(e) {
-    if (!c()) return;
+    /* [mod] real crypto price history in every mode (it used to be Free Life UI only) */
     const t = h(),
       n = P();
     $.forEach((a) => {
@@ -862,15 +862,34 @@
         return [...n, ...V(t, e.price, e.vol)];
       })(o));
   }
+  /* [mod] coins that are too big to simply vanish: after the real history ends they crash and recover, never fail */
+  const BIGCAP = new Set(["BTC", "ETH", "BNB", "XRP", "SOL", "ADA", "DOGE", "LTC", "TRX", "LINK", "XLM", "BCH", "DOT", "AVAX", "TON", "XMR", "ETC", "UNI", "ATOM", "HBAR", "NEAR", "SHIB"]);
+  /* [mod] after the real history ends the big coins keep swinging up and down, but inside a believable band around their
+     real all-time high: manias fade near 15x the peak and crashes soften near 2% of it. */
+  const coinLimits = (sec) => {
+    const L = l(sec);
+    if (!L) return null;
+    const peak = Math.max(...L.slice(1));
+    return { hi: peak * 15, lo: peak * 0.02 };
+  };
+  const softLimits = (x, p, m) => {
+    if (!m || !(p > 0)) return x;
+    if (x > 0 && p > m.hi * 0.1) return x * Math.max(0.05, 1 - (p / m.hi - 0.1) / 0.9);
+    if (x < 0 && p < m.lo * 5) return x * Math.max(0.15, p / (m.lo * 5));
+    return x;
+  };
   function U(e, n, a) {
     const o = n.sec[e.id],
+      bigCap = BIGCAP.has(e.tick),
+      lim = bigCap ? coinLimits(e) : null,
       s = C(n, a, e.id, "ret");
     if ("crypto" === e.type) {
       const e = o.dead ? "failed" : 0 === a ? o.state : o.nstate || o.state,
-        n = E(s, t.crypto[e].next);
+        n0 = E(s, t.crypto[e].next),
+        n = "failed" === n0 && bigCap ? "crash" : n0;
       return (
         a > 0 ? (o.nstate = n) : (o.state = n),
-        "failed" === n ? -1 : ((e, [t, n]) => t + ((n - t) * (e() + e() + e())) / 3)(s, t.crypto[n].ret)
+        "failed" === n ? -1 : softLimits(((e, [t, n]) => t + ((n - t) * (e() + e() + e())) / 3)(s, t.crypto[n].ret), o.price / P(), lim)
       );
     }
     const i = "stock" === e.mkt ? n.stockHealth : "bond" === e.mkt ? n.bondHealth : 50,
@@ -1635,7 +1654,7 @@
         "beforebegin",
         $e(
           r.hist,
-          c() && "crypto" === t.type
+          "crypto" === t.type
             ? `Price since ${Math.max(p(t), Math.min(state.birthYear, h() - 1))}`
             : null,
         ),
@@ -3104,7 +3123,7 @@
           ((t.state = t.nstate || t.state),
           ("failed" === t.state || o <= 0) && ((t.dead = !0), (t.price = 0))),
           (t.hist = [...t.hist, ...V(a, t.dead ? 0 : o, t.vol)].slice(
-            c() && "crypto" === e.type ? -720 : -60,
+            "crypto" === e.type ? -720 : -60,
           )),
           (t.last = t.next),
           t.dead || (t.price = "crypto" === e.type ? Math.max(1e-6, o) : Math.max(0.01, o)),
@@ -3511,7 +3530,7 @@
       price: state.inv ? z().sec[t].price : 0,
       held: en(t),
       icon: e(k[t].icon),
-      live: !!state.inv && !z().sec[t].dead && z().sec[t].price > 0 && (!c() || m(k[t])),
+      live: !!state.inv && !z().sec[t].dead && z().sec[t].price > 0 && (!(c() || "crypto" === k[t].type) || m(k[t])),
     }),
     spendCoin: tn,
     receiveCoin: function (e, t, n) {

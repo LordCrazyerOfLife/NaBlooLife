@@ -53,6 +53,7 @@
     sportbikes: { noun: "motorcycle", short: "Bike", verb: "Ride", past: "rode", lic: "motorcycle", out: "Take it out for a ride", gone: "left it on the side of the road" },
     boats: { noun: "boat", short: "Boat", verb: "Sail", past: "sailed", lic: "boat", out: "Take it out on the water", gone: "left it adrift at the pier" },
     planes: { noun: "aircraft", short: "Aircraft", verb: "Fly", past: "flew", lic: "pilot", out: "Take it up for a flight", gone: "left it on the apron" },
+    islands: { noun: "island", short: "Island", verb: "Visit", past: "visited", lic: null, out: "Spend time on your island", gone: "gave up the deed to it" },
     helicopters: { noun: "helicopter", short: "Helicopter", verb: "Fly", past: "flew", lic: "heli", out: "Take it up for a flight", gone: "left it on the pad" },
   };
   const SECTIONS = [
@@ -60,6 +61,7 @@
     { id: "bikes", title: "Motorcycles", icon: "bikes/sportbike-01-ducati-red.png", empty: "No motorcycles yet", shop: "Visit Redline Motorcycles", kinds: ["sportbikes"], store: "sportbikes" },
     { id: "marina", title: "Marina", icon: "boats/ship-06-superyacht-white.png", empty: "No boats yet", shop: "Visit Northstar Marine", kinds: ["boats"], store: "boats" },
     { id: "hangar", title: "Hangar", icon: "aircraft/private-jet.png", empty: "No aircraft yet", shop: "Visit the aircraft dealers", kinds: ["planes", "helicopters"], store: "planes" },
+    { id: "islands", title: "Islands", icon: "islands/island-01-modern-villa.png", empty: "No islands yet", shop: "Visit Archipelago Estates", kinds: ["islands"], store: "islands" },
   ];
   const inSection = (s) => fleet().filter((v) => v && s.kinds && s.kinds.includes(v.kind));
   const counts = () => ({
@@ -191,7 +193,7 @@
       air: ["They begged you to do a low pass over the beach.", "You took a photo above the clouds that is now their profile picture.", "You landed and they wanted to go again immediately."],
     },
   };
-  const groupOf = (kind) => (kind === "sportbikes" ? "bike" : kind === "boats" ? "boat" : kind === "planes" || kind === "helicopters" ? "air" : "car");
+  const groupOf = (kind) => (kind === "sportbikes" ? "bike" : kind === "boats" || kind === "islands" ? "boat" : kind === "planes" || kind === "helicopters" ? "air" : "car");
 
   // vehicle: { name, img, tag, verb, past, noun, seats, group, run(wearFn), ... }
   function pickCompany(V, onGo) {
@@ -433,7 +435,7 @@
       row("cars/ui-money-bag.png", "Pay Off", "Pay off your loan", "payoff", !v.loanYears) +
       row("cars/ui-tools.png", "Repair", "Repair it", "repair") +
       row("cars/ui-hand-waving.png", "Sell", "Sell it", "sell") +
-      row("cars/ui-magnet.png", "Scrap", "Scrap it", "scrap");
+      (v.kind === "islands" ? "" : row("cars/ui-magnet.png", "Scrap", "Scrap it", "scrap"));
     openScreen(K.short.toUpperCase(), openGarage, html);
     const done = (t, m, l) => {
       if (l) logLine(l);
@@ -453,10 +455,10 @@
         }
         if (a === "drive") {
           if (state.age < 16) return note("Too young", `You are too young to ${K.verb.toLowerCase()} a ${K.noun}.`);
-          if (window.FL_LICENSES && !FL_LICENSES.has(K.lic)) return FL_LICENSES.need(K.lic);
+          if (K.lic && window.FL_LICENSES && !FL_LICENSES.has(K.lic)) return FL_LICENSES.need(K.lic);
           if (v.used === state.age) return note(K.verb, `You already took your ${esc(v.name)} out this year.`);
-          const lines = { sportbikes: ["The engine screamed through every gear.", "You leaned into every corner and grinned the whole way.", "You blasted down the highway with the sun going down."], boats: ["The water was glass and the wind was perfect.", "You cut across the bay and left a long white wake.", "You dropped anchor and watched the sunset."], planes: ["The city looked like a toy from up there.", "You flew above the clouds and the whole world went quiet.", "A smooth landing, applause from the ground crew."], helicopters: ["You hovered over the skyline and watched it glitter.", "You skimmed the coast and waved at the beaches.", "The city came and went below the rotors."] };
-          const V = { name: v.name, img: v.img, tag: K.short, verb: K.verb, past: K.past, noun: K.noun, seats: Math.max(1, Number(v.cap) || 2), group: groupOf(v.kind), soloLine: () => `You took your ${esc(v.name)} out. ${pick(lines[v.kind] || lines.boats)}` };
+          const lines = { islands: ["You walked the beach at sunrise and had the whole island to yourself.", "A day of swimming off the dock, a long lunch under the palms and not one phone call.", "You watched the sun go down from your own private shore."], sportbikes: ["The engine screamed through every gear.", "You leaned into every corner and grinned the whole way.", "You blasted down the highway with the sun going down."], boats: ["The water was glass and the wind was perfect.", "You cut across the bay and left a long white wake.", "You dropped anchor and watched the sunset."], planes: ["The city looked like a toy from up there.", "You flew above the clouds and the whole world went quiet.", "A smooth landing, applause from the ground crew."], helicopters: ["You hovered over the skyline and watched it glitter.", "You skimmed the coast and waved at the beaches.", "The city came and went below the rotors."] };
+          const V = { name: v.name, img: v.img, tag: K.short, verb: K.verb, past: K.past, noun: K.noun, seats: Math.max(1, Number(v.cap) || 2), group: groupOf(v.kind), soloLine: () => (v.kind === "islands" ? `You spent the day on ${esc(v.name)}. ${pick(lines.islands)}` : `You took your ${esc(v.name)} out. ${pick(lines[v.kind] || lines.boats)}`), ...(v.kind === "islands" ? { tripText: (who) => `You spent the day on ${esc(v.name)} with ${who}. Sand, sun and nobody else around.` } : {}) };
           const goLocal = () =>
             pickCompany(V, (group) => {
               v.used = state.age;

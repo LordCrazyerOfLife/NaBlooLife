@@ -49,7 +49,7 @@ jobs:
 
       - name: Copy the game into mobile/www
         working-directory: mobile
-        run: node prepare-www.mjs
+        run: node prepare-www.mjs --webp --ogg
 
       - name: Create the Android project
         working-directory: mobile
@@ -117,7 +117,7 @@ jobs:
 
       - name: Copy the game into mobile/www
         working-directory: mobile
-        run: node prepare-www.mjs
+        run: node prepare-www.mjs --webp
 
       - name: Create the iOS project
         working-directory: mobile

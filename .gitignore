@@ -19,3 +19,8 @@ mobile/node_modules/
 mobile/android/
 mobile/ios/
 mobile/package-lock.json
+
+# mobile build output
+mobile/www/
+mobile/android/
+mobile/ios/

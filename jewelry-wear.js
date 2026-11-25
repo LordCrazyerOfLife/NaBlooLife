@@ -248,6 +248,21 @@
         return;
       }
     }
+    // single-tooth caps (jewelry/tooth-NN-*.png): one picture on one front tooth, not across the whole mouth
+    if (/^tooth-\d+/.test(String(it.img || ""))) {
+      const img = await loadImg(`jewelry/${it.img}.png`);
+      if (img) {
+        const w = A.width * 0.075 * sc;
+        const h = (img.height / img.width) * w;
+        const [cx, cy] = P(A.cx + A.width * 0.035, A.mouthY - 1);
+        c.save();
+        c.shadowColor = "rgba(0,0,0,.35)";
+        c.shadowBlur = 1.5;
+        c.drawImage(img, cx - w / 2, cy - h * 0.45, w, h);
+        c.restore();
+        return;
+      }
+    }
     drawGrillzDrawn(c, it, A, P, sc);
   }
 

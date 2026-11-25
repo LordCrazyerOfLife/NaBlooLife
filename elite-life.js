@@ -17,11 +17,11 @@
       desc: "Speedboats, yachts and superyachts",
     },
     sportbikes: {
-      title: "SPORTBIKES",
+      title: "MOTORCYCLES",
       short: "Bike",
       dealer: "Redline Motorcycles",
       icon: "bikes/sportbike-01-ducati-red.png",
-      desc: "Sportbikes, superbikes and track weapons",
+      desc: "Sportbikes, cruisers, dirt bikes and scooters",
     },
     planes: {
       title: "PRIVATE AIRCRAFT",
@@ -29,6 +29,13 @@
       dealer: "Skyline Aircraft Sales",
       icon: "aircraft/private-jet.png",
       desc: "Seaplanes, turboprops and private jets",
+    },
+    islands: {
+      title: "ISLANDS",
+      short: "Island",
+      dealer: "Archipelago Estates",
+      icon: "islands/island-01-modern-villa.png",
+      desc: "Private and wild islands, with docks and beaches",
     },
     helicopters: {
       title: "HELICOPTERS",
@@ -40,6 +47,272 @@
   };
 
   const CATALOG = {
+    islands: [
+      {
+        id: "island-modern-villa",
+        name: "Modern Villa Island",
+        price: 9500000,
+        upkeep: 95000,
+        speed: "14 acres",
+        cap: 10,
+        img: "islands/island-01-modern-villa.png",
+        type: "private island",
+        desc: "A glass-and-pool villa with its own dock and a beach that belongs only to you.",
+      },
+      {
+        id: "island-spanish-villa",
+        name: "Spanish Villa Island",
+        price: 7800000,
+        upkeep: 80000,
+        speed: "12 acres",
+        cap: 10,
+        img: "islands/island-02-spanish-villa.png",
+        type: "private island",
+        desc: "Terracotta roofs on a rocky hill, with a pergola made for long dinners.",
+      },
+      {
+        id: "island-tiki-huts",
+        name: "Tiki Huts Island",
+        price: 3200000,
+        upkeep: 42000,
+        speed: "9 acres",
+        cap: 8,
+        img: "islands/island-03-tiki-huts.png",
+        type: "private island",
+        desc: "Stilt huts, loungers and a beach umbrella. Nobody has ever been in a hurry here.",
+      },
+      {
+        id: "island-manor-house",
+        name: "Manor Island",
+        price: 14000000,
+        upkeep: 140000,
+        speed: "20 acres",
+        cap: 14,
+        img: "islands/island-04-manor-house.png",
+        type: "private island",
+        desc: "A grand manor with terraced gardens, a gazebo and a staff wing.",
+      },
+      {
+        id: "island-farm-water-tower",
+        name: "Farm Island",
+        price: 4500000,
+        upkeep: 52000,
+        speed: "16 acres",
+        cap: 8,
+        img: "islands/island-05-farm-water-tower.png",
+        type: "private island",
+        desc: "Cottages, crops and a water tower. Self-sufficient, if you are willing to farm.",
+      },
+      {
+        id: "island-jungle-cabin",
+        name: "Jungle Cabin Island",
+        price: 1600000,
+        upkeep: 24000,
+        speed: "11 acres",
+        cap: 4,
+        img: "islands/island-06-jungle-cabin.png",
+        type: "private island",
+        desc: "One cabin hidden under the palms, with a rock face behind it.",
+      },
+      {
+        id: "island-lighthouse",
+        name: "Lighthouse Island",
+        price: 5200000,
+        upkeep: 60000,
+        speed: "8 acres",
+        cap: 6,
+        img: "islands/island-07-lighthouse.png",
+        type: "private island",
+        desc: "A working lighthouse and the keeper's home on a rocky shore.",
+      },
+      {
+        id: "island-pool-house",
+        name: "Pool House Island",
+        price: 8400000,
+        upkeep: 90000,
+        speed: "13 acres",
+        cap: 10,
+        img: "islands/island-08-pool-house.png",
+        type: "private island",
+        desc: "A flat-roof house with a big pool, loungers and a private dock.",
+      },
+      {
+        id: "island-windmill-farm",
+        name: "Windmill Island",
+        price: 4100000,
+        upkeep: 48000,
+        speed: "15 acres",
+        cap: 8,
+        img: "islands/island-09-windmill-farm.png",
+        type: "private island",
+        desc: "A windmill, a farmhouse and neat vegetable fields by the sea.",
+      },
+      {
+        id: "island-cliff-house",
+        name: "Cliff House Island",
+        price: 11000000,
+        upkeep: 115000,
+        speed: "12 acres",
+        cap: 10,
+        img: "islands/island-10-cliff-house.png",
+        type: "private island",
+        desc: "A modern house carved into the rock, with a staircase down to the water.",
+      },
+      {
+        id: "island-village-shop",
+        name: "Village Island",
+        price: 6500000,
+        upkeep: 70000,
+        speed: "18 acres",
+        cap: 12,
+        img: "islands/island-11-village-shop.png",
+        type: "private island",
+        desc: "A tiny town with a shop, a water tower and a street all of its own.",
+      },
+      {
+        id: "island-golf-course",
+        name: "Golf Island",
+        price: 18000000,
+        upkeep: 180000,
+        speed: "30 acres",
+        cap: 12,
+        img: "islands/island-12-golf-course.png",
+        type: "private island",
+        desc: "Your own private golf course with a bunker, a green and a clubhouse.",
+      },
+      {
+        id: "island-wild-lagoon-hill",
+        name: "Lagoon Hill",
+        price: 2100000,
+        upkeep: 18000,
+        speed: "10 acres",
+        cap: 4,
+        img: "islands/wild-01-lagoon-hill.png",
+        type: "wild island",
+        desc: "An untouched island with a hidden lagoon. You choose what to build.",
+      },
+      {
+        id: "island-wild-rocky-peak",
+        name: "Rocky Peak",
+        price: 1400000,
+        upkeep: 14000,
+        speed: "8 acres",
+        cap: 2,
+        img: "islands/wild-02-rocky-peak.png",
+        type: "wild island",
+        desc: "A steep rocky peak above a small beach. Great views, little shade.",
+      },
+      {
+        id: "island-wild-meadow",
+        name: "Meadow Isle",
+        price: 1200000,
+        upkeep: 12000,
+        speed: "14 acres",
+        cap: 4,
+        img: "islands/wild-03-meadow.png",
+        type: "wild island",
+        desc: "Green meadows and a quiet shore, ready for whatever you plan.",
+      },
+      {
+        id: "island-wild-yacht-villa",
+        name: "Yacht Villa",
+        price: 12000000,
+        upkeep: 125000,
+        speed: "11 acres",
+        cap: 10,
+        img: "islands/wild-04-yacht-villa.png",
+        type: "wild island",
+        desc: "A white villa on the rocks with a yacht moored at the dock.",
+      },
+      {
+        id: "island-wild-cave-island",
+        name: "Cave Island",
+        price: 1900000,
+        upkeep: 16000,
+        speed: "9 acres",
+        cap: 4,
+        img: "islands/wild-05-cave-island.png",
+        type: "wild island",
+        desc: "Sea caves under a tall cliff. Pirates would have loved it.",
+      },
+      {
+        id: "island-wild-flat-meadow",
+        name: "Flat Meadow",
+        price: 900000,
+        upkeep: 9000,
+        speed: "16 acres",
+        cap: 4,
+        img: "islands/wild-06-flat-meadow.png",
+        type: "wild island",
+        desc: "A low, wide island with open grass, ready to build on.",
+      },
+      {
+        id: "island-wild-lighthouse",
+        name: "Lighthouse Isle",
+        price: 3800000,
+        upkeep: 40000,
+        speed: "8 acres",
+        cap: 6,
+        img: "islands/wild-07-lighthouse.png",
+        type: "wild island",
+        desc: "A lighthouse on a wild rocky shore, with a small dock.",
+      },
+      {
+        id: "island-wild-lagoon-cave",
+        name: "Lagoon Cave",
+        price: 2600000,
+        upkeep: 22000,
+        speed: "9 acres",
+        cap: 4,
+        img: "islands/wild-08-lagoon-cave.png",
+        type: "wild island",
+        desc: "A turquoise pool inside a rock arch. It looks fake. It is real.",
+      },
+      {
+        id: "island-wild-stilt-hut",
+        name: "Stilt Hut",
+        price: 1100000,
+        upkeep: 12000,
+        speed: "7 acres",
+        cap: 3,
+        img: "islands/wild-09-stilt-hut.png",
+        type: "wild island",
+        desc: "A lone hut on stilts by the water, a dock and nothing else.",
+      },
+      {
+        id: "island-wild-white-villa",
+        name: "White Villa",
+        price: 9000000,
+        upkeep: 95000,
+        speed: "12 acres",
+        cap: 10,
+        img: "islands/wild-10-white-villa.png",
+        type: "wild island",
+        desc: "A white villa with a pool, a dock and a palm-lined shore.",
+      },
+      {
+        id: "island-wild-palm-meadow",
+        name: "Palm Meadow",
+        price: 1000000,
+        upkeep: 10000,
+        speed: "13 acres",
+        cap: 4,
+        img: "islands/wild-11-palm-meadow.png",
+        type: "wild island",
+        desc: "Palm trees and open grass on a quiet beach.",
+      },
+      {
+        id: "island-wild-arch-cave",
+        name: "Arch Cave",
+        price: 2300000,
+        upkeep: 20000,
+        speed: "9 acres",
+        cap: 4,
+        img: "islands/wild-12-arch-cave.png",
+        type: "wild island",
+        desc: "A natural stone arch over the sand. Sunrise looks like a postcard.",
+      },
+    ],
     boats: [
       {
         id: "speedboat",
@@ -292,6 +565,402 @@
         cap: 1,
         img: "bikes/sportbike-12-ktm-black.png",
         desc: "A track-only weapon with one seat and no excuses whatsoever.",
+      },
+      {
+        id: "moto-yamaha-r6",
+        name: "Yamaha YZF-R6",
+        price: 12500,
+        upkeep: 450,
+        speed: "160 mph",
+        cap: 2,
+        img: "bikes/moto-01-yamaha-r6-blue.png",
+        type: "moto",
+        desc: "A screaming supersport that wants to be revved to the moon.",
+      },
+      {
+        id: "moto-honda-crf",
+        name: "Honda CRF450RX",
+        price: 10200,
+        upkeep: 380,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/moto-02-honda-crf-red.png",
+        type: "moto",
+        desc: "A red enduro built for fire roads and bad decisions.",
+      },
+      {
+        id: "moto-kawasaki-ninja",
+        name: "Kawasaki Ninja ZX-6R",
+        price: 11800,
+        upkeep: 440,
+        speed: "160 mph",
+        cap: 2,
+        img: "bikes/moto-03-kawasaki-ninja-black.png",
+        type: "moto",
+        desc: "Black, green-wheeled and very much a Ninja.",
+      },
+      {
+        id: "moto-harley-street-bob",
+        name: "Harley-Davidson Street Bob",
+        price: 17500,
+        upkeep: 560,
+        speed: "110 mph",
+        cap: 2,
+        img: "bikes/moto-04-harley-black.png",
+        type: "moto",
+        desc: "Black paint, loud pipes and zero apologies.",
+      },
+      {
+        id: "moto-honda-scooter",
+        name: "Honda Click 160 Scooter",
+        price: 3800,
+        upkeep: 220,
+        speed: "62 mph",
+        cap: 2,
+        img: "bikes/moto-05-honda-scooter-white.png",
+        type: "moto",
+        desc: "The sensible white scooter that gets you everywhere and judges nobody.",
+      },
+      {
+        id: "moto-bmw-gs",
+        name: "BMW R 1250 GS Adventure",
+        price: 20500,
+        upkeep: 650,
+        speed: "125 mph",
+        cap: 2,
+        img: "bikes/moto-06-bmw-gs-black.png",
+        type: "moto",
+        desc: "Gold wheels, big tank, and the confidence to cross a continent.",
+      },
+      {
+        id: "moto-ducati-panigale",
+        name: "Ducati Panigale V2",
+        price: 19500,
+        upkeep: 620,
+        speed: "170 mph",
+        cap: 2,
+        img: "bikes/moto-07-ducati-panigale-red.png",
+        type: "moto",
+        desc: "Italian red, tiny seat, enormous attitude.",
+      },
+      {
+        id: "moto-suzuki-gsxr",
+        name: "Suzuki GSX-R1000R",
+        price: 18500,
+        upkeep: 600,
+        speed: "186 mph",
+        cap: 2,
+        img: "bikes/moto-08-suzuki-gsxr-blue.png",
+        type: "moto",
+        desc: "A blue superbike with racing in its blood.",
+      },
+      {
+        id: "moto-chopper",
+        name: "Custom Black Chopper",
+        price: 24500,
+        upkeep: 700,
+        speed: "105 mph",
+        cap: 2,
+        img: "bikes/moto-09-chopper-black.png",
+        type: "moto",
+        desc: "Long forks, flame paint and a seat made for the open road.",
+      },
+      {
+        id: "moto-ktm-enduro",
+        name: "KTM 350 EXC-F Enduro",
+        price: 11200,
+        upkeep: 400,
+        speed: "80 mph",
+        cap: 1,
+        img: "bikes/moto-10-ktm-enduro-white.png",
+        type: "moto",
+        desc: "A light enduro that eats trails for breakfast.",
+      },
+      {
+        id: "moto-kawasaki-z",
+        name: "Kawasaki Z900",
+        price: 9800,
+        upkeep: 380,
+        speed: "150 mph",
+        cap: 2,
+        img: "bikes/moto-11-kawasaki-z-green.png",
+        type: "moto",
+        desc: "A green naked bike with a very loud personality.",
+      },
+      {
+        id: "moto-honda-goldwing",
+        name: "Honda Gold Wing Tour",
+        price: 27500,
+        upkeep: 780,
+        speed: "125 mph",
+        cap: 2,
+        img: "bikes/moto-12-honda-goldwing-red.png",
+        type: "moto",
+        desc: "A red touring cruiser with luggage, heated seats and a stereo.",
+      },
+      {
+        id: "dirt-honda-crf450r",
+        name: "Honda CRF450R",
+        price: 9800,
+        upkeep: 380,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-01-honda-crf-red.png",
+        type: "dirt bike",
+        desc: "Red and ready for the track.",
+      },
+      {
+        id: "dirt-yamaha-yz450f",
+        name: "Yamaha YZ450F",
+        price: 9600,
+        upkeep: 370,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-02-yamaha-yz-blue.png",
+        type: "dirt bike",
+        desc: "Blue, fast and built to win motocross.",
+      },
+      {
+        id: "dirt-kawasaki-kx450",
+        name: "Kawasaki KX450",
+        price: 9500,
+        upkeep: 370,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-03-kawasaki-kx-green.png",
+        type: "dirt bike",
+        desc: "Lime green and mean over every jump.",
+      },
+      {
+        id: "dirt-ktm-450-sxf",
+        name: "KTM 450 SX-F",
+        price: 10900,
+        upkeep: 400,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-04-ktm-sx-orange.png",
+        type: "dirt bike",
+        desc: "Orange fury, straight from the factory.",
+      },
+      {
+        id: "dirt-husqvarna-fc450",
+        name: "Husqvarna FC 450",
+        price: 11000,
+        upkeep: 410,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-05-husqvarna-white.png",
+        type: "dirt bike",
+        desc: "White and navy, with plenty of Swedish precision.",
+      },
+      {
+        id: "dirt-suzuki-rmz450",
+        name: "Suzuki RM-Z450",
+        price: 9300,
+        upkeep: 360,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-06-suzuki-rm-yellow.png",
+        type: "dirt bike",
+        desc: "A yellow motocross classic that never goes out of style.",
+      },
+      {
+        id: "dirt-gasgas-mc450f",
+        name: "GasGas MC 450F",
+        price: 10300,
+        upkeep: 390,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-07-gasgas-red.png",
+        type: "dirt bike",
+        desc: "Red race machine with serious acceleration.",
+      },
+      {
+        id: "dirt-beta-450-rx",
+        name: "Beta 450 RX",
+        price: 10800,
+        upkeep: 400,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-08-beta-white.png",
+        type: "dirt bike",
+        desc: "White Italian enduro-cross for tight trails.",
+      },
+      {
+        id: "dirt-sherco-450-sef",
+        name: "Sherco 450 SEF-R",
+        price: 11200,
+        upkeep: 410,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-09-sherco-blue.png",
+        type: "dirt bike",
+        desc: "Blue with green rims, built for hard enduro.",
+      },
+      {
+        id: "dirt-tm-mx-450",
+        name: "TM Racing MX 450 Fi",
+        price: 9900,
+        upkeep: 380,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-10-tm-racing-blue.png",
+        type: "dirt bike",
+        desc: "A light blue race bike from a small, serious factory.",
+      },
+      {
+        id: "dirt-kawasaki-kx450-factory",
+        name: "Kawasaki KX450 Factory Edition",
+        price: 13800,
+        upkeep: 500,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-11-monster-black-green.png",
+        type: "dirt bike",
+        desc: "Black and green factory graphics and all the horsepower.",
+      },
+      {
+        id: "dirt-honda-crf450r-works",
+        name: "Honda CRF450R Works Edition",
+        price: 12400,
+        upkeep: 460,
+        speed: "85 mph",
+        cap: 1,
+        img: "bikes/dirt-12-honda-crf-red-2.png",
+        type: "dirt bike",
+        desc: "The red works bike with every upgrade bolted on.",
+      },
+      {
+        id: "scooter-honda-dio-black",
+        name: "Honda Dio 110 Black",
+        price: 3200,
+        upkeep: 190,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-01-honda-dio-black.png",
+        type: "scooter",
+        desc: "A sleek black city scooter.",
+      },
+      {
+        id: "scooter-yamaha-zuma",
+        name: "Yamaha Zuma 125 Blue",
+        price: 3900,
+        upkeep: 230,
+        speed: "60 mph",
+        cap: 2,
+        img: "bikes/scooter-02-yamaha-zuma-blue.png",
+        type: "scooter",
+        desc: "Rugged little blue scooter with a big attitude.",
+      },
+      {
+        id: "scooter-honda-dio-pink",
+        name: "Honda Dio Pink Edition",
+        price: 3300,
+        upkeep: 190,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-03-honda-dio-pink.png",
+        type: "scooter",
+        desc: "Hot pink, small engine, huge personality.",
+      },
+      {
+        id: "scooter-yamaha-purple",
+        name: "Yamaha Jog RR Purple",
+        price: 3100,
+        upkeep: 190,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-04-yamaha-purple.png",
+        type: "scooter",
+        desc: "A purple city runabout with sporty bodywork.",
+      },
+      {
+        id: "scooter-honda-dio-white",
+        name: "Honda Dio 110 White",
+        price: 3200,
+        upkeep: 190,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-05-honda-dio-white.png",
+        type: "scooter",
+        desc: "Clean white paint and neat little graphics.",
+      },
+      {
+        id: "scooter-yamaha-zuma-red",
+        name: "Yamaha Zuma 125 Red",
+        price: 3900,
+        upkeep: 230,
+        speed: "60 mph",
+        cap: 2,
+        img: "bikes/scooter-06-yamaha-zuma-red.png",
+        type: "scooter",
+        desc: "The red Zuma: tough, loud and quick off the line.",
+      },
+      {
+        id: "scooter-yamaha-jog-white",
+        name: "Yamaha Jog White",
+        price: 3000,
+        upkeep: 180,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-07-yamaha-jog-white.png",
+        type: "scooter",
+        desc: "A white, cheap and cheerful commuter.",
+      },
+      {
+        id: "scooter-honda-zx",
+        name: "Honda Dio ZX Black",
+        price: 3400,
+        upkeep: 200,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-08-honda-zx-black.png",
+        type: "scooter",
+        desc: "Sharp black styling and a stubborn little engine.",
+      },
+      {
+        id: "scooter-suzuki-address",
+        name: "Suzuki Address 110 Blue",
+        price: 2900,
+        upkeep: 170,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-09-suzuki-blue.png",
+        type: "scooter",
+        desc: "Blue and white and absurdly easy to park.",
+      },
+      {
+        id: "scooter-honda-dio-red",
+        name: "Honda Dio 110 Red",
+        price: 3200,
+        upkeep: 190,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-10-honda-dio-red.png",
+        type: "scooter",
+        desc: "A red scooter that makes every errand feel faster.",
+      },
+      {
+        id: "scooter-yamaha-aerox",
+        name: "Yamaha Aerox 155",
+        price: 4500,
+        upkeep: 260,
+        speed: "60 mph",
+        cap: 2,
+        img: "bikes/scooter-11-yamaha-yellow.png",
+        type: "scooter",
+        desc: "The yellow one. Quick, loud and a little bit show-off.",
+      },
+      {
+        id: "scooter-honda-dio-green",
+        name: "Honda Dio Army Green",
+        price: 3200,
+        upkeep: 190,
+        speed: "55 mph",
+        cap: 2,
+        img: "bikes/scooter-12-honda-dio-green.png",
+        type: "scooter",
+        desc: "Matte army green for a stealthier commute.",
       },
     ],
     planes: [
@@ -598,77 +1267,127 @@
   };
   const ownedBy = (kind) => fleet().filter((v) => v && v.kind === kind);
   const findDef = (kind, id) => (CATALOG[kind] || []).find((v) => v.id === id);
+
+  /* Yearly showroom: every year each dealer shows a fresh random selection of its catalog. Most are new (the price
+     moves a little with the market), some are used (lower condition, cheaper). Kept in state.eliteStock so the list does
+     not change every time you open the shop; it is thrown away when you age up. */
+  const yearNow = () => (state.birthYear || 0) + (state.age || 0);
+  const ri = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+  const pickN = (arr, n) => {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a.slice(0, n);
+  };
+  const stockSize = (kind, total) => Math.min(total, kind === "sportbikes" ? 16 : Math.max(5, Math.round(total * 0.55)));
+  const roundPrice = (n) => {
+    const step = n > 20000 ? 100 : 10;
+    return Math.max(50, Math.round(n / step) * step);
+  };
+  function showroom(kind) {
+    const y = yearNow();
+    if (!state.eliteStock || state.eliteStock.year !== y) state.eliteStock = { year: y, kinds: {} };
+    const kinds = state.eliteStock.kinds;
+    if (!kinds[kind]) {
+      // any model can come up again, even one you already own: you can keep several of the same model
+      const cat = CATALOG[kind] || [];
+      kinds[kind] = pickN(cat, stockSize(kind, cat.length)).map((d) => {
+        const used = Math.random() < 0.28,
+          cond = used ? ri(45, 88) : 100,
+          price = used
+            ? roundPrice(d.price * (0.45 + (0.55 * cond) / 100) * (0.95 + Math.random() * 0.1))
+            : roundPrice(d.price * (0.94 + Math.random() * 0.14));
+        return { id: d.id, used, cond, price, qty: used || kind === "islands" ? 1 : ri(1, 3) };
+      });
+    }
+    return kinds[kind];
+  }
   const value = (v) => Math.max(0, Math.round((Number(v.price) || 0) * (0.55 + (Number(v.cond) || 100) / 300)));
 
   function openVehicleStore(kind) {
     const cat = CATS[kind];
     if (!cat) return openShopping();
-    const owned = new Set(ownedBy(kind).map((v) => v.id));
-    const stock = (CATALOG[kind] || []).filter((v) => !owned.has(v.id));
+    const have = (id) => ownedBy(kind).filter((v) => v.id === id).length;
+    const stock = showroom(kind)
+      .map((l) => ({ l, def: findDef(kind, l.id) }))
+      .filter((x) => x.def && x.l.qty > 0);
     sTitle.textContent = cat.title;
     sSub.style.display = "none";
     sBack.innerHTML = back();
     sBack.onclick = () => openShopping();
     sList.innerHTML = stock.length
-      ? stock
+      ? `<div class="sec">In stock for ${yearNow()}</div>` +
+        stock
           .map(
-            (v, i) =>
-              `<div class="row" data-elite-buy="${i}"><img src="${v.img}" alt=""><div class="t"><b>${esc(v.name)}</b><span>${money(v.price)} · ${esc(v.speed)} · ${v.cap} seats</span></div>${dots()}</div>`,
+            ({ l, def: v }, i) =>
+              `<div class="row" data-elite-buy="${i}"><img src="${v.img}" alt="" style="object-fit:contain"><div class="t"><b>${esc(v.name)} <em>(${l.used ? `${kind === "islands" ? "Run-down" : "Used"} · ${l.cond}%` : kind === "islands" ? "Ready" : "New"})</em></b><span>${money(l.price)} · ${esc(v.speed)} · ${v.cap} ${kind === "islands" ? "guests" : "seats"}${l.qty > 1 ? ` · ${l.qty} available` : ""}${have(v.id) ? ` · you own ${have(v.id)}` : ""}</span></div>${dots()}</div>`,
           )
-          .join("")
-      : `<div class="row dis"><img src="${cat.icon}" alt=""><div class="t"><b>Everything is in your collection</b><span>You already own every ${cat.short.toLowerCase()} in this showroom</span></div></div>`;
+          .join("") +
+        `<div class="mm-foot" style="padding:10px 14px;text-align:left">The showroom gets a new random selection every year.</div>`
+      : `<div class="row dis"><img src="${cat.icon}" alt=""><div class="t"><b>Sold out for ${yearNow()}</b><span>Come back next year: the ${cat.short.toLowerCase()} showroom gets a new random selection</span></div></div>`;
     sList.querySelectorAll("[data-elite-buy]").forEach((el) => {
-      el.onclick = () => vehicleCard(stock[Number(el.dataset.eliteBuy)], kind);
+      el.onclick = () => {
+        const x = stock[Number(el.dataset.eliteBuy)];
+        vehicleCard(x.def, kind, x.l);
+      };
     });
     sList.scrollTop = 0;
     screen.classList.add("open");
   }
 
-  function vehicleCard(def, kind) {
+  function vehicleCard(def, kind, listing) {
     if (!def) return openVehicleStore(kind);
     const cat = CATS[kind];
+    const l = listing || { used: false, cond: 100, price: def.price },
+      cost = l.price;
     jCard({
       tag: cat.short,
       iconSrc: def.img,
       title: def.name,
       close: () => openVehicleStore(kind),
-      lead: def.desc,
+      lead: def.desc + (l.used ? ` This one is used (${l.cond}% condition).` : ""),
       rows: [
-        ["Price", money(def.price)],
-        ["Top speed", def.speed],
-        ["Capacity", `${def.cap} people`],
+        ["Price", money(cost)],
+        ...(l.used ? [["Condition", `${l.cond}%`]] : []),
+        [kind === "islands" ? "Size" : "Top speed", def.speed],
+        [kind === "islands" ? "Guests" : "Capacity", `${def.cap} people`],
         ["Yearly upkeep", money(def.upkeep)],
       ],
       choices: [
         [
-          `Buy it — ${money(def.price)}`,
+          `Buy it — ${money(cost)}`,
           () => {
             if (state.age < 18)
-              return notice("Too young", "You must be at least 18 to buy a vehicle.", null, true);
+              return notice("Too young", `You must be at least 18 to buy ${kind === "islands" ? "an island" : "a vehicle"}.`, null, true);
             const needLic = { boats: "boat", sportbikes: "motorcycle", planes: "pilot", helicopters: "heli" }[kind];
             if (needLic && window.FL_LICENSES && !FL_LICENSES.has(needLic)) return FL_LICENSES.need(needLic);
-            if (state.money < def.price)
+            if (state.money < cost)
               return notice(
                 "Not enough",
-                `You need ${money(def.price)} to buy the ${esc(def.name)}.`,
+                `You need ${money(cost)} to buy the ${esc(def.name)}.`,
                 null,
                 false,
               );
-            state.money -= def.price;
+            state.money -= cost;
+            l.qty = (Number(l.qty) || 1) - 1; // one unit sold; if units are left you can buy the same model again
             fleet().push({
               ...def,
               kind,
               value: def.price,
-              cond: 100,
+              cond: l.cond,
               bought: state.age,
               used: -1,
             });
             if (typeof chaChing === "function") chaChing();
             if (typeof renderStats === "function") renderStats();
-            if (typeof say === "function") say(`I bought a ${def.name} for ${money(def.price)}.`);
+            if (typeof say === "function") say(`I bought a ${l.used ? "used " : ""}${def.name} for ${money(cost)}.`);
             notice(
               "Delivered",
-              `The ${esc(def.name)} is yours. It is waiting in your garage, marina and hangar.`,
+              kind === "islands"
+                ? `${esc(def.name)} is yours. Find it in Assets, under Garage, Marina & Hangar.`
+                : `The ${esc(def.name)} is yours. It is waiting in your garage, marina and hangar.`,
               () => openVehicleStore(kind),
               true,
             );
@@ -711,14 +1430,14 @@
       lead: `Your ${label.toLowerCase()}, bought at age ${v.bought}.`,
       rows: [
         ["Estimated value", money(value(v))],
-        ["Top speed", v.speed],
-        ["Capacity", `${v.cap} people`],
+        [v.kind === "islands" ? "Size" : "Top speed", v.speed],
+        [v.kind === "islands" ? "Guests" : "Capacity", `${v.cap} people`],
         ["Yearly upkeep", money(v.upkeep)],
       ],
       bars: [["Condition", Math.max(1, Math.min(100, Number(v.cond) || 0))]],
       choices: [
         [
-          "Take it out",
+          v.kind === "islands" ? "Spend a day there" : "Take it out",
           () => {
             if (state.age < 18)
               return notice("Too young", "You must be at least 18 to take it out.", null, true);
@@ -729,7 +1448,9 @@
             if (typeof say === "function") say(`I took my ${v.name} out for the day.`);
             notice(
               "Worth it",
-              `You spent the day on your ${esc(v.name)}. The upkeep is expensive, but the view is not.`,
+              v.kind === "islands"
+                ? `You spent the day on ${esc(v.name)}: sand, silence and not one neighbour. The upkeep is expensive, but the view is not.`
+                : `You spent the day on your ${esc(v.name)}. The upkeep is expensive, but the view is not.`,
               () => openOwned(),
               true,
             );
@@ -831,6 +1552,7 @@
   const ageButton = document.getElementById("ageBtn");
   if (ageButton)
     ageButton.addEventListener("click", () => {
+      if (state && !state.dead) state.eliteStock = null; // new year, new showroom selection
       if (!state || state.dead || !fleet().length) return;
       let upkeep = 0;
       for (const v of fleet()) {
@@ -846,6 +1568,7 @@
   state.shops.bike ||= CATS.sportbikes.dealer;
   state.shops.aircraft ||= CATS.planes.dealer;
   state.shops.heli ||= CATS.helicopters.dealer;
+  state.shops.island ||= CATS.islands.dealer;
 
   window.FL_ELITE_LIFE = {
     CATALOG,

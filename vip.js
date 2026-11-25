@@ -135,6 +135,40 @@
     },
   ];
 
+  // Islands: art is ready (islands/), the feature is not. Listed as "Soon": shown greyed, never unlocked or owned.
+  const ISLAND = (file, name, desc) => ["island-" + file, name, desc, `islands/${file}.png`];
+  const ISLANDS = {
+    logo: "islands/island-01-modern-villa.png",
+    private: [
+      ISLAND("island-01-modern-villa", "Modern Villa Island", "A glass-and-pool villa with its own dock"),
+      ISLAND("island-02-spanish-villa", "Spanish Villa Island", "Terracotta roofs on a rocky hill"),
+      ISLAND("island-03-tiki-huts", "Tiki Huts Island", "Stilt huts, loungers and a beach umbrella"),
+      ISLAND("island-04-manor-house", "Manor Island", "A grand manor with gardens and a gazebo"),
+      ISLAND("island-05-farm-water-tower", "Farm Island", "Cottages, crops and a water tower"),
+      ISLAND("island-06-jungle-cabin", "Jungle Cabin Island", "One cabin hidden under the palms"),
+      ISLAND("island-07-lighthouse", "Lighthouse Island", "A working lighthouse and keeper's home"),
+      ISLAND("island-08-pool-house", "Pool House Island", "A flat-roof house with a big pool"),
+      ISLAND("island-09-windmill-farm", "Windmill Island", "A windmill, farm and vegetable fields"),
+      ISLAND("island-10-cliff-house", "Cliff House Island", "A modern house carved into the rock"),
+      ISLAND("island-11-village-shop", "Village Island", "A tiny town with a shop and water tower"),
+      ISLAND("island-12-golf-course", "Golf Island", "Your own private golf course"),
+    ],
+    wild: [
+      ISLAND("wild-01-lagoon-hill", "Lagoon Hill", "An untouched island with a hidden lagoon"),
+      ISLAND("wild-02-rocky-peak", "Rocky Peak", "A steep rocky peak above the beach"),
+      ISLAND("wild-03-meadow", "Meadow Isle", "Green meadows and a quiet shore"),
+      ISLAND("wild-04-yacht-villa", "Yacht Villa", "A villa on the rocks with a yacht moored"),
+      ISLAND("wild-05-cave-island", "Cave Island", "Sea caves under a tall cliff"),
+      ISLAND("wild-06-flat-meadow", "Flat Meadow", "A low, wide island ready to build on"),
+      ISLAND("wild-07-lighthouse", "Lighthouse Isle", "A lighthouse on a wild rocky shore"),
+      ISLAND("wild-08-lagoon-cave", "Lagoon Cave", "A turquoise pool inside a rock arch"),
+      ISLAND("wild-09-stilt-hut", "Stilt Hut", "A lone hut on stilts by the water"),
+      ISLAND("wild-10-white-villa", "White Villa", "A white villa with a pool on the shore"),
+      ISLAND("wild-11-palm-meadow", "Palm Meadow", "Palm trees and open grass"),
+      ISLAND("wild-12-arch-cave", "Arch Cave", "A natural stone arch over the sand"),
+    ],
+  };
+
   const readJson = (key, fallback) => {
     try {
       const value = JSON.parse(localStorage.getItem(key) || "null");
@@ -220,7 +254,7 @@
       );
   }
 
-  function openVip() {
+  function openVip(opts) {
     if (typeof play === "function") play("choice");
     sTitle.textContent = "VIP EVERYTHING";
     sSub.style.display = "none";
@@ -231,6 +265,17 @@
     const row = (id, name, desc) =>
       `<div class="row"><img src="mkt/${id}.png" alt=""><div class="t"><b>${name}</b><span>${desc}</span></div>` +
       `${on ? '<img class="mkt-owned" src="mkt/owned.png" alt="Unlocked">' : ""}</div>`;
+    // Islands are on sale in Shopping (Archipelago Estates): these rows open that showroom
+    const soonRow = (name, desc, img) =>
+      `<div class="row" data-vipisland="1"><img src="${img}" alt="" style="object-fit:contain"><div class="t"><b>${name}</b><span>${desc}</span></div>` +
+      `<div class="mkt-price">SHOP</div></div>`;
+    const islands =
+      `<div class="sec" id="vipIslandsSec">Islands · Now in Shopping</div>` +
+      soonRow("Archipelago Estates", "Buy a private or wild island in Shopping", ISLANDS.logo) +
+      `<div class="sec">Private Islands</div>` +
+      ISLANDS.private.map(([, name, desc, img]) => soonRow(name, desc, img)).join("") +
+      `<div class="sec">Wild Islands</div>` +
+      ISLANDS.wild.map(([, name, desc, img]) => soonRow(name, desc, img)).join("");
     sList.innerHTML =
       `<div class="sec">${on ? "All VIP unlocked" : "VIP locked"}</div>` +
       `<div class="row" id="vipToggle" style="background:${on ? "#eef8e8" : "#fbe6e6"}"><img src="mkt/bitizen.png" alt="">` +
@@ -241,11 +286,22 @@
           `<div class="sec">${group.title}</div>` +
           group.ids.map(([id, name, desc]) => row(id, name, desc)).join(""),
       ).join("") +
+      islands +
       `<div class="mm-foot" style="padding:10px 14px;text-align:left">VIP Everything is a mod. The switch works immediately and the setting is saved in this browser.</div>`;
     const toggle = document.getElementById("vipToggle");
     if (toggle) toggle.onclick = () => setVip(!isOn());
+    sList.querySelectorAll("[data-vipisland]").forEach((el) => {
+      el.onclick = () => {
+        if (window.FL_ELITE_LIFE && FL_ELITE_LIFE.openVehicleStore) FL_ELITE_LIFE.openVehicleStore("islands");
+        else if (typeof openShopping === "function") openShopping();
+      };
+    });
     sList.scrollTop = 0;
     screen.classList.add("open");
+    if (opts && opts.islands) {
+      const sec = document.getElementById("vipIslandsSec");
+      if (sec && sec.scrollIntoView) sec.scrollIntoView({ block: "start" });
+    }
   }
 
   const PREMIUM = [
@@ -317,6 +373,23 @@
         );
         const row = document.getElementById("vipRow");
         if (row) row.onclick = () => openVip();
+        // Islands: not built yet, so it is a SOON row with an island as its icon (it jumps to the Islands list in VIP)
+        row &&
+          row.insertAdjacentHTML(
+            "afterend",
+            `<div class="row" id="vipIslandsRow"><img src="${ISLANDS.logo}" alt="" style="object-fit:contain">` +
+              `<div class="t"><b>Islands</b><span>Buy your own island in Shopping</span></div>` +
+              `${typeof CHEV !== "undefined" ? CHEV : ""}</div>`,
+          );
+        const isl = document.getElementById("vipIslandsRow");
+        if (isl)
+          isl.onclick = () => {
+            if (window.FL_ELITE_LIFE && FL_ELITE_LIFE.openVehicleStore) FL_ELITE_LIFE.openVehicleStore("islands");
+            else openVip({ islands: true });
+          };
+        // "My Stuff" had no screen behind it and fell into the placeholder: it is the account-wide perks, i.e. this VIP page
+        const stuff = sList.querySelector('[data-mm="stuff"]');
+        if (stuff) stuff.onclick = () => openVip();
       } catch (e) {
         console.warn("[vip] menu", e);
       }
@@ -338,5 +411,6 @@
     open: openVip,
     decorateMarket,
     ids: IDS.slice(),
+    islands: ISLANDS,
   };
 })();

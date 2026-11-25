@@ -1892,6 +1892,20 @@
     return !!(f && f.active && !f.retired && !state.dead && !state.prison && f.natCup && !f.natCup.done);
   };
 
+  // [mod] the continental run blocks Age like the national-team camp does: every 1 Week is a match you play
+  const contBlocking = (f) => {
+    const c = f && f.cont;
+    if (!c || c.done || !f.active || f.retired || state.dead || state.prison) return false;
+    if (c.year !== year()) {
+      // an old run that was never finished (older saves): settle it quietly so nobody is stuck
+      let guard = 0;
+      while (f.cont && !f.cont.done && guard++ < 12) contPlay(f);
+      return false;
+    }
+    if (state.weekNo && state.weekNo.age === state.age && state.weekNo.n >= 52) return false; // no weeks left this year
+    return true;
+  };
+
   // [mod] penalty minigame (penalty.js): you take the kicks yourself; falls back to a coin flip if it is not loaded
   const hashHue = (s) => {
     let h = 7;
@@ -2307,7 +2321,12 @@
     return [ga, gb];
   }
 
-  function contPlay(f) {
+  // [mod] How many decisions each continental match has: 3 in the group, 4 in the quarter-finals, 6 in semis and final.
+  const CONT_MOMENTS = { group: 3, r16: 3, qf: 4, sf: 6, final: 6 };
+  const contStageLabel = (st) => (st === "final" ? T("Final") : st === "sf" ? T("Semi-final") : st === "qf" ? T("Quarter-final") : T("Round of 16"));
+
+  // The match you are about to play (kept in f.cont.cur so the opponent does not change if you look at it twice).
+  function contFixture(f) {
     const c = f.cont;
     if (!c || c.done) return null;
     const me = c.group.find((r) => r.me);
@@ -2317,8 +2336,27 @@
       const order = c.order && c.order.length ? c.order : c.group;
       const others = order.filter((r) => !r.me);
       const opp = others[Math.min(c.week, others.length - 1)];
-      const [ga, gb] = contMatch(f, c, me, opp);
-      const rest = others.filter((r) => r !== opp);
+      return { c, me, opp, others, group: true, stage: "group", n: CONT_MOMENTS.group, label: `${T("Group stage")} · ${T("Match")} ${Math.min(3, c.week + 1)}/3` };
+    }
+    const stage = CONT_KO[c.koIndex] || "final";
+    if (!c.cur || c.cur.stage !== stage) {
+      const minRep = stage === "final" ? 88 : stage === "sf" ? 85 : stage === "qf" ? 81 : 76;
+      c.cur = { stage, opp: contOpponent(f, minRep) };
+    }
+    return { c, me, opp: c.cur.opp, group: false, stage, n: CONT_MOMENTS[stage] || 6, label: contStageLabel(stage) };
+  }
+
+  // Applies a finished match (the score you played) to the table / bracket.
+  function contSettle(f, fx, ga, gb, pens) {
+    const { c, me, opp } = fx;
+    if (fx.group) {
+      me.p++; opp.p++;
+      me.gf += ga; me.ga += gb;
+      opp.gf += gb; opp.ga += ga;
+      if (ga > gb) { me.w++; opp.l++; me.pts += 3; }
+      else if (gb > ga) { opp.w++; me.l++; opp.pts += 3; }
+      else { me.d++; opp.d++; me.pts++; opp.pts++; }
+      const rest = fx.others.filter((r) => r !== opp);
       if (rest.length >= 2) contMatch(f, c, rest[0], rest[1]);
       c.week++;
       c.results.push(`${T("Group")} · ${me.name} ${ga}-${gb} ${opp.name}`);
@@ -2333,15 +2371,12 @@
           c.eliminated = true;
         }
       }
-      return { ga, gb, opp: opp.name, pos, group: true };
+      return { ga, gb, opp: opp.name, pos, group: true, done: c.done };
     }
-    const stage = CONT_KO[c.koIndex] || "final";
-    const minRep = stage === "final" ? 88 : stage === "sf" ? 85 : stage === "qf" ? 81 : 76;
-    const opp = contOpponent(f, minRep);
-    const [ga, gb] = contMatch(f, c, me, opp);
-    const pens = ga === gb ? rnd() < 0.5 : null;
+    const stage = fx.stage;
     const win = ga > gb || pens === true;
-    c.results.push(`${T(stage === "final" ? "Final" : stage.toUpperCase())} · ${me.name} ${ga}-${gb}${pens !== null ? (pens ? ` (${T("won on penalties")})` : ` (${T("lost on penalties")})`) : ""} ${opp.name}`);
+    c.results.push(`${stage === "final" ? T("Final") : stage.toUpperCase()} · ${me.name} ${ga}-${gb}${pens !== null && pens !== undefined ? (pens ? ` (${T("won on penalties")})` : ` (${T("lost on penalties")})`) : ""} ${opp.name}`);
+    c.cur = null;
     if (win) {
       c.koIndex++;
       if (c.koIndex >= CONT_KO.length) {
@@ -2356,7 +2391,61 @@
       c.done = true;
       c.eliminated = true;
     }
-    return { ga, gb, opp: opp.name, stage, pens, win, champion: c.champion, done: c.done };
+    return { ga, gb, opp: opp.name, stage, pens: pens === undefined ? null : pens, win, champion: c.champion, done: c.done };
+  }
+
+  // Quick simulation (kept for old saves that left a run unfinished, and as a fallback).
+  function contPlay(f) {
+    const fx = contFixture(f);
+    if (!fx) return null;
+    const { me, opp } = fx;
+    const ga = tableGoals(me.power + 2, opp.power);
+    const gb = tableGoals(opp.power, me.power + 2);
+    const pens = !fx.group && ga === gb ? rnd() < 0.5 : null;
+    return contSettle(f, fx, ga, gb, pens);
+  }
+
+  // You play the match: decisions, penalties and free kicks, then the table / bracket moves.
+  function contMatchStep(f, after) {
+    const fx = contFixture(f);
+    if (!fx) return;
+    const { c, me, opp } = fx;
+    keyMatchStep(f, {
+      tag: `${c.name} · ${fx.label}`,
+      name: c.name,
+      opp: { name: opp.name, rep: opp.power, logo: opp.logo },
+      lead: `${T("Matchday.")} ${fx.n} ${T("key moments will decide it, and the decisions are yours.")}`,
+      n: fx.n,
+      variety: true,
+      group: fx.group,
+      onFinish: (r, next) => {
+        const koPens = !fx.group && r.pens ? r.res === "win" : null;
+        const out = contSettle(f, fx, r.my, r.op, koPens);
+        const win = r.res === "win";
+        const eff = applyEffects(f, win ? { fame: fx.stage === "final" ? 5 : 2, form: 4, club: 3, hype: 3 } : r.res === "draw" ? { form: 1 } : { form: -4, club: -2, hype: -2 });
+        playSnd(win || r.res === "draw" ? "ding" : "buzzer");
+        sayIt(`${c.name}: ${me.name} ${r.my}-${r.op} ${opp.name}${koPens !== null ? (koPens ? " (won on penalties)" : " (lost on penalties)") : ""}.`);
+        const pos = c.group.findIndex((x) => x.me) + 1;
+        let line;
+        if (c.done && c.champion) line = T("CHAMPIONS! The trophy is yours and the whole city is awake.");
+        else if (c.done && fx.group) line = `${T("You finished")} ${ordinal(pos)}. ${T("The group stage is the end of the road.")}`;
+        else if (c.done) line = T("Knocked out. There is always next season.");
+        else if (fx.group) line = c.week >= 3 ? `${T("You finished")} ${ordinal(pos)} ${T("in the group and go through to the knockout rounds.")}` : `${T("You are")} ${ordinal(pos)} ${T("in the group.")}`;
+        else line = `${T("Through to the")} ${contStageLabel(CONT_KO[c.koIndex]).toLowerCase()}.`;
+        const rows = [
+          [T("Result"), `${me.name} ${r.my}-${r.op} ${opp.name}${koPens !== null ? ` (${koPens ? T("pens: won") : T("pens: lost")})` : ""}`],
+          [T("Your goals"), String(r.goals)],
+          [T("Your assists"), String(r.assists)],
+        ];
+        if (fx.group && !c.done) c.group.forEach((x, i) => rows.push([`${i + 1}. ${x.name}${x.me ? ` (${T("You")})` : ""}`, `${x.pts} ${T("pts")} · ${x.gf}:${x.ga}`]));
+        rows.push(...eff);
+        card({
+          tag: c.name, iconSrc: (f.club && f.club.logo) || ICON, title: c.done ? (c.champion ? T("Champions") : T("Eliminated")) : fx.label,
+          lead: `${line}${c.done ? ` ${T("Age up is unlocked again.")}` : ` ${T("Press 1 Week for the next match.")}`}`, rows,
+          ok: () => { if (window.FL_FUT_SYNC) FL_FUT_SYNC(); next(); if (after) after(); },
+        });
+      },
+    })(() => {});
   }
 
   function contScreen(f) {
@@ -2393,13 +2482,9 @@
         : T("Knocked out. There is always next season.")
       : c.stage === "group"
         ? `${T("You are")} ${ordinal(pos)} ${T("in the group")}. ${T("Top two advance. Three points for a win.")}`
-        : `${T("Win or go home. One match this week.")}`;
+        : `${T("Win or go home. One match this week.")} ${T("Press 1 Week (or the button below) to play it.")}`;
     const buttons = [];
-    if (!c.done) buttons.push([T("Play this week's match"), () => {
-      const out = contPlay(f);
-      contScreen(f);
-      if (out) playSnd(out.win || out.ga > out.gb ? "ding" : "buzzer");
-    }]);
+    if (!c.done) buttons.push([T("Play this week's match"), () => contMatchStep(f, () => contScreen(f))]);
     buttons.push([T("Back"), () => openFutbol()]);
     card({
       iconSrc: (f.club && f.club.logo) || E("1f3c6"),
@@ -2527,7 +2612,7 @@
     let contResult = T("Did not qualify");
     if (qualified) {
       f.cont = makeContinental(f);
-      contResult = `${T("Qualified for the")} ${f.club.continental} · ${T("play it week by week")}`;
+      contResult = `${T("Qualified for the")} ${f.club.continental} · ${T("every 1 Week is a match you play (Age is locked until it ends)")}`;
     } else {
       f.cont = null;
     }
@@ -3310,7 +3395,9 @@
       const to = (opp.rep || f.club.rep) * 0.6 + 55 * 0.4;
       const lm = Math.max(0.3, 1.25 * (1 + (tm - to) / 90));
       const lo = Math.max(0.3, 1.05 * (1 - (tm - to) / 130));
-      const minutes = [11, 26, 41, 57, 72, 86];
+      // [mod] cfg.n = number of decisions (derby/cups: 6; the continental cup uses 3 / 4 / 6 by round)
+      const nMoments = cfg && cfg.n ? cfg.n : 6;
+      const minutes = nMoments === 6 ? [11, 26, 41, 57, 72, 86] : nMoments === 4 ? [12, 36, 60, 82] : nMoments === 3 ? [15, 48, 80] : Array.from({ length: nMoments }, (_, i) => Math.round(8 + (i * 78) / Math.max(1, nMoments - 1)));
       const m = { my: 0, op: 0, goals: 0, assists: 0, i: 0, note: T("The stadium is full and loud. Everybody knows what this one means.") };
       const poisson = (lam) => {
         let L = Math.exp(-lam), k = 0, p = 1;
@@ -3319,7 +3406,80 @@
       };
       const A = (id) => f.attrs[id] || 50;
       const formFx = (f.form - 50) / 500;
+      // [mod] extra kinds of decisions for the continental nights: a penalty you take yourself and a free kick
+      const advance = () => { m.i++; (m.i >= minutes.length ? finish : moment)(); };
+      const penMoment = () => {
+        const min = minutes[m.i];
+        const tag = `${min}'`;
+        m.pens = (m.pens || 0) + 1;
+        const rows = [[T("Score"), `${f.club.name} ${m.my} - ${m.op} ${opp.name}`], [T("Minute"), tag]];
+        const done = (goal, personal) => {
+          if (goal) { m.my++; if (personal) m.goals++; m.note = personal ? T("You send the keeper the wrong way. GOAL!") : T("The captain steps up and scores.") }
+          else m.note = personal ? T("The keeper guesses right and the penalty is saved.") : T("The captain misses. The stadium groans.");
+          advance();
+        };
+        if (pos.gk) {
+          // goalkeepers face the penalty instead
+          card({
+            tag: TAG, iconSrc: ICON, title: `${tag} - ${T("Penalty against")}`,
+            lead: `${m.note}<br><br>${T("The referee points to the spot. The whole stadium goes quiet.")}`, rows,
+            choices: [T("Dive left"), T("Dive right"), T("Stay in the middle")].map((txt, k) => [txt, () => {
+              if (rnd() < (k === 2 ? 0.14 : 0.24) + A("reaction") / 350) m.note = T("You guess right and push it away! The save of the night.");
+              else { m.op++; m.note = T("You guess wrong. It is in the net."); }
+              advance();
+            }]),
+          });
+          return;
+        }
+        card({
+          tag: TAG, iconSrc: ICON, title: `${tag} - ${T("Penalty!")}`,
+          lead: `${m.note}<br><br>${T("The referee points to the spot. The captain looks at you.")}`, rows,
+          choices: [
+            [T("Take it yourself"), () => {
+              if (window.FL_PEN)
+                FL_PEN.kick({
+                  ...penaltyBase(f, f.club && f.club.name), title: `${TAG} · ${tag}`, subtitle: T("The whole stadium is watching"),
+                  pressure: 0.9, keeper: clampN(0.45 + ((opp.rep || 70) - 60) / 200, 0.3, 0.8),
+                  onDone: (r) => done(!!r.goal, true),
+                });
+              else done(rnd() < 0.62 + A("shooting") / 500, true);
+            }],
+            [T("Let the captain take it"), () => done(rnd() < 0.72, false)],
+          ],
+        });
+      };
+      const fkMoment = () => {
+        const min = minutes[m.i];
+        const tag = `${min}'`;
+        const rows = [[T("Score"), `${f.club.name} ${m.my} - ${m.op} ${opp.name}`], [T("Minute"), tag]];
+        const go2 = (txt, fn) => [txt, () => { fn(); advance(); }];
+        card({
+          tag: TAG, iconSrc: ICON, title: `${tag} - ${T("Free kick")}`,
+          lead: `${m.note}<br><br>${T("A free kick, 25 metres out, right in front of goal. The ball is yours.")}`, rows,
+          choices: [
+            go2(T("Shoot at goal"), () => {
+              if (rnd() < 0.07 + A("shooting") / 320 + formFx) { m.my++; m.goals++; m.note = T("It bends over the wall and into the corner. GOAL!"); }
+              else m.note = T("It clips the wall and runs out for a corner.");
+            }),
+            go2(T("Cross it in"), () => {
+              if (rnd() < 0.22 + A("passing") / 320 + formFx && rnd() < 0.6) { m.my++; m.assists++; m.note = T("Your delivery is perfect and a teammate heads it in. ASSIST!"); }
+              else m.note = T("The keeper punches it clear.");
+            }),
+            go2(T("Play it short"), () => { m.note = T("A quick one-two keeps the move alive, but nothing comes of it."); }),
+          ],
+        });
+      };
+      const pickKind = () => {
+        if (!(cfg && cfg.variety)) return null;
+        const r = rnd();
+        if ((m.pens || 0) < 1 && r < 0.2) return "pen";
+        if (!pos.gk && r < 0.38) return "fk";
+        return null;
+      };
       const moment = () => {
+        const kind = pickKind();
+        if (kind === "pen") return penMoment();
+        if (kind === "fk") return fkMoment();
         const min = minutes[m.i];
         const attack = pos.gk ? false : rnd() < 0.5 + pos.goal * 0.08 - pos.def * 0.06;
         const tag = `${min}'`;
@@ -3365,11 +3525,11 @@
         }
       };
       const finish = () => {
-        m.my += poisson(lm * 0.4);
-        m.op += poisson(lo * 0.4);
+        m.my += poisson(lm * (1 - 0.1 * minutes.length));
+        m.op += poisson(lo * (1 - 0.1 * minutes.length));
         let res = m.my > m.op ? "win" : m.my === m.op ? "draw" : "loss";
         let pens = false;
-        const rest = () => {
+        const restDefault = () => {
         f.career.goals += m.goals;
         f.career.assists += m.assists;
         const fx = res === "win" ? { fame: 3, form: 6, club: 5, hype: 4, money: Math.round((f.wage || 50000) * 0.02) } : res === "draw" ? { form: 1, club: 1 } : { form: -5, club: -3, coach: -2, hype: -2 };
@@ -3389,7 +3549,16 @@
           ok: next,
         });
         };
-        if (cfg && res === "draw") {
+        // [mod] cfg.onFinish takes over the ending (the continental cup updates its own table and bracket)
+        const rest =
+          cfg && cfg.onFinish
+            ? () => {
+                f.career.goals += m.goals;
+                f.career.assists += m.assists;
+                cfg.onFinish({ my: m.my, op: m.op, goals: m.goals, assists: m.assists, res, pens }, next);
+              }
+            : restDefault;
+        if (cfg && res === "draw" && !cfg.group) {
           pens = true;
           penaltyShootout(f, f.club.name, opp.name, tm, to, (won) => {
             res = won ? "win" : "loss";
@@ -4479,6 +4648,7 @@ tap("fbCountryLeague", () => {
     start: startCareer,
     state: () => state.futbol,
     career: CAREER,
+    cont: { make: makeContinental, play: contMatchStep, fixture: contFixture, blocking: contBlocking, MOMENTS: CONT_MOMENTS },
   };
 
   // ------------------------------------------------------------------ age-up hook (was missing: //__PART4__)
@@ -4493,6 +4663,12 @@ tap("fbCountryLeague", () => {
           ev.stopImmediatePropagation();
           ev.preventDefault();
           noticeIt(T("National team duty"), T("You are in camp with the national team. You can only advance week by week (1 Week button) until the tournament ends."), null, true);
+          return;
+        }
+        if (contBlocking(f) && !flowActive) {
+          ev.stopImmediatePropagation();
+          ev.preventDefault();
+          noticeIt(f.cont.name, T("Your club is in the continental cup. You can only advance week by week (1 Week button): every week is a match you play, until the run ends."), null, true);
           return;
         }
         if (f && f.active && !f.retired && !state.dead && flowActive && flowStalled()) {
@@ -4538,8 +4714,11 @@ tap("fbCountryLeague", () => {
     wb.addEventListener("click", () => { before = wk(); }, true);
     wb.addEventListener("click", () => {
       const f = state && state.futbol;
-      if (!natBlocking(f) || wk() <= before) return;
-      const run = () => natMatchStep(f);
+      if (wk() <= before) return;
+      let run = null;
+      if (natBlocking(f)) run = () => natMatchStep(f);
+      else if (contBlocking(f)) run = () => contMatchStep(f);
+      if (!run) return;
       if (typeof queuePopup === "function") queuePopup(run);
       else setTimeout(run, 400);
     });
@@ -4557,7 +4736,7 @@ tap("fbCountryLeague", () => {
       if (state && state.country && !state.birthCountry && !state.dead) bornCode();
       const b = document.getElementById("ageBtn");
       if (!b) return;
-      const on = natBlocking(state && state.futbol);
+      const on = natBlocking(state && state.futbol) || contBlocking(state && state.futbol);
       b.classList.toggle("fl-natlock", on);
       b.setAttribute("aria-disabled", on ? "true" : "false");
     };

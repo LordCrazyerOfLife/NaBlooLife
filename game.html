@@ -69,19 +69,10 @@
       FL_I18N.lang !== "en" && document.write('<script src="i18n/' + FL_I18N.lang + '.events.js"><\/script>');
     </script>
     <script>
-      window.addEventListener("contextmenu", (e) => e.preventDefault(), !0),
-        window.addEventListener(
-          "keydown",
-          (e) => {
-            const t = (e.key || "").toLowerCase(),
-              n = e.ctrlKey || e.metaKey;
-            ("f12" === t ||
-              (n && (e.shiftKey || e.altKey) && ["i", "j", "c", "k"].includes(t)) ||
-              (n && !e.shiftKey && ("u" === t || "s" === t))) &&
-              (e.preventDefault(), e.stopPropagation());
-          },
-          !0,
-        ),
+      /* [mod] no more key/menu lockdown on desktop: F12, Ctrl+Shift+I/J/C/K/S, Ctrl+U, Ctrl+S and the right-click menu
+         work again. Only touch screens still block the long-press menu (it pops up over images and buttons). */
+      const FL_COARSE = !!(window.matchMedia && matchMedia("(pointer: coarse)").matches);
+      FL_COARSE && window.addEventListener("contextmenu", (e) => e.preventDefault(), !0),
         window.addEventListener(
           "dragstart",
           (e) => {
@@ -11422,6 +11413,8 @@
     <script src="faces/manifest-female.js"></script>
     <script src="names.js"></script>
     <script src="country-names.js"></script>
+    <script src="hairfit.js?v=1"></script>
+    <script src="devtools.js?v=1"></script>
     <script src="countries.js"></script>
     <script src="cities.js"></script>
     <script src="jobs.js?v=10"></script>
@@ -11482,7 +11475,7 @@
       {
         const t = (e) => e && e.closest && e.closest('input, textarea, [contenteditable="true"]');
         document.addEventListener("contextmenu", (e) => {
-          t(e.target) || e.preventDefault();
+          t(e.target) || !(window.matchMedia && matchMedia("(pointer: coarse)").matches) || e.preventDefault();
         }),
           document.addEventListener("selectstart", (e) => {
             t(e.target) || e.preventDefault();
@@ -11490,13 +11483,6 @@
           document.addEventListener("dragstart", (e) => {
             t(e.target) || e.preventDefault();
           }),
-          document.addEventListener(
-            "keydown",
-            (e) => {
-              (e.ctrlKey || e.metaKey) && "s" === e.key.toLowerCase() && e.preventDefault();
-            },
-            !0,
-          ),
           document.head.insertAdjacentHTML(
             "beforeend",
             '<style>body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}input,textarea,[contenteditable="true"]{-webkit-user-select:text;user-select:text}img{-webkit-user-drag:none}</style>',
@@ -12540,7 +12526,7 @@
               "beforeend",
               `<div class="stat-l ${t < 13 ? "warn" : ""}">${t < 13 ? '<img class="w" src="stat-emoji/warning.png">' : ""}${e}<span class="e">${a}</span></div>\n         ${o ? n.replace('<div class="bar">', `<div class="bar boost"><div class="boost-tail" style="left:calc((100% - 44px) * ${Math.max(t, 1) / 100})"></div><img class="boost-btn" src="mkt/boost-btn.png" alt="Boost!" data-boost="${e}">`) : n}`,
             ),
-            "Health" === e)
+            "Health" === e && !(window.FL_noMH && FL_noMH()))
           ) {
             const e = mindOf(),
               t = Math.round(e.mh),
@@ -12594,6 +12580,7 @@
             happy: 0,
           }),
         mindBump = (e, t = 0) => {
+          if (window.FL_noMH && FL_noMH()) return;
           const a = mindOf();
           (a.ins = clamp(a.ins + e)), (a.mh = clamp(a.mh + t));
         },
@@ -12647,7 +12634,8 @@
         notice(e, t, null, !0);
       }
       function comingSoon() {
-        notice("Error", "Error", null, !0);
+        // [mod] it used to say "Error / Error": it is a placeholder, not a failure
+        notice("Coming soon", "This isn't available yet. Check back later!", null, !0);
       }
       (window.comingSoon = comingSoon),
         document
@@ -13025,7 +13013,7 @@
                 : /^hair\/west/.test(e)
                   ? `${e}.png?v=9`
                   : /^(hair|tattoo)\//.test(e)
-                    ? `${e}.png?v=8`
+                    ? `${e}.png?v=10`
                     : `faces/${e}.png`);
           })),
         HAIR_PACK = [
@@ -13544,6 +13532,7 @@
           $ = void 0 !== s.tats ? myTats({ tats: s.tats }) : myTats(a),
           S = (e) => v.findIndex((t) => t[0].endsWith(e)),
           x = v.findIndex((e) => e[0].includes("-eyebrows-"));
+        window.FL_HAIRFIT && FL_HAIRFIT(v, k, e); // hairfit.js: keep pack hair on the head (follows head/eye position)
         let C =
           $ && k[S(`stage${e}-base`)] && k[S(`stage${e}-eye-base`)]
             ? await tattooLayer(
@@ -24161,7 +24150,7 @@
           discord: [1990, 2015, 2021],
           soundcloud: [2007, 2008, 2010, 2014],
         },
-        verifyIcon = (e) => ("discord" === socBase(e) ? "social/discord-verified.svg" : socIcon("verify"));
+        verifyIcon = (e) => ("discord" === socBase(e) ? "social/discord-verified.png" : socIcon("verify"));
       function socIcon(e) {
         const t = SOC_ERAS[e],
           a = state.birthYear + state.age;
@@ -36325,7 +36314,16 @@
         [/\bI was diagnosed with\b/i, [2, 6], [-6, -2]],
       ];
       let mindLive = !1;
+      function noMH() {
+        try {
+          return !!mods.noMentalHealth;
+        } catch {
+          return !1;
+        }
+      }
+      window.FL_noMH = noMH;
       function mindYear() {
+        if (noMH()) return;
         const e = mindOf(),
           t = state.stats,
           a = t.Happiness,
@@ -36485,7 +36483,7 @@
         mindLive = !0;
       }, 2500),
         new MutationObserver((e) => {
-          if (!mindLive || state.dead) return;
+          if (!mindLive || state.dead || window.FL_RESTORING) return;
           let t = !1;
           for (const a of e)
             for (const e of a.addedNodes) {
@@ -46420,6 +46418,7 @@
               (e) =>
                 !(
                   ("zoo" === e[0] && document.querySelector(".phone").classList.contains("flui")) ||
+                  ("therapy" === e[0] && window.FL_noMH && FL_noMH()) ||
                   (isOldEra() &&
                     /^(social|fertility|surgery|movies|nightlife|fight|therapy|rehab|hunting|licenses)$/.test(
                       e[0],
@@ -48185,7 +48184,7 @@
         ["jewel", "jewel", "Jewel Heist", "Attempt a jewelry store heist", 16],
         ["art", "artframe", "Art Theft", "Steal a valuable masterpiece", 18],
         ["counterfeit", "counterfeit", "Counterfeiting", "Deal in fake currency", 0],
-        ["identity", "idcard.svg", "Identity Theft", "Assume a stolen identity", 16],
+        ["identity", "idcard.png", "Identity Theft", "Assume a stolen identity", 16],
         ["fraud", "fraud", "Fraud", "Run a dishonest scheme", 0],
         ["smuggle", "smuggle", "Smuggling", "Move forbidden goods", 0],
         ["launder", "launder", "Money Laundering", "Conceal illicit profits", 0],
@@ -53053,7 +53052,7 @@
         ];
       function identityTheftCard(e = idCandidates(), t = [0, 0]) {
         crimePickCard({
-          icon: "idcard.svg",
+          icon: "idcard.png",
           title: "Identity Theft",
           lead: "You're thinking about stealing someone's identity.",
           btn: "View identity",
@@ -53109,7 +53108,7 @@
               `I stole ${n}'s identity, opened ${a} credit card${a > 1 ? "s" : ""} in ${"f" === e.g ? "her" : "his"} name and took ${usd(t)}.`,
             ),
             idOpen(
-              `<h4><img src="crime/idcard.svg" alt=""><span>Identity Stolen</span></h4>\n        <div class="idt-who">${faceTag(e, "idt-face")}<b>${n}</b></div>\n        <div class="lead">You passed as ${n}, opened credit cards in ${"f" === e.g ? "her" : "his"} name and drained the accounts. Nobody suspects a thing.</div>\n        <table class="jc idt-tb"><tbody><tr><td><b>Money taken:</b> ${usd(t)}</td></tr><tr><td><b>Credit cards opened:</b> ${a}</td></tr></tbody></table>\n        <button class="jm-apply ev-btn hr-green" id="idtOk">Continue</button>`,
+              `<h4><img src="crime/idcard.png" alt=""><span>Identity Stolen</span></h4>\n        <div class="idt-who">${faceTag(e, "idt-face")}<b>${n}</b></div>\n        <div class="lead">You passed as ${n}, opened credit cards in ${"f" === e.g ? "her" : "his"} name and drained the accounts. Nobody suspects a thing.</div>\n        <table class="jc idt-tb"><tbody><tr><td><b>Money taken:</b> ${usd(t)}</td></tr><tr><td><b>Credit cards opened:</b> ${a}</td></tr></tbody></table>\n        <button class="jm-apply ev-btn hr-green" id="idtOk">Continue</button>`,
               (e) => {
                 document.getElementById("idtOk").onclick = () => {
                   play("choice"), e();
@@ -57206,18 +57205,78 @@
           let a = null,
             o = screen.classList.contains("open");
           const n = () => t.classList.remove("on");
+          /* [mod] Back remembers the exact screen: we keep the trail of rows you tapped to get from the tab root to the
+             sub-screen you were on (Activities > Salon & Spa...), and replay it when you press Back. Only taps that
+             changed the screen title count, so buy/toggle rows that re-render the same screen are never replayed. */
+          const trail = [],
+            CANDS = ".row,[data-act],[data-mb],button,[role=button]",
+            rowTxt = (x) => ((x.querySelector(".t b") || x).textContent || "").trim().slice(0, 80);
+          let pend = null,
+            replaying = !1;
+          const findRow = (l) => {
+              const all = [...sList.querySelectorAll(CANDS)],
+                hasDs = Object.keys(l.ds).length > 0,
+                key = JSON.stringify(l.ds),
+                pool = hasDs ? all.filter((x) => JSON.stringify({ ...x.dataset }) === key) : all;
+              return pool.find((x) => rowTxt(x) === l.txt) || (hasDs ? pool[0] : null) || all.find((x) => rowTxt(x) === l.txt) || null;
+            },
+            wait = (ms) => new Promise((r) => setTimeout(r, ms)),
+            replay = async (steps) => {
+              for (const st of steps) {
+                let el = null;
+                for (let i = 0; i < 20 && !el; i++) {
+                  await wait(50);
+                  screen.classList.contains("open") && (el = findRow(st));
+                }
+                if (!el || el.classList.contains("dis")) return;
+                const before = sTitle.textContent;
+                el.click();
+                for (let i = 0; i < 15 && sTitle.textContent === before; i++) await wait(40);
+              }
+            };
+          sList.addEventListener(
+            "click",
+            (ev) => {
+              if (replaying) return;
+              const row = ev.target.closest(CANDS);
+              row &&
+                sList.contains(row) &&
+                (pend = {
+                  loc: {
+                    ds: { ...row.dataset },
+                    txt: rowTxt(row),
+                  },
+                  title: sTitle.textContent,
+                  t: Date.now(),
+                });
+            },
+            !0,
+          ),
+            sBack.addEventListener(
+              "click",
+              () => {
+                replaying || (pend = { back: !0, title: sTitle.textContent, t: Date.now() });
+              },
+              !0,
+            ),
+            new MutationObserver(() => {
+              if (replaying || !pend || !screen.classList.contains("open")) return;
+              const p = pend;
+              (pend = null),
+                Date.now() - p.t > 1500 || sTitle.textContent === p.title || (p.back ? trail.pop() : trail.push(p.loc));
+            }).observe(sList, { childList: !0 });
           e.addEventListener(
             "click",
             (e) => {
               const t = e.target.closest(".tab[data-tab]");
-              t && ((a = t.dataset.tab), n());
+              t && ((a = t.dataset.tab), replaying || (trail.length = 0), n());
             },
             !0,
           ),
             document.addEventListener(
               "click",
               (e) => {
-                e.target.closest("#ageBtn,.week-btn,.minus") && (n(), (a = null));
+                e.target.closest("#ageBtn,.week-btn,.minus") && (n(), (a = null), (trail.length = 0));
               },
               !0,
             ),
@@ -57239,7 +57298,10 @@
               if (!a) return;
               play("choice"), n();
               const t = e.querySelector(`.tab[data-tab="${a}"]`);
-              t && t.click();
+              if (!t) return;
+              const steps = trail.slice();
+              (replaying = !0), t.click();
+              replay(steps).finally(() => (replaying = !1));
             });
         })();
       const _renderAvatar = renderAvatar;
@@ -70098,6 +70160,7 @@
             accurateCars: !1,
             extendedCars: !1,
             goldenNeko: !1,
+            noMentalHealth: !1,
             modLoader: !0,
           },
           (() => {
@@ -70123,7 +70186,7 @@
       if (mods.modLoader && !window.__modLoaderInjected) {
         window.__modLoaderInjected = !0;
         const _ml = document.createElement("script");
-        (_ml.src = "modloader.js?v=22"), document.body.appendChild(_ml);
+        (_ml.src = "modloader.js?v=28"), document.body.appendChild(_ml);
       }
       const saveMods = () => {
         try {
@@ -70882,6 +70945,13 @@
             "emoji/1f4f0.png",
             "Infamous Killers",
             "Going to prison for murder makes you famous. More kills means more fame: a huge count stays at 100% for years, then slowly fades but never fully goes away",
+          ) +
+          '<div class="sec">Mental Health</div>' +
+          e(
+            "noMentalHealth",
+            "emoji/1f9e0.png",
+            "Disable Mental Health & Insanity",
+            "Turns off the Mental Health and Insanity bars, therapy, conditions, trauma, the psych ward and every Mental Health expansion",
           ) +
           '<div class="sec">Pets</div>' +
           e(
@@ -84527,6 +84597,8 @@
           const a = { mod: state.mod, acc: state.acc };
           for (const e of Object.keys(state)) delete state[e];
           Object.assign(state, structuredClone(t.state), a),
+            (window.FL_RESTORING = !0),
+            setTimeout(() => (window.FL_RESTORING = !1), 800),
             (log.innerHTML = t.log),
             (deathQueue.length = 0),
             (popupQueue.length = 0),
@@ -88037,9 +88109,9 @@
             ? 1 !== e.nodeType ||
               e.matches("script, style, input, textarea, .news") ||
               e.childNodes.forEach(a)
-            : /\$\d/.test(e.nodeValue) &&
+            : /(?<![A-Za-z$])\$\d/.test(e.nodeValue) &&
               !e.parentElement?.closest(".news, script, style") &&
-              (e.nodeValue = e.nodeValue.replace(/\$(?=\d)/g, t));
+              (e.nodeValue = e.nodeValue.replace(/(?<![A-Za-z$])\$(?=\d)/g, t));
         };
         a(e);
       };
@@ -88694,11 +88766,24 @@
         mbBar = (e, t, a) =>
           `<b>${e}</b><i><u style="width:${Math.max(t, 2)}%;background:${a || barCol(t)}"></u></i>`;
       function mbRes(e, t, { rows: a = [], bars: o = [], log: n, after: s } = {}) {
-        snapClose(), renderStats(), n && say(n);
+        // [mod] come back to where you were: when an activity opened from Mind & Body ends (and has no follow-up of its
+        // own), keep the Mind & Body list open and reopen the same activity card on OK (Activities > Mind & Body > Martial Arts).
+        const mbKey = window.__mbKey,
+          stay =
+            !s &&
+            mbKey &&
+            "function" == typeof MB_DO[mbKey] &&
+            screen.classList.contains("open") &&
+            "MIND & BODY" === sTitle.textContent;
+        stay || snapClose(), renderStats(), n && say(n);
         notice(
           e,
           t,
-          s,
+          stay
+            ? () => {
+                state.dead || ("MIND & BODY" === sTitle.textContent && screen.classList.contains("open") && MB_DO[mbKey]());
+              }
+            : s,
           !0,
           (a.length
             ? `<table class="nt"><tbody>${a.map(([e, t]) => `<tr><td><b>${e}:</b> ${t}</td></tr>`).join("")}</tbody></table>`
@@ -88751,7 +88836,7 @@
           sList.querySelectorAll("[data-mb]").forEach(
             (e) =>
               (e.onclick = () => {
-                e.classList.contains("dis") || MB_DO[e.dataset.mb]();
+                e.classList.contains("dis") || ((window.__mbKey = e.dataset.mb), MB_DO[e.dataset.mb]());
               }),
           );
       }
@@ -89404,7 +89489,7 @@
     <script src="church.js?v=12"></script>
     <script src="mafia.js?v=11"></script>
     <script src="cliques.js?v=2"></script>
-    <script src="jewelry.js?v=18"></script>
+    <script src="jewelry.js?v=19"></script>
     <script src="jewel-robbery.js?v=1"></script>
     <script src="family-drama.js?v=6"></script>
     <script src="first-date.js?v=4"></script>
@@ -89423,7 +89508,7 @@
     <script src="cemetery.js?v=7"></script>
     <script src="settings.js?v=85"></script>
     <script src="musician.js?v=10"></script>
-    <script src="invest.js?v=55"></script>
+    <script src="invest.js?v=56"></script>
     <script src="stocks1900.js?v=5"></script>
     <script src="ww.js?v=11"></script>
     <script src="life1900.js?v=3"></script>
@@ -89436,7 +89521,7 @@
     <script src="sof.js?v=1"></script>
     <script src="war-events.js?v=1"></script>
     <script src="kids-media.js?v=1"></script>
-    <script src="acting.js?v=23"></script>
+    <script src="acting.js?v=24"></script>
     <script src="police-events.js?v=1"></script>
     <script src="marriage.js?v=6"></script>
     <script src="rentals.js?v=15"></script>
@@ -89446,13 +89531,13 @@
     <script src="cartel.js?v=13"></script>
     <script src="drugs.js?v=9"></script>
     <script src="mods.js?v=18"></script>
-    <script src="elite-life.js?v=6"></script>
-    <script src="vip.js?v=2"></script>
-    <script src="basketball.js?v=28"></script>
+    <script src="elite-life.js?v=9"></script>
+    <script src="vip.js?v=6"></script>
+    <script src="basketball.js?v=29"></script>
     <script src="fighter.js?v=8"></script>
     <script src="vampire.js?v=8"></script>
     <script src="serial-clues.js?v=2"></script>
-    <script src="serial-killer.js?v=40"></script>
+    <script src="serial-killer.js?v=41"></script>
     <script src="special-crime.js?v=2"></script>
     <script src="sim-swapping.js?v=16"></script>
     <script src="family-divorce.js?v=6"></script>
@@ -89473,15 +89558,15 @@
     <script src="genetics.js?v=1"></script>
     <script src="sound-fix.js?v=1"></script>
     <script src="fame-bar.js?v=1"></script>
-    <script src="mobile-fix.js?v=2"></script>
+    <script src="mobile-fix.js?v=3"></script>
     <script src="juice-plus.js?v=3"></script>
     <script src="easy-stats.js?v=1"></script>
-    <script src="jewelry-wear.js?v=5"></script>
+    <script src="jewelry-wear.js?v=6"></script>
     <script src="family-gifts.js?v=1"></script>
     <script src="landlord.js?v=2"></script>
     <script src="bizempire.js?v=6"></script>
     <script src="penalty.js?v=2"></script>
-    <script src="garage.js?v=2"></script>
+    <script src="garage.js?v=4"></script>
     <script src="accessories-plus.js?v=2"></script>
     <script src="barber-all.js?v=1"></script>
   <script>

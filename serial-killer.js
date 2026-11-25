@@ -5797,9 +5797,9 @@
   const go = (e) => `serial/organs/${e}`,
     fo = [
       { k: "heart", t: "Heart", ico: go("heart.png"), max: 1, price: [14e4, 26e4], diff: 0.32 },
-      { k: "lungs", t: "Lungs", ico: go("lungs.svg"), max: 1, price: [11e4, 19e4], diff: 0.28 },
-      { k: "liver", t: "Liver", ico: go("liver.svg"), max: 1, price: [95e3, 17e4], diff: 0.24 },
-      { k: "kidney", t: "Kidney", ico: go("kidney.svg"), max: 2, price: [65e3, 13e4], diff: 0.18 },
+      { k: "lungs", t: "Lungs", ico: go("lungs.png"), max: 1, price: [11e4, 19e4], diff: 0.28 },
+      { k: "liver", t: "Liver", ico: go("liver.png"), max: 1, price: [95e3, 17e4], diff: 0.24 },
+      { k: "kidney", t: "Kidney", ico: go("kidney.png"), max: 2, price: [65e3, 13e4], diff: 0.18 },
       { k: "eye", t: "Cornea", ico: go("eye.png"), max: 2, price: [18e3, 45e3], diff: 0.2 },
       { k: "marrow", t: "Bone Marrow", ico: go("bone.png"), max: 1, price: [25e3, 6e4], diff: 0.15 },
       { k: "blood", t: "Blood", ico: go("blood.png"), max: 1, price: [5e3, 14e3], diff: 0.06 },

@@ -462,6 +462,7 @@
       ],
     });
   }
+  const nbaOn = () => !!(state.nba && state.nba.active && !state.nba.retired); // nba.js runs its own draft card
   window.graduationCard = function () {
     const e = state.bbHS;
     if (e && !e.done && !state.uni && !state.dead && !state.prison) {
@@ -470,7 +471,7 @@
         e.perf < 50 || e.years < 1
           ? 0
           : 0.2 + (e.perf - 50) / 70 + (e.captain ? 0.2 : 0) + (e.scouted ? 0.15 : 0);
-      if (e.perf >= 92 && e.captain && chance(0.2)) return O(!0);
+      if (e.perf >= 92 && e.captain && chance(0.2) && !nbaOn()) return O(!0);
       if (chance(Math.min(0.9, t))) return A(e);
     }
     return L.apply(this, arguments);
@@ -482,6 +483,7 @@
     return (
       !(f(t) && "uni" === e.prog && state.school !== e && t.years >= 3) ||
         (u() && u().drafted) ||
+        nbaOn() ||
         ((state.bbUni = { perf: t.perf ?? 0, years: t.years, captain: !!t.captain, school: e.name }),
         setTimeout(() => whenClear(() => queuePopup(() => O(!1))), 900)),
       a
