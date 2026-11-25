@@ -186,7 +186,7 @@
           })
           .join("") +
         '<div class="sec">Packs</div>' +
-        `<div class="row" id="pkUi"><img src="ui/navbarBitizenSeal.png" style="object-fit:contain"><div class="t"><b>UI Pack</b><span>${f.bitlifeMode ? "BitLife" : "NaBlooLife"} look</span></div>${DOTS}</div>` +
+        `<div class="row" id="pkUi"><img src="ui/navbarNabloo.png" style="object-fit:contain"><div class="t"><b>UI Pack</b><span>${f.bitlifeMode ? "BitLife" : "NaBlooLife"} look</span></div>${DOTS}</div>` +
         `<div class="row" id="pkSnd"><img src="settings/sound.png" style="object-fit:contain"><div class="t"><b>Sound Pack</b><span>${u(f.soundPack)} sounds</span></div>${DOTS}</div>` +
         `<div class="row" id="pkIco"><img src="emoji/1f60a.png" style="object-fit:contain"><div class="t"><b>Icon Pack</b><span>${u(f.iconPack)} icons</span></div>${DOTS}</div>`),
         (document.getElementById("setWorkshop").onclick = () => {

@@ -2116,10 +2116,16 @@
         width: 44px;
         height: 44px;
         flex: none;
-        background: url(ui/navbarBitizenSeal.png) center/contain no-repeat;
+        object-fit: contain;
       }
-      .phone.dark .bitizen {
-        background-image: url(ui/navbarBitizenSeal-dm.png);
+      .bitizen-dark {
+        display: none;
+      }
+      .phone.dark .bitizen-light {
+        display: none;
+      }
+      .phone.dark .bitizen-dark {
+        display: block;
       }
       .logo-text {
         font-weight: 900;
@@ -6044,28 +6050,8 @@
       .phone.halloween .topbar {
         background: #000;
       }
-      .phone.halloween .bitizen {
-        display: none;
-      }
-      .phone.halloween .logo::before {
-        content: "";
-        flex: none;
-        width: 158px;
-        height: 40px;
-        background: url(halloween/logo.png) left center/contain no-repeat;
-      }
-      .phone.halloween .logo-text {
-        font-size: 0;
-        text-shadow: none;
-      }
-      .phone.halloween .logo-text::after {
-        content: "++";
-        font-size: 23px;
-        color: #ef6a26;
-        font-style: normal;
-        margin-left: -4px;
-        letter-spacing: -1px;
-      }
+      /* halloween theme used to swap in an old "BiTLiFE" wordmark image here; now it
+         just keeps the normal crowned NaBlooLife logo + text. */
       .phone.halloween .profile,
       .phone.halloween .stats,
       .phone.halloween .home,
@@ -6087,28 +6073,8 @@
       .phone.christmas.dark .topbar {
         background: #000 url(christmas/snow.png) 0 0/110px 110px repeat;
       }
-      .phone.christmas .bitizen {
-        display: none;
-      }
-      .phone.christmas .logo::before {
-        content: "";
-        flex: none;
-        width: 162px;
-        height: 42px;
-        background: url(christmas/logo.png) left center/contain no-repeat;
-      }
-      .phone.christmas .logo-text {
-        font-size: 0;
-        text-shadow: none;
-      }
-      .phone.christmas .logo-text::after {
-        content: "++";
-        font-size: 23px;
-        color: #ffeb00;
-        font-style: normal;
-        margin-left: -4px;
-        letter-spacing: -1px;
-      }
+      /* christmas theme used to swap in an old "BiTLiFE" wordmark image here; now it
+         just keeps the normal crowned NaBlooLife logo + text. */
       .phone.y2018 .topbar {
         background: #e8391d;
         justify-content: space-between;
@@ -6129,27 +6095,8 @@
         left: 50%;
         transform: translateX(-50%);
       }
-      .phone.y2018 .bitizen {
-        display: none;
-      }
-      .phone.y2018 .logo::before {
-        content: "";
-        width: 150px;
-        height: 38px;
-        background: url(2018/navbarLogo.png) center/contain no-repeat;
-      }
-      .phone.y2018 .logo-text {
-        font-size: 0;
-        text-shadow: none;
-      }
-      .phone.y2018 .logo-text::after {
-        content: "++";
-        font-size: 21px;
-        color: #ffeb00;
-        font-style: normal;
-        margin-left: -3px;
-        letter-spacing: -1px;
-      }
+      /* y2018 theme used to swap in an old "BiTLiFE" wordmark image here; now it
+         just keeps the normal crowned NaBlooLife logo + text. */
       .phone.y2018 .pill {
         display: none;
       }
@@ -6157,7 +6104,7 @@
         content: "";
         width: 58px;
         height: 40px;
-        background: url(2018/nabvarBitizenSeal.png) center/contain no-repeat;
+        background: url(ui/navbarNabloo.png) center/contain no-repeat;
       }
       .phone.y2018 .profile {
         position: relative;
@@ -11094,7 +11041,8 @@
       <header class="topbar">
         <button class="menu-btn" aria-label="Menu"><i></i></button>
         <div class="logo">
-          <i class="bitizen"></i>
+          <img class="bitizen bitizen-light" src="ui/navbarNabloo.png" alt="" />
+          <img class="bitizen bitizen-dark" src="ui/navbarNabloo-dm.png" alt="" />
           <span class="logo-text">NaBlooLife</span>
         </div>
         <div class="pill stars">

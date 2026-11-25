@@ -54,7 +54,7 @@
     ["bitlifeLoader", "splash/sperm0.png", "NaBlooLife Loading Theme", "Use the classic BitLife loading screen"],
     [
       "bitlifeMode",
-      "ui/navbarBitizenSeal.png",
+      "ui/navbarNabloo.png",
       "NaBlooLife Mode",
       "The classic red NaBlooLife look and loading screen",
     ],
