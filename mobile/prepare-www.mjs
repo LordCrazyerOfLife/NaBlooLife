@@ -17,7 +17,7 @@ const dry = process.argv.includes("--dry");
 const doWebp = process.argv.includes("--webp");
 const doOgg = process.argv.includes("--ogg");
 
-const SKIP_DIRS = new Set([".git", ".github", "mobile", "node_modules", "packs", "_art-src", "_original", "_rea-export", "GRIDS", "dev", "work"]);
+const SKIP_DIRS = new Set([".git", ".github", "mobile", "node_modules", "packs", "_art-src", "_original", "_rea-export", "GRIDS", "dev", "work", "www"]);
 const SKIP_PATHS = new Set(["i18n/work", "i18n/_backup"]);
 const SKIP_FILES = /^(sw\.js|index\.html|CONTEXT\.md|README\.md|\.gitignore|cand_wide.*\.png|yl_preview\.png|p[0-9]\.png)$/i;
 // scratch screenshots that were leaking into the app (comida/_numbered-1.png, ropa/_preview_120x54.png...)
@@ -95,16 +95,30 @@ async function toWebp(all) {
 }
 
 function toOgg(all) {
+  // the CI runner may not have ffmpeg: then keep every .wav (the game works the same, the app is just bigger)
+  const probe = spawnSync("ffmpeg", ["-version"]);
+  if (probe.error || probe.status !== 0) {
+    console.warn("ogg: ffmpeg not found, keeping the .wav files");
+    return;
+  }
   const wavs = all.filter((f) => /\.wav$/i.test(f));
-  let before = 0, after = 0, done = 0;
+  const made = [];
+  let before = 0, failed = 0;
   for (const f of wavs) {
     const dst = f.replace(/\.wav$/i, ".ogg");
     before += statSync(f).size;
     const r = spawnSync("ffmpeg", ["-y", "-v", "error", "-i", f, "-c:a", "libvorbis", "-q:a", "4", dst]);
-    if (r.status === 0 && existsSync(dst)) { rmSync(f); after += statSync(dst).size; done++; }
-    else { after += statSync(f).size; console.warn("ogg skipped:", relative(out, f), String(r.stderr || "").slice(0, 120)); }
+    if (r.status === 0 && existsSync(dst)) made.push([f, dst]);
+    else { failed++; console.warn("ogg failed:", relative(out, f), String(r.stderr || r.error || "").slice(0, 120)); }
   }
-  // text files that mention the sounds: .wav -> .ogg (only for files we actually converted, so a failed one still resolves)
+  // all or nothing: the references are rewritten from .wav to .ogg everywhere, so every sound must have converted
+  if (failed) {
+    for (const [, dst] of made) rmSync(dst, { force: true });
+    console.warn(`ogg: ${failed} of ${wavs.length} wav failed, keeping every .wav`);
+    return;
+  }
+  let after = 0;
+  for (const [f, dst] of made) { after += statSync(dst).size; rmSync(f); }
   const TEXT = /\.(js|mjs|html|css|json)$/i;
   let rewritten = 0;
   for (const f of all) {
@@ -114,8 +128,7 @@ function toOgg(all) {
     writeFileSync(f, t.replace(/\.wav(?![A-Za-z0-9_])/g, ".ogg"));
     rewritten++;
   }
-  console.log(`ogg: ${done}/${wavs.length} wav, ${mb(before)} -> ${mb(after)}, refs rewritten in ${rewritten} files`);
-  if (done !== wavs.length) { console.error("some wav failed to convert but refs were rewritten: aborting"); process.exit(1); }
+  console.log(`ogg: ${made.length}/${wavs.length} wav, ${mb(before)} -> ${mb(after)}, refs rewritten in ${rewritten} files`);
 }
 
 if (!dry && (doWebp || doOgg)) {
