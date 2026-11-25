@@ -916,7 +916,7 @@
           "It is 1-1 in the cup final and the referee points to the spot in the 94th minute. The captain is on the floor with cramp. The ball is yours if you want it.",
         choices: [
           {
-            t: T("Take it"),
+            t: T("Take it"), pen: true,
             p: (f) => 0.5 + f.skill / 250 + f.form / 400,
             good: { fame: 12, skill: 3, hap: 8, coach: 8, mods: { atk: 2 } },
             bad: { fame: -8, hap: -10, form: -6 },
@@ -932,7 +932,7 @@
             bm: "The striker misses. Everyone wonders why you did not take it.",
           },
           {
-            t: T("Panenka"),
+            t: T("Panenka"), pen: true, panenka: true,
             p: (f) => 0.12 + f.skill / 220 + f.fame / 250,
             good: { fame: 18, hap: 10, skill: 2, coach: 5 },
             bad: { fame: -12, hap: -12, coach: -8 },
@@ -978,7 +978,7 @@
           "The semi-final is at your own stadium and the dressing room is tense. The manager asks who wants to take the first penalty if it goes to a shootout.",
         choices: [
           {
-            t: T("Put your hand up first"),
+            t: T("Put your hand up first"), pen: true,
             p: (f) => 0.55 + f.skill / 240 + f.fame / 400,
             good: { coach: 6, fame: 4, hap: 4, mods: { atk: 1 } },
             bad: { fame: -5, hap: -5, coach: -3 },
@@ -986,7 +986,7 @@
             bm: "You take the first and miss. The team loses the shootout, and your teammates hug you anyway.",
           },
           {
-            t: T("Take the fifth"),
+            t: T("Take the fifth"), pen: true,
             p: (f) => 0.6 + f.skill / 260,
             good: { fame: 5, coach: 4, hap: 4 },
             bad: { fame: -4, hap: -4 },
@@ -1073,7 +1073,7 @@
           "It is the final. The score is level. Extra time is coming. The manager asks who is fit enough to take a penalty.",
         choices: [
           {
-            t: T("Take the fifth"),
+            t: T("Take the fifth"), pen: true,
             p: (f) => 0.58 + f.skill / 260,
             good: { fame: 14, hap: 10, coach: 8, skill: 2 },
             bad: { fame: -8, hap: -10 },
@@ -1184,7 +1184,7 @@
             bm: "The substitute misses the decisive penalty. You are left wondering.",
           },
           {
-            t: T("Take the last penalty"),
+            t: T("Take the last penalty"), pen: true,
             p: (f) => 0.55 + f.skill / 240,
             good: { fame: 16, hap: 12, caps: 1, skill: 2 },
             bad: { fame: -12, hap: -14, caps: 1 },
@@ -1250,7 +1250,7 @@
         lead: `${typeof m.text === "function" ? m.text(f) : m.text}<br><br>${T("What do you do?")}`,
         rows: [
           [T("Club"), f.club ? f.club.name : "—"],
-          [T("Minute"), area === "youth" ? T("Academy match") : area === "national" ? T("International") : area === "cup" ? T("Cup tie") : area === "continental" ? f.club.continental : T("League match")],
+          [T("Competition"), area === "youth" ? T("Academy match") : area === "national" ? T("International") : area === "cup" ? T("Cup tie") : area === "continental" ? f.club.continental : T("League match")],
         ],
         bars: [
           [T("Skill"), f.skill],
@@ -1260,7 +1260,7 @@
           ch.t,
           () => {
             const p = clampN(ch.p(f) + 0.14 + (f.mods && f.mods.luck ? f.mods.luck * 0.01 : 0), 0.3, 0.95); // [mod] +14%, never below 30%
-            const good = rnd() < p;
+            const resolve = (good) => {
             if (window.FL_SND) FL_SND.result(good);
             const eff = good ? ch.good : ch.bad;
             const rows = applyEffects(f, eff);
@@ -1281,6 +1281,15 @@
               rows,
               ok: next,
             });
+            };
+            // [mod] when the choice is a penalty, you take it yourself
+            if (ch.pen && window.FL_PEN) {
+              FL_PEN.kick({
+                ...penaltyBase(f, f.club && f.club.name), title: m.title, subtitle: ch.panenka ? T("Panenka: the keeper may dive, aim down the middle") : T("The whole stadium is watching"),
+                pressure: 0.85, keeper: clampN(0.45 + (f.club ? (f.club.rep - 60) / 200 : 0), 0.3, 0.75), panenka: !!ch.panenka,
+                onDone: (r) => resolve(!!r.goal),
+              });
+            } else resolve(rnd() < p);
           },
         ]),
       });
@@ -1729,8 +1738,20 @@
     return key || "";
   }
 
+  // [fix] you can only play for the country you were born in. state.country is where you live NOW (and a 2-letter code),
+  // and the club's flag is the club's country: neither is your national team.
+  function bornCode() {
+    if (!state.birthCountry) state.birthCountry = (state.immigration && state.immigration.from) || state.country || "";
+    return state.birthCountry;
+  }
+  const NAT_ALIAS = { "United Kingdom": "England", USA: "United States" };
+  function bornName() {
+    const c = bornCode();
+    const n = (typeof COUNTRIES !== "undefined" && COUNTRIES[c] && COUNTRIES[c][0]) || String(c || "");
+    return NAT_ALIAS[n] || n;
+  }
   function flagFor(f) {
-    const code = countryCode(state.country) || (f.club && f.club.flag) || "";
+    const code = bornCode();
     return code ? `flags/${code}.png` : E("1f5fa-fe0f");
   }
 
@@ -1802,7 +1823,9 @@
     nat.goals += nGoals;
 
     const tournament =
-      isWorldCupYear() && age >= 20
+      f.natCup || f.natDeclined === year() || f.natDone === year() || f.natHandled === year()
+        ? null
+        : isWorldCupYear() && age >= 20
         ? { name: T("World Cup"), rounds: 4, prestige: 3 }
         : isContinentalYear() && age >= 20
           ? { name: contChampName(f), rounds: 3, prestige: 2 }
@@ -1835,7 +1858,7 @@
     nat.hist.push({ y: year(), t: tournament.name, r: result, g: tGoals });
     if (nat.hist.length > 16) nat.hist.shift();
     if (champion) {
-      addTrophy(f, `${state.country || T("National team")} · ${tournament.name}`, "nation", flagFor(f), T("National team"));
+      addTrophy(f, `${bornName() || T("National team")} · ${tournament.name}`, "nation", flagFor(f), T("National team"));
       sayIt(`I won the ${tournament.name} with my country.`);
       if (tGoals >= 4 && rnd() < 0.55) {
         addTrophy(f, `${tournament.name} Golden Boot`, "individual", E("1f3c5"), T("National team"));
@@ -1847,6 +1870,272 @@
       }
     }
     return { caps, goals: nGoals + tGoals, tournament: result };
+  }
+
+  // ------------------------------------------------------------------ [mod] national team tournament, week by week
+  // Every four years (the World Cup, and the continental championship two years later) the national team calls you up.
+  // If you accept, Age is locked until the tournament ends: you advance with the 1 Week button and every week
+  // is a match (group stage, then knockout rounds).
+  const NATIONS = [
+    ["Argentina", 93], ["France", 92], ["Brazil", 92], ["Spain", 91], ["England", 90], ["Germany", 89], ["Portugal", 88], ["Netherlands", 87], ["Italy", 86],
+    ["Belgium", 85], ["Croatia", 84], ["Uruguay", 84], ["Colombia", 83], ["Morocco", 82], ["Mexico", 80], ["United States", 79], ["Japan", 79], ["Senegal", 79],
+    ["Switzerland", 78], ["Denmark", 78], ["South Korea", 77], ["Poland", 75], ["Nigeria", 75], ["Ecuador", 74], ["Chile", 72], ["Serbia", 74], ["Turkey", 74],
+    ["Canada", 70], ["Australia", 70], ["Egypt", 70], ["Peru", 70], ["Ghana", 68], ["Costa Rica", 66], ["Jamaica", 62], ["Dominican Republic", 52],
+  ];
+  const NAT_KO = { world: ["r16", "qf", "sf", "final"], cont: ["qf", "sf", "final"] };
+  const natPower = (f) => {
+    const own = NATIONS.find(([n]) => n === bornName());
+    return Math.round(clampN((own ? own[1] : 68) * 0.7 + f.skill * 0.3, 50, 97));
+  };
+  const natBlocking = (f) => {
+    if (f && f.natCup && f.natCup.year !== year()) f.natCup = null; // stale camp from another year
+    return !!(f && f.active && !f.retired && !state.dead && !state.prison && f.natCup && !f.natCup.done);
+  };
+
+  // [mod] penalty minigame (penalty.js): you take the kicks yourself; falls back to a coin flip if it is not loaded
+  const hashHue = (s) => {
+    let h = 7;
+    for (const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+    return h % 360;
+  };
+  function penaltyBase(f, team) {
+    if (!f.shirt) f.shirt = pick([7, 8, 9, 10, 11, 17, 19, 21]);
+    const sh = f.attrs && f.attrs.shooting ? f.attrs.shooting : f.skill;
+    return { name: String(state.last || state.first || "Player"), number: f.shirt, kit: hashHue(team || (f.club && f.club.name) || "x"), skill: Math.round(clampN(sh * 0.6 + f.skill * 0.4, 20, 99)) };
+  }
+  function penaltyShootout(f, myTeam, oppTeam, myPower, oppPower, cb) {
+    if (!window.FL_PEN) return cb(rnd() < 0.5);
+    FL_PEN.shootout({
+      ...penaltyBase(f, myTeam), myTeam, oppTeam,
+      oppRate: clampN(0.72 + (oppPower - myPower) / 250, 0.55, 0.88),
+      keeper: clampN((oppPower - 40) / 80, 0.25, 0.8),
+      onDone: (r) => cb(!!r.won),
+    });
+  }
+  function penaltyPractice(f) {
+    if (!window.FL_PEN) return noticeIt(T("Penalty practice"), T("The penalty game is not available right now."), null, true);
+    FL_PEN.practice({
+      ...penaltyBase(f),
+      onDone: (r) => {
+        if (r.quit && !r.scored) return openFutbol();
+        f.penBest = Math.max(f.penBest || 0, r.scored);
+        const eff = r.scored >= 3 ? { form: 2, hap: 2, fit: -1 } : { fit: -1 };
+        const rows = applyEffects(f, eff);
+        sayIt(`I scored ${r.scored} out of ${r.total} in penalty practice.`);
+        card({
+          iconSrc: ICON, title: T("Penalty practice"),
+          lead: r.scored >= 5 ? T("Five out of five. The keeper does not want to see you again.") : r.scored >= 3 ? T("A solid session. You would take one in a final.") : T("Not your day. The keeper had your number."),
+          rows: [[T("Scored"), `${r.scored}/${r.total}`], [T("Best"), `${f.penBest}/${r.total}`], ...rows],
+          ok: () => openFutbol(),
+        });
+      },
+    });
+  }
+
+  function makeNatCup(f) {
+    const world = isWorldCupYear();
+    const myName = bornName() || T("Your country");
+    const me = { name: myName, power: natPower(f), me: true, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 };
+    const pool = NATIONS.filter(([n]) => n !== myName && !(myName === "USA" && n === "United States"));
+    const group = [me];
+    const used = new Set();
+    while (group.length < 4) {
+      const [n, pw] = pick(pool);
+      if (used.has(n)) continue;
+      used.add(n);
+      group.push({ name: n, power: clampN(pw + ri(-3, 3), 45, 97), me: false, p: 0, w: 0, d: 0, l: 0, gf: 0, ga: 0, pts: 0 });
+    }
+    return {
+      key: world ? "world" : "cont",
+      name: world ? T("World Cup") : contChampName(f),
+      year: year(), prestige: world ? 3 : 2,
+      stage: "group", week: 0, koIndex: 0, group, results: [],
+      done: false, champion: false, goals: 0, assists: 0, caps: 0, rounds: 0,
+    };
+  }
+
+  // who gets named in the squad: skill, form, fame, past caps and a bit of the coach's trust
+  const natSelectP = (f) => {
+    const score = f.skill * 0.55 + f.form * 0.12 + f.fame * 0.18 + (f.nat.caps > 0 ? 8 : 0) + (f.coachRel - 50) * 0.06;
+    return clampN((score - 52) / 34, 0.04, 0.97);
+  };
+  function natCallStep(f) {
+    return (next) => {
+      const world = isWorldCupYear();
+      if (!(world || isContinentalYear()) || state.prison || f.natCup || f.natHandled === year() || state.age < 18) return next();
+      f.natHandled = year(); // from here on this year's tournament is decided by the squad announcement, never auto-simulated
+      const tname = world ? T("World Cup") : contChampName(f);
+      if (rnd() >= natSelectP(f)) {
+        if (!f.nat.called) return next(); // never capped: nobody was expecting you
+        const eff = applyEffects(f, { hap: -4, fame: -1, hype: -2 });
+        sayIt(`I was left out of the national squad for the ${tname}.`);
+        return card({
+          tag: T("National team"), iconSrc: flagFor(f), title: `${tname}: ${T("left out")}`,
+          lead: T("The national manager announced the squad and your name is not on the list. You will watch it from the sofa."),
+          rows: [[T("Tournament"), tname], ...eff], ok: next,
+        });
+      }
+      if (!f.nat.called) {
+        f.nat.called = true;
+        f.nat.debut = year();
+        f.nat.caps = Math.max(1, f.nat.caps + 1);
+        f.fame = clampN(f.fame + 6, 0, 100);
+        sayIt("I was called up to the national team for the first time.");
+      }
+      const c = makeNatCup(f);
+      const bench = f.skill < nationalStrength(f) - 6 && rnd() < 0.4;
+      card({
+        tag: T("National team"), iconSrc: flagFor(f), title: `${c.name}: ${T("the call-up")}`,
+        lead: `${T("The national manager has named you in the squad for the")} ${c.name}. ${T("Once you join the camp, the season is over for you: you advance week by week, one match at a time, until the tournament ends.")}`,
+        rows: [[T("Tournament"), c.name], [T("Group"), c.group.filter((g) => !g.me).map((g) => g.name).join(", ")], [T("Your country"), c.group[0].name]],
+        choices: [
+          [T("Join the squad"), () => {
+            c.bench = bench;
+            f.natCup = c;
+            window.FL_FUT_SYNC && FL_FUT_SYNC();
+            sayIt(`I joined the national squad for the ${c.name}.`);
+            card({
+              iconSrc: flagFor(f), title: T("Welcome to camp"),
+              lead: `${T("Press the 1 Week button to play each matchday. Age is locked until the tournament is over.")}${bench ? ` ${T("You start on the bench.")}` : ""}`,
+              rows: [[T("Group stage"), `3 ${T("matches")}`], [T("Then"), T("Knockout rounds")]], ok: next,
+            });
+          }],
+          [T("Turn it down (stay with your club)"), () => {
+            f.natDeclined = year();
+            applyEffects(f, { fame: -3, hype: -3, club: 2, coach: 1 });
+            sayIt(`I turned down the national team call-up for the ${c.name}.`);
+            noticeIt(T("National team"), T("Fans and the press do not forgive easily, but your club is happy to have you."), next, true);
+          }, "gray"],
+        ],
+      });
+    };
+  }
+
+  function natMatchGoals(f, c, a, b, tactic) {
+    // team score, then your share of it
+    const ga = tableGoals(a.power + 2, b.power);
+    const gb = tableGoals(b.power, a.power + 2);
+    const P = posOf(f);
+    const starter = !(c.bench && c.rounds < 2) && rnd() < clampN(0.62 + (f.skill - 70) / 80 + (tactic === "lead" ? 0.1 : 0), 0.3, 0.96);
+    let myG = 0, myA = 0;
+    if (starter && !P.gk) {
+      for (let i = 0; i < ga; i++) {
+        const r = rnd();
+        const pg = clampN(0.18 * P.goal * (f.skill / 78) * (tactic === "lead" ? 1.5 : tactic === "team" ? 0.8 : 1), 0, 0.6);
+        const pa = clampN(0.16 * P.assist * (f.skill / 78) * (tactic === "team" ? 1.6 : 1), 0, 0.5);
+        if (r < pg) myG++;
+        else if (r < pg + pa) myA++;
+      }
+    }
+    return { ga, gb, starter, myG, myA };
+  }
+
+  function natTable(c) {
+    c.group.sort((a, b) => b.pts - a.pts || b.gf - b.ga - (a.gf - a.ga) || b.gf - a.gf || a.name.localeCompare(b.name));
+  }
+
+  function natMatchStep(f) {
+    const c = f.natCup;
+    if (!c || c.done) return;
+    const me = c.group.find((r) => r.me);
+    const koList = NAT_KO[c.key];
+    let opp, stageName;
+    const order = c.group.filter((r) => !r.me);
+    if (c.stage === "group") {
+      opp = order[Math.min(c.week, order.length - 1)];
+      stageName = `${T("Group stage")} · ${T("Match")} ${Math.min(3, c.week + 1)}/3`;
+    } else {
+      const st = koList[c.koIndex];
+      const pw = clampN(me.power + ri(-10, 12) + c.koIndex * 2, 52, 97);
+      const pool = NATIONS.filter(([n]) => n !== me.name && !(me.name === "USA" && n === "United States"));
+      const pr = pick(pool);
+      opp = { name: pr[0], power: clampN((pr[1] + pw) / 2 + 3 * (c.koIndex + 1), 55, 97), me: false };
+      stageName = st === "final" ? T("Final") : st === "sf" ? T("Semi-final") : st === "qf" ? T("Quarter-final") : T("Round of 16");
+    }
+    const play = (tactic) => {
+      const r = natMatchGoals(f, c, me, opp, tactic);
+      let ga = r.ga, gb = r.gb;
+      let pens = null;
+      if (c.stage === "group") {
+        me.p++; opp.p++; me.gf += ga; me.ga += gb; opp.gf += gb; opp.ga += ga;
+        if (ga > gb) { me.w++; opp.l++; me.pts += 3; } else if (gb > ga) { opp.w++; me.l++; opp.pts += 3; } else { me.d++; opp.d++; me.pts++; opp.pts++; }
+        const rest = order.filter((x) => x !== opp);
+        if (rest.length >= 2) {
+          const x = tableGoals(rest[0].power, rest[1].power), y = tableGoals(rest[1].power, rest[0].power);
+          rest[0].p++; rest[1].p++; rest[0].gf += x; rest[0].ga += y; rest[1].gf += y; rest[1].ga += x;
+          if (x > y) { rest[0].w++; rest[1].l++; rest[0].pts += 3; } else if (y > x) { rest[1].w++; rest[0].l++; rest[1].pts += 3; } else { rest[0].d++; rest[1].d++; rest[0].pts++; rest[1].pts++; }
+        }
+        c.week++;
+        natTable(c);
+      }
+      const settle = () => {
+      c.results.push(`${stageName} · ${me.name} ${ga}-${gb} ${opp.name}${pens !== null ? (pens ? ` (${T("won on penalties")})` : ` (${T("lost on penalties")})`) : ""}`);
+      c.goals += r.myG; c.assists += r.myA; c.caps += r.starter ? 1 : 0; c.rounds++;
+      let win = ga > gb || pens === true;
+      let line = "";
+      let finished = false;
+      if (c.stage === "group") {
+        if (c.week >= 3) {
+          const pos = c.group.findIndex((x) => x.me) + 1;
+          if (pos <= 2) { c.stage = "ko"; c.koIndex = 0; line = `${T("You finished")} ${ordinal(pos)} ${T("in the group and go through to the knockout rounds.")}`; }
+          else { finished = true; c.done = true; line = `${T("You finished")} ${ordinal(pos)}. ${T("The group stage is the end of the road.")}`; }
+        } else line = `${T("You are")} ${ordinal(c.group.findIndex((x) => x.me) + 1)} ${T("in the group.")}`;
+      } else if (win) {
+        c.koIndex++;
+        if (c.koIndex >= koList.length) { finished = true; c.done = true; c.champion = true; line = `${T("CHAMPIONS!")} ${me.name} ${T("win the")} ${c.name}.`; }
+        else line = `${T("Through to the")} ${koList[c.koIndex] === "final" ? T("final") : koList[c.koIndex] === "sf" ? T("semi-final") : T("quarter-final")}.`;
+      } else { finished = true; c.done = true; line = T("Knocked out. The dream ends here.") ; }
+      if (finished) natFinish(f, c, stageName);
+      const rows = [
+        [T("Result"), `${me.name} ${ga}-${gb} ${opp.name}${pens !== null ? ` (${pens ? T("pens: won") : T("pens: lost")})` : ""}`],
+        [T("You"), r.starter ? `${r.myG} ${T("goals")} · ${r.myA} ${T("assists")}` : T("Used as a substitute")],
+      ];
+      if (c.stage === "group" && !c.done) c.group.forEach((x, i) => rows.push([`${i + 1}. ${x.name}${x.me ? ` (${T("You")})` : ""}`, `${x.pts} ${T("pts")} · ${x.gf}:${x.ga}`]));
+      playSnd(win || ga > gb ? "ding" : ga === gb ? "ding" : "buzzer");
+      card({
+        tag: T("National team"), iconSrc: flagFor(f), title: `${stageName}`, lead: `${line}${c.done ? "" : ` ${T("Press 1 Week for the next match.")}`}`, rows, ok: () => {},
+      });
+      };
+      if (c.stage !== "group" && ga === gb) {
+        penaltyShootout(f, me.name, opp.name, me.power, opp.power, (won) => {
+          pens = won;
+          settle();
+        });
+      } else settle();
+    };
+    card({
+      tag: T("National team"), iconSrc: flagFor(f), title: `${stageName}: ${me.name} ${T("vs")} ${opp.name}`,
+      lead: `${c.bench && c.rounds < 2 ? `${T("You are on the bench.")} ` : ""}${T("Matchday. How do you want to play it?")}`,
+      rows: [[T("Tournament"), c.name], [T("Opponent"), `${opp.name}`], [T("Fitness"), `${Math.round(f.fit)}%`]],
+      choices: [
+        [T("Play for the team"), () => play("team")],
+        [T("Take the game by the throat"), () => play("lead")],
+        [T("Play it safe"), () => play("safe")],
+      ],
+    });
+  }
+
+  function natFinish(f, c, stageName) {
+    const nat = f.nat;
+    nat.caps += Math.max(1, c.rounds);
+    nat.goals += c.goals;
+    f.fame = clampN(f.fame + (c.champion ? 16 : 5) + c.prestige, 0, 100);
+    f.hype = clampN(f.hype + (c.champion ? 12 : 4), 0, 100);
+    const result = c.champion ? `${T("Won the")} ${c.name}` : `${T("Eliminated in the")} ${c.stage === "group" ? T("Group stage") : stageName}`;
+    nat.hist.push({ y: year(), t: c.name, r: result, g: c.goals });
+    if (nat.hist.length > 16) nat.hist.shift();
+    sayIt(c.champion ? `I won the ${c.name} with my country.` : `My ${c.name} ended in the ${(c.stage === "group" ? "group stage" : stageName).toLowerCase()}.`);
+    if (c.champion) {
+      addTrophy(f, `${bornName() || T("National team")} · ${c.name}`, "nation", flagFor(f), T("National team"));
+      if (c.goals >= 4 && rnd() < 0.6) addTrophy(f, `${c.name} Golden Boot`, "individual", E("1f3c5"), T("National team"));
+      if (c.goals + c.assists >= 5 && rnd() < 0.45) addTrophy(f, `${c.name} Golden Ball`, "individual", E("1f3c6"), T("National team"));
+    }
+    f.natDone = year();
+    setTimeout(() => {
+      f.natCup = null;
+      window.FL_FUT_SYNC && FL_FUT_SYNC();
+      noticeIt(T("National team"), T("The tournament is over. Age is unlocked again."), null, true);
+    }, 300);
   }
 
   // ------------------------------------------------------------------ youth season
@@ -2402,6 +2691,8 @@
     f.clubRel = 55;
     f.coachRel = 55;
     f.hype = 0;
+    f.joinedYear = year(); // [fix] the agent stops calling for two seasons
+    f.clubTrack = c.name;
     f.loan = null;
     f.qualified = false;
     f.fame = clampN(f.fame + 3, 0, 100);
@@ -2432,6 +2723,150 @@
       ok: () => {
         if (typeof openFutbol === "function") openFutbol();
       },
+    });
+  }
+
+  // ------------------------------------------------------------------ [mod] welcome at a big club
+  // Joining a big club (reputation 82+) always comes with a welcome, and it is never the same one: a stadium
+  // presentation, an airport crowd, the press, the dressing room, a legend's shirt number, your old fans...
+  // The league colours the scene (rain in England, flares in Italy, a barra in Argentina...).
+  const WELCOME_FLAVOR = [
+    [/premier|championship|efl/i, "It is raining, of course. The supporters stand in it anyway, scarves up."],
+    [/la ?liga|primera divisi|spanish/i, "The sun, the flags and a stadium that is never quiet."],
+    [/serie a|italian/i, "Flares, scarves and the whole curva singing like it is a final."],
+    [/bundesliga/i, "A wall of noise from the standing terraces, and a surprising amount of sausages."],
+    [/ligue 1|french/i, "A loud, stubborn crowd that wants a statement signing to mean something."],
+    [/eredivisie|dutch/i, "Orange everywhere, and a crowd that expects you to play beautiful football."],
+    [/portug|primeira/i, "Drums, flags and a fan base that has seen a lot of stars arrive and leave."],
+    [/brasil|brazil|argentin|liga profesional|libertad|uruguay|colombia|mexic|liga mx/i, "Drums, banners and a barra that never sits down. The whole street is shaking."],
+    [/mls|major league|usa|united states/i, "A stage show with smoke, fireworks and a DJ. This is America."],
+    [/saudi|pro league|arab/i, "A glossy ceremony with fireworks, sheikhs in the front row and a lot of cameras."],
+  ];
+  const welcomeFlavor = (c) => {
+    const n = `${c.lName || ""} ${c.name || ""}`;
+    const hit = WELCOME_FLAVOR.find(([re]) => re.test(n));
+    return hit ? hit[1] : "";
+  };
+  const WELCOMES = [
+    {
+      id: "stadium", title: "The presentation",
+      text: (f, c, o, fans) => `${fans.toLocaleString("en-US")} fans fill the stadium just to see you hold the shirt up. The speaker is waiting for you to say something.`,
+      choices: [
+        { t: "Kiss the badge", e: { fame: 3, club: 4, hype: 4, hap: 4 }, msg: "The place explodes. You are theirs.", risk: 0.2, riskE: { club: -1, hype: -3 }, riskMsg: "Your old fans see the video. It does not go down well." },
+        { t: "Juggle the ball for the cameras", e: { fame: 3, hype: 5, hap: 2 }, msg: "Twelve touches, no drop, one viral clip.", risk: 0.25, riskE: { hype: -2, hap: -2 }, riskMsg: "It drops on the third touch. The clip is already online." },
+        { t: "Keep it short and humble", e: { club: 3, coach: 2, hap: 1 }, msg: "Two sentences, a wave. The manager nods in the tunnel." },
+      ],
+    },
+    {
+      id: "airport", title: "The airport crowd",
+      text: (f, c) => `You land and the whole terminal is full of ${c.name} shirts. Security is losing the argument with the fans.`,
+      choices: [
+        { t: "Sign autographs for hours", e: { fame: 3, club: 3, fit: -2, hap: 2 }, msg: "You leave with a sore hand and a lot of friends." },
+        { t: "Slip out the back", e: { hype: -2, hap: 1, fame: -1 }, msg: "Safe and quiet. The fans notice that you were not there." },
+        { t: "Climb on the car and sing", e: { fame: 4, hype: 6, hap: 4 }, msg: "The video is everywhere before you reach the hotel.", risk: 0.3, riskE: { club: -3, coach: -2 }, riskMsg: "The club did not want that photo. A phone call follows." },
+      ],
+    },
+    {
+      id: "press", title: "The press conference",
+      text: (f, c) => `Forty cameras and one question that everyone wants to ask: is a ${c.name} player really worth that fee?`,
+      choices: [
+        { t: "Answer with confidence", e: { hype: 4, fame: 2, club: 2 }, msg: "You say you came here to win. The headlines love it.", risk: 0.3, riskE: { hype: -3, coach: -2 }, riskMsg: "It sounds like a promise you cannot keep. The press keeps the quote." },
+        { t: "Let the football do the talking", e: { coach: 3, club: 2 }, msg: "Short answers, calm face. The staff like you already." },
+        { t: "Joke about your old club", e: { fame: 3, hype: 4, club: -1 }, msg: "A laugh in the room, a storm online.", risk: 0.5, riskE: { club: -3, hap: -2 }, riskMsg: "Your old fans do not find it funny." },
+      ],
+    },
+    {
+      id: "dressing", title: "The dressing room",
+      text: (f, c) => `The captain says there is a tradition at ${c.name}: every new signing sings in front of everybody.`,
+      choices: [
+        { t: "Sing, badly and proudly", e: { coach: 3, club: 2, hap: 3 }, msg: "You are terrible. They love you anyway.", risk: 0.2, riskE: { hap: -2 }, riskMsg: "A teammate films it. It is already a meme." },
+        { t: "Laugh and take the jokes", e: { coach: 2, hap: 2 }, msg: "You take the joke on the chin. Good start." },
+        { t: "Refuse politely", e: { coach: -3, club: -2, hap: -1 }, msg: "Awkward silence, then someone changes the subject." },
+      ],
+    },
+    {
+      id: "number", title: "Whose shirt is this?",
+      text: (f, c) => `The number you wanted belonged to a ${c.name} legend. The shirt has been in a glass case since he retired.`,
+      choices: [
+        { t: "Ask the club to give it to you", e: { fame: 2, hype: 4, club: -1 }, msg: "They say yes, with a face that says no.", risk: 0.4, riskE: { club: -4, hype: -2 }, riskMsg: "The fans are furious. You are not touching that shirt." },
+        { t: "Take another number", e: { club: 3, coach: 1 }, msg: "The supporters see it as respect." },
+        { t: "Call the legend and ask for his blessing", e: { fame: 2, club: 4, hap: 3 }, msg: "He laughs, tells you to earn it, and posts a photo with you." },
+      ],
+    },
+    {
+      id: "oldfans", title: "Your old fans react",
+      when: (f, c, o) => !!o,
+      text: (f, c, o) => `Banners are going up outside ${o.name}'s stadium. Half the fans are thanking you, the other half are burning your shirt.`,
+      choices: [
+        { t: "Post a thank-you to the old fans", e: { fame: 1, hype: 2, club: 1, hap: 1 }, msg: "A classy goodbye. Even some of the angry ones soften." },
+        { t: "Ignore it", e: { hap: -1 }, msg: "You keep scrolling. It stings anyway." },
+        { t: "Reply to the trolls", e: { hype: 3, fame: 2, club: -2 }, msg: "It is fun for an hour.", risk: 0.5, riskE: { hype: -3, hap: -3 }, riskMsg: "It becomes a story, and not a good one." },
+      ],
+    },
+    {
+      id: "derby", title: "Booed by your old fans",
+      when: (f, c, o) => !!o && o.lName === c.lName,
+      text: (f, c, o) => `You moved inside the same league. ${o.name}'s fans will not forget it, and the derby is already circled in your calendar.`,
+      choices: [
+        { t: "Promise to score against them", e: { hype: 5, fame: 3, club: 2 }, msg: "A bold promise. Both sets of fans remember it.", risk: 0.4, riskE: { hype: -4, hap: -2 }, riskMsg: "You do not score. They never let you forget it." },
+        { t: "Respect them, nothing more", e: { club: 1, hap: 1 }, msg: "You keep it classy. The press calls it mature." },
+        { t: "Wind them up", e: { fame: 4, hype: 6, club: 2, hap: 1 }, msg: "A gesture, a headline, a lot of noise.", risk: 0.35, riskE: { club: -2, coach: -2 }, riskMsg: "The league sends a letter. So does your manager." },
+      ],
+    },
+    {
+      id: "owner", title: "Dinner with the owner",
+      when: (f, c) => c.rep >= 88,
+      text: (f, c) => `The owner of ${c.name} invites you to dinner at a place with no menu prices. He wants to know what you really want.`,
+      choices: [
+        { t: "Ask for a share of the shirt sales", e: { money: 120000, club: -1 }, msg: "He laughs, then he signs. You leave with a bigger bonus.", risk: 0.35, riskE: { money: -60000, club: -3 }, riskMsg: "He calls it greedy and cuts your signing bonus." },
+        { t: "Say you want trophies, not money", e: { club: 4, coach: 2, hap: 2 }, msg: "He tells the manager. The club loves the answer." },
+        { t: "Bring your family along", e: { hap: 4, club: 2 }, msg: "A warm, loud dinner. Everyone is charming." },
+      ],
+    },
+    {
+      id: "manager", title: "The manager's plan",
+      text: (f, c) => `The ${c.name} manager shows you a screen with your name in the middle of his plan for the season. "No pressure," he says, with a smile that says the opposite.`,
+      choices: [
+        { t: "Say you will deliver", e: { coach: 3, hype: 3, hap: 1 }, msg: "He likes the attitude.", risk: 0.3, riskE: { coach: -2, hap: -2 }, riskMsg: "You start slowly, and he reminds you of the promise." },
+        { t: "Ask for time to settle in", e: { hap: 2, coach: 1 }, msg: "He gives you a month. Not a day more." },
+        { t: "Ask for a guaranteed starting place", e: { coach: -3, hap: 1 }, msg: "He shakes your hand and writes it on a list. It is not the list you hoped for." },
+      ],
+    },
+    {
+      id: "kids", title: "The academy kids",
+      text: (f, c) => `The first visit the club organizes is to the ${c.name} academy. Two hundred kids are wearing your name on their backs, which was printed this morning.`,
+      choices: [
+        { t: "Stay with the kids for the whole afternoon", e: { club: 4, fame: 2, hap: 3, fit: -1 }, msg: "A kid gives you a drawing. You keep it." },
+        { t: "Take a quick photo", e: { club: 1, fame: 1 }, msg: "A few smiles, a few autographs, and you are gone." },
+        { t: "Play a game with them", e: { club: 3, fame: 3, hap: 4 }, msg: "You lose to a ten-year-old. It goes on the club's social media.", risk: 0.2, riskE: { fit: -2 }, riskMsg: "You twist your ankle trying a rabona. The kids cheer anyway." },
+      ],
+    },
+  ];
+
+  function welcomeStep(f, c, old, next) {
+    if (!c || (c.rep || 0) < 82) return next();
+    const pool = WELCOMES.filter((w) => (!w.when || w.when(f, c, old)) && w.id !== f.lastWelcome);
+    const w = pick(pool.length ? pool : WELCOMES);
+    f.lastWelcome = w.id;
+    const fans = ri(30, 55) * 1000 + (c.rep >= 90 ? ri(15, 30) * 1000 : 0);
+    const flavor = welcomeFlavor(c);
+    card({
+      tag: T("Welcome"), iconSrc: c.logo || ICON, title: w.title,
+      lead: `${w.text(f, c, old, fans)}${flavor ? `<br><br><i>${esc(flavor)}</i>` : ""}<br><br>${T("What do you do?")}`,
+      rows: [[T("Club"), c.name], [T("League"), c.lName || ""], [T("Wage"), `${money(f.wage)}/${T("yr")}`]],
+      choices: w.choices.map((ch) => [
+        ch.t,
+        () => {
+          let rows = applyEffects(f, ch.e || {});
+          let msg = ch.msg || "";
+          if (ch.risk && rnd() < ch.risk) {
+            rows = applyEffects(f, ch.riskE || {}, rows);
+            msg = ch.riskMsg || msg;
+          }
+          sayIt(`${w.title}: ${ch.t.toLowerCase()}.`);
+          card({ iconSrc: E("1f4ac"), title: w.title, lead: msg || T("You settle in."), rows, ok: next });
+        },
+      ]),
     });
   }
 
@@ -2500,7 +2935,10 @@
       const last = f.lastSeason;
       const interest =
         (f.hype || 0) + (last ? Math.max(0, last.rating - 6.4) * 18 : 0) + f.fame * 0.35 + f.skill - (f.club ? f.club.rep : 60) * 0.55;
-      const shouldTalk = expired || interest >= 26 || rnd() < 0.35 || (f.clubRel < 25 && f.coachRel < 25);
+      const tenure = f.joinedYear != null ? year() - f.joinedYear : 9;
+      const unhappy = f.clubRel < 25 && f.coachRel < 25;
+      if (!expired && tenure < 2 && !unhappy) return next(); // [fix] just signed: no offers for two seasons
+      const shouldTalk = expired || interest >= 26 || rnd() < 0.35 || unhappy;
       if (!shouldTalk) return next();
 
       const offers = transferOffers(f, 2);
@@ -2550,7 +2988,7 @@
                 [T("Wage"), `${money(f.wage)}/${T("yr")}`],
                 [T("Contract"), `4 ${T("years")}`],
               ],
-              ok: next,
+              ok: () => welcomeStep(f, c, old, next),
             });
           },
         ]);
@@ -2635,6 +3073,7 @@
 
   function eventStep(f) {
     return (next) => {
+      if (state.prison) return next(); // no football decisions behind bars
       const ev = pickEvent(f);
       if (!ev) return next();
       if (!isSpecialEvent(ev)) {
@@ -2811,12 +3250,61 @@
   }
 
   // ------------------------------------------------------------------ playable key match (derby day)
-  function keyMatchStep(f) {
+  // [mod] A lesser cup (league cup, super cup...) that sometimes takes the place of the derby. You play the rounds
+  // with a rotated squad; if you reach the final you play it yourself, six moments, like the derby.
+  const SEC_CUPS = [
+    [/premier league/i, "EFL Cup"], [/la ?liga|primera/i, "Supercopa de España"], [/serie a/i, "Supercoppa Italiana"], [/bundesliga/i, "DFB Super Cup"],
+    [/ligue 1/i, "Trophée des Champions"], [/eredivisie/i, "Johan Cruyff Shield"], [/portug|primeira/i, "Taça da Liga"],
+  ];
+  const secondaryCupName = (f) => {
+    const l = findLeagueOfClub(f.club);
+    const n = (l && l.name) || "";
+    const hit = SEC_CUPS.find(([re]) => re.test(n));
+    return hit ? hit[1] : `${n || T("League")} ${T("League Cup")}`.trim();
+  };
+  function secondaryCupStep(f) {
     return (next) => {
       if (!f.pro || !f.club) return next();
+      const cup = secondaryCupName(f);
+      const rounds = [T("Second round"), T("Quarter-final"), T("Semi-final"), T("Final")];
+      const power = clubPower(f) - 4; // rotation squad
+      let out = -1;
+      for (let r = 0; r < rounds.length - 1; r++) {
+        const opp = clampN((f.club.rep || 60) + ri(-22, 14), 35, 98);
+        if (rnd() >= clampN(0.58 + (power - opp) / 110, 0.1, 0.9)) {
+          out = r;
+          break;
+        }
+      }
+      const rows = [[T("Cup"), cup], [T("Club"), f.club.name]];
+      if (out >= 0) {
+        const eff = applyEffects(f, { form: -1, hap: -1 });
+        sayIt(`We went out of the ${cup} in the ${rounds[out].toLowerCase()}.`);
+        return card({
+          tag: T("Cup tie"), iconSrc: (f.club && f.club.cupLogo) || ICON, title: `${cup}: ${T("knocked out")}`,
+          lead: T("The manager rested half the team for the league. The cup run ended early, and nobody is losing sleep over it."),
+          rows: [...rows, [T("Out in the"), rounds[out]], ...eff], ok: next,
+        });
+      }
       const l = findLeagueOfClub(f.club);
       const pool = ((l && l.clubs) || []).filter((c) => c && c.name && c.name !== f.club.name);
       const opp = pool.length ? pick(pool) : { name: "Rival FC", rep: f.club.rep };
+      card({
+        tag: T("Cup tie"), iconSrc: (f.club && f.club.cupLogo) || ICON, title: `${cup}: ${T("reaching the final")}`,
+        lead: T("You get through the early rounds with a rotated squad. The final is next, and this time the manager wants you on the pitch."),
+        rows: [...rows, [T("Final against"), opp.name]],
+        ok: () => keyMatchStep(f, { tag: cup, name: cup, opp, lead: `${T("A cup final. Six moments will decide it, and the decisions are yours.")}` })(next),
+      });
+    };
+  }
+
+  function keyMatchStep(f, cfg) {
+    return (next) => {
+      if (!f.pro || !f.club) return next();
+      const TAG = cfg ? cfg.tag : T("Derby day");
+      const l = findLeagueOfClub(f.club);
+      const pool = ((l && l.clubs) || []).filter((c) => c && c.name && c.name !== f.club.name);
+      const opp = cfg && cfg.opp ? cfg.opp : pool.length ? pick(pool) : { name: "Rival FC", rep: f.club.rep };
       const pos = posOf(f);
       const tm = f.club.rep * 0.6 + f.skill * 0.4;
       const to = (opp.rep || f.club.rep) * 0.6 + 55 * 0.4;
@@ -2839,7 +3327,7 @@
         const go = (txt, fn) => [txt, () => { fn(); m.i++; (m.i >= minutes.length ? finish : moment)(); }];
         if (attack) {
           card({
-            tag: T("Derby day"), iconSrc: ICON, title: `${tag} - ${T("Your chance")}`,
+            tag: TAG, iconSrc: ICON, title: `${tag} - ${T("Your chance")}`,
             lead: `${m.note}<br><br>${T("The ball falls to you at the edge of the box. What do you do?")}`, rows,
             choices: [
               go(T("Shoot"), () => {
@@ -2860,7 +3348,7 @@
           });
         } else {
           card({
-            tag: T("Derby day"), iconSrc: ICON, title: `${tag} - ${T("Danger")}`,
+            tag: TAG, iconSrc: ICON, title: `${tag} - ${T("Danger")}`,
             lead: `${m.note}<br><br>${pos.gk ? T("A shot is coming at you from close range.") : T("They break forward and you are the last line.")}`, rows,
             choices: pos.gk
               ? [
@@ -2879,23 +3367,39 @@
       const finish = () => {
         m.my += poisson(lm * 0.4);
         m.op += poisson(lo * 0.4);
-        const res = m.my > m.op ? "win" : m.my === m.op ? "draw" : "loss";
+        let res = m.my > m.op ? "win" : m.my === m.op ? "draw" : "loss";
+        let pens = false;
+        const rest = () => {
         f.career.goals += m.goals;
         f.career.assists += m.assists;
         const fx = res === "win" ? { fame: 3, form: 6, club: 5, hype: 4, money: Math.round((f.wage || 50000) * 0.02) } : res === "draw" ? { form: 1, club: 1 } : { form: -5, club: -3, coach: -2, hype: -2 };
         const eff = applyEffects(f, fx);
-        const text = `${f.club.name} ${m.my} - ${m.op} ${opp.name}`;
+        const text = `${f.club.name} ${m.my} - ${m.op} ${opp.name}${pens ? ` (${res === "win" ? T("won on penalties") : T("lost on penalties")})` : ""}`;
+        if (cfg && res === "win") {
+          addTrophy(f, cfg.name, "cup", f.club.cupLogo || f.club.logo, f.club.name);
+          state.money = (Number(state.money) || 0) + Math.round((f.wage || 50000) * 0.5);
+          sayIt(`We won the ${cfg.name}!`);
+          playSnd("chaChing");
+        }
         sayIt(res === "win" ? `I helped beat ${opp.name} ${m.my}-${m.op} in a derby.` : res === "draw" ? `We drew ${m.my}-${m.op} with ${opp.name}.` : `We lost ${m.my}-${m.op} to ${opp.name}.`);
         card({
-          tag: T("Derby day"), iconSrc: ICON, title: res === "win" ? T("Derby won") : res === "draw" ? T("Derby drawn") : T("Derby lost"),
-          lead: res === "win" ? T("The whole city is singing. This is why you play.") : res === "draw" ? T("A point each. Nobody is happy and nobody is crushed.") : T("A quiet bus ride home and a long night."),
+          tag: TAG, iconSrc: ICON, title: cfg ? (res === "win" ? `${cfg.name}: ${T("winners")}` : `${cfg.name}: ${T("runners-up")}`) : res === "win" ? T("Derby won") : res === "draw" ? T("Derby drawn") : T("Derby lost"),
+          lead: cfg ? (res === "win" ? T("A trophy is a trophy. The dressing room is a mess of champagne and noise.") : T("So close. A final lost, and the medals are the wrong colour.")) : res === "win" ? T("The whole city is singing. This is why you play.") : res === "draw" ? T("A point each. Nobody is happy and nobody is crushed.") : T("A quiet bus ride home and a long night."),
           rows: [[T("Final"), text], [T("Your goals"), String(m.goals)], [T("Your assists"), String(m.assists)], ...eff],
           ok: next,
         });
+        };
+        if (cfg && res === "draw") {
+          pens = true;
+          penaltyShootout(f, f.club.name, opp.name, tm, to, (won) => {
+            res = won ? "win" : "loss";
+            rest();
+          });
+        } else rest();
       };
       card({
-        tag: T("Derby day"), iconSrc: (f.club && f.club.logo) || ICON, title: `${f.club.name} vs ${opp.name}`,
-        lead: T("The biggest match of your season. Six moments will decide it, and the decisions are yours."),
+        tag: TAG, iconSrc: (f.club && f.club.logo) || ICON, title: `${f.club.name} vs ${opp.name}`,
+        lead: cfg ? cfg.lead : T("The biggest match of your season. Six moments will decide it, and the decisions are yours."),
         rows: [[T("Opponent"), opp.name], [T("Your form"), `${Math.round(f.form)}%`], [T("Fitness"), `${Math.round(f.fit)}%`]],
         choices: [[T("Kick off"), moment]],
       });
@@ -3070,10 +3574,10 @@
     } else {
       steps.push(counted(f, momentStep("league", f)));
       steps.push(momentStep("cup", f)); // competitions never count toward the event cap
-      steps.push(keyMatchStep(f));
+      steps.push(rnd() < 0.4 ? secondaryCupStep(f) : keyMatchStep(f)); // [mod] sometimes a lesser cup instead of the derby
       const qualified = f.qualified || (f.lastSeason && f.lastSeason.qualified) || (f.club && f.club.rep >= 87);
       if (qualified) steps.push(momentStep("continental", f));
-      if (f.nat.called && (isWorldCupYear() || isContinentalYear())) steps.push(momentStep("national", f));
+      if (f.nat.called && (isWorldCupYear() || isContinentalYear())) steps.push(natCallStep(f)); // [mod] the tournament is played week by week
     }
     steps.push(resultsStep(f));
     if (f.pro) steps.push(transferStep(f));
@@ -3094,7 +3598,7 @@
     const next = () => {
       stepAt = Date.now();
       resumeFlow = next;
-      if (state.dead || !f.active) {
+      if (state.dead || !f.active || state.prison) {
         f.pending = false;
         f.flowDone = true;
         return finish();
@@ -3156,6 +3660,10 @@
       }
     }
     f.lastInflYear = year();
+    if (f.club && f.clubTrack !== f.club.name) {
+      f.joinedYear = f.clubTrack === undefined ? year() - 5 : year(); // old saves: assume a long stay
+      f.clubTrack = f.club.name;
+    }
     f.evCount = 0;
     f.mods = { atk: 0, def: 0, luck: 0 };
     f.momentsUsed = [];
@@ -3346,6 +3854,7 @@
       row("fbCont", E("1f3c6"), f.cont ? f.cont.name : T("Continental Cup"), f.cont ? (f.cont.done ? (f.cont.champion ? T("Champions") : T("Knocked out")) : `${T("Week")} ${Math.min(7, f.cont.week + 1)}`) : f.qualified ? T("Qualified for next season") : T("Not qualified")) +
       section(T("Actions")) +
       row("fbTrain", E("1f4aa"), T("Extra training session"), f.extraYear === year() ? T("Already done this year") : `${money(15000)} · +${T("skill and fitness")}`, f.extraYear === year()) +
+      row("fbPen", E("26bd"), T("Penalty practice"), f.penBest != null ? `${T("Best")}: ${f.penBest}/5` : T("Aim with the mouse and beat the keeper")) +
       row("fbAgent", E("1f4bc"), T("Ask your agent for offers"), T("Test the transfer market now")) +
       row("fbRehab", E("1f3e5"), T("Intensive rehab"), f.injury ? `${money(20000)} · ${T("cut the injury short")}` : T("No injury right now"), !f.injury) +
       section(T("Contract")) +
@@ -3409,6 +3918,7 @@ tap("fbCountryLeague", () => {
     });
   });
     tap("fbAgent", () => agentCard(f));
+    tap("fbPen", () => penaltyPractice(f));
     tap("fbRehab", () => rehabCard(f));
     tap("fbContract", () => contractCard(f));
     tap("fbRetire", () => retireCard(f));
@@ -3760,8 +4270,13 @@ tap("fbCountryLeague", () => {
       .join("");
     sList.innerHTML =
       section(T("International career")) +
-      row("", flagFor(f), state.country || T("National team"), f.nat.called ? `${f.nat.caps} ${T("caps")} · ${f.nat.goals} ${T("goals")}${f.nat.debut ? ` · ${T("debut")} ${f.nat.debut}` : ""}` : T("Not called up yet"), true, "") +
+      (f.natCup ? row("", flagFor(f), f.natCup.name, `${f.natCup.done ? T("Finished") : T("In camp: press 1 Week for the next match")} · ${(f.natCup.results || []).length} ${T("played")}`, true, "") : "") +
+      row("", flagFor(f), bornName() || T("National team"), f.nat.called ? `${f.nat.caps} ${T("caps")} · ${f.nat.goals} ${T("goals")}${f.nat.debut ? ` · ${T("debut")} ${f.nat.debut}` : ""}` : T("Not called up yet"), true, "") +
       (f.nat.hist.length ? section(T("Tournaments")) + rows : "");
+    sList.insertAdjacentHTML(
+      "beforeend",
+      `<div class="mm-foot" style="padding:10px 14px 0;text-align:left">${esc(T("You can only play for the country you were born in:"))} ${esc(bornName())}.</div>`,
+    );
     if (!f.nat.called) {
       sList.insertAdjacentHTML(
         "beforeend",
@@ -3890,7 +4405,8 @@ tap("fbCountryLeague", () => {
 
   function agentCard(f) {
     if (!f.pro) return noticeIt(CAREER, T("You do not have an agent yet. Get a professional contract first."), null, true);
-    if (f.contract && f.contract.years > 1 && f.clubRel > 70) {
+    const tenureNow = f.joinedYear != null ? year() - f.joinedYear : 9;
+    if (f.contract && f.contract.years > 1 && (f.clubRel > 70 || (tenureNow < 2 && !(f.clubRel < 25 && f.coachRel < 25)))) {
       return noticeIt(T("The club says no"), T("You just signed. Nobody is negotiating a move this year."), null, true);
     }
     transferStep(f)(() => openFutbol());
@@ -3973,6 +4489,12 @@ tap("fbCountryLeague", () => {
       "click",
       (ev) => {
         const f = state && state.futbol;
+        if (natBlocking(f) && !flowActive) {
+          ev.stopImmediatePropagation();
+          ev.preventDefault();
+          noticeIt(T("National team duty"), T("You are in camp with the national team. You can only advance week by week (1 Week button) until the tournament ends."), null, true);
+          return;
+        }
         if (f && f.active && !f.retired && !state.dead && flowActive && flowStalled()) {
           // nothing on screen belongs to the season anymore: skip the lost step and finish the flow
           const r = resumeFlow;
@@ -4006,5 +4528,42 @@ tap("fbCountryLeague", () => {
       }, 0),
     );
   }
+
+  // the 1 Week button (week.js) plays the next tournament match while the squad is in camp
+  (function hookWeek() {
+    const wb = document.getElementById("weekBtn");
+    if (!wb) return void setTimeout(hookWeek, 500);
+    let before = 0;
+    const wk = () => (state.weekNo && state.weekNo.age === state.age ? state.weekNo.n : 0);
+    wb.addEventListener("click", () => { before = wk(); }, true);
+    wb.addEventListener("click", () => {
+      const f = state && state.futbol;
+      if (!natBlocking(f) || wk() <= before) return;
+      const run = () => natMatchStep(f);
+      if (typeof queuePopup === "function") queuePopup(run);
+      else setTimeout(run, 400);
+    });
+  })();
+
+  // [mod] the Age button looks greyed out while the squad is in camp (only 1 Week works)
+  (function ageLockLook() {
+    if (!document.getElementById("flNatLockCss")) {
+      const st = document.createElement("style");
+      st.id = "flNatLockCss";
+      st.textContent = "#ageBtn.fl-natlock{filter:grayscale(1) brightness(.78);opacity:.55;cursor:not-allowed}#ageBtn.fl-natlock *{cursor:not-allowed}";
+      document.head.appendChild(st);
+    }
+    const sync = () => {
+      if (state && state.country && !state.birthCountry && !state.dead) bornCode();
+      const b = document.getElementById("ageBtn");
+      if (!b) return;
+      const on = natBlocking(state && state.futbol);
+      b.classList.toggle("fl-natlock", on);
+      b.setAttribute("aria-disabled", on ? "true" : "false");
+    };
+    window.FL_FUT_SYNC = sync;
+    setInterval(sync, 400);
+    sync();
+  })();
   window.FL_FUTBOL.tick = yearTick;
 })();

@@ -44,17 +44,26 @@
           '" target="_blank" rel="noopener">Open the game in a new tab</a>';
       };
       const go = () => location.replace("game.html");
-      if (!("serviceWorker" in navigator)) fail();
+      // [fix] the service worker only speeds things up: never leave the player waiting on it
+      const framed = (() => {
+        try {
+          return window.top !== window.self;
+        } catch {
+          return true;
+        }
+      })();
+      const giveUp = () => (framed ? fail() : go());
+      if (!("serviceWorker" in navigator)) giveUp();
       else
         navigator.serviceWorker
           .register("sw.js")
-          .then(() => navigator.serviceWorker.ready)
-          .then(() => {
-            if (navigator.serviceWorker.controller) return go();
+          .then(() => Promise.race([navigator.serviceWorker.ready, new Promise((r) => setTimeout(() => r("timeout"), 4000))]))
+          .then((r) => {
+            if (r === "timeout" || navigator.serviceWorker.controller) return go();
             navigator.serviceWorker.addEventListener("controllerchange", go);
             setTimeout(go, 3000);
           })
-          .catch(fail);
+          .catch(giveUp);
     </script>
   </body>
 </html>

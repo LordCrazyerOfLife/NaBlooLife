@@ -216,9 +216,9 @@
     const occ = renting.filter((p) => LL(p).tenant);
     const monthly = occ.reduce((s, p) => s + rentOf(p), 0);
     let h = `<div class="sec">Portfolio</div>`;
-    h += `<div class="row dis sm"><div class="t"><b style="font-weight:600">${ps.length} propert${ps.length === 1 ? "y" : "ies"} · ${renting.length} listed · ${occ.length} occupied</b><span>Rent coming in: ${usdf(monthly)}/mo · ${usdf(monthly * 12)}/yr · earned so far ${usdf(G().total)}</span></div></div>`;
+    h += `<div class="row sm" style="cursor:default"><div class="t"><b style="font-weight:600">${ps.length} propert${ps.length === 1 ? "y" : "ies"} · ${renting.length} listed · ${occ.length} occupied</b><span>Rent coming in: ${usdf(monthly)}/mo · ${usdf(monthly * 12)}/yr · earned so far ${usdf(G().total)}</span></div></div>`;
     h += `<div class="sec">Your properties</div>`;
-    if (!ps.length) h += `<div class="row dis"><div class="t"><b>No properties</b><span>Buy a house first.</span></div></div>`;
+    if (!ps.length) h += `<div class="row" style="cursor:default"><div class="t"><b>No properties</b><span>Buy a house first.</span></div></div>`;
     ps.forEach((p, i) => (h += row(`data-ll="${i}"`, imgOf(p), esc(typeof propLabel === "function" ? propLabel(p) : p.name), status(p))));
     h += `<div class="mm-foot" style="padding:10px 14px;text-align:left">Each year you decide to rent a house or not. Tenants pay monthly, break things, complain and sometimes stop paying. Keep the house in shape and the rent fair.</div>`;
     openScreen("LANDLORD", () => (typeof openAssets === "function" ? openAssets() : screen.classList.remove("open")), h);
@@ -231,7 +231,7 @@
     const t = L.tenant;
     const vis = L.issues.filter((i) => !i.hidden);
     let h = `<div class="sec">${nm(p)} · ${addr(p)}</div>`;
-    h += `<div class="row dis sm"><div class="t"><b style="font-weight:600">Value ${usdf(value(p))} · Condition ${Math.round(p.cond)}%</b><span>Market rent ${usdf(market(p))}/mo · ${p.br}br/${p.ba}ba</span></div></div>`;
+    h += `<div class="row sm" style="cursor:default"><div class="t"><b style="font-weight:600">Value ${usdf(value(p))} · Condition ${Math.round(p.cond)}%</b><span>Market rent ${usdf(market(p))}/mo · ${p.br}br/${p.ba}ba</span></div></div>`;
     h += `<div class="sec">Renting</div>`;
     h += row(`data-a="mode"`, "", L.mode === "rent" ? "Renting: ON" : "Renting: OFF", L.mode === "rent" ? "Tap to stop renting it out" : "Tap to put it up for rent");
     h += row(`data-a="rent"`, "", `Rent: ${usdf(rentOf(p))}/mo`, `Market ${usdf(market(p))} · ${Math.round((rentOf(p) / market(p)) * 100)}% of market`);
@@ -367,7 +367,7 @@
     const L = LL(p);
     const vis = L.issues.filter((i) => !i.hidden);
     let h = `<div class="sec">Repairs</div>`;
-    if (!vis.length) h += `<div class="row dis"><div class="t"><b>All good</b><span>Nothing broken that you know of. An inspection might find hidden problems.</span></div></div>`;
+    if (!vis.length) h += `<div class="row" style="cursor:default"><div class="t"><b>All good</b><span>Nothing broken that you know of. An inspection might find hidden problems.</span></div></div>`;
     vis.forEach((i, k) => (h += row(`data-r="${k}"`, "", esc(i.name), `${usdf(i.cost)} · ${["", "minor", "serious", "dangerous"][i.sev]}${i.age ? ` · ${i.age}y unfixed` : ""}`)));
     openScreen("REPAIRS", () => openProp(p), h);
     sList.querySelectorAll("[data-r]").forEach((el) => (el.onclick = () => repairCard(p, vis[+el.dataset.r])));

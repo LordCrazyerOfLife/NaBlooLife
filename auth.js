@@ -568,12 +568,15 @@
   }
   async function x(e, t) {
     const a = await new Promise((e, t) => {
+      // [fix] never wait forever for IndexedDB (it blocked the start screen)
+      const to = setTimeout(() => t(new Error("IndexedDB timeout")), 5000);
       const a = indexedDB.open("bitlifepp", 1);
       (a.onupgradeneeded = () => {
         a.result.objectStoreNames.contains("lives") || a.result.createObjectStore("lives", { keyPath: "id" });
       }),
-        (a.onsuccess = () => e(a.result)),
-        (a.onerror = () => t(a.error));
+        (a.onsuccess = () => (clearTimeout(to), e(a.result))),
+        (a.onblocked = () => (clearTimeout(to), t(new Error("IndexedDB blocked")))),
+        (a.onerror = () => (clearTimeout(to), t(a.error)));
     });
     try {
       return await new Promise((o, n) => {

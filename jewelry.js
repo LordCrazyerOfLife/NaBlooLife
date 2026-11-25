@@ -214,6 +214,39 @@
         ["grillz-gold", "Gold Grillz", "grillz", "18K Gold", [900, 14000], 1],
         ["grillz-silver", "Silver Grillz", "grillz", "Sterling Silver", [250, 3000], 1],
         ["grillz-diamond", "Diamond Grillz", "grillz", "18K White Gold", [12000, 450000], 0.5],
+        ["grill1", "Gold Grillz No. 1", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill2", "Iced Gold Grillz No. 2", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill3", "Silver Grillz No. 3", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill4", "Two-Tone Grillz No. 4", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill5", "Silver Grillz No. 5", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill6", "Two-Tone Grillz No. 6", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill7", "Silver Grillz No. 7", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill8", "Silver Grillz No. 8", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill9", "Two-Tone Grillz No. 9", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill10", "Gold Grillz No. 10", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill11", "Gold Grillz No. 11", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill12", "Two-Tone Grillz No. 12", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill13", "Gold Grillz No. 13", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill14", "Iced Gold Grillz No. 14", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill15", "Gold Grillz No. 15", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill16", "Two-Tone Grillz No. 16", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill17", "Iced Gold Grillz No. 17", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill18", "Silver Grillz No. 18", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill19", "Black Diamond Grillz No. 19", "grillz", "18K White Gold", [60000, 900000], 0.5],
+        ["grill20", "Gold Grillz No. 20", "grillz", "18K Gold", [1200, 25000], 1.3],
+        ["grill21", "Iced Gold Grillz No. 21", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill22", "Silver Grillz No. 22", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill23", "Iced Gold Grillz No. 23", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill24", "Ruby & Sapphire Grillz No. 24", "grillz", "18K White Gold", [60000, 900000], 0.4],
+        ["grill25", "Emerald Gold Grillz No. 25", "grillz", "18K Gold", [40000, 600000], 0.5],
+        ["grill26", "Diamond Grillz No. 26", "grillz", "18K White Gold", [15000, 500000], 0.8],
+        ["grill27", "Two-Tone Grillz No. 27", "grillz", "14K Gold", [3000, 60000], 1.0],
+        ["grill28", "Diamond Grillz No. 28", "grillz", "18K White Gold", [15000, 500000], 0.8],
+        ["grill29", "Silver Grillz No. 29", "grillz", "Sterling Silver", [300, 4000], 1.2],
+        ["grill30", "Ruby Grillz No. 30", "grillz", "18K White Gold", [40000, 700000], 0.5],
+        ["grill31", "Iced Gold Grillz No. 31", "grillz", "18K Gold", [25000, 450000], 0.9],
+        ["grill32", "Emerald Grillz No. 32", "grillz", "18K White Gold", [40000, 600000], 0.5],
+        ["grill33", "Gold Grillz No. 33", "grillz", "18K Gold", [1200, 25000], 1.3],
         ["watch", "Basic Watch", "watch", "Plastic", [20, 150], 1],
         ["watch-white", "Two-Tone Watch", "watch", "Stainless Steel", [500, 9e3], 2],
         ["watch-gold", "Gold Watch", "watch", "18K Gold", [2500, 6e4], 2],
@@ -371,7 +404,7 @@
     v = (e) => {
       const a = e ? "fakeStock" : "jewelStock",
         n = state[a];
-      if (n && n.age === state.age && 5 === n.v) return n.list;
+      if (n && n.age === state.age && 6 === n.v) return n.list;
       const t = e
         ? Array.from({ length: rint(55, 64) }, C)
         : [
@@ -384,7 +417,7 @@
           (e.price = D(e)), e.fake && (e.value = K(e.price));
         }),
         t.sort((e, a) => a.price - e.price),
-        (state[a] = { age: state.age, v: 5, list: t }),
+        (state[a] = { age: state.age, v: 6, list: t }),
         t
       );
     };

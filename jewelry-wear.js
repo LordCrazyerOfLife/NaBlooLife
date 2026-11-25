@@ -231,10 +231,31 @@
     }
   }
 
-  function drawGrillz(c, it, A, P, sc) {
+  // Every grillz design (jewelry/grill1..33.png) is drawn as its own picture on the teeth, so each one looks different.
+  // The three original square icons (grillz-gold / silver / diamond) keep the drawn version below.
+  async function drawGrillz(c, it, A, P, sc) {
+    if (/^grill\d+$/.test(String(it.img || ""))) {
+      const img = await loadImg(`jewelry/${it.img}.png`);
+      if (img) {
+        const w = A.width * 0.4 * sc;
+        const h = (img.height / img.width) * w;
+        const [cx, cy] = P(A.cx, A.mouthY - 1);
+        c.save();
+        c.shadowColor = "rgba(0,0,0,.35)";
+        c.shadowBlur = 2;
+        c.drawImage(img, cx - w / 2, cy - h * 0.4, w, h);
+        c.restore();
+        return;
+      }
+    }
+    drawGrillzDrawn(c, it, A, P, sc);
+  }
+
+  function drawGrillzDrawn(c, it, A, P, sc) {
     const name = `${it.name || ""} ${it.img || ""} ${it.metal || ""}`.toLowerCase();
     const diamond = /diamond/.test(name);
-    const base = diamond ? "#e8f4ff" : /silver|steel|white|platinum/.test(name) ? "#d9dde3" : "#f0be3c";
+    const tint = /ruby/.test(name) ? "#d6313b" : /emerald/.test(name) ? "#34c471" : /sapphire/.test(name) ? "#3a62d6" : /black diamond/.test(name) ? "#3b3d44" : null;
+    const base = tint || (diamond ? "#e8f4ff" : /silver|steel|white|platinum/.test(name) ? "#d9dde3" : "#f0be3c");
     const edge = diamond ? "#7f9cc0" : shade(base, 0.62);
     const n = 6;
     const w = A.width * 0.33 * sc;
@@ -270,25 +291,106 @@
     }
   }
 
-  async function drawChain(c, it, A, tf) {
+  // How wide the neck really is on the avatar, measured on the already-drawn face (the art has its own neck, wider than the
+  // one we draw behind it). Walks outwards from the centre along a row just under the chin while the pixels are skin.
+  function measureNeck(c, cx, y, skin) {
+    try {
+      const m = /^#([0-9a-f]{6})$/i.exec(skin || "");
+      if (!m) return null;
+      const n = parseInt(m[1], 16);
+      const sr = (n >> 16) & 255, sg = (n >> 8) & 255, sb = n & 255;
+      const row = c.getImageData(0, Math.max(0, Math.min(249, Math.round(y))), 250, 1).data;
+      const isSkin = (x) => {
+        const i = Math.max(0, Math.min(249, Math.round(x))) * 4;
+        if (row[i + 3] < 200) return false;
+        // the face shades its skin darker or lighter: compare the hue, loosely
+        const d = Math.abs(row[i] - sr) + Math.abs(row[i + 1] - sg) + Math.abs(row[i + 2] - sb);
+        return d < 150 && row[i] >= row[i + 2];
+      };
+      let l = 0, r = 0;
+      while (l < 110 && isSkin(cx - l - 1)) l++;
+      while (r < 110 && isSkin(cx + r + 1)) r++;
+      const half = Math.max(l, r);
+      return half >= 12 && half <= 100 ? half : null;
+    } catch {
+      return null;
+    }
+  }
+
+  async function drawChain(c, it, A, tf, skin) {
     const img = await loadImg(`jewelry/${it.img}.png`);
     if (!img) return;
     const sc = tf.sc;
     const cx = tf.ox + A.cx * sc;
     const chinS = tf.oy + A.chin * sc;
-    const neckW = Math.max(30, 0.27 * A.width * sc);
-    const top = chinS - 3;
-    const maxH = Math.max(24, 250 - top - 2);
-    let w = neckW * 1.55;
-    let h = (img.height / img.width) * w;
-    if (h > maxH) {
-      h = maxH;
-      w = (img.width / img.height) * h;
+    const fallback = Math.max(30, 0.27 * A.width * sc) * 0.95;
+    const half = measureNeck(c, cx, chinS + 9, skin) || fallback; // half the neck width
+    const neckW = half * 2;
+    const tag = `${it.noun || ""} ${it.img || ""}`.toLowerCase();
+    const ratio = img.height / img.width;
+    // necklaces drawn as a whole piece (cuban, chokers, collars): wider than the neck so they wrap around it
+    const wholePiece = ratio <= 0.96 && !/^pendant/.test(String(it.img || ""));
+    if (wholePiece) {
+      const choker = /choker/.test(tag);
+      const top = chinS - (choker ? 2 : 8);
+      const maxH = Math.max(24, 250 - top - 2);
+      let w = neckW * (choker ? 1.75 : /encrusted|anc-|collar/.test(tag) ? 2.1 : 2.0);
+      let h = ratio * w;
+      if (h > maxH) {
+        h = maxH;
+        w = h / ratio;
+      }
+      c.save();
+      c.shadowColor = "rgba(0,0,0,.4)";
+      c.shadowBlur = 4;
+      c.drawImage(img, cx - w / 2, top, w, h);
+      c.restore();
+      return;
+    }
+    // pendants: a real chain goes around the neck (drawn here, in the metal of the piece) and the pendant hangs from it
+    const metal = metalCol(it.metal);
+    const topY = chinS - 4;
+    const halfW = half + 3; // the chain starts just outside the neck on both sides
+    const dip = Math.max(26, half * 0.95); // how low the V of the chain hangs
+    const ext = halfW + Math.max(8, half * 0.35); // the chain flares out over the shoulders a little as it goes down
+    c.save();
+    c.lineCap = "round";
+    c.shadowColor = "rgba(0,0,0,.4)";
+    c.shadowBlur = 4;
+    const curve = () => {
+      c.beginPath();
+      c.moveTo(cx - halfW, topY);
+      c.quadraticCurveTo(cx - ext, topY + dip * 0.9, cx, topY + dip);
+      c.quadraticCurveTo(cx + ext, topY + dip * 0.9, cx + halfW, topY);
+    };
+    curve();
+    c.strokeStyle = shade(metal, 0.72);
+    c.lineWidth = 4.6;
+    c.stroke();
+    c.shadowBlur = 0;
+    curve();
+    c.strokeStyle = metal;
+    c.lineWidth = 3.4;
+    c.stroke();
+    curve(); // the links
+    c.strokeStyle = shade(metal, 1.28);
+    c.lineWidth = 1.6;
+    c.setLineDash([2.4, 2.6]);
+    c.stroke();
+    c.setLineDash([]);
+    c.restore();
+    // the pendant itself
+    const maxPH = Math.max(28, Math.min(104, 250 - (topY + dip) - 3));
+    let pw = Math.max(44, half * 1.55);
+    let ph = ratio * pw;
+    if (ph > maxPH) {
+      ph = maxPH;
+      pw = ph / ratio;
     }
     c.save();
-    c.shadowColor = "rgba(0,0,0,.35)";
+    c.shadowColor = "rgba(0,0,0,.4)";
     c.shadowBlur = 3;
-    c.drawImage(img, cx - w / 2, top, w, h);
+    c.drawImage(img, cx - pw / 2, topY + dip - 3, pw, ph);
     c.restore();
   }
 
@@ -343,8 +445,8 @@
     if (big) drawBody(c, A, tf, info.skin);
     c.drawImage(face, tf.ox, tf.oy, 250 * sc, 250 * sc);
     if (items.ears) drawEars(c, items.ears, A, P, sc);
-    if (items.mouth && (!info.mood || info.mood === "happy")) drawGrillz(c, items.mouth, A, P, sc);
-    if (items.neck) await drawChain(c, items.neck, A, tf);
+    if (items.mouth && (!info.mood || info.mood === "happy")) await drawGrillz(c, items.mouth, A, P, sc);
+    if (items.neck) await drawChain(c, items.neck, A, tf, info.skin);
     if (items.wrist) await drawWrist(c, items.wrist, tf, info.skin);
     return out;
   }

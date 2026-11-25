@@ -87,7 +87,7 @@
       id: "football-career",
       name: "Football Career",
       icon: "emoji/26bd.png",
-      src: "futbol.js?v=25",
+      src: "futbol.js?v=31",
       deps: ["futbol-data.js?v=1", "futbol-events.js?v=2", "futbol-events-life.js?v=2"],
       desc: "A full BitLife-style football life: high-school team, academy, first team, league/cup/continental/national-team competitions, key match decisions, transfers, loans, contracts and a permanent trophy cabinet. Find it in Occupation, Special Careers.",
     },
