@@ -22,7 +22,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: "20"
+  NODE_VERSION: "22"
 
 jobs:
   android:
@@ -32,13 +32,13 @@ jobs:
     env:
       KS_B64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - uses: actions/setup-java@v4
+      - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: "17"
@@ -93,7 +93,7 @@ jobs:
           fi
           ls -lh dist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: YourLife-android
           path: dist/*.apk
@@ -102,12 +102,12 @@ jobs:
 
   ios:
     name: iOS IPA (unsigned)
-    runs-on: macos-14
+    runs-on: macos-15
     timeout-minutes: 75
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: ${{ env.NODE_VERSION }}
 
@@ -149,7 +149,7 @@ jobs:
           (cd dist && zip -qry YourLife-unsigned.ipa Payload && rm -rf Payload)
           ls -lh dist
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         with:
           name: YourLife-ios-unsigned
           path: dist/YourLife-unsigned.ipa
@@ -164,7 +164,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v5
         with:
           path: out
           merge-multiple: true

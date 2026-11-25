@@ -38,7 +38,10 @@ const filter = (src) => {
 if (!dry) {
   rmSync(out, { recursive: true, force: true });
   mkdirSync(out, { recursive: true });
-  cpSync(root, out, { recursive: true, filter });
+  // copy the top-level entries one by one: Node refuses to copy a folder into a subfolder of itself (mobile/www is inside the repo)
+  for (const name of readdirSync(root)) {
+    cpSync(join(root, name), join(out, name), { recursive: true, filter });
+  }
   // the launcher only existed for the web service worker: the app opens the game directly
   writeFileSync(
     join(out, "index.html"),

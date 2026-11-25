@@ -13,3 +13,9 @@ Thumbs.db
 *.strings.txt
 *.missing.txt
 _art-src/_preview/
+# mobile build output (the workflow creates these)
+mobile/www/
+mobile/node_modules/
+mobile/android/
+mobile/ios/
+mobile/package-lock.json
