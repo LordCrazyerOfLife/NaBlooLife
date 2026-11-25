@@ -1328,7 +1328,7 @@
     },
     {
       id: "disclose",
-      w: () => (state.job && conds().some(dxOk) && !S().disc[jobKey()] ? 3 : 0),
+      w: () => (state.job && conds().some((r) => dxOk(r) && !r.rem && load(r) >= 30) && !S().disc[jobKey()] ? 3 : 0), // only when a diagnosed condition is active and at least moderate
       run: () => {
         const k = jobKey();
         card({

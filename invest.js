@@ -8,7 +8,7 @@
       newsAccuracy: 0.65,
       friendAccuracy: [0.45, 0.62],
       taxRate: 0.111,
-      cryptoShown: 8,
+      cryptoShown: 30, /* [mod] all 30 real coins */
       crypto: {
         normal: {
           next: [
@@ -105,12 +105,6 @@
       BUST: ["XLM", "Stellar"],
       CAKE: ["SHIB", "Shiba Inu"],
       DANK: ["PEPE", "Pepe"],
-      DEEZ: ["PNGU", "PenguinCoin"],
-      DILL: ["FISH", "FishCoin"],
-      FOMO: ["SNOW", "SnowmanCoin"],
-      PIMP: ["FRST", "FrostCoin"],
-      XXL: ["SEAL", "SealCoin"],
-      ZIT: ["ICE", "IceCubeCoin"],
     },
     c = () => {
       const e = document.querySelector(".phone");
@@ -148,6 +142,7 @@
       ARB: [2023, 1.35, 0.72, 0.2],
       BONK: [2022, 16e-8, 136e-7, 19e-6, 79e-7],
       WIF: [2023, 0.31, 1.85, 0.35],
+      PENGU: [2024, 0.03, 0.012],
     },
     l = (e) => d[((e) => (r[e.id.slice(1)] ? r[e.id.slice(1)][0] : e.tick))(e)] || null,
     u = (e, t) => (t >= e[0] && t - e[0] + 1 < e.length ? e[t - e[0] + 1] : null),
@@ -232,13 +227,13 @@
       ].map(([e, t]) => ({
         id: e,
         get name() {
-          return c() ? y(v[e][1], h()) : t;
+          return y(v[e][1], h()); /* [mod] real company in every mode */
         },
         get tick() {
-          return c() ? y(v[e][0], h()) : e;
+          return y(v[e][0], h());
         },
         get icon() {
-          return c() ? b(v[e][2]) : "stock-general-green";
+          return b(v[e][2]);
         },
         type: "stocks",
         mkt: "stock",
@@ -256,6 +251,7 @@
           ],
           "apple",
         ],
+        [1980, "BA", "Boeing", "old-boeing"], /* [mod] 30th real stock */
         [1981, "HD", "The Home Depot", "homedepot"],
         [1985, "COST", "Costco", "costco"],
         [1986, "MSFT", "Microsoft", "microsoft"],
@@ -306,6 +302,7 @@
         id: "SX" + a,
         ipo: e,
         flOnly: !0,
+        real: !0,
         get name() {
           return y(n, h());
         },
@@ -405,11 +402,28 @@
         [2013, 0, "AMC", "AMC Entertainment", "amc"],
         [2017, 2023, "APRN", "Blue Apron", "blueapron"],
         [2020, 2025, "NKLA", "Nikola", "nikola"],
+        /* [mod] 15 more real penny stocks (30 total): fallen giants and famous busts. old-* art comes from the old-era set. */
+        [1980, 2001, "PRD", "Polaroid", "old-polaroid"],
+        [1980, 2003, "BS", "Bethlehem Steel", "old-bethlehem"],
+        [1980, 2001, "LTV", "LTV Corp", "old-ltv"],
+        [1980, 1999, "ZE", "Zenith Electronics", "old-zenith"],
+        [1995, 1999, "NSCP", "Netscape", "old-netscape"],
+        [1980, 0, "XRX", "Xerox", "old-xerox"],
+        [1980, 2020, "AVP", "Avon Products", "old-avon"],
+        [1985, 2001, "ENE", "Enron", "stock-general-pink"],
+        [1989, 2002, "WCOM", "WorldCom", "stock-general-pink"],
+        [1994, 2008, "LEH", "Lehman Brothers", "stock-general-pink"],
+        [1980, 2009, "CC", "Circuit City", "stock-general-pink"],
+        [1995, 2011, "BGP", "Borders Group", "stock-general-pink"],
+        [1999, 2000, "IPET", "Pets.com", "stock-general-pink"],
+        [1999, 2001, "WBVN", "Webvan", "stock-general-pink"],
+        [1992, 2023, "BBBY", "Bed Bath & Beyond", "stock-general-pink"],
       ].map(([e, t, n, a, o]) => ({
         id: "PX" + o,
         ipo: e,
         end: t,
         flOnly: !0,
+        real: !0,
         get name() {
           return y(a, h());
         },
@@ -417,7 +431,7 @@
           return y(n, h());
         },
         get icon() {
-          return b(o);
+          return /^stock-general/.test(o) ? o : b(o);
         },
         type: "penny",
         mkt: "stock",
@@ -427,37 +441,13 @@
         bust: 0.04,
         moon: 0.06,
       })),
-      ...[
-        ["RNG", "Randomyte"],
-        ["TETA", "JugCoin"],
-        ["BALZ", "DeepCoin"],
-        ["HUMP", "CamelCoin"],
-        ["STFU", "Blockeum"],
-        ["BRUH", "BroBucks"],
-        ["TOKE", "Tokeum"],
-        ["ZERO", "Elusivium"],
-        ["BBD", "BigBlockDollar"],
-        ["BTCH", "Botchcoin"],
-        ["BUM", "Bummercoin"],
-        ["BUSN", "BusinessCoin"],
-        ["BUST", "Bustium"],
-        ["CAKE", "PancakeCoin"],
-        ["DANK", "DankCoin"],
-        ["DEEZ", "DeezCoin"],
-        ["DILL", "PickleCoin"],
-        ["FOMO", "FOMOcoin"],
-        ["PIMP", "Pimpereum"],
-        ["XXL", "XXLarge"],
-        ["ZIT", "Zitcoin"],
-      ].map(([e, t]) => ({
+      /* [mod] real coins only: the made-up parody coins are gone. The ids (CRNG, CTETA...) stay so old saves and
+         the username market keep working. */
+      ...["RNG", "TETA", "BALZ", "HUMP", "STFU", "BRUH", "TOKE", "ZERO", "BBD", "BTCH", "BUM", "BUSN", "BUST", "CAKE", "DANK"].map((e) => ({
         id: "C" + e,
-        get name() {
-          return c() ? r[e][1] : t;
-        },
-        get tick() {
-          return c() ? r[e][0] : e;
-        },
-        icon: "coin-" + e,
+        name: r[e][1],
+        tick: r[e][0],
+        icon: `../freelife/crypto/${r[e][0].toLowerCase()}`,
         type: "crypto",
         mkt: null,
         beta: 0,
@@ -479,40 +469,59 @@
         ["ARB", "Arbitrum"],
         ["BONK", "Bonk"],
         ["WIF", "dogwifhat"],
-      ].map(([e, t]) => ({
+        ["PENGU", "Pudgy Penguins", "pngu"],
+      ].map(([e, t, i]) => ({
         id: "CX" + e,
         name: t,
         tick: e,
-        icon: `../freelife/crypto/${e.toLowerCase()}`,
-        flOnly: !0,
+        icon: `../freelife/crypto/${i || e.toLowerCase()}`,
         type: "crypto",
         mkt: null,
         beta: 0,
         vol: [0.6, 1.2],
         base: [5e-4, 900],
       })),
+      /* [mod] 30 real funds. The first 14 keep their old ids (saves). ipo = inception year; real = shown in every mode. */
       ...[
-        ["index", "Index Fund", "stock", 0.9],
-        ["total-stock", "Total Stock Market Fund", "stock", 1],
-        ["total-international", "Total International Fund", "stock", 0.8],
-        ["emerging-market", "Emerging Markets Fund", "stock", 1.3],
-        ["managed", "Managed Growth Fund", "stock", 1.1],
-        ["total-bond", "Total Bond Fund", "bond", 1],
-        ["sector-technology", "Technology Sector Fund", "stock", 1.4],
-        ["sector-healthcare", "Healthcare Sector Fund", "stock", 0.8],
-        ["sector-energy", "Energy Sector Fund", "stock", 1.2],
-        ["sector-financials", "Financials Sector Fund", "stock", 1.1],
-        ["sector-consumer", "Consumer Sector Fund", "stock", 0.9],
-        ["sector-industrials", "Industrials Sector Fund", "stock", 1],
-        ["sector-materials", "Materials Sector Fund", "stock", 1.1],
-        ["sector-communication", "Communication Sector Fund", "stock", 1],
-      ].map(([e, t, n, a]) => ({
+        ["index", "Vanguard 500 Index (VFIAX)", "stock", 0.9, 1976, "index"],
+        ["total-stock", "Vanguard Total Stock Market (VTSAX)", "stock", 1, 1992, "total-stock"],
+        ["total-international", "Vanguard Total International (VTIAX)", "stock", 0.8, 1996, "total-international"],
+        ["emerging-market", "Vanguard Emerging Markets (VEMAX)", "stock", 1.3, 1994, "emerging-market"],
+        ["managed", "Fidelity Contrafund (FCNTX)", "stock", 1.1, 1967, "managed"],
+        ["total-bond", "Vanguard Total Bond Market (VBTLX)", "bond", 1, 1986, "total-bond"],
+        ["sector-technology", "Technology Select Sector SPDR (XLK)", "stock", 1.4, 1998, "sector-technology"],
+        ["sector-healthcare", "Health Care Select Sector SPDR (XLV)", "stock", 0.8, 1998, "sector-healthcare"],
+        ["sector-energy", "Energy Select Sector SPDR (XLE)", "stock", 1.2, 1998, "sector-energy"],
+        ["sector-financials", "Financial Select Sector SPDR (XLF)", "stock", 1.1, 1998, "sector-financials"],
+        ["sector-consumer", "Consumer Staples Select Sector SPDR (XLP)", "stock", 0.9, 1998, "sector-consumer"],
+        ["sector-industrials", "Industrial Select Sector SPDR (XLI)", "stock", 1, 1998, "sector-industrials"],
+        ["sector-materials", "Materials Select Sector SPDR (XLB)", "stock", 1.1, 1998, "sector-materials"],
+        ["sector-communication", "Communication Services Select Sector SPDR (XLC)", "stock", 1, 2018, "sector-communication"],
+        ["spy", "SPDR S&P 500 ETF (SPY)", "stock", 1, 1993, "index"],
+        ["qqq", "Invesco QQQ (QQQ)", "stock", 1.3, 1999, "sector-technology"],
+        ["vti", "Vanguard Total Stock Market ETF (VTI)", "stock", 1, 2001, "total-stock"],
+        ["voo", "Vanguard S&P 500 ETF (VOO)", "stock", 1, 2010, "index"],
+        ["iwm", "iShares Russell 2000 ETF (IWM)", "stock", 1.2, 2000, "general"],
+        ["dia", "SPDR Dow Jones Industrial Average ETF (DIA)", "stock", 0.9, 1998, "index"],
+        ["vug", "Vanguard Growth ETF (VUG)", "stock", 1.2, 2004, "managed"],
+        ["schd", "Schwab U.S. Dividend Equity ETF (SCHD)", "stock", 0.8, 2011, "general"],
+        ["vnq", "Vanguard Real Estate ETF (VNQ)", "stock", 1.1, 2004, "sector-financials"],
+        ["arkk", "ARK Innovation ETF (ARKK)", "stock", 1.8, 2014, "sector-technology"],
+        ["gld", "SPDR Gold Shares (GLD)", "stock", 0.4, 2004, "sector-materials"],
+        ["tlt", "iShares 20+ Year Treasury Bond ETF (TLT)", "bond", 1, 2002, "total-bond"],
+        ["agg", "iShares Core U.S. Aggregate Bond ETF (AGG)", "bond", 1, 2003, "total-bond"],
+        ["eem", "iShares MSCI Emerging Markets ETF (EEM)", "stock", 1.3, 2003, "emerging-market"],
+        ["efa", "iShares MSCI EAFE ETF (EFA)", "stock", 0.9, 2001, "total-international"],
+        ["jepi", "JPMorgan Equity Premium Income ETF (JEPI)", "stock", 0.6, 2020, "general"],
+      ].map(([e, t, n, a, o, i]) => ({
         id: "F" + e,
         name: t,
-        icon: "fund-" + e,
+        icon: "fund-" + i,
         type: "funds",
         mkt: n,
         beta: a,
+        ipo: o,
+        real: !0,
         vol: "bond" === n ? [0.02, 0.04] : [0.06, 0.2],
         base: [20, 320],
       })),
@@ -694,7 +703,7 @@
                       n,
                       ((t) => {
                         const n = $.filter(
-                          (n) => n.mkt === t && !n.flOnly && e.sec[n.id] && !e.sec[n.id].dead,
+                          (n) => n.mkt === t && !n.flOnly && !(n.real && h() < n.ipo) && e.sec[n.id] && !e.sec[n.id].dead,
                         );
                         return n.length
                           ? n.reduce((t, n) => t + Math.max(-0.9, Math.min(2, e.sec[n.id].last || 0)), 0) /
@@ -755,6 +764,10 @@
           $.forEach((t) => {
             e.sec[t.id] || W(e, t);
           }),
+          e.hold.some((h) => !h.bond && !k[h.id]) &&
+            ((state.money += Math.round(e.hold.filter((h) => !h.bond && !k[h.id]).reduce((n, h) => n + Q(h, e), 0))),
+            (e.hold = e.hold.filter((h) => h.bond || k[h.id]))), /* [mod] removed coins */
+          (e.coins = (e.coins || []).filter((i) => k[i])),
           e.procAge === state.age && q(e),
           e
         );
@@ -967,9 +980,7 @@
     Q = (e, t = z()) => (e.bond ? e.units * N(t) : e.units * t.sec[e.id].price),
     J = (e) => {
       const t = z(),
-        n = c()
-          ? $.filter((e) => m(e) && !t.sec[e.id].dead)
-          : t.coins.filter((e) => !t.sec[e].dead).map((e) => k[e]);
+        n = $.filter((e) => m(e) && !t.sec[e.id].dead); /* [mod] real coins by year in every mode */
       if ("bonds" === e) return c() ? t.bonds.filter((e) => "gov" === e.kind) : t.bonds;
       if ("crypto" === e) return n.sort((e, n) => G(t.sec[n.id]) - G(t.sec[e.id]));
       const a = t.order[e].map((e) => k[e]).filter(Boolean);
@@ -983,7 +994,9 @@
       );
     },
     ee = (e) =>
-      c()
+      e.real
+        ? h() >= e.ipo && (!e.end || h() <= e.end) && !z().sec[e.id].dead
+        : c()
         ? e.flOnly
           ? h() >= e.ipo && (!e.end || h() <= e.end) && !z().sec[e.id].dead
           : "penny" !== e.type
@@ -1515,9 +1528,9 @@
       o = a ? "bonds" : t.type,
       r = a ? null : n.sec[t.id];
     if (r && r.dead) return notice("Failed", `${t.name} has failed and can no longer be bought.`, Ie(o), !0);
-    if (c() && "crypto" === t.type && !m(t))
+    if ("crypto" === t.type && !m(t))
       return notice("Not invented yet", `${t.name} doesn't exist until ${p(t)}.`, Ie(o), !0);
-    if (t.ipo && (!c() || h() < t.ipo))
+    if (t.ipo && ((!c() && !t.real) || h() < t.ipo))
       return notice("Not public yet", `${t.name} doesn't go public until ${t.ipo}.`, Ie(o), !0);
     if (t.end && h() > t.end) return notice("Delisted", `${t.name} isn't traded anymore.`, Ie(o), !0);
     const d = a ? N() : r.price,

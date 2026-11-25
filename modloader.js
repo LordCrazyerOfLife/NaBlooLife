@@ -109,7 +109,7 @@
       id: "mental-health",
       name: "Mental Health",
       icon: "emoji/1f9e0.png",
-      src: "mentalhealth.js?v=5",
+      src: "mentalhealth.js?v=6",
       desc: "A serious mental-health layer: depression, anxiety, ADHD, bipolar disorder and PTSD with hidden symptoms, evaluation, therapy, medication with side effects, and real effects on stats, work and relationships. Military combat can cause PTSD. Also adds a sadistic streak as a personality trait (not a disorder) that ties into Melon and Infamous Killers. Find it in Activities.",
     },
     {

@@ -11,10 +11,11 @@
   if (window.FL_EVENT_JUICE_LOADING) return;
   window.FL_EVENT_JUICE_LOADING = true;
 
+  // Word-start boundaries so "gan" does not match "gang", "sign" does not match "design", "miss" not "mission".
   const GOOD =
-    /(win|won|goal|scor|promot|sign|sold|sell|champion|trophy|record|great|success|improve|unlocked|famous|raise|bonus|contract|victoria|gan|gol|fich|campe|mejor|subid|contrato|bono|éxito|exito|premio)/i;
+    /\b(?:wins?|won|goals?|scor(?:e|ed|es|ing)|promot|signed|sold|champion|trophy|great|success|improv|unlocked|raise[ds]?|bonus|victoria|gan(?:ó|aste|amos|aron|as)\b|gol(?:es)?\b|campe|mejor|subid|bono|éxito|exito|premio)/i;
   const BAD =
-    /(injur|suspend|ban\b|fine|fired|lost|lose|fail|arrest|prison|damage|crash|miss|reject|broke|debt|hospital|death|killed|attack|robbed|scam|diagnos|penalt|lesion|lesión|suspens|multa|perd|cárcel|carcel|fall|fracas|robo|estafa|enferm|muerte|muere|atac|accidente|penal)/i;
+    /\b(?:injur|suspend|banned|fined|fines|fired|lost|lose|fail|arrest|prison|damage|crash|missed|reject|broke\b|debt|hospital|death|killed|attack|robbed|scam|diagnos|penalt|lesion|lesión|suspens|multa|perd[ií]|cárcel|carcel|fracas|robo\b|estafa|enferm|muerte|muere|atac|accidente)/i;
 
   const style = document.createElement("style");
   style.id = "flEventJuiceCss";
@@ -49,25 +50,22 @@
   `;
   document.head.appendChild(style);
 
+  // Only RESULT cards get a tone. A card with buttons is a decision (nothing has happened yet), and some tags are
+  // just information, so they stay silent.
+  const SILENT_TAGS = /^(news|message)$/i;
   function toneOf(opts) {
     if (!opts) return "neutral";
-    if (opts.green) return "good";
     const rows = Array.isArray(opts.rows) ? opts.rows : [];
     const choices = Array.isArray(opts.choices) ? opts.choices : [];
-    const text = [
-      opts.tag,
-      opts.title,
-      opts.lead,
-      ...rows.map((r) => `${r[0]} ${r[1]}`),
-      ...choices.map((c) => c[0]),
-    ]
-      .filter(Boolean)
-      .join(" ");
-    if (BAD.test(text)) return "bad";
-    if (GOOD.test(text)) return "good";
+    if (choices.length || opts.surprise) return "neutral";
+    if (SILENT_TAGS.test(String(opts.tag || ""))) return "neutral";
+    if (opts.green) return "good";
     const vals = rows.map((r) => String(r[1] ?? ""));
     if (vals.some((v) => /^[−-]\s*[$€£]?\d/.test(v))) return "bad";
     if (vals.some((v) => /^\+\s*[$€£]?\d/.test(v))) return "good";
+    const text = [opts.title, opts.lead, ...rows.map((r) => `${r[0]} ${r[1]}`)].filter(Boolean).join(" ");
+    if (BAD.test(text)) return "bad";
+    if (GOOD.test(text)) return "good";
     return "neutral";
   }
 
@@ -97,8 +95,7 @@
       vibrate([90, 50, 90]);
     } else if (tone === "good") {
       card.classList.add("fl-ej-good");
-      sound("ding");
-      setTimeout(() => sound("coins"), 130);
+      sound("coins");
       vibrate([35, 35, 35]);
     }
   }

@@ -19,3 +19,8 @@
 ^Paid (.+) · not appraised$	Pagaste $1 · sin tasar	Pagou $1 · não avaliado
 ^I bought a (.+) on the black market\.$	Compré un/a $1 en el mercado negro.	Comprei um(a) $1 no mercado negro.
 ^I sold a (.+) to a fence\.$	Vendí un/a $1 a un receptador.	Vendi um(a) $1 para um receptador.
+^I gave my (.+) to my (.+), (.+)\. They realized it was fake\.$	Le regalé mi $1 a mi $2, $3. Se dieron cuenta de que era falso.	Dei meu $1 para meu(minha) $2, $3. Perceberam que era falso.
+^I gave my (.+) to my (.+), (.+)\.$	Le regalé mi $1 a mi $2, $3.	Dei meu $1 para meu(minha) $2, $3.
+^You gave your (.+) to (.+)\. They loved it!$	Le regalaste tu $1 a $2. ¡Le encantó!	Você deu seu $1 para $2. Amou!
+^You gave (.+) your (.+), and they realized it was fake!$	Le regalaste a $1 tu $2 y se dio cuenta de que era falso.	Você deu para $1 seu $2 e perceberam que era falso.
+^(Jewelry|Cars|Houses) \((\d+)\)$	$1 ($2)	$1 ($2)
