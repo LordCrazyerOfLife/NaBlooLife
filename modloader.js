@@ -147,7 +147,7 @@
       id: "movie-director",
       name: "Movie Director",
       icon: "director/clap.png",
-      src: "director.js?v=3",
+      src: "director.js?v=4",
       deps: ["director-data.js?v=1"],
       desc: "Special Careers, Movie Director (18+). Write, finance, cast, shoot and release your own films. Pick genre, theme, plot twist and story; fix script problems; get a studio like Sony or Warner to fund and publicize you (or pay for it yourself); hire real actors who age with the years; survive casting, direction and budget problems; then watch Rotten Tomatoes, IMDb, Metacritic, Letterboxd, CinemaScore and the box office rate you. Viral combos, awards, sequels and a rank from Film Student to Hollywood Legend.",
     },

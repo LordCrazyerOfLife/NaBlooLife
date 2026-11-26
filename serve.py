@@ -5,6 +5,11 @@ import sys
 PORT = 8765
 
 class Handler(http.server.SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # never let the browser cache game files: otherwise edited mods keep loading the old copy
+        self.send_header("Cache-Control", "no-store, max-age=0")
+        super().end_headers()
+
     def guess_type(self, path):
         # Windows' registry-based mimetypes lookup is unreliable (often
         # reports .js as text/plain), which breaks Service Worker
