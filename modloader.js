@@ -52,7 +52,8 @@
       id: "drift-boy",
       name: "Drift Boy",
       icon: "emoji/1f3ce-fe0f.png",
-      src: "drift.js?v=2",
+      src: "drift.js?v=10",
+      deps: ["drift-track.js?v=8"],
       desc: "A new special career: from illegal street runs to the pro league. Tandem battles (you lead, you chase, the judges score Angle, Speed and Line), tuning, a mechanic who may scam you, sponsors, a team and trips to Tokyo, Hakone and Fuji. Find it in Occupation, Special Careers.",
     },
     {
@@ -109,8 +110,8 @@
       id: "football-career",
       name: "Football Career",
       icon: "emoji/26bd.png",
-      src: "futbol.js?v=32",
-      deps: ["futbol-data.js?v=1", "futbol-events.js?v=2", "futbol-events-life.js?v=2"],
+      src: "futbol.js?v=33",
+      deps: ["futbol-data.js?v=1", "custom-teams.js?v=1", "futbol-events.js?v=2", "futbol-events-life.js?v=2"],
       desc: "A full BitLife-style football life: high-school team, academy, first team, league/cup/continental/national-team competitions, key match decisions, transfers, loans, contracts and a permanent trophy cabinet. Find it in Occupation, Special Careers.",
     },
     {
@@ -138,9 +139,17 @@
       id: "nba-career",
       name: "NBA Career",
       icon: "bball/ball.png",
-      src: "nba.js?v=5",
+      src: "nba.js?v=6",
       deps: ["nba-data.js?v=1"],
       desc: "A full NBA life with all 30 teams, coaches, rosters and logos: high school, college offers, the draft lottery, rookie scale and free-agent contracts, playoffs, awards (All-Star, All-NBA, MVP, DPOY, ROY, Finals MVP), sneaker deals, trades, injuries, 25+ events, retirement and the Hall of Fame. Find it in Occupation, Special Careers, Pro Athlete.",
+    },
+    {
+      id: "movie-director",
+      name: "Movie Director",
+      icon: "director/clap.png",
+      src: "director.js?v=3",
+      deps: ["director-data.js?v=1"],
+      desc: "Special Careers, Movie Director (18+). Write, finance, cast, shoot and release your own films. Pick genre, theme, plot twist and story; fix script problems; get a studio like Sony or Warner to fund and publicize you (or pay for it yourself); hire real actors who age with the years; survive casting, direction and budget problems; then watch Rotten Tomatoes, IMDb, Metacritic, Letterboxd, CinemaScore and the box office rate you. Viral combos, awards, sequels and a rank from Film Student to Hollywood Legend.",
     },
     {
       id: "zookeeper",
@@ -148,6 +157,28 @@
       icon: "emoji/1f981.png",
       src: "zoo.js?v=4",
       desc: "A zoo career from volunteer to director: care for named animals, run shows, breed viral babies, and handle escapes, bites, a child in the gorilla enclosure, activists and inspections. Dark side: animal trafficking, a private big-cat collection and budget cuts. Also exotic pets at home, plus your own zoo: Assets, Zoo. Buy every species (with its art), build enclosures, set staff and tickets, breed viral babies. The career is in Occupation, Special Careers.",
+    },
+    {
+      id: "custom-content",
+      name: "Custom People, Cities & Teams",
+      icon: "menu/hand-writing.png",
+      src: "custom-content.js?v=1",
+      deps: ["futbol-data.js?v=1", "custom-teams.js?v=1"],
+      desc: "Main Menu > Custom: make your own people (sibling, niece/nephew, friend) who join your life, add your own cities to the New Life picker, and edit or add sports teams for the football career (reload the game after changes).",
+    },
+    {
+      id: "zoo-trip",
+      name: "Zoo Trip",
+      icon: "emoji/1f981.png",
+      src: "zoo-trip.js?v=2",
+      desc: "Activities > Zoo Trip, once a year: 17 random events (escapes, a monkey bite, a panda birth, a keeper's tour, a viral sloth photo, a heat wave and more) with choices that change happiness, health, smarts, looks, money and relationships.",
+    },
+    {
+      id: "trophies-410",
+      name: "410 Trophies",
+      icon: "emoji/1f3c6.png",
+      src: "trophies-410.js?v=1",
+      desc: "410 new achievements across cars, drift, JDM parts, islands, careers, money, relationships, prison, zoo trips and lives. Open them from Main Menu > Achievements.",
     },
   ];
 

@@ -1,0 +1,98 @@
+^You get a ticket and a speech about your future\. Fine: (.+)\.$	Te ponen una multa y un sermón sobre tu futuro. Multa: $1.	You get a ticket and a speech about your future. Fine: $1.
+^The judges cannot split you and (.+)\. Both cars go again, one corner, winner takes it\.$	Los jueces no pueden separarte de $1. Los dos carros vuelven a salir, una curva, el que gane se lo lleva.	The judges cannot split you and $1. Both cars go again, one corner, winner takes it.
+^(Lead run|Chase run) · (.+)$	$1 · $2	$1 · $2
+^You lead and set the pace\. (.+)$	Tú vas adelante y marcas el ritmo. $1	You lead and set the pace. $1
+^You chase (.+) as close as you can\. (.+)$	Persigues a $1 lo más cerca que puedes. $2	You chase $1 as close as you can. $2
+^(.+) "(.+)"$	$1 "$2"	$1 "$2"
+^(.+) "(.+)" flashes his lights at the meet: tandem battle at (.+)\.$	$1 "$2" te echa las luces en la quedada: batalla en tandem en $3.	$1 "$2" flashes his lights at the meet: tandem battle at $3.
+^(.+) "(.+)" wants to settle it\. Tandem battle, no prize but pride\.$	$1 "$2" quiere arreglar cuentas. Batalla en tandem, sin premio pero con orgullo.	$1 "$2" wants to settle it. Tandem battle, no prize but pride.
+^(.+) "(.+)" is waiting at the top of the course\.$	$1 "$2" espera en la parte alta del recorrido.	$1 "$2" is waiting at the top of the course.
+^(.+) "(.+)" is the best driver here this week\.$	$1 "$2" es el mejor piloto aquí esta semana.	$1 "$2" is the best driver here this week.
+^(.+) flashes his hazards in respect\. (.+)$	$1 prende las intermitentes en señal de respeto. $2	$1 flashes his hazards in respect. $2
+^(.+) takes it\. The crowd cheers for him and you walk back to the car\.$	Se lo lleva $1. El público lo celebra y tú vuelves al carro.	$1 takes it. The crowd cheers for him and you walk back to the car.
+^I won a tandem battle against (.+) at (.+)\.$	Gané una batalla en tandem contra $1 en $2.	I won a tandem battle against $1 at $2.
+^I lost a tandem battle against (.+)\.$	Perdí una batalla en tandem contra $1.	I lost a tandem battle against $1.
+^(Pro league|Local tournament) · (.+)$	$1 · $2	$1 · $2
+^Out in the (.+)$	Fuera en $1	Out in the $1
+^You win the tournament at (.+)\. The trophy is bigger than the passenger seat\.$	Ganas el torneo en $1. El trofeo es más grande que el asiento del pasajero.	You win the tournament at $1. The trophy is bigger than the passenger seat.
+^Through to the (.+)$	Pasas a $1	Through to the $1
+^You beat (.+)\. The next battle starts soon\.$	Le ganaste a $1. La próxima batalla empieza pronto.	You beat $1. The next battle starts soon.
+^I am now a (.+)\.$	Ahora soy $1.	I am now a $1.
+^You are now a (.+)\. (.+)$	Ahora eres $1. $2	You are now a $1. $2
+^(.+)'s garage$	El taller de $1	$1's garage
+^Your mechanic knows your car and your bad habits\. Trust: (.+)%\.$	Tu mecánico conoce tu carro y tus mañas. Confianza: $1%.	Your mechanic knows your car and your bad habits. Trust: $1%.
+^Repair the car \((.+)\)$	Reparar el carro ($1)	Repair the car ($1)
+^The repair costs (.+)\.$	La reparación cuesta $1.	The repair costs $1.
+^Tuning · (.+)$	Ajustes · $1	Tuning · $1
+^Rating (.+)/100\. Every level adds grip, control or power, up to 5\.$	Rating $1/100. Cada nivel suma agarre, control o potencia, hasta 5.	Rating $1/100. Every level adds grip, control or power, up to 5.
+^(.+) (\d)/5 — (.+)$	$1 $2/5 — $3	$1 $2/5 — $3
+^(.+) level (\d) costs (.+)\.$	$1 nivel $2 cuesta $3.	$1 level $2 costs $3.
+^(.+) level (\d) installed\. (.+)\.$	$1 nivel $2 instalado. $3.	$1 level $2 installed. $3.
+^I upgraded my (.+): (.+)\.$	Mejoré mi $1: $2.	I upgraded my $1: $2.
+^(.+) \(rating (\d+)\)$	$1 (rating $2)	$1 (rating $2)
+^(.+) is now your drift car\.$	$1 es ahora tu carro de drift.	$1 is now your drift car.
+^The (.+) is yours\. The tyres are already scared\.$	El $1 es tuyo. Las llantas ya están asustadas.	The $1 is yours. The tyres are already scared.
+^(.+) \(rough\)$	$1 (maltratado)	$1 (rough)
+^(.+) \(clean\)$	$1 (impecable)	$1 (clean)
+^It costs (.+)\.$	Cuesta $1.	It costs $1.
+^(.+) is in the garage\. (.+)$	$1 está en el garaje. $2	$1 is in the garage. $2
+^(.+) wants your logo on the car\. They want at least (\d+) wins? per year\.$	$1 quiere tu logo en el carro. Piden al menos $2 victorias por año.	$1 wants your logo on the car. They want at least $2 wins per year.
+^(.+) did not like the attitude and left\. Maybe next year\.$	A $1 no le gustó la actitud y se fue. Quizá el año que viene.	$1 did not like the attitude and left. Maybe next year.
+^(.+) agrees to your price\. Yearly pay: (.+)\.$	$1 acepta tu precio. Pago anual: $2.	$1 agrees to your price. Yearly pay: $2.
+^(.+) welcomes you to the family\. Yearly pay: (.+)\.$	$1 te da la bienvenida a la familia. Pago anual: $2.	$1 welcomes you to the family. Yearly pay: $2.
+^Drop (.+)$	Dejar a $1	Drop $1
+^You parted ways with (.+)\.$	Terminaste con $1.	You parted ways with $1.
+^(.+)/yr · (\d+) wins?$	$1/año · $2 victorias	$1/yr · $2 wins
+^Co-driver: (.+) \(fire\)$	Copiloto: $1 (despedir)	Co-driver: $1 (fire)
+^Hire a co-driver \((.+)/yr\)$	Contratar copiloto ($1/año)	Hire a co-driver ($1/yr)
+^(.+) joins as co-driver\. Your battles get a little easier\.$	$1 entra como copiloto. Tus batallas se vuelven un poco más fáciles.	$1 joins as co-driver. Your battles get a little easier.
+^Mechanic: (.+) \(fire\)$	Mecánico: $1 (despedir)	Mechanic: $1 (fire)
+^Hire (.+) as team mechanic \((.+)/yr\)$	Contratar a $1 como mecánico del equipo ($2/año)	Hire $1 as team mechanic ($2/yr)
+^(.+) joins the team: repairs and parts get cheaper\.$	$1 entra al equipo: las reparaciones y las piezas salen más baratas.	$1 joins the team: repairs and parts get cheaper.
+^A plane ticket, a hotel and a rental trailer: (.+)\. Where to\?$	Boleto de avión, hotel y tráiler de alquiler: $1. ¿Para dónde?	A plane ticket, a hotel and a rental trailer: $1. Where to?
+^The trip costs (.+)\.$	El viaje cuesta $1.	The trip costs $1.
+^I trained at (.+)\.$	Entrené en $1.	I trained at $1.
+^(.+) wanted (\d+) wins? and you did not deliver\. They cut the contract\.$	$1 quería $2 victorias y no cumpliste. Te cortaron el contrato.	$1 wanted $2 wins and you did not deliver. They cut the contract.
+^(.+) · rating (\d+) · (\d+)W/(\d+)L · (\d+) titles?$	$1 · rating $2 · $3G/$4P · $5 títulos	$1 · rating $2 · $3W/$4L · $5 titles
+^(\d+) activities left this year · ([\d.,]+) followers · skill (\d+)$	$1 actividades este año · $2 seguidores · habilidad $3	$1 activities left this year · $2 followers · skill $3
+^(Co-driver|no co-driver) · (mechanic|no mechanic)$	$1 · $2	$1 · $2
+^(.+) · (\d+) wins$	$1 · $2 victorias	$1 · $2 wins
+^(.+)/yr$	$1/año	$1/yr
+^This part costs (.+)\.$	Esta pieza cuesta $1.	This part costs $1.
+^Fit on (.+)$	Instalar en $1	Fit on $1
+^Slot: (.+)\. A new part in this slot replaces the old one\. (.+)$	Ranura: $1. Una pieza nueva en esta ranura reemplaza la anterior. $2	Slot: $1. A new part in this slot replaces the old one. $2
+^, and crashes hurt the car less$	, y los choques dañan menos el carro	, and crashes hurt the car less
+^, and crashes hurt you less$	, y los choques te dañan menos	, and crashes hurt you less
+^\+([\d.]+) drift rating$	+$1 de rating de drift	+$1 drift rating
+^([\d.]+) parts? · rating (\d+)$	$1 piezas · rating $2	$1 parts · rating $2
+^(\d+) parts?$	$1 piezas	$1 parts
+^(\d+) cars? in your garage$	$1 carros en tu garaje	$1 cars in your garage
+^(\d+) cars? · tap to (?:open|close) the list$	$1 carros · toca para abrir o cerrar la lista	$1 cars · tap to open or close the list
+^Cars in stock for (\d+)$	Carros disponibles en $1	Cars in stock for $1
+^\((Used|New) · (\d+)% · (.+)\)$	($1 · $2% · $3)	($1 · $2% · $3)
+^You need (.+) for the (.+)\.$	Necesitas $1 para el $2.	You need $1 for the $2.
+^The (.+) is in your garage\.$	El $1 está en tu garaje.	The $1 is in your garage.
+^A used one in (.+): (\d+)% condition, so it is cheaper and needs some love\.$	Uno usado en color $1: $2% de estado, así que es más barato y necesita cariño.	A used one in $1: $2% condition, so it is cheaper and needs some love.
+^A clean (.+) one straight off the boat\. Perfect for sliding\.$	Uno limpio en color $1 recién salido del barco. Perfecto para deslizar.	A clean $1 one straight off the boat. Perfect for sliding.
+^I bought a (.+) at JDM Mods\.$	Compré un $1 en JDM Mods.	I bought a $1 at JDM Mods.
+^I fitted (.+) on my (.+)\.$	Le puse $1 a mi $2.	I fitted $1 on my $2.
+^I bought a (.+) to start drifting\.$	Compré un $1 para empezar a driftear.	I bought a $1 to start drifting.
+^I found a (.+)\.$	Encontré un $1.	I found a $1.
+^I won a drift tournament at (.+)\.$	Gané un torneo de drift en $1.	I won a drift tournament at $1.
+^(Parking lot practice|Track day|Simulator|Study replays & pros|Reflexes & fitness|Car meet|Street takeover|Post your clips) costs (.+)\.$	$1 cuesta $2.	$1 costs $2.
+^The (.+) costs (.+[0-9].*)\.$	El $1 cuesta $2.	The $1 costs $2.
+^Chase him · bet (.+)$	Perseguirlo · apuesta $1	Perseguir · aposta $1
+^Take the bet · (.+)$	Aceptar la apuesta · $1	Aceitar a aposta · $1
+^Pit and cool it down · (.+)$	Entrar a pits y enfriarlo · $1	Ir pros boxes e esfriar · $1
+^Local Circuit · (.+)$	Circuito Local · $1	Circuito Local · $1
+^A session at the circuit costs (.+)\.$	Una sesión en el circuito cuesta $1.	Uma sessão no circuito custa $1.
+^Tandem vs (.+)$	Tandem vs $1	Tandem vs $1
+^Lap ([0-9]+)$	Vuelta $1	Volta $1
+^([0-9]) of ([0-9]+)$	Puesto $1 de $2	Posição $1 de $2
+^(.+) joins as co-driver\. Battles get easier \(\+5 skill, better odds on every move\) and on the track he calls the bends and you score 10% more\.$	$1 entra como copiloto. Las batallas se hacen más fáciles (+5 de skill, mejores chances en cada movimiento) y en la pista te canta las curvas y haces 10% más de puntos.	$1 entra como copiloto. As batalhas ficam mais fáceis (+5 de skill, mais chance em cada movimento) e na pista ele canta as curvas e você faz 10% mais pontos.
+^The judges cannot split you and (.+)\. Settle it yourself on the track, or let the car do the talking\.$	Los jueces no pueden separarte de $1. Defínelo tú mismo en la pista, o deja que el carro hable.	Os juízes não conseguem separar você de $1. Resolva na pista, ou deixe o carro falar.
+^Hard left · (.+)$	Izquierda cerrada · $1	Esquerda fechada · $1
+^Hard right · (.+)$	Derecha cerrada · $1	Direita fechada · $1
+^left · (.+)$	Izquierda · $1	Esquerda · $1
+^right · (.+)$	Derecha · $1	Direita · $1
+^(.+) · beat ([0-9.,]+)$	$1 · supera $2	$1 · supere $2

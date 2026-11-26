@@ -3736,6 +3736,7 @@
       steps.push(scoutStep(f));
     }
     f.fatigue = Math.max(10, (f.fatigue || 0) - 45); // off-season rest
+    f.intLeft = 2;
     f.trainLeft = f.pro ? 4 : 3; // training blocks you can use this season, whenever you want (see trainNow)
     if (!f.pro) {
       steps.push(counted(f, momentStep("youth", f)));
@@ -3961,6 +3962,8 @@
         row("fbTrainNow", E("1f4aa"), T("Training"), f.injury ? T("Injured: you cannot train right now") : `${left}/${total} ${T("blocks left this season")} · ${T("Fatigue")} ${Math.round(f.fatigue || 0)}%`, !left || !!f.injury),
       );
       tap("fbTrainNow", () => trainNow(f));
+      play.insertAdjacentHTML("afterend", row("fbInterview", E("1f3a4"), T("Interview"), (f.intLeft == null ? 2 : f.intLeft) > 0 ? `${T("Talk to the press")} · ${f.intLeft == null ? 2 : f.intLeft} ${T("left this season")}` : T("No interviews left this season")));
+      tap("fbInterview", () => interviewNow(f));
     }
     const labels = [["today", T("Today")], ["career", T("Career")], ["club", T("Club")]];
     sList.insertAdjacentHTML("afterbegin", `<div class="fb-tabs">${labels.map(([k, n]) => `<button data-tab="${k}" class="${k === tab ? "on" : ""}">${esc(n)}</button>`).join("")}</div>`);
@@ -4458,6 +4461,71 @@ tap("fbCountryLeague", () => {
   }
 
   // ------------------------------------------------------------------ extra actions
+  // ------------------------------------------------------------------ interviews (2 per season, from the Today tab)
+  const INTERVIEWS = [
+    { id: "postmatch", title: "Post-match interview",
+      text: (f) => `The cameras catch you in the mixed zone after the match. The reporter asks what you think of the team's performance.`,
+      choices: [
+        { t: "Praise your teammates", e: { coach: 3, club: 2, fame: 1 }, msg: "Humble and clean. The dressing room hears it and approves." },
+        { t: "Say you carried the team", e: { fame: 5, hype: 4 }, msg: "Big quote, big clip. The fans love your confidence.", risk: 0.55, riskE: { coach: -5, club: -2, fame: -1 }, riskMsg: "It sounds arrogant. The coach and your teammates are not happy." },
+        { t: "Blame the referee", e: { fame: 6, hype: 3 }, msg: "Controversial, and everyone is talking about it.", risk: 0.65, riskE: { club: -4, coach: -3, fame: -2 }, riskMsg: "The federation opens a case and the club is annoyed." },
+      ] },
+    { id: "futureq", title: "The future question",
+      text: (f) => `A journalist asks if you see yourself staying at ${f.club ? f.club.name : "your club"} for the long term.`,
+      choices: [
+        { t: "Say you are fully committed", e: { club: 4, coach: 3, hap: 1 }, msg: "The fans and the board love it." },
+        { t: "Keep it vague", e: { fame: 1 }, msg: "A boring answer. Nobody remembers it." },
+        { t: "Hint at a dream move", e: { fame: 6, hype: 5 }, msg: "Transfer rumours everywhere. Your name is trending.", risk: 0.55, riskE: { club: -7, coach: -4, fame: -2 }, riskMsg: "The club takes it as an insult and the fans turn on you a little." },
+      ] },
+    { id: "feature", title: "Long feature interview",
+      text: () => `A big outlet wants a long, personal story about you: where you come from, what drives you.`,
+      choices: [
+        { t: "Open up about your story", e: { fame: 5, hap: 4, hype: 2 }, msg: "A touching piece. People connect with you.", risk: 0.2, riskE: { hap: -3 }, riskMsg: "They twist a couple of details. It stings." },
+        { t: "Talk only about football", e: { coach: 2, club: 1, fame: 1 }, msg: "Professional and a bit dry." },
+        { t: "Say something spicy about a rival", e: { fame: 8, hype: 4 }, msg: "The headline writes itself.", risk: 0.55, riskE: { club: -3, fame: -3, hap: -3 }, riskMsg: "The rival answers back and you look petty." },
+      ] },
+    { id: "podcast", title: "Podcast appearance",
+      text: () => `A popular football podcast invites you for a loose conversation with no script.`,
+      choices: [
+        { t: "Be funny and relaxed", e: { fame: 5, hap: 3 }, msg: "Clips of you go around everywhere.", risk: 0.3, riskE: { fame: -1 }, riskMsg: "The jokes do not land." },
+        { t: "Tell dressing room stories", e: { fame: 7, hype: 3 }, msg: "The fans eat it up.", risk: 0.65, riskE: { coach: -8, club: -4, fame: -2 }, riskMsg: "Your teammates feel betrayed. The coach is livid." },
+        { t: "Decline politely", e: { coach: 1 }, msg: "You stay out of trouble." },
+      ] },
+    { id: "bestplayer", title: "Hot take",
+      text: () => `The host asks who the best player in the world is right now, and you are not the obvious answer.`,
+      choices: [
+        { t: "Respect the best and keep it classy", e: { fame: 3, club: 1 }, msg: "A classy answer that gets shared." },
+        { t: "Say it should be you", e: { fame: 7, hype: 5 }, msg: "Bold. Fans love the confidence.", risk: 0.55, riskE: { fame: -3, coach: -3 }, riskMsg: "You get roasted for a week." },
+        { t: "Laugh it off", e: { hap: 2 }, msg: "You dodge it with a smile." },
+      ] },
+  ];
+  function interviewNow(f) {
+    if (f.intLeft == null) f.intLeft = 2;
+    if (f.intLeft <= 0) return noticeIt(T("Interview"), T("The media had enough of you for this season. New chances come next season."), () => openFutbol(), true);
+    f.intLeft--;
+    const ev = pick(INTERVIEWS);
+    card({
+      tag: T("Interview"),
+      iconSrc: E("1f3a4"),
+      title: T(ev.title),
+      lead: `${T(ev.text(f))}<br><br>${T("What do you do?")}`,
+      rows: [[T("Fame"), `${Math.round(f.fame)}%`], [T("Club relations"), `${Math.round(f.clubRel)}%`]],
+      choices: ev.choices.map((ch) => [
+        T(ch.t),
+        () => {
+          let rows = applyEffects(f, ch.e || {});
+          let msg = ch.msg || "";
+          if (ch.risk && rnd() < ch.risk) {
+            rows = applyEffects(f, ch.riskE || {}, rows);
+            msg = ch.riskMsg || msg;
+          }
+          if (!rows.length && ch.e) rows = effectRows(ch.e);
+          sayIt(msg ? firstPerson(msg) : `${ev.title}: ${ch.t}.`);
+          card({ iconSrc: E("1f3a4"), title: T(ev.title), lead: T(msg), rows, ok: () => openFutbol() });
+        },
+      ]),
+    });
+  }
   function extraTraining(f) {
     const cost = 15000;
     if (f.extraYear === year()) return noticeIt(CAREER, T("You already hired extra training this year."), null, true);

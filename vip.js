@@ -42,7 +42,6 @@
     "hustler",
     "fighter",
     "vampire",
-    "director",
     // Expansions & bundles
     "landlord",
     "casino",
@@ -96,7 +95,6 @@
         ["hustler", "Street Hustler", "Hit the streets and hustle"],
         ["fighter", "Ultimate Fighter", "Fight your way to the top"],
         ["vampire", "Vampire Mode", "Live a very long, very pale life"],
-        ["director", "Movie Director", "Become a famous director"],
       ],
     },
     {
@@ -265,17 +263,23 @@
     const row = (id, name, desc) =>
       `<div class="row"><img src="mkt/${id}.png" alt=""><div class="t"><b>${name}</b><span>${desc}</span></div>` +
       `${on ? '<img class="mkt-owned" src="mkt/owned.png" alt="Unlocked">' : ""}</div>`;
-    // Islands are on sale in Shopping (Archipelago Estates): these rows open that showroom
-    const soonRow = (name, desc, img) =>
-      `<div class="row" data-vipisland="1"><img src="${img}" alt="" style="object-fit:contain"><div class="t"><b>${name}</b><span>${desc}</span></div>` +
-      `<div class="mkt-price">SHOP</div></div>`;
-    const islands =
-      `<div class="sec" id="vipIslandsSec">Islands · Now in Shopping</div>` +
-      soonRow("Archipelago Estates", "Buy a private or wild island in Shopping", ISLANDS.logo) +
-      `<div class="sec">Private Islands</div>` +
-      ISLANDS.private.map(([, name, desc, img]) => soonRow(name, desc, img)).join("") +
-      `<div class="sec">Wild Islands</div>` +
-      ISLANDS.wild.map(([, name, desc, img]) => soonRow(name, desc, img)).join("");
+    // Islands live here now: with VIP on, claim any of them for free (they land in Assets > Garage)
+    const EL = window.FL_ELITE_LIFE;
+    const defs = (EL && EL.CATALOG && EL.CATALOG.islands) || [];
+    const islandRow = (d) => {
+      const own = EL && EL.ownsIsland && EL.ownsIsland(d.id);
+      return (
+        `<div class="row" data-vipisland="${d.id}"><img src="${d.img}" alt="" style="object-fit:contain"><div class="t"><b>${d.name}</b><span>${d.desc}</span></div>` +
+        `${own ? '<img class="mkt-owned" src="mkt/owned.png" alt="Owned">' : `<div class="mkt-price">${money(d.price)}</div>`}</div>`
+      );
+    };
+    const islands = defs.length
+      ? `<div class="sec" id="vipIslandsSec">Islands</div>` +
+        `<div class="sec">Private Islands</div>` +
+        defs.filter((d) => d.type === "private island").map(islandRow).join("") +
+        `<div class="sec">Wild Islands</div>` +
+        defs.filter((d) => d.type !== "private island").map(islandRow).join("")
+      : "";
     sList.innerHTML =
       `<div class="sec">${on ? "All VIP unlocked" : "VIP locked"}</div>` +
       `<div class="row" id="vipToggle" style="background:${on ? "#eef8e8" : "#fbe6e6"}"><img src="mkt/bitizen.png" alt="">` +
@@ -292,8 +296,26 @@
     if (toggle) toggle.onclick = () => setVip(!isOn());
     sList.querySelectorAll("[data-vipisland]").forEach((el) => {
       el.onclick = () => {
-        if (window.FL_ELITE_LIFE && FL_ELITE_LIFE.openVehicleStore) FL_ELITE_LIFE.openVehicleStore("islands");
-        else if (typeof openShopping === "function") openShopping();
+        const d = defs.find((x) => x.id === el.dataset.vipisland);
+        if (!d || !EL) return;
+        if (EL.ownsIsland(d.id)) return notice("Already yours", `${d.name} is already in your Assets, under Garage.`, null, true);
+        if (state.age < 18) return notice("Too young", "You must be at least 18 to own an island.", null, true);
+        jCard({
+          tag: "Island",
+          iconSrc: d.img,
+          title: d.name,
+          close: true,
+          lead: d.desc,
+          rows: [["Price", money(d.price)], ["Size", d.speed], ["Guests", d.cap + " people"], ["Yearly upkeep", money(d.upkeep)]],
+          choices: [
+            [`Buy it - ${money(d.price)}`, () => {
+              const r = EL.buyIsland(d.id);
+              if (r === "ok") notice("Yours", `${d.name} is yours. Find it in Assets, under Garage.`, () => openVip({ islands: true }), true);
+              else if (r === "money") notice("Not enough", `You need ${money(d.price)} to buy ${d.name}.`, null, true);
+            }],
+            ["Not now", () => {}],
+          ],
+        });
       };
     });
     sList.scrollTop = 0;

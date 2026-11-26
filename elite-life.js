@@ -1484,6 +1484,7 @@
     const rows =
       `<div class="sec">Garage, Marina & Hangar</div>` +
       Object.entries(CATS)
+        .filter(([kind]) => kind !== "islands") // islands moved to VIP Everything
         .map(
           ([kind, cat]) =>
             `<div class="row" data-elite="${kind}"><img src="${cat.icon}" alt=""><div class="t"><b>${esc(cat.dealer)}</b><span>${esc(cat.desc)}</span></div>${chev()}</div>`,
@@ -1575,5 +1576,21 @@
     openVehicleStore,
     openOwned,
     fleet,
+    // VIP: claim an island for free (no price, no showroom)
+    ownsIsland: (id) => fleet().some((v) => v && v.kind === "islands" && v.id === id),
+    price: (id) => (findDef("islands", id) || {}).price || 0,
+    // buy an island from the VIP screen: returns "ok" | "money" | "owned" | "none"
+    buyIsland(id) {
+      const def = findDef("islands", id);
+      if (!def) return "none";
+      if (fleet().some((v) => v && v.kind === "islands" && v.id === id)) return "owned";
+      if (state.money < def.price) return "money";
+      state.money -= def.price;
+      fleet().push({ ...def, kind: "islands", value: def.price, cond: 100, bought: state.age, used: -1 });
+      if (typeof chaChing === "function") chaChing();
+      if (typeof renderStats === "function") renderStats();
+      if (typeof say === "function") say(`I bought ${def.name} for ${money(def.price)}.`);
+      return "ok";
+    },
   };
 })();

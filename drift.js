@@ -3,7 +3,8 @@
  * State: state.drift (plain JSON, per life). Cars are the normal state.cars; tuning lives on each car (car.dt).
  * Path: illegal street runs -> local tournaments -> pro league, with sponsors on the way. Tandem battles are the
  * "key matches": you lead and you chase, the judges score Angle, Speed and Line.
- * Rule: text inside the code is plain English strings (no i18n yet).
+ * Rule: text inside the code is plain English; the Spanish comes from i18n/ui.tsv
+ * (section "drift boy & jdm mods") through the DOM translator, no T() calls needed.
  */
 (() => {
   "use strict";
@@ -110,7 +111,7 @@
     const c = car();
     const team = (d.co ? 4 : 0) + (d.mech ? 2 : 0);
     const hap = state.stats && Number.isFinite(state.stats.Happiness) ? (state.stats.Happiness - 50) / 12 : 0;
-    return clampN(0.4 * carRating(c) + 0.35 * d.ctl + 0.1 * d.ref + 0.05 * d.phy + 0.1 * (50 + team * 3 + hap * 2), 5, 99);
+    return clampN(0.4 * carRating(c) + 0.35 * d.ctl + 0.1 * d.ref + 0.05 * d.phy + 0.1 * (50 + team * 3 + hap * 2) + (d.co ? 5 : 0), 5, 99); // co-driver: +5 skill
   };
   const stageName = (d) => STAGES[d.stage].t;
 
@@ -136,6 +137,8 @@
     stat("ctl", "Control");
     stat("ref", "Reflexes");
     stat("phy", "Fitness");
+    // fame snowballs: the more followers you have, the more reputation each good result gives (x1 at 0, ~x1.5 at 1k, ~x2 at 10k, max x2.5)
+    if (f.rep > 0) f = { ...f, rep: Math.max(1, Math.round(f.rep * clampN(1 + Math.log10(1 + (d.fol || 0) / 100) * 0.5, 1, 2.5))) };
     stat("rep", "Reputation");
     stat("heat", "Police heat");
     if (f.fol) {
@@ -160,9 +163,23 @@
     return rows;
   }
 
+  // the main DRIFT BOY screen sits under every popup: after any choice it redraws itself so the bars and rows are never stale
+  let mainShown = false;
+  const refreshMain = () => {
+    try {
+      if (!mainShown || !screen.classList.contains("open") || sTitle.textContent !== "DRIFT BOY") return;
+      const y = sList.scrollTop;
+      openDrift();
+      sList.scrollTop = y;
+    } catch (e) {
+      console.warn("[drift] refresh", e);
+    }
+  };
+  const live = (choices) =>
+    (choices || []).map((c) => (typeof c[1] === "function" ? [c[0], (...a) => { const r = c[1](...a); setTimeout(refreshMain, 80); return r; }, ...c.slice(2)] : c));
   const card = (title, lead, rows, after, icon) =>
-    jCard({ tag: CAREER, iconSrc: icon || ICON, title, lead, rows: rows || [], choices: [["OK", after || (() => {})]] });
-  const ask = (title, lead, choices, rows, icon) => jCard({ tag: CAREER, iconSrc: icon || ICON, title, lead, rows: rows || [], choices });
+    jCard({ tag: CAREER, iconSrc: icon || ICON, title, lead, rows: rows || [], choices: live([["OK", after || (() => {})]]) });
+  const ask = (title, lead, choices, rows, icon) => jCard({ tag: CAREER, iconSrc: icon || ICON, title, lead, rows: rows || [], choices: live(choices) });
   const q = (fn) => (typeof queuePopup === "function" ? queuePopup(fn) : setTimeout(fn, 400));
 
   // police: heat makes street activities risky
@@ -236,15 +253,20 @@
       if (crash) return o.onDone({ win: false, crash: true, margin: -9, rows });
       if (Math.abs(margin) <= 1.5) {
         // One More Time
-        return ask("One More Time!", `The judges cannot split you and ${opp.name}. Both cars go again, one corner, winner takes it.`, [
+        const sim = () => ask("One More Time!", `Both cars go again, one corner, winner takes it. How do you play it?`, [
           ["Go all in", () => omt(0.28)],
           ["Drive your line", () => omt(0.1)],
           ["Stay calm", () => omt(0)],
         ], rows);
+        if (!window.FL_DTRACK || !window.FL_DTRACK.duel) return sim();
+        return ask("One More Time!", `The judges cannot split you and ${opp.name}. Settle it yourself on the track, or let the car do the talking.`, [
+          ["Drive it yourself", () => window.FL_DTRACK.duel(opp, (res) => o.onDone({ ...res, rows })) || sim()],
+          ["Simulate it", sim],
+        ], rows);
       }
       o.onDone({ win: margin > 0, crash: false, margin, rows });
       function omt(bias) {
-        const p = clampN(0.5 + (skill() - opp.skill) / 160 + (bias ? (rnd() < 0.5 ? bias : -bias) * 0.5 : 0.04), 0.15, 0.85);
+        const p = clampN(0.5 + (skill() - opp.skill) / 160 + (bias ? (rnd() < 0.5 ? bias : -bias) * 0.5 : 0.08), 0.15, 0.85);
         const win = rnd() < p;
         o.onDone({ win, crash: false, margin: win ? 0.5 : -0.5, omt: true, rows });
       }
@@ -266,8 +288,8 @@
     };
     const choose = (i) => {
       const op = OPTS[i];
-      const p = clampN(0.5 + (skill() - opp.skill) / 150 + op.e + V.ease, 0.12, 0.95);
-      const crashP = op.c * (1 + V.risk) * clampN(1.25 - skill() / 150, 0.4, 1.3);
+      const p = clampN(0.58 + (d.co ? 0.04 : 0) + (skill() - opp.skill) / 150 + op.e + V.ease, 0.15, 0.95); // a bit easier to land your moves
+      const crashP = op.c * 0.75 * (1 + V.risk) * clampN(1.25 - skill() / 150, 0.4, 1.3);
       if (rnd() < crashP) {
         return crashCard(d, V, () => fin(true));
       }
@@ -276,8 +298,11 @@
         me.cat[op.cat] += op.r;
       }
       // the other driver
-      const po = clampN(0.5 + (opp.skill - skill()) / 150 + (rnd() - 0.5) * 0.3, 0.1, 0.95);
-      const oi = rnd() < 0.3 ? 0 : rnd() < 0.6 ? 1 : 2;
+      // the rival picks like a driver: better ones go for angle, the rest play it safe, and risky moves fail more often
+      const agg = clampN(opp.skill / 100, 0.1, 0.95);
+      const rr = rnd();
+      const oi = rr < 0.12 + 0.4 * agg ? 0 : rr < 0.12 + 0.4 * agg + 0.38 ? 1 : 2;
+      const po = clampN(0.47 + (opp.skill - skill()) / 150 + OPTS[oi].e + (rnd() - 0.5) * 0.2, 0.08, 0.95);
       if (rnd() < po) them.cat[OPTS[oi].cat] += OPTS[oi].r;
       step++;
       const txt = ok ? pick(["Clean. The crowd noise says it all.", "Smoke everywhere and the car obeys.", "You nail it.", "Perfect, the tail follows your hands."]) : pick(["A little wide. You lose some points.", "The tyres let go a bit too early.", "Not your best, but you stay on the road.", "You lose the angle and get it back."]);
@@ -757,7 +782,7 @@
         if (d.co) { d.co = null; return card("Fired", "Your co-driver leaves the team.", [], teamMenu); }
         if ((state.money || 0) < coCost) return card("Not enough money", "You cannot pay his first year.", [], teamMenu);
         d.co = { name: `${pick(FIRST)} ${pick(LAST)}`, pay: coCost };
-        card("Hired", `${d.co.name} joins as co-driver. Your battles get a little easier.`, [["Salary", money(coCost) + "/yr"]], teamMenu);
+        card("Hired", `${d.co.name} joins as co-driver. Battles get easier (+5 skill, better odds on every move) and on the track he calls the bends and you score 10% more.`, [["Salary", money(coCost) + "/yr"]], teamMenu);
       }],
       [m.hired ? `Mechanic: ${m.name} (fire)` : `Hire ${m.name} as team mechanic (${money(mCost)}/yr)`, () => {
         if (m.hired) { m.hired = false; return card("Let go", "Your mechanic goes back to the shop.", [], teamMenu); }
@@ -854,6 +879,14 @@
     ["weather_forecast", "A storm is coming", "A storm warning for the weekend's event.", [["Prepare the car", { money: -200, ctl: 1 }, "You change the tyres and tune the suspension."], ["Trust your skill", {}, "You wing it.", 0.3, { cond: -12 }, "The wet road bites."]]],
     ["bank", "Your money gets tight", "Your account is running low after the last few months.", [["Take a part-time job", { money: 600, hap: -2, ctl: -1 }, "It pays the bills."], ["Sell parts", { money: 900, cond: -3 }, "It hurts, but it pays."]], (d) => (state.money || 0) < 3000],
     ["documentary", "A documentary crew", "A small crew wants to film a documentary about you.", [["Say yes", { fol: 2000, rep: 4, hap: 3 }, "It premieres to a full room."], ["Say no", {}, "You prefer privacy."]], (d) => d.stage >= 2],
+    ["gas_station", "Midnight at the gas station", "You fill up at 3 a.m. and three cars pull in behind you. Everybody looks at your tyres.", [["Talk to them", { fol: 120, hap: 3 }, "They are a crew from the next city. You trade numbers and a few tips."], ["Fill up and leave", {}, "Nobody says a word. Respect, in its own way."]]],
+    ["tyre_smoke", "A perfect cloud of smoke", "On the way home you throw the car sideways on an empty road, just for fun. A cyclist films the whole thing.", [["Wave at the camera", { fol: 250, rep: 1 }, "He posts it that night. The comments are all fire emojis."], ["Hide your plate next time", { heat: -4 }, "A little paranoia never hurt anybody."]]],
+    ["wrong_gear", "A bad night with the gearbox", "The gearbox starts to grind on the last run of the night.", [["Pull over and check it", { money: -350, cond: 4 }, "A worn synchro. Not cheap, but the car lives."], ["Finish the run", { rep: 1 }, "You finish the night in style.", 0.35, { cond: -16, money: -900 }, "The gearbox gives up halfway home. Tow truck time."]]],
+    ["sensei_gift", "A gift from the old driver", "The veteran from the mountain leaves a pair of worn driving gloves on your hood. No note.", [["Wear them", { ctl: 2, hap: 3 }, "They fit like they were made for you. Your hands feel steadier."], ["Put them in a frame", { hap: 2, rep: 1 }, "Some things are worth more than their use."]]],
+    ["fan_meet", "A fan meet-up", "A group of fans organises a meet-up in your honour. They bring signs, food and a very loud speaker.", [["Show up", { fol: 700, hap: 4, rep: 1 }, "You sign hoods, helmets and one very confused dog."], ["Stay home", { hap: -1 }, "They have fun without you. You feel a little guilty."]], (d) => d.fol > 500],
+    ["engine_swap", "An engine swap offer", "A garage offers to swap in a bigger engine for a cut of your next prize.", [["Do the swap", { ctl: -1, cond: 6, rep: 2 }, "More power, a lot more noise. You need time to learn it."], ["Keep it stock", { ctl: 1 }, "You trust the car you know."]], (d) => d.stage >= 1],
+    ["tofu_run", "A tofu delivery run", "An old friend bets you cannot carry a full tray of tofu across the mountain without spilling.", [["Take the bet", { ctl: 3, hap: 3 }, "Not a drop spilled. Smooth hands are fast hands."], ["Laugh and pass", {}, "Some legends are better left alone."]]],
+    ["sunrise", "Sunrise on the mountain", "You stay out all night. The first light shows up behind the last corner.", [["Watch it", { hap: 5, ctl: 1 }, "No clips, no crowd. Just you, the car and a very good morning."], ["Go home and sleep", { hap: 1 }, "A tired driver is a slow driver."]]],
   ];
   // 40+ events
   function randomEvent(d) {
@@ -916,8 +949,10 @@
   const row = (id, icon, t, s, dis) =>
     `<div class="row${dis ? " dis" : ""}" data-d="${id}"><img src="${icon}" alt="" style="object-fit:contain"><div class="t"><b>${t}</b><span>${s}</span></div>${dis ? "" : chev()}</div>`;
   const sec = (t) => `<div class="sec">${t}</div>`;
-  const bar = (label, v, col) => `<div class="rel">${label} <i><u style="width:${Math.max(2, Math.round(v))}%;background:${col || (typeof barCol === "function" ? barCol(v) : "#3a8f3f")}"></u></i></div>`;
+  const barOld = (label, v, col) => `<div class="rel">${label} <i><u style="width:${Math.max(2, Math.round(v))}%;background:${col || (typeof barCol === "function" ? barCol(v) : "#3a8f3f")}"></u></i></div>`;
+  const bar = (label, v, col) => (window.FL_BARS ? FL_BARS.html(label, v, col) : barOld(label, v, col));
   function openScreen(title, back, html) {
+    mainShown = false;
     sTitle.textContent = title;
     if (typeof sSub !== "undefined" && sSub && sSub.style) sSub.style.display = "none";
     sBack.innerHTML = typeof BACK_ICON !== "undefined" ? BACK_ICON : "&larr;";
@@ -973,10 +1008,11 @@
     const back = () => (typeof openSpecialCareers === "function" ? openSpecialCareers() : screen.classList.remove("open"));
     const left = Math.max(0, MAX_ACTS - d.yr.acts);
     const html =
-      `<div class="row" style="cursor:default"><img src="${c ? carImg(c) : ICON}" alt="" style="object-fit:contain"><div class="t"><b>${stageName(d)}</b><span>${esc(carName(c))} · rating ${Math.round(carRating(c))} · ${d.wins}W/${d.losses}L · ${d.titles} title${d.titles === 1 ? "" : "s"}</span></div></div>` +
-      `<div class="row" style="cursor:default;flex-direction:column;align-items:stretch;height:auto;padding:10px 14px">${bar("Control", d.ctl)}${bar("Reflexes", d.ref)}${bar("Fitness", d.phy)}${bar("Reputation", d.rep, "#e2a31f")}${bar("Police heat", d.heat, "#b3261e")}<span style="font-size:12px;opacity:.7;margin-top:2px">${left} activities left this year · ${d.fol.toLocaleString("en-US")} followers · skill ${Math.round(skill())}</span></div>` +
+      `<div class="row" style="cursor:default"><img src="${c ? carImg(c) : ICON}" alt="" style="object-fit:contain;width:150px;height:72px;max-width:42%;flex:0 0 auto;margin-right:12px"><div class="t"><b>${stageName(d)}</b><span>${esc(carName(c))} · rating ${Math.round(carRating(c))} · ${d.wins}W/${d.losses}L · ${d.titles} title${d.titles === 1 ? "" : "s"}</span></div></div>` +
+      `<div class="row" style="cursor:default;flex-direction:column;align-items:stretch;height:auto;padding:10px 14px">${bar("Control", d.ctl)}${bar("Reflexes", d.ref)}${bar("Fitness", d.phy)}${bar("Reputation", d.rep, "#e2a31f")}${bar("Police heat", d.heat, "#b3261e")}<span style="font-size:14px;opacity:.85;margin-top:4px">${left} activities left this year · ${d.fol.toLocaleString("en-US")} followers · skill ${Math.round(skill())}</span></div>` +
       sec("Compete") +
       row("battle", E("1f3c1"), "Tandem battle", d.stage === 0 ? "Challenge someone on the street" : "A battle at a venue near you") +
+      (window.FL_DTRACK ? row("drive", E("1f4a8"), "Drive the track", "Slide it yourself: combos, crowds and surprises") : "") +
       row("tour", E("1f3c6"), "Enter a tournament", d.stage >= 1 ? (d.yr.tour ? "Already entered this year" : (d.stage >= 2 ? "Pro league event: Hakone or Fuji" : "Local bracket: three battles")) : "Needs a reputation first", d.stage < 1 || !!d.yr.tour) +
       row("japan", E("2708-fe0f"), "Travel to Japan", "Tokyo, Hakone and Fuji") +
       sec("Train") +
@@ -992,9 +1028,10 @@
       row("team", ACT.team.ico, ACT.team.t, `${d.co ? "Co-driver" : "no co-driver"} · ${d.mech && d.mech.hired ? "mechanic" : "no mechanic"}`) +
       row("quit", E("1f6aa"), "Quit drifting", "Hang up the keys", false);
     openScreen("DRIFT BOY", back, html);
+    mainShown = true;
     const mk = (id) => () => doSimpleAct(id);
     bind({
-      battle: streetBattle, tour: tournament, japan: japanMenu,
+      battle: streetBattle, drive: () => window.FL_DTRACK && window.FL_DTRACK.open(), tour: tournament, japan: japanMenu,
       parking: mk("parking"), track: mk("track"), sim: mk("sim"), replays: mk("replays"), reflex: mk("reflex"),
       tuning: tuningMenu, mechanic: mechanicMenu, chassis: chassisMenu,
       meet: mk("meet"), takeover: mk("takeover"), clips: mk("clips"),
@@ -1055,7 +1092,7 @@
         }
       }, 0),
     );
-    window.FL_DRIFT = { open: openDrift, state: () => state.drift, tick: yearTick, battle: tandem, skill, carRating };
+    window.FL_DRIFT = { open: openDrift, state: () => state.drift, tick: yearTick, battle: tandem, skill, carRating, D, car, carName, carImg, fx, card, ask, needCar, tired, checkStage, MAX_ACTS };
   }
   boot();
 })();

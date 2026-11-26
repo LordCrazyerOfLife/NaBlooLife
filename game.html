@@ -26,7 +26,7 @@
           if (done || document.getElementById("flBootHelp")) return;
           const d = document.createElement("div");
           d.id = "flBootHelp";
-          d.style.cssText = "position:fixed;inset:0;z-index:2147483647;background:#0b1226;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;font:800 17px/1.4 system-ui,sans-serif";
+          d.style.cssText = "position:fixed;inset:0;z-index:var(--z-debug);background:#0b1226;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;font:800 17px/1.4 system-ui,sans-serif";
           const mk = (t, f, bg) => {
             const b = document.createElement("button");
             b.textContent = t;
@@ -61,12 +61,14 @@
       })();
     </script>
     <!-- [mod] languages -->
-    <script src="i18n.js"></script>
-    <script src="i18n/es.js"></script>
-    <script src="i18n/pt.js"></script>
+    <script src="i18n.js?v=2"></script>
+    <script>
+      // only load the dictionaries of the active language (switching language reloads the page)
+      FL_I18N.lang !== "en" && document.write('<script src="i18n/' + FL_I18N.lang + '.js?v=4"><\/script>');
+    </script>
     <script>
       // bulk event text: only load the file for the active language
-      FL_I18N.lang !== "en" && document.write('<script src="i18n/' + FL_I18N.lang + '.events.js"><\/script>');
+      FL_I18N.lang !== "en" && document.write('<script src="i18n/' + FL_I18N.lang + '.events.js?v=4"><\/script>');
     </script>
     <script>
       /* [mod] no more key/menu lockdown on desktop: F12, Ctrl+Shift+I/J/C/K/S, Ctrl+U, Ctrl+S and the right-click menu
@@ -81,7 +83,7 @@
           !0,
         );
       try {
-        if (JSON.parse(localStorage.getItem("bitlifepp-settings") || "{}").pcMode) {
+        if (!FL_COARSE && JSON.parse(localStorage.getItem("bitlifepp-settings") || "{}").pcMode) {
           const e = document.documentElement;
           e.classList.add("pc"), (window.PCZ = 1);
           const t = () => {
@@ -111,11 +113,7 @@
         }
       } catch {}
     </script>
-    <!-- [fix] the fonts load without blocking: if fonts.googleapis.com is slow or blocked the game still starts (system fonts until they arrive) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Mulish:wght@400;500;600;700;800;900&family=Bungee&family=Kaushan+Script&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
-    <noscript><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=Mulish:wght@400;500;600;700;800;900&family=Bungee&family=Kaushan+Script&display=swap" rel="stylesheet" /></noscript>
+    <link rel="stylesheet" href="fonts.css" />
     <style>
       :root {
         --red: #ee3d23;
@@ -161,11 +159,27 @@
         position: relative;
         box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
       }
+      /* [fix] fill the whole screen on any phone/tablet (no black side bars) */
+      @media (pointer: coarse), (max-width: 900px) {
+        html,
+        body {
+          width: 100%;
+          min-height: 100%;
+        }
+        .phone {
+          max-width: none;
+          width: 100vw;
+          height: 100vh;
+          height: 100dvh;
+          box-shadow: none;
+        }
+      }
       html.pc .phone {
         max-width: none;
         box-shadow: none;
         zoom: var(--pcz, 1);
         height: calc(100vh / var(--pcz, 1));
+        height: calc(100dvh / var(--pcz, 1));
       }
       html.pc .phone {
         --pccol: max(0px, calc(50% - 470px));
@@ -11009,10 +11023,86 @@
         display: none;
       }
     </style>
+    <style id="fl-polish">
+      :root {
+        --z-safe: 2147483000;
+        --z-modal-back: 2147483001;
+        --z-modal: 2147483002;
+        --z-modal-top: 2147483003;
+        --z-lock: 2147483600;
+        --z-debug: 2147483647;
+        --ui-scale: 0.85;
+      }
+      .phone.ui-scaled {
+        zoom: var(--ui-scale, 0.85);
+        height: calc(100dvh / var(--ui-scale, 0.85));
+      }
+      .s-list,
+      .log,
+      .cdrop-list,
+      #authGate .ag-body,
+      #authGate .ag-ppt {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+      @media (pointer: coarse) {
+        .phone.ui-scaled {
+          width: calc(100vw / var(--ui-scale, 0.85));
+        }
+        .menu-btn,
+        .jm-x,
+        .phone.gold .jm-x,
+        .community,
+        .pray,
+        .minus,
+        .week-btn,
+        .cdrop-list div,
+        #cheatPanel .cp-close {
+          min-width: 44px;
+          min-height: 44px;
+        }
+        .nav {
+          box-sizing: border-box;
+          padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .pill.tt,
+        .pill.tt b,
+        .minus small,
+        .week-btn small {
+          font-size: 11.5px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .ft-fame::after,
+        .phone.rainbow,
+        .phone.rainbow::before,
+        .phone.rainbow::after,
+        .phone.rainbow *::before,
+        .phone.rainbow *::after,
+        #authGate,
+        #authGate *,
+        #authGate *::before,
+        #authGate *::after {
+          animation: none !important;
+        }
+      }
+      html.fl-hidden *,
+      html.fl-hidden *::before,
+      html.fl-hidden *::after {
+        animation-play-state: paused !important;
+      }
+    </style>
+    <script>
+      try {
+        document.addEventListener("visibilitychange", function () {
+          document.documentElement.classList.toggle("fl-hidden", document.hidden);
+        });
+      } catch {}
+    </script>
   </head>
   <body>
     <div id="topSafeBar"></div>
-    <div class="phone bl-locked">
+    <div class="phone ui-scaled bl-locked">
       <div id="splash">
         <img class="sp-a sp-sperm" src="splash/sperm0.png" alt="" />
         <img class="sp-a sp-logo" src="splash/logo-pp.png" alt="NaBlooLife" />
@@ -22992,8 +23082,8 @@
         if (state.prison)
           return notice("Driving License", "You can't take the driving test from prison.", null, !0);
         const t = state.drivingTries ? 10 * rint(4, 9) : 0;
-        honk(),
-          jCard({
+        // no honk here: this card also pops up by itself when you age up at 16
+        jCard({
             tag: "License",
             iconSrc: "cars/ui-license-car.png",
             title: "Driving License",
@@ -23080,7 +23170,6 @@
           c = (e) => {
             t.rel = clamp(t.rel + e);
           };
-        honk();
         const d = (e) => {
           (e.gift = !0),
             (e.loanYears = 0),
@@ -70128,7 +70217,7 @@
       if (mods.modLoader && !window.__modLoaderInjected) {
         window.__modLoaderInjected = !0;
         const _ml = document.createElement("script");
-        (_ml.src = "modloader.js?v=28"), document.body.appendChild(_ml);
+        (_ml.src = "modloader.js?v=31"), document.body.appendChild(_ml);
       }
       const saveMods = () => {
         try {
@@ -70218,8 +70307,7 @@
           e("expansion", "emoji/1f4bc.png", "Expansion Packs", "") +
           e("settings", t("gear"), "Settings", "", CHEV, "") +
           e("themes", t("moon-crescent"), "Themes", "") +
-          e("redeem", t("star"), "Redeem Code", "Redeem a gift code", DOTS) +
-          '<div class="mm-foot">NaBlooLife v0.2<br>99% bug-free. The other 1% is a feature.<span class="solo">Made by Nan089111 and ItzBloodie.dev</span></div>';
+          e("redeem", t("star"), "Redeem Code", "Redeem a gift code", DOTS);
         const o = document.querySelector(".phone"),
           n = o.classList.contains("flui") && !o.classList.contains("y2018");
         if (n) {
@@ -73250,7 +73338,6 @@
               ["boss", "Boss Mode", "Bundle and save! Unlock all 11 Job Packs!", "Best Value"],
               ["fighter", "Ultimate Fighter Mode", "Get ready to rumble!", "NEW"],
               ["vampire", "Vampire Mode", "Go for the jugular!", "Popular"],
-              ["director", "Movie Director", "Become a famous movie director!", "NEW"],
             ],
           ],
           [
@@ -89446,7 +89533,7 @@
     <script src="poor-family.js?v=1"></script>
     <script src="instruments.js?v=3"></script>
     <script src="bikes.js?v=4"></script>
-    <script src="zxcvbn.js"></script>
+    <script async src="zxcvbn.js"></script>
     <script src="cemetery.js?v=7"></script>
     <script src="settings.js?v=85"></script>
     <script src="musician.js?v=10"></script>
@@ -89472,12 +89559,12 @@
     <script src="smuggling.js?v=9"></script>
     <script src="cartel.js?v=13"></script>
     <script src="drugs.js?v=9"></script>
-    <script src="mods.js?v=18"></script>
-    <script src="elite-life.js?v=9"></script>
-    <script src="vip.js?v=6"></script>
-    <script src="basketball.js?v=29"></script>
+    <script src="mods.js?v=21"></script>
+    <script src="elite-life.js?v=11"></script>
+    <script src="vip.js?v=8"></script>
+    <script src="basketball.js?v=30"></script>
     <script src="fighter.js?v=8"></script>
-    <script src="vampire.js?v=8"></script>
+    <script src="vampire.js?v=9"></script>
     <script src="serial-clues.js?v=2"></script>
     <script src="serial-killer.js?v=41"></script>
     <script src="special-crime.js?v=2"></script>
@@ -89489,6 +89576,7 @@
     <script src="event-rules.js?v=3"></script>
     <script src="auth.js?v=31"></script>
     <script src="tab-lock.js?v=1"></script>
+    <script src="occupation-merge.js?v=1"></script>
     <!-- [base] fixes and extensions that used to be separate mods (always on, not in the Mod Loader) -->
     <script src="ui-bars.js?v=3"></script>
     <script src="barbershop.js?v=1"></script>
@@ -89508,7 +89596,7 @@
     <script src="landlord.js?v=2"></script>
     <script src="bizempire.js?v=6"></script>
     <script src="penalty.js?v=2"></script>
-    <script src="garage.js?v=4"></script>
+    <script src="garage.js?v=6"></script>
     <script src="accessories-plus.js?v=2"></script>
     <script src="barber-all.js?v=1"></script>
   <script>

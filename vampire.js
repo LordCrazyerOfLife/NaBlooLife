@@ -1079,16 +1079,6 @@
       i = document.querySelector(".phone").classList.contains("flui"),
       s =
         '<div class="sec">Premium Activities</div>' +
-        (i
-          ? ""
-          : n(
-              "actDirector",
-              "prem-director",
-              "mkt/director.png",
-              "Movie Director",
-              "<span>Become a famous movie director!</span>",
-              CHEV,
-            )) +
         n(
           "actVamp",
           "vamp-prem" + (o ? " dis" : ""),
@@ -1118,7 +1108,6 @@
       l = [...sList.querySelectorAll(".sec")].find((e) => "All" === e.textContent.trim());
     l ? l.insertAdjacentHTML("beforebegin", s) : sList.insertAdjacentHTML("afterbegin", s);
     for (const [e, t] of [
-      ["actDirector", "Movie Director"],
       ["actOutdoor", "Outdoor"],
       ["actLuxury", "Luxury"],
     ]) {

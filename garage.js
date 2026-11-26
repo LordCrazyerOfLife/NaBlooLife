@@ -61,7 +61,7 @@
     { id: "bikes", title: "Motorcycles", icon: "bikes/sportbike-01-ducati-red.png", empty: "No motorcycles yet", shop: "Visit Redline Motorcycles", kinds: ["sportbikes"], store: "sportbikes" },
     { id: "marina", title: "Marina", icon: "boats/ship-06-superyacht-white.png", empty: "No boats yet", shop: "Visit Northstar Marine", kinds: ["boats"], store: "boats" },
     { id: "hangar", title: "Hangar", icon: "aircraft/private-jet.png", empty: "No aircraft yet", shop: "Visit the aircraft dealers", kinds: ["planes", "helicopters"], store: "planes" },
-    { id: "islands", title: "Islands", icon: "islands/island-01-modern-villa.png", empty: "No islands yet", shop: "Visit Archipelago Estates", kinds: ["islands"], store: "islands" },
+    { id: "islands", title: "Islands", icon: "islands/island-01-modern-villa.png", empty: "No islands yet", shop: "Buy islands in VIP", kinds: ["islands"], store: "vip-islands" },
   ];
   const inSection = (s) => fleet().filter((v) => v && s.kinds && s.kinds.includes(v.kind));
   const counts = () => ({
@@ -122,6 +122,7 @@
         try {
           play("choice");
         } catch {}
+        if (s.store === "vip-islands" && window.FL_VIP && FL_VIP.open) return FL_VIP.open({ islands: true });
         if (s.store && window.FL_ELITE_LIFE && FL_ELITE_LIFE.openVehicleStore) FL_ELITE_LIFE.openVehicleStore(s.store);
         else if (typeof openShopping === "function") openShopping();
       };

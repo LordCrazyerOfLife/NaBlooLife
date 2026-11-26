@@ -254,7 +254,7 @@
     const past = state.nba && Array.isArray(state.nba.past) ? state.nba.past.slice() : [];
     if (state.nba && state.nba.retired && state.nba.seasons && state.nba.seasons.length)
       past.push({ y: old ? old.y : yr(), pos: state.nba.pos, seasons: state.nba.seasons.length, champs: state.nba.champs, allstar: state.nba.allstar, how: old ? old.how : "retired" });
-    state.nba = { active: true, retired: false, pos, stage: "hs", sk: {}, seasons: [], awards: [], champs: 0, allstar: 0, trust: 55, fame: 6, hype: 0, inj: null, trainLeft: 4, last: state.age, yrsPro: 0, contract: null, team: null, endorse: null, legacy: old, past };
+    state.nba = { active: true, retired: false, pos, stage: "hs", sk: {}, seasons: [], awards: [], champs: 0, allstar: 0, trust: 55, fame: 6, hype: 0, inj: null, trainLeft: 4, intLeft: 2, last: state.age, yrsPro: 0, contract: null, team: null, endorse: null, legacy: old, past };
     const n = state.nba;
     const hl = (Number(state.stats && state.stats.Health) || 55) / 100;
     const sm = (Number(state.stats && state.stats.Smarts) || 50) / 100;
@@ -416,6 +416,7 @@
     if (n.last === state.age) return;
     n.last = state.age;
     n.trainLeft = 4;
+    n.intLeft = 2;
     const steps = [];
     growth(n);
     n.fit = cl(n.fit + 8 + ((Number(state.stats && state.stats.Health) || 50) - 50) / 6);
@@ -856,6 +857,44 @@
       };
     });
 
+
+  // ------------------------------------------------------------------ interviews (2 per year, from the hub)
+  // same shape as EV: [text, win chance, win fx, lose fx, win msg, lose msg]
+  const INTERVIEWS = [
+    { t: "Post-game interview", d: (n) => "The cameras find you right after the buzzer. The reporter asks what made the difference tonight.", c: [
+      ["Credit your teammates", 0.85, { trust: 4, fame: 2 }, { trust: 1 }, "The locker room hears it and loves it.", "Nobody cares, but nothing bad happens."],
+      ["Hype yourself up", 0.5, { fame: 6, hype: 4 }, { trust: -5, fame: -2 }, "Big quote, big clip. The internet eats it.", "It sounds arrogant and the coach is not happy."],
+      ["Take a shot at the other team", 0.35, { fame: 8, hap: 2 }, { trust: -6, money: -50000, fame: -2 }, "They are furious and your clip goes viral.", "The league fines you for the comments."],
+    ] },
+    { t: "The future question", d: (n) => "A reporter asks if you see yourself staying long term with your current team.", c: [
+      ["Say you are all in", 0.8, { trust: 5, fame: 1 }, { trust: 1 }, "The fans and the coach love it.", "Nobody believes you."],
+      ["Keep it vague", null, { fame: 1 }, null, "A boring answer. Nobody remembers it."],
+      ["Hint you want a bigger stage", 0.4, { fame: 7, hap: 2 }, { trust: -8, fame: -3 }, "Rumors everywhere. Your name is trending.", "The team takes it as an insult. Your trust drops."],
+    ] },
+    { t: "Sit-down feature", d: (n) => "A big outlet wants a long, personal feature about your story.", c: [
+      ["Open up about your journey", 0.75, { fame: 5, hap: 4 }, { hap: -3, fame: 1 }, "A touching piece. People connect with you.", "They twist a couple of things. It stings."],
+      ["Talk only about basketball", null, { fame: 2, trust: 2 }, null, "Clean, professional, a little dry."],
+      ["Say something spicy about a rival", 0.4, { fame: 9 }, { trust: -5, fame: -3, hap: -3 }, "The headline writes itself. You win the week.", "The rival answers back and you look petty."],
+    ] },
+    { t: "Podcast appearance", d: (n) => "A popular podcast invites you for a loose, no-filter conversation.", c: [
+      ["Be funny and relaxed", 0.65, { fame: 6, hap: 4 }, { fame: 1 }, "Clips of you go around everywhere.", "The jokes do not land."],
+      ["Spill locker room stories", 0.3, { fame: 8 }, { trust: -10, fame: -2 }, "Fans eat it up.", "Your teammates feel betrayed. Trust drops hard."],
+      ["Decline politely", null, { trust: 1 }, null, "You stay out of trouble."],
+    ] },
+    { t: "Hot take", d: (n) => "A reporter asks you to rate the best player in the league, and you are not on the list.", c: [
+      ["Name someone and respect the game", 0.85, { fame: 3, trust: 2 }, { fame: 0 }, "A classy answer.", "They find it forgettable."],
+      ["Say it should be you", 0.45, { fame: 8, hype: 4 }, { trust: -4, fame: -3 }, "Bold. Fans love the confidence.", "You get roasted for a week."],
+      ["Laugh it off", null, { hap: 2 }, null, "You dodge it with a smile."],
+    ] },
+  ];
+  function openInterview() {
+    const n = N();
+    if (n.intLeft == null) n.intLeft = 2;
+    if (n.intLeft <= 0) return note("No interviews left", "The media had enough of you for this year. Age up for more.");
+    n.intLeft--;
+    runEvent(n, pick(INTERVIEWS), () => openNba());
+  }
+  const potLabel = (n) => (n.pot >= 85 ? "Extraordinary" : n.pot >= 72 ? "High" : "Solid");
   function openNba() {
     const n = N();
     if (!n.active || n.retired) return openHub0();
@@ -864,10 +903,11 @@
     const t = tm(n);
     const logo = t ? t.logo : ICON;
     const o = ovr(n);
-    let h = `<div class="sec">${esc(stageName(n))}</div><div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px"><div style="display:flex;align-items:center;gap:10px"><img src="${logo}" alt="" style="width:44px;height:44px;object-fit:contain"><div><b>${esc(POS[n.pos].n)} · ${n.stage === "pro" ? role(n) : stageLabel(n)}</b><div style="font-size:12px;opacity:.75">${n.contract ? `${esc(n.contract.kind || "Contract")} · ${money(n.contract.sal)}/yr · ${n.contract.yrs} yr left` : n.stage === "college" ? `Year ${n.collegeYr} of 4` : "Keep working"}</div></div></div>` + bar("Overall", o, col(o)) + bar("Fitness", n.fit, col(n.fit)) + bar("Fame", n.fame, "#6b2f8f") + bar("Coach trust", n.trust, col(n.trust)) + (n.stage !== "pro" ? bar("Draft hype", cl(n.hype), "#2d7dd2") : "") + (n.inj ? `<span style="font-size:12px;color:#b3261e">Injured: ${esc(n.inj.name)} (about ${Math.max(1, Math.round(n.inj.left))} games left)</span>` : "") + `</div>`;
+    let h = `<div class="sec">${esc(stageName(n))}</div><div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px"><div style="display:flex;align-items:center;gap:10px"><img src="${logo}" alt="" style="width:44px;height:44px;object-fit:contain"><div><b style="color:#fff">${esc(POS[n.pos].n)} · ${n.stage === "pro" ? role(n) : stageLabel(n)}</b><div style="font-size:12px;opacity:.75">${n.contract ? `${esc(n.contract.kind || "Contract")} · ${money(n.contract.sal)}/yr · ${n.contract.yrs} yr left` : n.stage === "college" ? `Year ${n.collegeYr} of 4` : "Keep working"}</div></div></div>` + bar("Overall", o, col(o)) + bar("Fitness", n.fit, col(n.fit)) + bar("Fame", n.fame, "#6b2f8f") + bar("Coach trust", n.trust, col(n.trust)) + (n.stage !== "pro" ? bar("Draft hype", cl(n.hype), "#2d7dd2") : "") + (n.inj ? `<span style="font-size:12px;color:#b3261e">Injured: ${esc(n.inj.name)} (about ${Math.max(1, Math.round(n.inj.left))} games left)</span>` : "") + `</div>`;
     h += `<div class="sec">Work</div>`;
     h += row("train", "emoji/1f3cb-fe0f.png", "Training", n.trainLeft > 0 ? `${n.trainLeft} sessions left this year` : "No sessions left this year");
-    h += row("skills", "bball/ball.png", "Skills", `Overall ${o} · potential is hidden`);
+    h += row("skills", "bball/ball.png", "Skills", `Overall ${o} · Potential ${potLabel(n)}`);
+    h += row("interview", "emoji/1f3a4.png", "Interview", (n.intLeft == null ? 2 : n.intLeft) > 0 ? `Talk to the press · ${n.intLeft == null ? 2 : n.intLeft} left this year` : "No interviews left this year");
     h += row("stats", "emoji/1f4ca.png", "Stats", `${n.seasons.length} season${n.seasons.length === 1 ? "" : "s"}`);
     if (n.stage === "pro") {
       h += row("roster", logo, "Team roster", t ? `${t.name} · coach ${t.coach}` : "");
@@ -877,7 +917,7 @@
     h += row("awards", TROPHY.champ, "Trophy case", `${n.champs} title${n.champs === 1 ? "" : "s"} · ${n.awards.length} honors`);
     h += row("retire", "emoji/1f6aa.png", "Retire", "Hang it up");
     sList.innerHTML = h;
-    wire({ train: openTrain, skills: openSkills, stats: openStats, roster: openRoster, table: openTable, deal: openDeal, awards: openAwards, retire: () => retireCard(n, false) });
+    wire({ train: openTrain, interview: openInterview, skills: openSkills, stats: openStats, roster: openRoster, table: openTable, deal: openDeal, awards: openAwards, retire: () => retireCard(n, false) });
   }
   const stageLabel = (n) => (n.stage === "hs" ? `High school · age ${state.age}` : n.stage === "college" ? n.school : "Undrafted");
   function openHub0() {
@@ -918,7 +958,7 @@
   function openSkills() {
     const n = N();
     if (!openScreen("SKILLS", () => openNba())) return;
-    sList.innerHTML = `<div class="sec">${esc(POS[n.pos].n)} · overall ${ovr(n)}</div><div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px">${SK.map(([k, nm]) => bar(nm, n.sk[k], col(n.sk[k]))).join("")}</div>`;
+    sList.innerHTML = `<div class="sec">${esc(POS[n.pos].n)} · overall ${ovr(n)} · potential ${potLabel(n).toLowerCase()}</div><div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px">${SK.map(([k, nm]) => bar(nm, n.sk[k], col(n.sk[k]))).join("")}</div>`;
   }
   function openStats() {
     const n = N();

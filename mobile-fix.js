@@ -49,8 +49,8 @@ html,body{overscroll-behavior-y:contain}
   .year p{font-size:14.5px;line-height:19px}
 }
 /* the "tap to show title" toast */
-#flTip{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);max-width:86vw;background:rgba(20,22,28,.94);color:#fff;
-  padding:9px 14px;border-radius:12px;font:800 14px/1.3 "Avenir Next","Mulish","Nunito",system-ui,sans-serif;z-index:2147483000;pointer-events:none;text-align:center}
+#flTip{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);max-width:86vw;background:rgba(20,22,28,.94);color:#fff;
+  padding:9px 14px;border-radius:12px;font:800 14px/1.3 "Avenir Next","Mulish","Nunito",system-ui,sans-serif;z-index:var(--z-safe);pointer-events:none;text-align:center}
 `;
   const style = document.createElement("style");
   style.id = "flMobileCss";
@@ -65,17 +65,21 @@ html,body{overscroll-behavior-y:contain}
       if (!wrap || !wrap.classList.contains("open")) return;
       const box = wrap.firstElementChild;
       if (!box) return;
-      box.style.zoom = "";
+      if (box.style.zoom) box.style.zoom = "";
       const avail = wrap.clientHeight - 16;
       const need = box.scrollHeight + 18;
+      let zoom = "", maxH = "", ovf = "";
       if (need > avail && avail > 120) {
         const z = Math.max(0.6, avail / need);
-        box.style.zoom = z.toFixed(3);
+        zoom = z.toFixed(3);
         if (avail / need < 0.6) {
-          box.style.maxHeight = avail / z + "px";
-          box.style.overflowY = "auto";
+          maxH = avail / z + "px";
+          ovf = "auto";
         }
       }
+      if (box.style.zoom !== zoom) box.style.zoom = zoom;
+      if (box.style.maxHeight !== maxH) box.style.maxHeight = maxH;
+      if (box.style.overflowY !== ovf) box.style.overflowY = ovf;
     } catch {}
   };
   const watch = () => {
@@ -88,7 +92,7 @@ html,body{overscroll-behavior-y:contain}
         cancelAnimationFrame(raf);
         raf = requestAnimationFrame(() => fit(w));
       };
-      new MutationObserver(run).observe(w, { attributes: true, attributeFilter: ["class"], childList: true, subtree: true });
+      new MutationObserver(run).observe(w, { attributes: true, attributeFilter: ["class"], childList: true });
       window.addEventListener("resize", run);
     }
   };
@@ -127,7 +131,7 @@ html,body{overscroll-behavior-y:contain}
     );
 
   // ------------------------------------------------------------------ 3: swipe to go back / dismiss
-  const SKIP = "input,textarea,select,canvas,[contenteditable],.ft-svg,input[type=range],.no-swipe,.bj-table";
+  const SKIP = "input,textarea,select,canvas,[contenteditable],.ft-svg,input[type=range],.no-swipe,.bj-table,#cheatFab,#cheatPanel,.cp-head,.bl-sb";
   let sx = 0,
     sy = 0,
     st = 0,

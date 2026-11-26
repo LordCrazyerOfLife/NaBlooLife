@@ -27,7 +27,7 @@
     const style = document.createElement("style");
     style.textContent = `
       #cheatFab {
-        position: fixed; z-index: 2147483000; right: 14px; bottom: 90px;
+        position: fixed; z-index: var(--z-safe); right: 14px; bottom: calc(90px + env(safe-area-inset-bottom, 0px));
         width: 50px; height: 50px; border-radius: 50%; border: none;
         background: linear-gradient(145deg,#2b2f3a,#1a1d24); color: #fff;
         font-size: 22px; line-height: 50px; text-align: center; padding: 0;
@@ -36,13 +36,13 @@
       }
       #cheatFab:active { transform: scale(.92); }
       #cheatBackdrop {
-        position: fixed; inset: 0; z-index: 2147483001; background: rgba(0,0,0,.5);
+        position: fixed; inset: 0; z-index: var(--z-modal-back); background: rgba(0,0,0,.5);
         display: none; backdrop-filter: blur(1px);
       }
       #cheatPanel {
-        position: fixed; z-index: 2147483002; left: 50%; top: 50%;
+        position: fixed; z-index: var(--z-modal); left: 50%; top: 50%;
         transform: translate(-50%,-50%); width: min(340px, 92vw);
-        max-height: 80vh; display: none; flex-direction: column;
+        max-height: calc(80vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); display: none; flex-direction: column;
         background: #1b1e26; color: #fff; border-radius: 16px;
         box-shadow: 0 10px 40px rgba(0,0,0,.6); overflow: hidden;
         font-family: system-ui, sans-serif;
@@ -55,7 +55,7 @@
       #cheatPanel .cp-head:active { cursor: grabbing; }
       #cheatPanel .cp-title { font-weight: 800; font-size: 16px; letter-spacing: .02em; }
       #cheatAskBackdrop {
-        position: fixed; inset: 0; z-index: 2147483002; background: rgba(0,0,0,.5);
+        position: fixed; inset: 0; z-index: var(--z-modal); background: rgba(0,0,0,.5);
         display: none; backdrop-filter: blur(1px);
       }
       #cheatPanel .cp-close {
@@ -92,7 +92,7 @@
         font-size: 11px; color: #8b919c; margin: 2px 0 10px; line-height: 1.4;
       }
       #cheatAsk {
-        position: fixed; z-index: 2147483003; left: 50%; top: 50%;
+        position: fixed; z-index: var(--z-modal-top); left: 50%; top: 50%;
         transform: translate(-50%,-50%); width: min(280px, 85vw);
         background: #20242e; color: #fff; border-radius: 14px; padding: 16px;
         box-shadow: 0 10px 40px rgba(0,0,0,.6); font-family: system-ui, sans-serif;
@@ -101,7 +101,7 @@
       #cheatAsk .ca-label { font-size: 13px; font-weight: 700; margin-bottom: 8px; }
       #cheatAsk input {
         width: 100%; box-sizing: border-box; padding: 9px 10px; border-radius: 9px;
-        border: 1px solid #3a4257; background: #151821; color: #fff; font-size: 14px;
+        border: 1px solid #3a4257; background: #151821; color: #fff; font-size: 16px;
         margin-bottom: 10px;
       }
       #cheatAsk .ca-row { display: flex; gap: 8px; }
@@ -111,6 +111,9 @@
       }
       #cheatAsk .ca-cancel { background: #2a2f3b; color: #fff; }
       #cheatAsk .ca-ok { background: #4c7cf0; color: #fff; }
+      @media (pointer: coarse) {
+        #cheatPanel .cp-close { width: 44px; height: 44px; }
+      }
     `;
     document.head.appendChild(style);
 
@@ -153,6 +156,7 @@
       askInput.value = defVal == null ? "" : String(defVal);
       askBackdrop.style.display = "block";
       askBox.style.display = "block";
+      fitModals();
       setTimeout(() => {
         askInput.focus();
         askInput.select();
@@ -164,7 +168,7 @@
     const fab = document.createElement("button");
     fab.id = "cheatFab";
     fab.type = "button";
-    fab.textContent = "\u{1F4B0}";
+    fab.innerHTML = `<img src="emoji/1f4b0.png" alt="" draggable="false" width="26" height="26" style="vertical-align:middle">`;
     fab.setAttribute("aria-label", "Cheat menu");
 
     // ---------------------------------------------------------------- panel
@@ -175,7 +179,7 @@
     panel.id = "cheatPanel";
     panel.innerHTML = `
       <div class="cp-head">
-        <div class="cp-title">\u{1F4B0} Cheats</div>
+        <div class="cp-title"><img src="emoji/1f4b0.png" alt="" width="18" height="18" style="vertical-align:-3px"> Cheats</div>
         <button class="cp-close" type="button" aria-label="Close">✕</button>
       </div>
       <div class="cp-tabs"></div>
@@ -184,9 +188,21 @@
     const tabsEl = panel.querySelector(".cp-tabs");
     const bodyEl = panel.querySelector(".cp-body");
 
+    function fitModals() {
+      const vv = window.visualViewport;
+      const h = vv ? vv.height : innerHeight;
+      const y0 = vv ? vv.offsetTop : 0;
+      const maxH = Math.max(160, h - 24) + "px";
+      panel.style.maxHeight = maxH;
+      if (!panel.style.left) panel.style.top = y0 + h / 2 + "px";
+      askBox.style.maxHeight = maxH;
+      if (!askBox.style.left) askBox.style.top = y0 + h / 2 + "px";
+    }
+    if (window.visualViewport) visualViewport.addEventListener("resize", fitModals);
     function openPanel() {
       backdrop.style.display = "block";
       panel.style.display = "flex";
+      fitModals();
     }
     function closePanel() {
       backdrop.style.display = "none";
@@ -452,7 +468,7 @@
     }, true);
     if (typeof ageBtnEl !== "undefined")
       btn(miscSec, "Age up (+1 year)", () => ageBtnEl.click(), true);
-    note(miscSec, "Drag the \u{1F4B0} button or this panel's header to move them. Tap the button to open/close this menu.");
+    note(miscSec, "Drag the cheat button or this panel's header to move them. Tap the button to open/close this menu.");
 
     document.body.appendChild(backdrop);
     document.body.appendChild(panel);

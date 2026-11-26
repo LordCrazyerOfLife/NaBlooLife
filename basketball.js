@@ -955,7 +955,7 @@
                 const a = o[t],
                   s = e.prac[a] !== state.age;
                 e.prac[a] = state.age;
-                const n = s ? rint(3, 8) : rint(0, 2);
+                const n = s ? rint(3, 8) : rint(2, 4);
                 (e.skills[a] = clamp(e.skills[a] + n)),
                   (e.stress = clamp((e.stress ?? 30) + 2)),
                   say(`I practiced my ${a.toLowerCase()}.`),
