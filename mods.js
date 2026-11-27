@@ -69,7 +69,7 @@
         name: "Mod Loader",
         icon: "ui/gear.png",
         desc: "Loads extra mod scripts from a simple list in modloader.js, no 8-digit code needed per mod. Also on by default via Settings -> Mod Workshop -> Mods.",
-        src: "modloader.js?v=46",
+        src: "modloader.js?v=47",
       },
     },
     t = "bitlifepp-ported",

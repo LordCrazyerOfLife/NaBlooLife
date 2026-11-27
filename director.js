@@ -55,10 +55,10 @@
     state.money = Math.max(0, (Number(state.money) || 0) + n);
     render();
   };
-  // Production budget (studio / grant films): if you are broke, the film pays for its own costs out of what is left of the budget.
+  // Production budget (any film with a budget set, except self-funded; it counts before financing is locked too): if you are broke, the film pays for its own costs out of what is left of the budget.
   const budgetLeft = () => {
     const p = state.dir && state.dir.proj;
-    if (!p || p.tier == null || !p.done || !p.done.fund || p.fund === "self") return 0;
+    if (!p || p.tier == null || p.fund === "self") return 0;
     return Math.max(0, (Number(p.B) || 0) - castCost(p) - (Number(p.bUsed) || 0));
   };
   const canPay = (n) => (Number(state.money) || 0) >= n || budgetLeft() >= n;
