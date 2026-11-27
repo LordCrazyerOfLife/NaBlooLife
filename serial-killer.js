@@ -548,7 +548,7 @@
       renderStats(),
       w("famous"),
       say(
-        `After ${t.kills} murders, I became an infamous serial killer. The media started calling me the "${t.media}."`,
+        `After ${t.kills} murders, I became an infamous serial killer. The media started calling me the "${t.media}." I would have preferred the name my mother used, but the media never asks.`,
       ),
       setTimeout(
         () =>
@@ -621,7 +621,7 @@
             }),
               w("start"),
               renderStats(),
-              say("I embraced the darkness and became a serial killer."),
+              say("I embraced the darkness and became a serial killer. It was less of a decision and more of a door that had been open the whole time."),
               notice(
                 "Serial Killer",
                 `You've embraced the darkness.<br><br>Your killer nickname is "${e().nick}". Go hunt for your first victim.`,
@@ -633,7 +633,7 @@
         [
           "Push the thoughts away",
           () => {
-            say("I pushed my dark thoughts away."),
+            say("I pushed my dark thoughts away. They went quietly, which is not the same as going away."),
               notice("Not today", "You pushed the dark thoughts out of your head. For now.", null, !0);
           },
         ],
@@ -920,7 +920,7 @@
                       })(t),
                       a = u(any(r.found), e);
                     return (
-                      say(`I went hunting ${r.t.toLowerCase()} and found a potential victim, ${l(e)}.`),
+                      say(`I went hunting ${r.t.toLowerCase()} and found a potential victim, ${l(e)}. ${s(e.g).He} was standing on a corner looking at ${s(e.g).his} phone, with no idea that the most important thing in ${s(e.g).his} life was already decided.`),
                       setTimeout(() => {
                         w("found"),
                           y({
@@ -940,7 +940,7 @@
                                 "Start stalking them",
                                 () => {
                                   n.targets.push(e),
-                                    say(`I started stalking ${l(e)}.`),
+                                    say(`I started stalking ${l(e)}. Three days of the same coffee shop, the same bus, the same window, until ${s(e.g).his} life was a map I could fold and put in my pocket.`),
                                     F(
                                       "New Victim",
                                       `You've started stalking ${l(e)}.<br><br>Learn ${s(e.g).his} routine before you make your move.`,
@@ -950,7 +950,7 @@
                               [
                                 "Let them go",
                                 () => {
-                                  say(`I decided to let ${l(e)} go.`), P();
+                                  say(`I decided to let ${l(e)} go. I watched ${s(e.g).him} walk away and told myself it was mercy, then went home and did not sleep.`), P();
                                 },
                               ],
                             ],
@@ -960,7 +960,7 @@
                   }
                   if (i < r.find + 0.22)
                     return (
-                      say(`I went hunting ${r.t.toLowerCase()}, but couldn't find a victim.`),
+                      say(`I went hunting ${r.t.toLowerCase()} and found nobody worth the trouble, which is the kind of night I call lucky to keep from calling it wasted.`),
                       F("No luck", any(r.empty))
                     );
                   !(function (t) {
@@ -1489,7 +1489,7 @@
               cops2: 1,
             };
           (N = null),
-            say(`I broke into ${l(t)}'s home.`),
+            say(`I broke into ${l(t)}'s home. The lock gave up in eleven seconds, and the house smelled like laundry and somebody else's ordinary life.`),
             w("breakin"),
             setTimeout(
               () =>
@@ -1527,7 +1527,7 @@
                             ))
                           : "cop" === r.type
                             ? (v(t, 20),
-                              say(`The police caught me inside ${l(t)}'s home.`),
+                              say(`The police caught me inside ${l(t)}'s home. I was halfway through the hallway with gloves on and no story worth telling.`),
                               notice(
                                 "Busted!",
                                 u(
@@ -1542,7 +1542,7 @@
                               (t.trust = i(t.trust - 25)),
                               (t.evidence = i(t.evidence + 20)),
                               w("detective"),
-                              say(`${l(t)} caught me inside ${h.his} home.`),
+                              say(`${l(t)} caught me inside ${h.his} home. We looked at each other for a second, and in that second ${h.his} whole idea of me changed forever.`),
                               y({
                                 person: c(t, "angry"),
                                 iconSrc: a("1f512"),
@@ -1634,7 +1634,7 @@
                       if (((t.broke = !0), !d.length))
                         return (
                           (t.prep = i(t.prep + 4)),
-                          say(`I broke into ${l(t)}'s home but didn't find anything useful.`),
+                          say(`I broke into ${l(t)}'s home and found nothing useful. Two hours in a stranger's living room, and all I learned was that people keep junk mail in drawers like it's a pension.`),
                           notice(
                             "Break In",
                             u("You got in and out of {n}'s home, but didn't find anything useful.", t),
@@ -1704,7 +1704,7 @@
                   ]),
                   t,
                 );
-                say("I planted false evidence to throw off the police."),
+                say("I planted false evidence to throw off the police. It was a good plan, which is what I tell myself about every plan that could have gone wrong."),
                   F("Evidence planted", o, k(55 + 2.5 * e));
               },
             ],
@@ -1718,14 +1718,14 @@
                   "A security camera caught you planting the evidence.",
                   "The person you tried to frame had an airtight alibi.",
                 ]);
-                say("My attempt to plant evidence backfired."), F("Backfired", o, k(rint(0, 12)));
+                say("My attempt to plant evidence backfired. The police found the fakes and then started looking at who planted them, which was the one thing I had not thought about."), F("Backfired", o, k(rint(0, 12)));
               },
             ],
           ]);
         })(t),
       free: () => {
         r.targets.splice(r.targets.indexOf(t), 1),
-          say(`I stopped stalking ${l(t)}.`),
+          say(`I stopped stalking ${l(t)}. I deleted the photos, forgot the routine and kept the route home, just in case the silence ever stopped being enough.`),
           notice("Free", `You decided to leave ${l(t)} alone.`, null, !0),
           U();
       },
@@ -1834,7 +1834,7 @@
           (e.trust = i(e.trust + a)),
             (e.prep = i(e.prep + rint(8, 14))),
             v(e, -rint(8, 14)),
-            say(`I used what I learned about ${l(e)} to gain ${s(e.g).his} trust.`),
+            say(`I used what I learned about ${l(e)} to gain ${s(e.g).his} trust. ${s(e.g).He} looked so relieved to be understood that it almost ruined the plan.`),
             F(
               "Trust gained",
               u(t.win, e) +
@@ -1851,7 +1851,7 @@
           o(),
             (e.trust = i(e.trust + 4)),
             v(e, 5),
-            say(`I tried to use what I knew about ${l(e)}, but it didn't land.`),
+            say(`I tried to use what I knew about ${l(e)}, but it didn't land. ${s(e.g).He} looked at me like I had read the wrong book about ${s(e.g).him}.`),
             F("Didn't land", u(t.fail, e), k(rint(15, 30)));
         },
       ],
@@ -1861,7 +1861,7 @@
           v(e, rint(20, 30)),
             (e.trust = i(e.trust - rint(10, 18))),
             g(rint(3, 6)),
-            say(`I let slip something about ${l(e)} that I shouldn't have known.`),
+            say(`I let slip something about ${l(e)} that I shouldn't have known. The silence afterwards was long enough for both of us to understand what it meant.`),
             F(
               "Too much",
               u(

@@ -147,7 +147,7 @@
                   ? `with ${((d = t), `${d.fake && d.known ? "a fake " : "a "}${d.ct ? `${d.ct}-carat ` : ""}${d.name.toLowerCase()}`.replace(/^a ([aeiou])/i, "an $1"))} ${o[2]}`
                   : `without a ring ${o[2]}`;
               var d;
-              if ((say(`I proposed to ${e.first} ${u}.`), c)) {
+              if ((say(`I got down on one knee and proposed to ${e.first} ${u}. My hands were sweating so badly I nearly dropped the whole speech.`), c)) {
                 if (
                   ((e.bride = !0),
                   (e.rel = clamp(e.rel + rint(5, 12))),
@@ -159,7 +159,7 @@
                   o >= 0 && state.jewelry.splice(o, 1), (e.ring = t);
                 }
                 return (
-                  say(`${e.first} accepted my marriage proposal!`),
+                  say(`${e.first} accepted my marriage proposal! ${r.He} said yes before I'd even finished the sentence, and then cried in the restaurant.`),
                   screen.classList.remove("open"),
                   notice(
                     `${r.He} said yes`,
@@ -172,9 +172,9 @@
               (e.rejected = (e.rejected || 0) + 1),
                 (e.rel = clamp(e.rel - rint(5, 15))),
                 fx({ Happiness: -rint(4, 9) }, ""),
-                say(`${e.first} rejected my marriage proposal!`);
+                say(`${e.first} rejected my marriage proposal! The ring stayed in the box, and so did the rest of the evening.`);
               const h = e.rel < 20 && chance(0.35);
-              h && (toEx(e), say(`${e.first} broke up with me.`));
+              h && (toEx(e), say(`${e.first} broke up with me. Turns out a rejected proposal is a decent time to reassess the whole relationship.`));
               $(
                 "Ouch",
                 `You proposed to your ${a}, ${e.first}, ${u}.<br><br>${r.He} rejected your marriage proposal!${i ? `<br><br>${r.He} could tell the ring was fake.` : ""}${h ? `<br><br>${r.He} broke up with you.` : ""}`,
@@ -279,7 +279,7 @@
     if (!chance(Math.max(0.1, Math.min(0.85, 0.3 + e.rel / 250 - Math.abs((e.crazy ?? 50) - 50) / 500))))
       return (
         (e.rel = clamp(e.rel - rint(3, 8))),
-        say(`I asked ${e.first} to elope, but ${t.he} wants a real wedding.`),
+        say(`I asked ${e.first} to elope, but ${t.he} wants a real wedding. ${t.He} has been planning the seating chart since ${t.he} was twelve.`),
         $(
           "Not like this",
           `Your ${loverTitle(e).toLowerCase()}, ${e.first}, refused to elope with you.<br><br>${t.He} wants a real wedding.`,
@@ -309,7 +309,7 @@
           [
             "Sign the prenup",
             () => {
-              say(`I signed a prenuptial agreement before marrying ${e.first}.`), t(!0);
+              say(`I signed a prenuptial agreement before marrying ${e.first}. Romantic, in the way a fire exit is romantic.`), t(!0);
             },
           ],
           [
@@ -317,14 +317,14 @@
             () => {
               if (chance(0.5))
                 return (
-                  say(`I refused to sign ${e.first}'s prenup, so ${r.he} called off the wedding.`),
+                  say(`I refused to sign ${e.first}'s prenup, so ${r.he} called off the wedding. The venue deposit went to someone who reads contracts.`),
                   (e.rel = clamp(e.rel - rint(8, 15))),
                   $(
                     "Wedding off",
                     `You refused to sign the prenup, so your ${a}, ${e.first}, called off the wedding!`,
                   )
                 );
-              say(`I refused to sign ${e.first}'s prenup.`), t(!1);
+              say(`I refused to sign ${e.first}'s prenup. ${r.He} didn't say anything, which was worse than shouting.`), t(!1);
             },
           ],
         ],
@@ -348,17 +348,17 @@
               ((e.willpower ?? 50) - 50) / 250 +
               ((e.crazy ?? 50) - 50) / 400;
             if (chance(Math.max(0.05, Math.min(0.8, o)))) {
-              (e.rel = clamp(e.rel - rint(5, 12))), say(`${e.first} refused to sign a prenuptial agreement.`);
+              (e.rel = clamp(e.rel - rint(5, 12))), say(`${e.first} refused to sign a prenuptial agreement. ${r.He} said if I trusted ${r.him}, I wouldn't need one.`);
               const t = chance(0.25);
               return (
-                t && ((e.bride = !1), say(`${e.first} called off our engagement.`)),
+                t && ((e.bride = !1), say(`${e.first} called off our engagement. The ring came back in an envelope with no note.`)),
                 $(
                   "Never mind then",
                   `Your ${a}, ${e.first}, refused to sign a prenuptial agreement!${t ? `<br><br>${r.He} called off the engagement.` : ""}`,
                 )
               );
             }
-            (e.rel = clamp(e.rel - rint(0, 4))), say(`${e.first} signed a prenuptial agreement.`), t(!0);
+            (e.rel = clamp(e.rel - rint(0, 4))), say(`${e.first} signed a prenuptial agreement. We celebrated with dinner and a very awkward toast.`), t(!0);
           },
         ],
         ["We don't need a prenup", () => t(!1)],
@@ -378,8 +378,8 @@
       (e.rel = clamp(e.rel + rint(5, 12))),
       fx({ Happiness: +rint(8, 15) }, "");
     const i = `${u(t.venue)} ${t.venue.toLowerCase()}`;
-    say(t.eloped ? `I eloped with ${e.first} ${e.last}.` : `I married ${e.first} ${e.last} at ${i}.`),
-      t.moon && say(`We went to ${d(t.moon)} for our honeymoon.`),
+    say(t.eloped ? `I eloped with ${e.first} ${e.last}. Just us, a courthouse clerk, and a witness who was clearly late for something.` : `I married ${e.first} ${e.last} at ${i}. The whole day went by too fast to remember properly.`),
+      t.moon && say(`We went to ${d(t.moon)} for our honeymoon. We spent the first two days asleep and the rest pretending we weren't already thinking about the flight home.`),
       screen.classList.remove("open"),
       renderStats(),
       notice(
@@ -418,7 +418,7 @@
         o.cash +
         o.props.reduce((e, o) => e + t.propValue(o), 0) +
         o.cars.reduce((e, o) => e + t.carValue(o), 0)),
-      o.cash && say(`${e.first} and I combined our finances.`),
+      o.cash && say(`${e.first} and I combined our finances. ${e.first} was very calm about it, which somehow made me more nervous.`),
       o
     );
   }
@@ -505,13 +505,13 @@
       const r = T(e);
       r &&
         (fx({ Happiness: -rint(4, 10) }, ""),
-        say(`I divorced my ${o}, ${e.first}.`),
+        say(`I divorced my ${o}, ${e.first}. The paperwork was easier than the conversation.`),
         say(
           r.got
-            ? `I received ${usd(r.got)} in the divorce settlement.`
+            ? `I received ${usd(r.got)} in the divorce settlement. It's not compensation, but it pays for a better apartment.`
             : r.paid
-              ? `I paid ${e.first} ${usd(r.paid)} in the divorce settlement.`
-              : "Neither of us owed the other anything in the divorce.",
+              ? `I paid ${e.first} ${usd(r.paid)} in the divorce settlement. ${t.He} counted it twice in front of me.`
+              : "Neither of us owed the other anything in the divorce. We split the plates and the silence evenly.",
         ),
         screen.classList.remove("open"),
         notice("Divorced", `You divorced your ${o}, ${e.first}.`, null, !0, m(L(r, t))));
@@ -544,13 +544,13 @@
         const r = T(e);
         r &&
           (fx({ Happiness: -rint(6, 12) }, ""),
-          say(`My ${o}, ${e.first}, divorced me.`),
+          say(`My ${o}, ${e.first}, divorced me. ${t.He} had the papers ready before ${t.he} even told me ${t.he} was unhappy.`),
           say(
             r.got
-              ? `I received ${usd(r.got)} in the divorce settlement.`
+              ? `I received ${usd(r.got)} in the divorce settlement. It's not compensation, but it pays for a better apartment.`
               : r.paid
-                ? `I paid ${e.first} ${usd(r.paid)} in the divorce settlement.`
-                : "Neither of us owed the other anything in the divorce.",
+                ? `I paid ${e.first} ${usd(r.paid)} in the divorce settlement. ${t.He} counted it twice in front of me.`
+                : "Neither of us owed the other anything in the divorce. We split the plates and the silence evenly.",
           ),
           notice("Divorced", `Your ${o}, ${e.first}, divorced you.`, null, !0, m(L(r, t))));
       };
@@ -570,7 +570,7 @@
               return (
                 (e.rel = clamp(e.rel + rint(5, 12))),
                 (e.unhappyYears = 0),
-                say(`I begged ${e.first} not to divorce me, and ${t.he} agreed to stay.`),
+                say(`I begged ${e.first} not to divorce me, and ${t.he} agreed to stay. It wasn't forgiveness so much as a postponement.`),
                 notice("Second chance", `${e.first} agreed to give your marriage another chance.`, null, !0)
               );
             i();
@@ -600,7 +600,7 @@
             t ? "Stop taking birth control" : "Start taking birth control",
             () => {
               (state.bc = !t),
-                say(t ? "I stopped taking birth control." : "I started taking birth control."),
+                say(t ? "I stopped taking birth control. The decision felt bigger than the sentence." : "I started taking birth control. It was the least romantic thing I've ever done on purpose."),
                 notice(
                   "Birth Control",
                   t
@@ -653,19 +653,19 @@
                 : chance(Math.min(0.9, e.rel / 100 + (e.married ? 0.3 : 0.1)))
                   ? ((e.bc = !1),
                     (e.rel = clamp(e.rel + rint(1, 4))),
-                    say(`My ${o}, ${e.first}, agreed to stop taking birth control.`),
+                    say(`My ${o}, ${e.first}, agreed to stop taking birth control. ${t.He} said it quietly, like signing off on something irreversible.`),
                     notice("Baby fever", `${e.first} agreed to stop taking birth control.`, r, !0))
                   : ((e.rel = clamp(e.rel - rint(3, 8))),
                     say(
-                      `I asked my ${o}, ${e.first}, to stop taking birth control, but ${t.he} isn't ready.`,
+                      `I asked my ${o}, ${e.first}, to stop taking birth control, but ${t.he} isn't ready. ${t.He} said it's not that ${t.he} doesn't want kids, just not with the clock involved.`,
                     ),
                     void notice("Not ready", `${e.first} isn't ready to stop taking birth control.`, r, !0))
               : chance(0.75)
                 ? ((e.bc = !0),
-                  say(`My ${o}, ${e.first}, agreed to go on birth control.`),
+                  say(`My ${o}, ${e.first}, agreed to go on birth control. ${t.He} made me read the side effects out loud twice.`),
                   notice("Protected", `${e.first} agreed to go on birth control.`, r, !0))
                 : ((e.rel = clamp(e.rel - rint(2, 6))),
-                  say(`I asked my ${o}, ${e.first}, to go on birth control, but ${t.he} refused.`),
+                  say(`I asked my ${o}, ${e.first}, to go on birth control, but ${t.he} refused. That conversation is going to come back around eventually.`),
                   notice("Not happening", `${e.first} refused to go on birth control.`, r, !0))
           ),
         ],
@@ -756,7 +756,7 @@
     if (!o) {
       const t = loverTitle(e).toLowerCase();
       return (
-        say(`My ${t}, ${e.first}, is pregnant with my baby!`),
+        say(`My ${t}, ${e.first}, is pregnant with my baby! I found out over the phone and sat down on the kitchen floor.`),
         jCard({
           tag: "Fertility",
           iconSrc: "love2/pregnant.png",
@@ -777,10 +777,10 @@
                 if (((e.rel = clamp(e.rel - rint(o ? 2 : 10, o ? 8 : 20))), !o))
                   return (
                     a(!0, t),
-                    say(`I asked ${e.first} not to keep the baby, but ${r.he} decided to keep it anyway.`),
+                    say(`I asked ${e.first} not to keep the baby, but ${r.he} decided to keep it anyway. ${r.He} told me ${r.he} didn't need my permission, only my money.`),
                     notice("Her choice", `${e.first} decided to keep the baby anyway.`, null, !0)
                   );
-                say("We decided not to keep the baby.");
+                say("We decided not to keep the baby. We held hands in the waiting room and didn't talk on the way home.");
               },
             ],
           ],
@@ -793,7 +793,7 @@
         o = loverTitle(n).toLowerCase(),
         r = rint(5, 100);
       return (
-        say(`I found out I'm pregnant, but it's not my ${o}'s baby.`),
+        say(`I found out I'm pregnant, but it's not my ${o}'s baby. I've been doing the math in my head for a week and it keeps coming out the same.`),
         jCard({
           tag: "Fertility",
           iconSrc: "love2/pregnant.png",
@@ -805,7 +805,7 @@
             [
               "Confess everything",
               () => {
-                say(`I confessed to my ${o}, ${n.first}, that the baby isn't ${t.his}.`),
+                say(`I confessed to my ${o}, ${n.first}, that the baby isn't ${t.his}. The silence afterward lasted longer than the sentence.`),
                   setTimeout(
                     () =>
                       (function (e, t, o) {
@@ -822,13 +822,13 @@
                             surprise: !0,
                             lead: `Your ${a}, ${e.first}, is arguing with you because you cheated on ${r.him}.<br><br>${r.He} says that ${r.he} still loves you and wants to raise the baby as ${r.his} own.`,
                             choices: [
-                              ["Don't keep the baby", () => say("I decided not to keep the baby.")],
+                              ["Don't keep the baby", () => say("I decided not to keep the baby. I made the appointment before I could change my mind.")],
                               [
                                 `Thank ${r.him}`,
                                 () => {
                                   o(!0, a, { other: { first: e.first, last: e.last, g: e.g, look: e.look } }),
                                     (e.rel = rint(5, 15)),
-                                    say(`My ${a}, ${e.first}, agreed to raise the baby as ${r.his} own.`);
+                                    say(`My ${a}, ${e.first}, agreed to raise the baby as ${r.his} own. I don't know what I did to deserve that, but I'm not asking.`);
                                 },
                               ],
                             ],
@@ -843,14 +843,14 @@
             [
               "Don't keep the baby",
               () => {
-                say("I decided not to keep the baby.");
+                say("I decided not to keep the baby. I made the appointment before I could change my mind.");
               },
             ],
             [
               `${t.He}'ll never find out`,
               () => {
                 a(!0, o, { secretFrom: n.first, sim: r }),
-                  say(`I decided to keep the baby and never tell my ${o}.`);
+                  say(`I decided to keep the baby and never tell my ${o}. I'll carry that one to the grave, or at least until a bad argument.`);
               },
             ],
           ],
@@ -859,8 +859,8 @@
     }
     say(
       t.partner
-        ? `I found out I'm pregnant with my ${loverTitle(e).toLowerCase()}, ${e.first}'s baby!`
-        : `I found out I'm pregnant with ${e.first}'s baby!`,
+        ? `I found out I'm pregnant with my ${loverTitle(e).toLowerCase()}, ${e.first}'s baby! I took three tests because I didn't trust the first two.`
+        : `I found out I'm pregnant with ${e.first}'s baby! I took three tests because I didn't trust the first two.`,
     ),
       jCard({
         tag: "Fertility",
@@ -874,14 +874,14 @@
           [
             "Keep the baby",
             () => {
-              a(!0, t.partner ? loverTitle(e).toLowerCase() : "fling"), say("I decided to keep the baby.");
+              a(!0, t.partner ? loverTitle(e).toLowerCase() : "fling"), say("I decided to keep the baby. The idea is terrifying and I've already started looking at cribs.");
             },
           ],
-          ["Don't keep the baby", () => say("I decided not to keep the baby.")],
+          ["Don't keep the baby", () => say("I decided not to keep the baby. I made the appointment before I could change my mind.")],
           [
             "Put it up for adoption",
             () => {
-              a(!1, "fling", { adopt: !0 }), say("I decided to put the baby up for adoption.");
+              a(!1, "fling", { adopt: !0 }), say("I decided to put the baby up for adoption. I owe them a better start than I can give right now.");
             },
           ],
         ],
@@ -894,7 +894,7 @@
     (e.rel = 0),
       (e.discoveredCheating = !0),
       (e.unresolvedArgument = !0),
-      say(`My ${r}, ${e.first}, found out I cheated on ${o.him}.`),
+      say(`My ${r}, ${e.first}, found out I cheated on ${o.him}. ${o.He} found a receipt, of all things, and the receipt had a name on it.`),
       jCard({
         tag: loverTitle(e),
         person: c(e, "angry"),
@@ -906,21 +906,21 @@
           [
             "Apologize",
             () => {
-              say(`I apologized to my ${r}, ${e.first}, for cheating.`),
+              say(`I apologized to my ${r}, ${e.first}, for cheating. I used the word "mistake" and ${o.he} repeated it back to me like a question.`),
                 notice("Not enough", `${e.first} said sorry isn't going to fix this.`, null, !0);
             },
           ],
           [
             "Deny it",
             () => {
-              say(`I denied cheating on my ${r}, ${e.first}.`),
+              say(`I denied cheating on my ${r}, ${e.first}. The lie came out smoother than the apology would have.`),
                 notice("Liar", `${e.first} doesn't believe a word you say.`, null, !0);
             },
           ],
           [
             `Blame ${o.him}`,
             () => {
-              say(`I blamed my ${r}, ${e.first}, for my cheating.`),
+              say(`I blamed my ${r}, ${e.first}, for my cheating. It was a terrible argument, and I made it loudly.`),
                 notice("Wow", `${e.first} can't believe you'd blame ${o.him} for this.`, null, !0);
             },
           ],
@@ -938,7 +938,7 @@
       const n = T(e);
       if (!n) return;
       return (
-        say(o ? `I divorced my ${a}, ${e.first}.` : `My ${a}, ${e.first}, divorced me.`),
+        say(o ? `I divorced my ${a}, ${e.first}. I said it out loud before I could talk myself out of it.` : `My ${a}, ${e.first}, divorced me. ${r.He} packed while I was at work and left the keys on the table.`),
         notice(
           "Divorced",
           o
@@ -951,7 +951,7 @@
       );
     }
     toEx(e),
-      say(o ? `I broke up with my ${a}, ${e.first}.` : `My ${a}, ${e.first}, broke up with me.`),
+      say(o ? `I broke up with my ${a}, ${e.first}. It took one sentence and ruined the whole week.` : `My ${a}, ${e.first}, broke up with me. ${r.He} did it gently, which somehow made it worse.`),
       notice(
         "Heartbreak",
         o
@@ -1021,7 +1021,7 @@
                       (e.bride = !1),
                         (e.rel = clamp(e.rel - rint(10, 25))),
                         fx({ Happiness: -rint(2, 6) }, ""),
-                        say(`I called off my engagement to ${e.first}.`),
+                        say(`I called off my engagement to ${e.first}. I gave the ring back in the parking lot and drove home with the radio off.`),
                         notice("Engagement off", `You called off your engagement to ${e.first}.`, f(e), !0);
                     },
                   );
@@ -1077,7 +1077,7 @@
             queuePopup(() => {
               (o.rel = clamp(o.rel - rint(12, 25))),
                 (o.unresolvedArgument = !0),
-                say(`My ${a}, ${o.first}, screamed at me for buying a house without ${r.his} blessing.`),
+                say(`My ${a}, ${o.first}, screamed at me for buying a house without ${r.his} blessing. The neighbors now know more about my marriage than I do.`),
                 jCard({
                   tag: loverTitle(o),
                   person: c(o, "angry"),
@@ -1090,16 +1090,16 @@
                       "Apologize",
                       () => {
                         chance(0.5) && ((o.rel = clamp(o.rel + rint(2, 6))), (o.unresolvedArgument = !1)),
-                          say(`I apologized to ${o.first}.`);
+                          say(`I apologized to ${o.first}. I meant most of it, which is more than usual.`);
                       },
                     ],
                     [
                       "Scream back",
                       () => {
-                        (o.rel = clamp(o.rel - rint(4, 10))), say(`I screamed back at ${o.first}.`);
+                        (o.rel = clamp(o.rel - rint(4, 10))), say(`I screamed back at ${o.first}. We were both wrong and neither of us was going to admit it first.`);
                       },
                     ],
-                    ["Walk away", () => say(`I walked away from ${o.first}.`)],
+                    ["Walk away", () => say(`I walked away from ${o.first}. Leaving felt like the only argument I could win.`)],
                   ],
                 });
             });
@@ -1151,7 +1151,7 @@
                     choices: [
                       [
                         `Respect ${r.his} wishes`,
-                        () => say(`I didn't buy the ${n} because ${o.first} didn't want it.`),
+                        () => say(`I didn't buy the ${n} because ${o.first} didn't want it. I'll keep the listing open in another tab and think about it for years.`),
                       ],
                       ["Buy it anyway", () => t(i)],
                     ],

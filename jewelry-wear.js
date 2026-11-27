@@ -1,7 +1,7 @@
 /* [mod] Wear your jewelry for NaBlooLife (local mod).
  *
  * Slots on the avatar: NECK (chains, necklaces, pendants), WRIST (watches, bracelets),
- * MOUTH (grillz) and EARS (earrings). Open a piece in Assets -> Jewelry -> pick it -> "Wear".
+ * MOUTH (grillz), EARS (earrings) and FINGERS (rings: 5 per hand, 10 in total). Open a piece in Assets -> Jewelry -> pick it -> "Wear".
  * Each slot holds one piece; wearing another one replaces it.
  *
  * The avatar is only a head (250x250), so when something is worn on the neck or wrist the face is shrunk a bit
@@ -16,7 +16,11 @@
   if (window.FL_JEWEL_WEAR) return;
 
   // ------------------------------------------------------------------ slots
+  // rings: r0..r4 = left hand (thumb..pinky), r5..r9 = right hand (thumb..pinky). One ring per finger, 5 per hand.
+  const RING_SLOTS = ["r0", "r1", "r2", "r3", "r4", "r5", "r6", "r7", "r8", "r9"];
+  const FINGERS = ["Thumb", "Index finger", "Middle finger", "Ring finger", "Pinky"];
   const SLOT_NAME = { neck: "neck", wrist: "wrist", mouth: "mouth", ears: "ears" };
+  for (const r of RING_SLOTS) SLOT_NAME[r] = "finger";
   const slotOf = (it) => {
     if (!it) return null;
     const noun = String(it.noun || "").toLowerCase();
@@ -25,6 +29,7 @@
     if (/grillz/.test(noun) || /grillz/.test(img) || /grillz/.test(name)) return "mouth";
     if (/earring/.test(noun) || /earring/.test(img)) return "ears";
     if (/watch/.test(noun) || /^watch/.test(img) || /bracelet/.test(noun) || /^bracelet/.test(img)) return "wrist";
+    if (/^rings?$/.test(noun) || /^(ring|cocktail-ring|gem-\d+-.*ring|anc-\d+-.*ring)/.test(img)) return "ring";
     if (/necklace|chain|pendant|choker/.test(noun) || /^(pendant|choker|chains|cuban|encrusted)/.test(img)) return "neck";
     return null;
   };
@@ -51,19 +56,63 @@
       if (typeof renderAvatar === "function") renderAvatar();
     } catch {}
   };
-  function toggle(it) {
+  const label = (it) => (slotOf(it) === "ring" ? "fingers" : slotOf(it));
+  function takeOff(it) {
+    for (const [s, x] of Object.entries(equipped())) if (x === it) delete eq()[s];
+  }
+  function pickFinger(it, nm, done) {
+    const icon = "emoji/1f48e.png";
+    const fin = (h) => {
+      const base = h * 5;
+      jCard({
+        tag: "Jewel",
+        iconSrc: icon,
+        title: h ? "Right hand" : "Left hand",
+        lead: `Which finger do you put your ${nm} on?`,
+        choices: [
+          ...FINGERS.map((f, i) => {
+            const cur = equipped()[RING_SLOTS[base + i]];
+            return [
+              cur ? `${f} (${cur.name})` : f,
+              () => {
+                eq()[RING_SLOTS[base + i]] = it.id;
+                if (typeof say === "function") say(`I put my ${nm} on my ${h ? "right" : "left"} ${f.toLowerCase()}.`);
+                refresh();
+                done();
+              },
+            ];
+          }),
+          ["Back", () => hand()],
+        ],
+      });
+    };
+    const hand = () =>
+      jCard({
+        tag: "Jewel",
+        iconSrc: icon,
+        title: "Wear ring",
+        lead: "Which hand? (5 rings max per hand.)",
+        choices: [["Left hand", () => fin(0)], ["Right hand", () => fin(1)], ["Never mind", () => done()]],
+      });
+    hand();
+  }
+  function toggle(it, done) {
+    done = typeof done === "function" ? done : () => {};
     const slot = slotOf(it);
     if (!slot) return;
     if (!it.id) it.id = Math.random().toString(36).slice(2);
     const nm = String(it.name || "jewelry").toLowerCase();
     if (worn(it)) {
-      delete eq()[slot];
+      takeOff(it);
       if (typeof say === "function") say(`I took off my ${nm}.`);
-    } else {
-      eq()[slot] = it.id;
-      if (typeof say === "function") say(`I put on my ${nm}.`);
+      refresh();
+      return done();
     }
+    if (slot === "ring") return pickFinger(it, nm, done);
+    eq()[slot] = it.id;
+    if (typeof say === "function") say(`I put on my ${nm}.`);
     refresh();
+    done();
   }
 
   // ------------------------------------------------------------------ small helpers
@@ -446,11 +495,129 @@
     }
   }
 
+  const gemCol = (g) => {
+    const s = String(g || "").toLowerCase();
+    if (!s) return null;
+    if (/pink/.test(s)) return "#ff9ec7";
+    if (/black/.test(s)) return "#2a2a33";
+    if (/purple|amethyst/.test(s)) return "#8e44ad";
+    if (/yellow|topaz/.test(s)) return "#f5c542";
+    if (/paraiba|aqua/.test(s)) return "#2fd8c8";
+    if (/opal/.test(s)) return "#9fd4e8";
+    if (/pearl/.test(s)) return "#fff7ea";
+    if (/emerald/.test(s)) return GEM.Emerald;
+    if (/ruby/.test(s)) return GEM.Ruby;
+    if (/sapphire|lapis/.test(s)) return GEM.Sapphire;
+    return GEM.Diamond;
+  };
+
+  // Two raised, open hands at the bottom corners. Rings sit on the fingers (r0..r4 left hand, r5..r9 right hand);
+  // the watch/bracelet, if any, goes on the right forearm.
+  async function drawHands(c, items, skin) {
+    const sk = skin || "#e0ac82";
+    const tee = "#2f3b52";
+    const wristImg = items.wrist ? await loadImg(`jewelry/${items.wrist.img}.png`) : null;
+    // fingers listed thumb..pinky; x/a are for the left-screen hand (thumb on the inside = +x), mirrored for the right
+    const FD = [
+      { x: 14, y: -50, a: 0.95, len: 21, w: 10 },
+      { x: 8, y: -60, a: 0.22, len: 29, w: 9 },
+      { x: 1, y: -62, a: 0.0, len: 32, w: 9.4 },
+      { x: -6, y: -60, a: -0.22, len: 29, w: 9 },
+      { x: -12, y: -55, a: -0.45, len: 23, w: 8 },
+    ];
+    for (const side of [0, 1]) {
+      const dir = side ? -1 : 1;
+      const bx = side ? 216 : 34;
+      c.save();
+      c.translate(bx, 252);
+      c.rotate(-dir * 0.14);
+      c.fillStyle = tee;
+      rr(c, -17, -10, 34, 40, 8);
+      c.fill();
+      const g = c.createLinearGradient(-13, 0, 13, 0);
+      g.addColorStop(0, shade(sk, 0.82));
+      g.addColorStop(0.5, sk);
+      g.addColorStop(1, shade(sk, 0.86));
+      c.fillStyle = g;
+      c.strokeStyle = g;
+      c.lineCap = "round";
+      rr(c, -12, -46, 24, 40, 8);
+      c.fill();
+      c.beginPath();
+      c.ellipse(0, -54, 17, 14, 0, 0, Math.PI * 2);
+      c.fill();
+      const tips = FD.map((f) => {
+        const fx = dir * f.x;
+        const fa = dir * f.a;
+        c.lineWidth = f.w;
+        c.beginPath();
+        c.moveTo(fx, f.y);
+        c.lineTo(fx + Math.sin(fa) * f.len, f.y - Math.cos(fa) * f.len);
+        c.stroke();
+        return { fx, fa, f };
+      });
+      c.strokeStyle = shade(sk, 0.7);
+      c.lineWidth = 0.8;
+      for (const { fx, f } of tips) {
+        c.beginPath();
+        c.moveTo(fx - f.w * 0.3, f.y - 4);
+        c.lineTo(fx + f.w * 0.3, f.y - 4);
+        c.stroke();
+      }
+      for (let i = 0; i < 5; i++) {
+        const it = items[RING_SLOTS[side * 5 + i]];
+        if (!it) continue;
+        const { fx, fa, f } = tips[i];
+        const t = i === 0 ? 0.5 : 0.42;
+        const metal = metalCol(it.metal);
+        const gem = gemCol(it.gem);
+        c.save();
+        c.translate(fx + Math.sin(fa) * f.len * t, f.y - Math.cos(fa) * f.len * t);
+        c.rotate(fa);
+        c.shadowColor = "rgba(0,0,0,.45)";
+        c.shadowBlur = 2;
+        c.fillStyle = metal;
+        rr(c, -f.w / 2 - 1, -2.3, f.w + 2, 4.6, 1.6);
+        c.fill();
+        c.shadowBlur = 0;
+        c.strokeStyle = shade(metal, 0.65);
+        c.lineWidth = 0.7;
+        c.stroke();
+        c.fillStyle = "rgba(255,255,255,.55)";
+        c.fillRect(-f.w / 2, -1.6, f.w * 0.55, 0.9);
+        if (gem) {
+          c.fillStyle = gem;
+          c.beginPath();
+          c.arc(0, -3.4, 3.4, 0, Math.PI * 2);
+          c.fill();
+          c.strokeStyle = shade(metal, 0.7);
+          c.lineWidth = 0.8;
+          c.stroke();
+          c.fillStyle = "rgba(255,255,255,.85)";
+          c.beginPath();
+          c.arc(-1, -4.4, 1, 0, Math.PI * 2);
+          c.fill();
+        }
+        c.restore();
+      }
+      if (side && wristImg) {
+        c.save();
+        c.translate(0, -24);
+        c.shadowColor = "rgba(0,0,0,.35)";
+        c.shadowBlur = 3;
+        c.drawImage(wristImg, -19, -19, 38, 38);
+        c.restore();
+      }
+      c.restore();
+    }
+  }
+
   async function dress(face, info) {
     const items = equipped();
-    if (!items.neck && !items.wrist && !items.ears && !items.mouth) return face;
+    const rings = RING_SLOTS.some((r) => items[r]);
+    if (!items.neck && !items.wrist && !items.ears && !items.mouth && !rings) return face;
     const A = anchors(info.base, info.eyeY);
-    const big = !!(items.neck || items.wrist);
+    const big = !!(items.neck || items.wrist || rings);
     const sc = big ? 0.82 : 1;
     const tf = { sc, ox: (250 - 250 * sc) / 2, oy: big ? 4 : 0 };
     const P = (x, y) => [tf.ox + x * sc, tf.oy + y * sc];
@@ -462,11 +629,12 @@
     if (items.ears) drawEars(c, items.ears, A, P, sc);
     if (items.mouth && (!info.mood || info.mood === "happy")) await drawGrillz(c, items.mouth, A, P, sc);
     if (items.neck) await drawChain(c, items.neck, A, tf, info.skin);
-    if (items.wrist) await drawWrist(c, items.wrist, tf, info.skin);
+    if (rings) await drawHands(c, items, info.skin);
+    else if (items.wrist) await drawWrist(c, items.wrist, tf, info.skin);
     return out;
   }
 
   window.FL_DRESS_JEWELRY = (face, info) => dress(face, info || {}).catch((e) => (console.warn("[jewelry-wear]", e), face));
   window.FL_JEWEL_KEY = key;
-  window.FL_JEWEL_WEAR = { slot: slotOf, worn, toggle, equipped, slots: SLOT_NAME };
+  window.FL_JEWEL_WEAR = { slot: slotOf, worn, toggle, equipped, slots: SLOT_NAME, label };
 })();

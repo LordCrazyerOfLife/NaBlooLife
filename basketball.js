@@ -169,14 +169,14 @@
             (e.captain = !0),
               (e.perf = clamp(e.perf + rint(2, 5))),
               (state.school.popularity = clamp(state.school.popularity + rint(3, 8))),
-              say(`I became captain of the ${t[1].toLowerCase()} at my ${g()}.`),
+              say(`I became captain of the ${t[1].toLowerCase()} at my ${g()}. The locker room went quiet when they announced it, which is how you know it actually matters.`),
               S("Captain", `You are now the captain of the ${t[1].toLowerCase()}!`);
           },
         ],
         [
           "Turn it down",
           () => {
-            say(`I turned down the chance to be captain of the ${t[1].toLowerCase()}.`);
+            say(`I turned down the chance to be captain of the ${t[1].toLowerCase()}. Everybody said they understood, and everybody remembered.`);
           },
         ],
       ],
@@ -210,7 +210,7 @@
                 const s = a ? rint(6, 12) + Math.round(y() / 25) : rint(0, 2);
                 (e.perf = clamp(e.perf + s)), a && (state.stats.Health = clamp(state.stats.Health + 1));
                 renderStats(),
-                  say(`I practiced harder with the ${t[1].toLowerCase()}.`),
+                  say(`I practiced harder with the ${t[1].toLowerCase()}. The gym lights stayed on after everybody left, and for once my jumper stopped lying to me.`),
                   screen.classList.remove("open"),
                   notice(
                     a ? "Practice makes perfect" : "Running on empty",
@@ -228,7 +228,7 @@
             () =>
               iosConfirm("Confirm", `Are you sure you want to quit the ${a[1]}?`, () => {
                 (e.club = null),
-                  say(`I quit the ${a[1]}.`),
+                  say(`I quit the ${a[1]}. The coach said I was making a mistake, then asked if I had somewhere to land.`),
                   screen.classList.remove("open"),
                   S("Quitter", `You quit the ${a[1]}.`);
               }),
@@ -541,18 +541,18 @@
               const s = u() || B(a);
               if (
                 ((s.drafted = !0),
-                say("I declared my eligibility for the pro basketball draft."),
+                say("I declared my eligibility for the pro basketball draft. My agent started answering the phone in a different voice."),
                 !chance(Math.min(0.95, 0.08 + a / 105)))
               )
                 return (
-                  say("I went undrafted in this year's pro basketball draft."),
+                  say("I went undrafted in this year's pro basketball draft. Thirty teams looked at me and decided they could live without me, and the worst part is they were polite about it."),
                   (s.free = !0),
                   S("It's all rigged", "You went undrafted in this year's pro basketball draft.")
                 );
               const o = [...b().teams].sort((e, t) => t.place - e.place),
                 n = a >= 72 && chance(0.7) ? "First Round" : "Second Round",
                 r = "First Round" === n ? pickR(o.slice(0, 12)) : pickR(o.slice(0, 22));
-              say(`I was drafted in the ${n.toLowerCase()} of the pro basketball draft by the ${r.name}.`),
+              say(`I was drafted in the ${n.toLowerCase()} of the pro basketball draft by the ${r.name}. I shook the commissioner's hand and forgot every word I had rehearsed in the car.`),
                 v({
                   iconSrc: l(r.i),
                   title: "Pro Draft",
@@ -681,7 +681,7 @@
       }),
       renderAvatar(),
       renderStats(),
-      say(`I signed a ${s.years}-year, ${h(s.per * s.years)} contract with the ${a.name}.`),
+      say(`I signed a ${s.years}-year, ${h(s.per * s.years)} contract with the ${a.name}. My mother framed the pen, which is the most expensive thing in her house now.`),
       v({
         you: !0,
         iconSrc: l(a.i),
@@ -713,7 +713,7 @@
       (e.fame = Math.max(e.fame || 0, rint(5, 10))),
       renderStats(),
       t ||
-        (say("I became a famous athlete."),
+        (say("I became a famous athlete. People started recognizing me in places where I used to be anonymous and happy."),
         v({
           tag: "Fame",
           iconSrc: i("famous"),
@@ -738,7 +738,7 @@
         ((e.fame = 0),
         (e.fameOn = !1),
         (state.stats.Happiness = clamp(state.stats.Happiness - rint(10, 20))),
-        say("I'm no longer famous."),
+        say("I'm no longer famous. The autographs stopped first, then the invitations, then the friends who only came with the invitations."),
         queuePopup(() =>
           notice(
             "No longer famous",
@@ -1078,7 +1078,7 @@
           return (
             (e.team = s.i),
             (state.job.emp = s.name),
-            say(`I was traded from the ${a.name} to the ${s.name}.`),
+            say(`I was traded from the ${a.name} to the ${s.name}. I packed a whole career into two suitcases and a duffel bag, and the team sent a car.`),
             v({
               iconSrc: l(s.i),
               title: "Traded",
@@ -1094,7 +1094,7 @@
           );
         }
         (e.respect = clamp(e.respect - rint(2, 5))),
-          say(`The ${a.name} denied my trade request.`),
+          say(`The ${a.name} denied my trade request. They called it a basketball decision, which is what teams say when it is a money decision.`),
           S("Request denied", `The ${a.name} denied your trade request.`);
       },
       train() {

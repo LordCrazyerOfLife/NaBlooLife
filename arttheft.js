@@ -3316,7 +3316,8 @@
                         d(),
                           n.sold++,
                           (n.earned += a.offer),
-                          (state.money += a.offer),
+                          (window.FL_LAUNDER && FL_LAUNDER.dirty(a.offer, "selling stolen art", "art")) ||
+                            (state.money += a.offer),
                           renderStats(),
                           chaChing(),
                           say(

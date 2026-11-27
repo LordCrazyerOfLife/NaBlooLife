@@ -585,7 +585,7 @@
               state.job &&
                 !state.job.clergy &&
                 (say(
-                  `I left my job as ${/^[aeiou]/i.test(state.job.t) ? "an" : "a"} ${state.job.t} to enter the seminary.`,
+                  `I left my job as ${/^[aeiou]/i.test(state.job.t) ? "an" : "a"} ${state.job.t} to enter the seminary. The pay cut was immediate; the peace of mind took a few months.`,
                 ),
                 (state.job = null));
               const i = (state.church = {
@@ -617,7 +617,7 @@
               });
               (i.instr.metAt = state.age),
                 (state.lovers || []).slice().forEach((e) => {
-                  toEx(e), say(`I ended my relationship with ${e.first} to enter the seminary.`);
+                  toEx(e), say(`I ended my relationship with ${e.first} to enter the seminary. ${e.first} took it better than I expected, which somehow made it worse.`);
                 }),
                 state.preTheo && (i.theo = o(i.theo + state.preTheo)),
                 z() && ((i.theo = o(i.theo + 15)), (i.prog = 15)),
@@ -625,7 +625,7 @@
                 (state.semOffer = null),
                 (state.semCity = null),
                 B("seminary"),
-                say(`I entered ${n} to study for the priesthood.`),
+                say(`I entered ${n} to study for the priesthood. I arrived with one suitcase and no idea how much silence I was signing up for.`),
                 J(
                   "Welcome to the Seminary",
                   "church/pic-palace.png",
@@ -646,7 +646,7 @@
                 const e = q(n);
                 if (e)
                   return (
-                    say(`I applied to ${n}, but I wasn't accepted.`),
+                    say(`I applied to ${n}, but I wasn't accepted. The letter was polite, brief, and somehow worse for being polite.`),
                     notice(
                       "Rejected",
                       e[0],
@@ -669,7 +669,7 @@
                   ],
                   choices: [
                     ["Join the Seminary", () => setTimeout(e, 80)],
-                    ["Maybe Later", () => say(`I was accepted into ${n}, but decided to wait.`)],
+                    ["Maybe Later", () => say(`I was accepted into ${n}, but decided to wait. The door is open, and I'm not ready to walk through it yet.`)],
                   ],
                 });
             })();
@@ -689,7 +689,7 @@
         '"Welcome, brother. The first year is the hardest. After that it\'s only very hard."',
         `"Stay close to ${e.instr.title}. He looks stern, but he's the kindest man here."`,
       ]);
-    say("I attended my first Mass at the seminary."),
+    say("I attended my first Mass at the seminary. I mouthed the responses and hoped nobody was watching my lips."),
       J(
         "Your First Mass",
         "church/pic-sistine.png",
@@ -701,7 +701,7 @@
       a = e.length ? [...e].sort((e, a) => a.rel - e.rel)[0] : null,
       t = new Set(e.map((e) => e.cc)).size;
     a && (a.rel = o(a.rel + 3)),
-      say("I attended my first meeting of the College of Cardinals."),
+      say("I attended my first meeting of the College of Cardinals. Scarlet robes everywhere, and not one person willing to say what they actually thought."),
       J(
         "Your First Day",
         "church/pic-conclave.jpg",
@@ -1719,7 +1719,7 @@
               "Have a conversation",
               () => {
                 j("talk" + e.id) && (e.rel = o(e.rel + rint(4, 9))),
-                  say(`I had a long conversation with ${C(e)}.`),
+                  say(`I had a long conversation with ${C(e)}. ${C(e)} talked about ${e.prio} for an hour and never once asked what I thought.`),
                   notice("Conversation", `You and ${C(e)} talked about ${e.prio}.`, () => ee(a), !0);
               },
             ],
@@ -1734,7 +1734,7 @@
                       : -6
                   : 2;
                 (e.rel = o(e.rel + i + rint(-2, 3))),
-                  say(`I discussed the future of the Church with ${C(e)}.`),
+                  say(`I discussed the future of the Church with ${C(e)}. We agreed on the problems and carefully avoided the solutions.`),
                   notice(
                     i > 0 ? "Common ground" : "Different views",
                     i > 0
@@ -1764,8 +1764,8 @@
       renderAvatar(),
       say(
         e.since === e.entered && "Seminarian" === t
-          ? "I left the seminary."
-          : `I left the priesthood after serving as ${t}.`,
+          ? "I left the seminary. The silence I came for had stopped being peaceful."
+          : `I left the priesthood after serving as ${t}. I took off the collar and felt the weight of it only after it was gone.`,
       ),
       l(
         "Seminarian" === t ? "Left the Seminary" : "Laicized",
@@ -1785,7 +1785,7 @@
       (state.job.t = t),
         (state.job.pay = Math.round(localPrice(0.6 * Y[e.stage][2]) * (typeof window.inflFx === "function" ? window.inflFx() : 1))),
         e.history.push(`Retired from active office (${a()})`),
-        say("I retired from active office."),
+        say("I retired from active office. The resignation letter was two paragraphs; the rest of my life is the part I'm still writing."),
         l("Retired", `${P()} accepted your resignation. You are now ${t}.`);
     });
   }
@@ -1868,7 +1868,7 @@
           () => {
             (e.prog = 80),
               D("theo", rint(3, 6)),
-              say("I asked for another year of seminary training."),
+              say("I asked for another year of seminary training. I told myself it was humility, and it was at least partly fear."),
               l("More Training", "The rector agreed to give you another year of formation.");
           },
         ],
@@ -1965,7 +1965,7 @@
           "I need more time",
           () => {
             (e.ordDelay = state.age),
-              say("I asked for more time before my ordination."),
+              say(`I asked for more time before my ordination. ${e.sup.title} agreed to wait, though I could tell he'd heard that before.`),
               l(
                 "More Time",
                 `${e.sup.title} agreed to wait. You can request ordination again when you are ready.`,
@@ -2031,7 +2031,7 @@
           "Request time for reflection",
           () => {
             (e.bishopOffer = state.age),
-              say("I asked for time to reflect before accepting appointment as a bishop."),
+              say("I asked for time to reflect before accepting appointment as a bishop. The nuncio said of course, in the tone of a man checking his calendar."),
               l(
                 "Time to Reflect",
                 "The nuncio agreed to give you time. The offer may not stay open forever.",
@@ -2042,7 +2042,7 @@
           "Decline the appointment",
           () => {
             (e.declinedBishop = (e.declinedBishop || 0) + 1),
-              say("I declined appointment as a bishop."),
+              say("I declined appointment as a bishop. I told myself the diocese needed a better man, and I hoped it wasn't true."),
               l("Declined", "You declined the appointment and remain a parish priest.");
           },
         ],
@@ -2104,7 +2104,7 @@
           () => {
             (a.archOffer = null),
               (a.declinedArch = !0),
-              say("I declined appointment as an archbishop."),
+              say("I declined appointment as an archbishop. My diocese is small, stubborn, and mine, and I wasn't done with it."),
               l("Declined", "You chose to remain bishop of your diocese.");
           },
         ],
@@ -2131,7 +2131,7 @@
           "Request a private audience",
           () => {
             (e.popeRel = o((e.popeRel ?? 50) + 6)),
-              say(`I had a private audience with ${P()} before my elevation.`),
+              say(`I had a private audience with ${P()} before my elevation. ${P()} spoke about service for twenty minutes and never mentioned the hat.`),
               notice(
                 "Private Audience",
                 `${P()} spoke with you warmly about what the red hat means: a willingness to serve "even to the shedding of blood".`,
@@ -2144,7 +2144,7 @@
           "Decline",
           () => {
             (e.declinedRed = !0),
-              say("I declined to be made a cardinal."),
+              say("I declined to be made a cardinal. The red hat went to someone else, and I slept better than I had in years."),
               l(
                 "Declined",
                 "You asked the Pope to give the red hat to someone else. You remain in your current office.",
@@ -2228,7 +2228,7 @@
                   );
               }
             : () => {
-                say(`I received a formal warning from the rector of ${e.seminary}.`),
+                say(`I received a formal warning from the rector of ${e.seminary}. The word "formal" did most of the work; the rest was silence across a desk.`),
                   l(
                     "A Warning",
                     `The rector warned you that your ${i ? "academic progress is too slow" : "discipline is not acceptable"}. ${2 === e.warnings ? "This is your final warning." : ""}`,
@@ -2267,7 +2267,7 @@
         if (chance(0.3))
           return () => {
             const e = `Father ${any(LAST)}`;
-            say(`${e} was named a bishop instead of me.`),
+            say(`${e} was named a bishop instead of me. I congratulated him in public and stared at the ceiling in private.`),
               l(
                 "Passed Over",
                 `${e}, a priest from another parish, was appointed Bishop of ${any(M())}. Your time may still come.`,
@@ -2318,7 +2318,7 @@
           (e.died = a()),
           H() &&
             ["cardinal", "pope", "archbishop"].includes(L().stage) &&
-            say(`${C(e)} of ${s(e.cc)} died at ${t}.`));
+            say(`${C(e)} of ${s(e.cc)} died at ${t}. The College is smaller today, and the next conclave is a little less certain.`));
       }),
       "reigning" !== t.status)
     )
@@ -2599,7 +2599,7 @@
               (Te = !1),
                 (t.interactive = !1),
                 (t.skipped = !0),
-                say("I chose not to take part in the conclave."),
+                say("I chose not to take part in the conclave. I watched the smoke from a window and told myself it wasn't my decision to make."),
                 Ae();
             },
           ],
@@ -2614,7 +2614,7 @@
           [
             "Travel to Vatican City",
             () => {
-              say("I traveled to Vatican City for the conclave."), Ye("pre1");
+              say("I traveled to Vatican City for the conclave. The plane was full of cardinals pretending not to size each other up."), Ye("pre1");
             },
           ],
           [
@@ -2635,7 +2635,7 @@
                   () => {
                     (state.stats.Health = o(state.stats.Health + rint(10, 20))),
                       renderStats(),
-                      say("Vatican doctors treated me before the conclave."),
+                      say("Vatican doctors treated me before the conclave. They were discreet, thorough, and clearly used to old men in a hurry."),
                       notice(
                         "Medical Care",
                         "The Vatican's doctors treated you. You are well enough to take part.",
@@ -2668,7 +2668,7 @@
             () => {
               (a.rel = o(a.rel + 4)),
                 (t.suit += 0.5),
-                say("I discussed the Church's priorities with the other cardinals."),
+                say("I discussed the Church's priorities with the other cardinals. Everyone agreed the Church needs to listen more, and then nobody listened."),
                 notice("Priorities", `You and ${C(a)} talked late into the evening about ${a.prio}.`, i, !0);
             },
           ],
@@ -2680,7 +2680,7 @@
                 a && (a.rel = o(a.rel + 1));
               }),
                 (t.suit += 1),
-                say("I listened carefully to the other cardinals."),
+                say("I listened carefully to the other cardinals. I learned more in one evening than in a year of reading reports."),
                 notice(
                   "Listening",
                   "You said little and listened a great deal. Several cardinals noticed your humility.",
@@ -2694,7 +2694,7 @@
             () => {
               (t.suit += (r.infl ?? 50) > 55 ? 1.5 : 0.5),
                 n("mod", 3),
-                say("I spoke in favor of diplomatic cooperation."),
+                say("I spoke in favor of diplomatic cooperation. Half the room nodded, and the other half wrote something down."),
                 notice("Diplomacy", "Your call for a Church that builds bridges was well received.", i, !0);
             },
           ],
@@ -2704,7 +2704,7 @@
               (r.lean = "reform"),
                 n("reform", 5),
                 n("trad", -5),
-                say("I argued that the Church needs reform."),
+                say("I argued that the Church needs reform. The room went quiet in the way rooms do when everyone has an opinion and no one wants to go first."),
                 notice(
                   "Reform",
                   "Reform-minded cardinals nodded along. Traditionalists exchanged worried glances.",
@@ -2719,7 +2719,7 @@
               (r.lean = "trad"),
                 n("trad", 5),
                 n("reform", -5),
-                say("I spoke about the importance of tradition."),
+                say("I spoke about the importance of tradition. Several cardinals looked relieved; a few looked at their watches."),
                 notice(
                   "Tradition",
                   "Traditional cardinals were reassured. Some reformers looked disappointed.",
@@ -2732,7 +2732,7 @@
             "Avoid expressing a preference",
             () => {
               (r.lean ||= "mod"),
-                say("I kept my views to myself before the conclave."),
+                say("I kept my views to myself before the conclave. In that room, silence is a kind of campaign."),
                 notice(
                   "Discretion",
                   "You kept your own counsel. Nobody can accuse you of campaigning.",
@@ -3143,7 +3143,7 @@
           (r.popeRel = i.rel),
             (e.conclave = null),
             (Te = !1),
-            say(`Cardinal ${i.first} ${i.last} was elected Pope after ${s} ballots and took the name ${h}.`),
+            say(`Cardinal ${i.first} ${i.last} was elected Pope after ${s} ballots and took the name ${h}. The white smoke took its time, as if it knew the room was divided.`),
             o && say(o),
             n &&
               setTimeout(
@@ -5662,7 +5662,7 @@
                   (state.stats.Smarts = o(state.stats.Smarts + 1)),
                   t && D("theo", 3)),
                 screen.classList.remove("open"),
-                say("I studied theology."),
+                say("I studied theology. I understood about half of it, which the books assure me is normal."),
                 l(
                   "Study Theology",
                   e

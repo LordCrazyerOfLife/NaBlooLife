@@ -30,7 +30,23 @@
     { id: "wrist", title: "Wrist", sub: "Watches and bracelets", icon: "emoji/231a.png" },
     { id: "mouth", title: "Grillz", sub: "For your teeth", icon: "jewelry/diamond.png" },
     { id: "ears", title: "Ears", sub: "Earrings", icon: "jewelry/diamond.png" },
+    { id: "ring", title: "Rings", sub: "Up to 5 on each hand", icon: "emoji/1f48d.png" },
   ];
+  // rings live in 10 finger slots (r0..r9); for the menus they count as one zone
+  const ringsOn = () => {
+    try {
+      const e = jw().equipped();
+      return Object.keys(e).filter((k) => /^r\d$/.test(k)).map((k) => e[k]);
+    } catch {
+      return [];
+    }
+  };
+  const curOf = (slot) => (slot === "ring" ? ringsOn()[0] || null : wornIn(slot));
+  const curText = (slot, it) => {
+    if (slot !== "ring") return it ? esc(it.name) : "";
+    const n = ringsOn().length;
+    return n ? `${n} ring${n === 1 ? "" : "s"} on` : "";
+  };
 
   const row = (data, icon, t, s, locked) =>
     `<div class="row${locked ? " dis" : ""}" ${data}><img src="${icon}" alt="" style="object-fit:contain"><div class="t"><b>${t}</b><span>${s}</span></div>${locked ? "" : dots()}</div>`;
@@ -103,8 +119,8 @@
     if (jw()) {
       h += `<div class="sec">Jewelry</div>`;
       SLOTS.forEach((sl) => {
-        const it = eqNow[sl.id];
-        h += row(`data-mr="slot:${sl.id}"`, it ? pimg(it) : sl.icon, sl.title, it ? esc(it.name) : "Nothing · tap to choose");
+        const it = curOf(sl.id);
+        h += row(`data-mr="slot:${sl.id}"`, it ? pimg(it) : sl.icon, sl.title, it ? curText(sl.id, it) : "Nothing · tap to choose");
       });
     }
     h += `<div class="sec">Hair</div>`;
@@ -141,9 +157,9 @@
     const nWorn = Object.keys(eqNow).length;
     let h = previewHtml() + `<div class="sec">Wearing now</div>`;
     SLOTS.forEach((s) => {
-      const it = eqNow[s.id];
+      const it = curOf(s.id);
       const n = piecesFor(s.id).length;
-      h += row(`data-js="${s.id}"`, it ? pimg(it) : s.icon, `${s.title}: ${it ? esc(it.name) : "nothing"}`, n ? `${n} piece${n === 1 ? "" : "s"} to choose from · tap to change` : "You own nothing for this yet");
+      h += row(`data-js="${s.id}"`, it ? pimg(it) : s.icon, `${s.title}: ${it ? curText(s.id, it) : "nothing"}`, n ? `${n} piece${n === 1 ? "" : "s"} to choose from · tap to change` : "You own nothing for this yet");
     });
     if (nWorn) h += row(`data-js="off"`, "cars/ui-sign-litter.png", "Take off everything", "Remove all your jewelry");
     if (!all.length) h += `<div class="mm-foot" style="padding:10px 14px;text-align:left">You do not own any jewelry yet. Buy some in Shopping and it will show up here.</div>`;
@@ -156,7 +172,7 @@
         } catch {}
         const k = el.dataset.js;
         if (k === "off") {
-          Object.values(jw().equipped()).forEach((it) => jw().toggle(it));
+          new Set(Object.values(jw().equipped())).forEach((it) => jw().toggle(it));
           return openJewelry();
         }
         openSlot(k);
@@ -170,7 +186,7 @@
     const list = piecesFor(slot)
       .slice()
       .sort((a, b) => Number(jw().worn(b)) - Number(jw().worn(a)));
-    const cur = wornIn(slot);
+    const cur = slot === "ring" ? null : wornIn(slot);
     let h = previewHtml() + `<div class="sec">${S.title}</div>`;
     if (cur) h += row(`data-sl="off"`, "cars/ui-sign-litter.png", "Take it off", `Stop wearing ${esc(cur.name)}`);
     h += `<div class="sec">Your ${S.title.toLowerCase()} pieces (${list.length})</div>`;
@@ -188,9 +204,7 @@
           play("choice");
         } catch {}
         const k = el.dataset.sl;
-        if (k === "off") jw().toggle(cur);
-        else jw().toggle(list[+k]);
-        openSlot(slot);
+        jw().toggle(k === "off" ? cur : list[+k], () => openSlot(slot));
       };
     });
   }
@@ -216,7 +230,7 @@
       const eqNow = jw().equipped();
       const worn = Object.values(eqNow).map((it) => esc(it.name));
       h += `<div class="sec">Jewelry</div>`;
-      h += row(`data-ap="jewelry"`, "emoji/1f48d.png", "Jewelry", worn.length ? `Wearing: ${worn.slice(0, 3).join(", ")}${worn.length > 3 ? ` +${worn.length - 3}` : ""}` : owned().length ? "Pick what to wear" : "Neck, wrist, grillz and ears");
+      h += row(`data-ap="jewelry"`, "emoji/1f48d.png", "Jewelry", worn.length ? `Wearing: ${worn.slice(0, 3).join(", ")}${worn.length > 3 ? ` +${worn.length - 3}` : ""}` : owned().length ? "Pick what to wear" : "Neck, wrist, grillz, ears and rings");
     }
     h += `<div class="sec">Barbershop</div>`;
     BARBER.forEach((b) => {

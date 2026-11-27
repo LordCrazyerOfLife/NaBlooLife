@@ -573,7 +573,7 @@
     (sList.innerHTML =
       `<div class="row jv" data-ra="view"><img src="${y(n)}" style="object-fit:contain"><div class="t"><b>${$(n)}${S(n)}</b><span>View ${i}</span></div>${DOTS}</div><div class="sec">Activities</div>` +
       (window.FL_JEWEL_WEAR && FL_JEWEL_WEAR.slot(n)
-        ? r("wear", FL_JEWEL_WEAR.worn(n) ? "Take off" : "Wear", `Wear ${o} on your ${FL_JEWEL_WEAR.slot(n)}`)
+        ? r("wear", FL_JEWEL_WEAR.worn(n) ? "Take off" : "Wear", `Wear ${o} on your ${FL_JEWEL_WEAR.label ? FL_JEWEL_WEAR.label(n) : FL_JEWEL_WEAR.slot(n)}`)
         : "") +
       r("appraise", "Appraise", `Get ${o} appraised`) +
       r("clean", "Clean", `Get ${o} cleaned`) +
@@ -833,7 +833,7 @@
                     ],
                   });
                 })(n),
-              wear: () => (FL_JEWEL_WEAR.toggle(n), T(n)),
+              wear: () => FL_JEWEL_WEAR.toggle(n, () => T(n)),
               clean: () =>
                 (function (e) {
                   if (e.cond >= 100)

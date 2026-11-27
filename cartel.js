@@ -12,6 +12,10 @@
     extortion: CHARGES.extortion || [1, 5],
     assault: CHARGES.assault || [1, 6],
   });
+  // [mod] cartel income is dirty money: it has to be laundered (see laundering.js)
+  const dirtyPay = (v) =>
+    (window.FL_LAUNDER && FL_LAUNDER.dirty(v, "cartel business", "cartel")) ||
+    (state.money += Math.round(Number(v) || 0));
   const n = (e) => {
       const t = new Audio(`sounds/${e}`);
       return t.play().catch(() => {}), t;
@@ -466,6 +470,7 @@
         )
         .join("")),
       (sList.scrollTop = 0),
+      window.FL_MYCARTEL && FL_MYCARTEL.mount(() => te(), null),
       sList.querySelectorAll("[data-ct]").forEach(
         (e) =>
           (e.onclick = () =>
@@ -510,7 +515,7 @@
                       (function (e, a, o, s) {
                         const r = state.record || 0,
                           i = Math.min(0.85, 0.3 + Math.min(0.3, 0.05 * r) + a);
-                        if ((say(`I ${o} for ${x(e.n)}.`), chance(i)))
+                        if ((say(`I ${o} for ${x(e.n)}. Nobody clapped, but the man with the clipboard wrote my name down, which around here counts as a promotion.`), chance(i)))
                           return (function (e) {
                             const a = () => {
                               const a = (state.cartel = {
@@ -544,7 +549,7 @@
                               for (let e = rint(3, 5); e; e--) a.members.push(G(a, 0, 18, 30));
                               oe(),
                                 n("a16_sndJoiningCartelFeedback.wav"),
-                                say(`I started working for ${x(e.n)} as a halcón.`);
+                                say(`I started working for ${x(e.n)} as a halcón. They handed me a truck, a radio and a route, and explained that losing the product is a bill, not an accident.`);
                               const o = z();
                               K({
                                 tag: T(4, o.g),
@@ -565,7 +570,7 @@
                                 "Confirm",
                                 `Working for ${x(e.n)} means leaving your job as ${t.t}. Continue?`,
                                 () => {
-                                  say(`I quit my job as ${t.t} at ${t.emp}.`), (state.job = null), a();
+                                  say(`I quit my job as ${t.t} at ${t.emp}. The manager asked why, and I told him I found something with better hours and worse consequences.`), (state.job = null), a();
                                 },
                               );
                             }
@@ -727,6 +732,7 @@
         `<span>${n.debt > 0 ? "Not while you owe them" : "Walk away from the cartel"}</span>`,
       )),
       (sList.scrollTop = 0),
+      window.FL_MYCARTEL && FL_MYCARTEL.mount(() => se(), "Career"),
       sList.querySelectorAll("[data-ct]").forEach(
         (e) =>
           (e.onclick = () => {
@@ -1181,7 +1187,7 @@
       i.debt || (i.debtAge = state.age),
       (i.debt += c),
       (i.standing = C(i.standing - 15)),
-      say(`I lost ${D(a, e.n)} belonging to ${x(i.name)}. Now I owe them ${R(i.debt)}.`);
+      say(`I lost ${D(a, e.n)} belonging to ${x(i.name)}. Now I owe them ${R(i.debt)}, which is the kind of number that gets paid or gets people buried.`);
     V();
     const d = `${H(i.name)} doesn't care how it happened. You owe them <b>${R(i.debt)}</b>, and they will collect.`;
     if (!o)
@@ -1221,7 +1227,7 @@
     let r = 0;
     o.debt > 0 && ((r = Math.min(o.debt, n)), (o.debt -= r), o.debt || (o.debtAge = -1));
     const i = n - r;
-    (state.money += i),
+    dirtyPay(i),
       (o.year += i),
       (o.life += i),
       (e.made = i),
@@ -1260,10 +1266,10 @@
                     return (
                       (e.debtAge = -1),
                       (e.standing = C(e.standing + 5)),
-                      say(`I paid ${x(e.name)} back in full.`),
+                      say(`I paid ${x(e.name)} back in full. It hurt, but owing money to armed men is a hobby I can live without.`),
                       Q("Square", `You paid back every dollar. ${H(e.name)} considers the matter closed.`)
                     );
-                  say(`I paid ${x(e.name)} ${R(t)} toward my debt.`),
+                  say(`I paid ${x(e.name)} ${R(t)} toward my debt. They counted it twice, said nothing, and wrote down the rest.`),
                     Q("Partial Payment", `You handed over ${R(t)}. You still owe ${R(e.debt)}.`);
                 },
               ],
@@ -1411,7 +1417,7 @@
                             (e.how = "killed as a rat"),
                             (t.standing = C(t.standing + 15)),
                             (t.notoriety = C(t.notoriety + 5)),
-                            say(`I exposed ${A(e)} as a DEA informant. ${H(t.name)} took care of ${j(e)}.`),
+                            say(`I exposed ${A(e)} as a DEA informant. ${H(t.name)} took care of ${j(e)}. I got a nod, a bigger cut and a new thing to have nightmares about.`),
                             notice(
                               "Rat Exposed",
                               `You were right. ${A(e)} had been feeding the DEA information. ${P(e)} won't be talking anymore.`,
@@ -1427,7 +1433,7 @@
                               300,
                             )
                           );
-                        say(`I accused ${A(e)} of being a rat, but ${x(t.name)} didn't believe me.`),
+                        say(`I accused ${A(e)} of being a rat, but ${x(t.name)} didn't believe me. Now I look like the one with the problem, and ${A(e)} knows where I live.`),
                           notice(
                             "No Proof",
                             `Nobody believes you, and ${A(e)} is furious.`,
@@ -1453,7 +1459,7 @@
                               (e.how = "killed"),
                               (t.notoriety = C(t.notoriety + 10)),
                               (t.heat = C(t.heat + 8)),
-                              say(`I had ${A(e)} of ${x(t.name)} killed.`),
+                              say(`I had ${A(e)} of ${x(t.name)} killed. It took one phone call, and that is the part that keeps me awake.`),
                               chance(0.3 + 0.1 * e.rank))
                             ) {
                               const a = z();
@@ -1655,7 +1661,7 @@
       (t.jobs = null),
       oe(),
       n("a16_sndGunCock.wav"),
-      say(`I moved up from ${a} to ${S()} in ${x(t.name)}.`),
+      say(`I moved up from ${a} to ${S()} in ${x(t.name)}. More money, more men and a shorter list of people I can turn my back on.`),
       K({
         you: !0,
         icon: y[e].ico,
@@ -1695,7 +1701,7 @@
           state.job && state.job.cartel && (state.job = null),
           renderAvatar(),
           renderStats(),
-          say(`I stopped working for ${x(e.name)}.`),
+          say(`I stopped working for ${x(e.name)}. Nobody threw a party, and I did not turn my back on the door on the way out.`),
           t)
         )
           return notice("Out", `You walked away from ${x(e.name)}.`, null, !0);
@@ -2028,11 +2034,11 @@
               if (
                 ((o.fear = C(o.fear + 10 * t + rint(5, 12))),
                 (i.notoriety = C(i.notoriety + t)),
-                say(`I ${a}.`),
+                say(`I ${a}. The neighbors heard everything, which was the point of doing it on a Tuesday afternoon.`),
                 !ze(o))
               )
                 return chance(o.fear >= 70 ? 0.75 : o.fear >= 45 ? 0.5 : 0.25)
-                  ? (say(`${l} paid up.`), tt(o, o.owes))
+                  ? (say(`${l} paid up, counting the bills twice and avoiding eye contact.`), tt(o, o.owes))
                   : s < 2
                     ? Je(o, s + 1)
                     : void Xe(o, `You ${a}, but ${o.first} still won't pay.`);
@@ -2058,11 +2064,11 @@
                 (n("a16_sndSuccessfulShakedown.wav"),
                 (o.fear = C(o.fear + rint(15, 30))),
                 (i.notoriety = C(i.notoriety + rint(3, 6))),
-                say(`I ${t}.`),
+                say(`I ${t}. Nobody called the police, and that silence is worth more than the money.`),
                 !ze(o))
               )
                 return chance(0.65)
-                  ? (say(`${l} paid up.`),
+                  ? (say(`${l} paid up, counting the bills twice and avoiding eye contact.`),
                     tt(o, "part" === h ? Math.max(u, 100 * Math.round((0.8 * o.owes) / 100)) : o.owes))
                   : void Xe(o, `You ${t}, but ${o.first} still won't pay.`);
             },
@@ -2124,7 +2130,7 @@
           (e.done = "Dead. The message was sent."),
           (o.standing = C(o.standing + 4)),
           (state.job.perf = o.standing),
-          say(`I ${a} over a debt owed to ${x(o.name)}.`),
+          say(`I ${a} over a debt owed to ${x(o.name)}. Debts are personal in this business, and personal is how people end up in ditches.`),
           chance(Ze))
         )
           return (
@@ -2186,7 +2192,7 @@
                         n("door-open.mp3"),
                         (a.notoriety = C(a.notoriety + rint(4, 8))),
                         (a.heat = C(a.heat + rint(4, 8))),
-                        say(`I raided ${o}'s house for ${x(a.name)}.`);
+                        say(`I raided ${o}'s house for ${x(a.name)}. We found the money in a shoebox, which is where everybody keeps cash they swear they don't have.`);
                       let r = "";
                       if (chance(0.35)) {
                         if ((n("a16_sndGunshot.wav"), xe(10, 35)))
@@ -2214,7 +2220,7 @@
                         l = i / je[a.rank],
                         c = l < 8e3 ? 0.4 : l < 18e3 ? 0.3 : 0.2,
                         d = 100 * Math.round((i * c) / 100);
-                      (state.money += d),
+                      dirtyPay(d),
                         (a.year += d),
                         (a.life += d),
                         renderStats(),
@@ -2225,7 +2231,7 @@
                         (state.job.perf = a.standing),
                         s("paper-shuffle.mp3", 0.7, 1.1, 300, 1.3),
                         s("a16_sndChaChing.wav", 1, 1, 1200),
-                        say(`I took ${R(i)} from ${o}'s house and kept ${R(d)}.`),
+                        say(`I took ${R(i)} from ${o}'s house and kept ${R(d)}. The rest went to the boss, who counted it faster than I could.`),
                         K({
                           tag: "Raid",
                           icon: e("1f3e0"),
@@ -2257,14 +2263,14 @@
     const o = v(),
       n = 100 * Math.round((a * We) / 100);
     (t.done = `Paid ${R(a)}`),
-      (state.money += n),
+      dirtyPay(n),
       (o.year += n),
       (o.life += n),
       (o.standing = C(o.standing + rint(2, 5))),
       (state.job.perf = o.standing),
       s("paper-shuffle.mp3", 0.7, 1.1, 0, 1.3),
       s("a16_sndChaChing.wav", 1, 1, 900),
-      say(`I collected ${R(a)} owed to ${x(o.name)} from ${t.first} ${t.last} and kept ${R(n)}.`),
+      say(`I collected ${R(a)} owed to ${x(o.name)} from ${t.first} ${t.last} and kept ${R(n)}. He paid in small bills and apologized for the inconvenience of being broke.`),
       K({
         tag: "Collect Debts",
         icon: e("1f4b5"),
@@ -2453,7 +2459,7 @@
       (o.standing = C(o.standing + 3)),
       (state.job.perf = o.standing),
       n("a16_sndSuccessfulShakedown.wav"),
-      say(`${t.name} started paying ${x(o.name)} for protection.`),
+      say(`${t.name} started paying ${x(o.name)} for protection. He signed nothing, of course, because nothing was ever signed.`),
       K({
         tag: "Protection",
         person: Re(t.owner, "sad"),
@@ -2786,11 +2792,11 @@
         const e = v();
         if (e.year < 1) return;
         const t = Math.round(e.year * (0.1 + 0.2 * Math.random()));
-        (state.money += t),
+        dirtyPay(t),
           (e.life += t),
           renderStats(),
           chaChing(),
-          say(`${H(e.name)} gave me a ${R(t)} bonus for a good year.`),
+          say(`${H(e.name)} gave me a ${R(t)} bonus for a good year. He handed it over in an envelope and told me not to spend it all on one funeral.`),
           notice(
             "Bonus",
             `${H(e.name)} had a good year and sent you an envelope with ${R(t)} in it.`,
@@ -2830,9 +2836,9 @@
           o = ot()
             .filter((e) => e.paying)
             .reduce((e, t) => e + Math.round(nt(t) * st), 0);
-        t && ((state.money += t), (e.life += t), a.push(`Your plazas paid you ${R(t)} this year.`)),
+        t && (dirtyPay(t), (e.life += t), a.push(`Your plazas paid you ${R(t)} this year.`)),
           o &&
-            ((state.money += o),
+            (dirtyPay(o),
             (e.life += o),
             a.push(`The businesses under your protection paid you ${R(o)}.`)),
           ot().forEach((e) => {
@@ -2907,7 +2913,7 @@
             (state.job = null),
             renderAvatar(),
             renderStats(),
-            say(`${H(e.name)} stopped giving me work.`),
+            say(`${H(e.name)} stopped giving me work. No explanation, no goodbye, just a door that stopped opening and a phone that stopped ringing.`),
             notice("Cut Off", `${H(e.name)} has no more use for you.`, null, !0);
         });
       else if (
@@ -2930,13 +2936,13 @@
                 if (r) {
                   const r = Math.max(1e3, 100 * Math.round((0.2 * n.earned) / 100));
                   return (
-                    (state.money += r),
+                    dirtyPay(r),
                     (e.life += r),
                     (e.standing = C(e.standing + 5)),
                     a && (a.rel = clamp(a.rel + 5)),
                     renderStats(),
                     s("a16_sndChaChing.wav", 1, 1, 300),
-                    say(`${o} called me in to say I'd had a great year, and gave me ${R(r)}.`),
+                    say(`${o} called me in to say I'd had a great year, and gave me ${R(r)}. Then he asked about my family, which is either kindness or a threat with better manners.`),
                     K({
                       tag: a ? T(a.rank, a.g) : "Cartel",
                       person: a ? Z(a) : null,
@@ -2958,7 +2964,7 @@
                   r && (e.vehicles = e.vehicles.filter((e) => e !== r.k)),
                     (e.jobs = null),
                     oe(),
-                    say(`${o} demoted me from ${s} to ${S()}.`),
+                    say(`${o} demoted me from ${s} to ${S()}. He said it was a temporary correction, the way a shovel is a temporary solution.`),
                     K({
                       tag: a ? T(a.rank, a.g) : "Cartel",
                       person: a ? Z(a) : null,

@@ -1090,7 +1090,7 @@
     return (
       t.some((e) => "Rabies" === e.name) ||
         (t.push({ name: "Rabies", drain: rint(15, 25), known: !1 }), (state.rabiesFrom = e.name)),
-      say(`I was bitten by my rabid ${m(e)}, ${e.name}.`),
+      say(`I was bitten by my rabid ${m(e)}, ${e.name}. The wound went hot and ugly within the hour, and the clinic told me to watch myself for symptoms.`),
       ""
     );
   }
@@ -1101,7 +1101,7 @@
         const t = (state.ills ||= []);
         t.some((e) => e.name === i.zoon) ||
           (t.push({ name: i.zoon, drain: rint(1, 5), known: !1 }),
-          say(`I caught ${i.zoon.toLowerCase()} from my ${m(e)}, ${e.name}.`));
+          say(`I caught ${i.zoon.toLowerCase()} from my ${m(e)}, ${e.name}. Turns out sharing a bed with an animal has a price, and it came due this year.`));
       }
     }
   };
@@ -1189,7 +1189,7 @@
         state.pets.splice(state.pets.indexOf(a), 1),
         (a.status = "with family"),
         D().push(a),
-        void say(`I left our family ${m(a)}, ${a.name}, with my parents when I moved out.`)
+        void say(`I left our family ${m(a)}, ${a.name}, with my parents when I moved out. ${a.name} took it better than they did.`)
       );
     const s = a.age / a.lifeSpan;
     let r = [];
@@ -1436,7 +1436,7 @@
                     (e.status = "given away"),
                     (e.goneAt = state.age),
                     D().push(e),
-                    say(`I got rid of my ${m(e)}, ${e.name}.`),
+                    say(`I got rid of my ${m(e)}, ${e.name}, after ${e.name} crossed a line I couldn't forgive. The house is quieter now, and not in a good way.`),
                     q("Rehomed", `You found ${e.name} a new home far away from your other animals.`);
                 },
               ],
@@ -1446,7 +1446,7 @@
           "Ignore it",
           () => {
             (e.habit = (e.habit || 0) + (chance(0.5) ? 1 : 0)),
-              say(`I ignored my ${m(e)}'s bad behavior.`),
+              say(`I ignored my ${m(e)}'s bad behavior. That's what the experts call "reinforcement", and what my neighbors call "why is there still piss on the couch".`),
               q("Whatever", `You ignored it. ${r.He} will probably do it again.`);
           },
         ],
@@ -1457,10 +1457,10 @@
               return (
                 j(rint(3, 12)),
                 V(e),
-                say(`I yelled at my ${m(e)}, ${e.name}, who attacked me.`),
+                say(`I yelled at my ${m(e)}, ${e.name}, who attacked me. Fair warning: ${e.name} does not respond to volume with obedience.`),
                 q("Bad idea", `${e.name} didn't take kindly to being yelled at and attacked you!`)
               );
-            say(`I yelled at my ${m(e)}, ${e.name}.`),
+            say(`I yelled at my ${m(e)}, ${e.name}. ${e.name} slunk off with the exact face of someone already planning revenge.`),
               q("Scolded", `${e.name} slunk away with ${r.his} tail between ${r.his} legs.`);
           },
         ],
@@ -1481,7 +1481,7 @@
                 (e.aggr = t(e.aggr - rint(3, 10))),
                 (e.habit = 0),
                 G(e, rint(2, 6), 0),
-                say(`I trained my ${m(e)}, ${e.name}, to behave.`),
+                say(`I trained my ${m(e)}, ${e.name}, to behave. Three weekends and a pocket full of treats, but ${e.name} finally sits when told.`),
                 q(
                   "Good boy".replace("boy", "m" === e.g ? "boy" : "girl"),
                   `Your training worked: ${e.name} seems to have learned ${r.his} lesson.`,
@@ -1490,7 +1490,7 @@
               );
             (e.crazy = t(e.crazy + rint(0, 3))),
               (e.rel = t(e.rel - rint(0, 3))),
-              say(`I tried to train my ${m(e)}, ${e.name}, but it didn't work.`),
+              say(`I tried to train my ${m(e)}, ${e.name}, but it didn't work. ${e.name} stared at me like I was the one who needed lessons.`),
               q("Untrainable", `${e.name} ignored every single command.`, O("Craziness", e.crazy, 1));
           },
         ],
@@ -1500,7 +1500,7 @@
             G(e, rint(2, 6), rint(4, 9)),
               (e.habit = (e.habit || 0) + 2),
               (e.crazy = t(e.crazy + rint(1, 4))),
-              say(`I rewarded my ${m(e)}, ${e.name}, for misbehaving.`),
+              say(`I rewarded my ${m(e)}, ${e.name}, for misbehaving. In my defense, the destruction was impressive, and ${e.name} knew it.`),
               q(
                 "Positive reinforcement?",
                 `${e.name} loved the reward. ${r.He} will definitely do it again.`,
@@ -1516,15 +1516,15 @@
       s = Math.random() < (i >= 2 ? 0.85 : i >= 0 ? 0.75 : 0.45);
     return s && (a.health <= 35 || chance(i >= 2 ? 0.3 : i >= 1 ? 0.1 : 0.02))
       ? (_(a, "killed", `Killed by ${e.name}`, { quiet: !0 }),
-        say(`My ${m(e)}, ${e.name}, killed my ${m(a)}, ${a.name}.`),
+        say(`My ${m(e)}, ${e.name}, killed my ${m(a)}, ${a.name}. There was no fight to speak of, just a mess to clean up and one very satisfied animal.`),
         ee(e, `Your ${m(e)}, ${e.name}, attacked and killed your ${m(a)}, ${a.name}!`, "Pet Killer", !0))
       : s
         ? ((a.health = t(a.health - rint(15, 35))),
           a.injuries.push({ age: state.age, by: e.name }),
           (a.rel = t(a.rel - 2)),
-          say(`My ${m(e)}, ${e.name}, attacked my ${m(a)}, ${a.name}, and injured ${N(a).him}.`),
+          say(`My ${m(e)}, ${e.name}, attacked my ${m(a)}, ${a.name}, and injured ${N(a).him}. The vet bill arrived before the apology did.`),
           ee(e, `${e.name} attacked ${a.name} and left ${N(a).him} injured.`, "Pet Fight"))
-        : (say(`My ${m(e)}, ${e.name}, and my ${m(a)}, ${a.name}, got into a scuffle.`),
+        : (say(`My ${m(e)}, ${e.name}, and my ${m(a)}, ${a.name}, got into a scuffle. Fur flew, nobody died, and now they're pretending it never happened.`),
           void ee(
             e,
             `${e.name} and ${a.name} got into a noisy fight. Luckily, nobody was badly hurt.`,
@@ -1537,7 +1537,7 @@
       (e.status = "missing"),
       (e.missingSince = state.age),
       A().push(e),
-      say(`My ${m(e)}, ${e.name}, ran away.`),
+      say(`My ${m(e)}, ${e.name}, ran away. I stood on the porch calling a name that nobody was going to answer.`),
       q("Missing", `${t}<br><br>${e.name} is missing!`);
   }
   function ie(e) {
@@ -1565,7 +1565,7 @@
       (e.status = "lost"),
       (e.goneAt = state.age),
       D().push(e),
-      say(`I gave up hope of ever finding my ${m(e)}, ${e.name}.`));
+      say(`I gave up hope of ever finding my ${m(e)}, ${e.name}. Somewhere out there ${e.name} is doing fine, which is somehow the worst part.`));
   }
   function se(a) {
     const i = uname(chance(0.5) ? "m" : "f");
@@ -1581,7 +1581,7 @@
               (a.status = "home"),
               (a.rel = t(a.rel + 10)),
               state.pets.push(a),
-              say(`A stranger returned my ${m(a)}, ${a.name}, whom I had released.`),
+              say(`A stranger returned my ${m(a)}, ${a.name}, whom I had released. ${a.name} walked in like the whole thing had been a misunderstanding.`),
               q("Reunited", `${a.name} is home again.`);
           },
         ],
@@ -1589,7 +1589,7 @@
           `Let ${i} keep ${N(a).him}`,
           () => {
             (a.status = "adopted by a stranger"),
-              say(`I let a stranger keep my old ${m(a)}, ${a.name}.`),
+              say(`I let a stranger keep my old ${m(a)}, ${a.name}. Better a clean break than a pet that keeps coming back to check if I meant it.`),
               q("New home", `${i} will take good care of ${a.name}.`);
           },
         ],
@@ -1659,7 +1659,7 @@
                     );
                   }
                   (t.rel = clamp(t.rel - rint(0, 3))),
-                    say(`My ${a} said no to getting me a pet.`),
+                    say(`My ${a} said no to getting me a pet. The argument lasted ten minutes; the grudge will outlast the decade.`),
                     notice("No pets", pickR(e.family.no).replace("{familyMemberName}", a), null, !0);
                 },
               ]),
@@ -1743,7 +1743,7 @@
                   state.pets.push(e),
                   ($.rel = clamp($.rel + rint(8, 15))),
                   renderStats(),
-                  say(`I got my ${relLabel($)}, ${$.first}, a puppy named ${e.name}.`),
+                  say(`I got my ${relLabel($)}, ${$.first}, a puppy named ${e.name}. The first night nobody slept, and ${$.first} has not stopped smiling since.`),
                   notice(
                     "Puppy love",
                     `${$.first} is over the moon about ${e.name}!`,
@@ -1756,7 +1756,7 @@
               "Say no",
               () => {
                 ($.rel = clamp($.rel - rint(3, 8))),
-                  say(`I told my ${relLabel($)}, ${$.first}, that we can't get a puppy.`),
+                  say(`I told my ${relLabel($)}, ${$.first}, that we can't get a puppy. ${$.first} said "fine" in a tone that meant it was not fine.`),
                   notice(
                     "Heartbroken",
                     `${$.first} sulked in ${"f" === $.g ? "her" : "his"} room all day.`,
@@ -1789,7 +1789,7 @@
         o.push(() => {
           (M.lastMisbehave = state.age), (S.p.rel = clamp((S.p.rel ?? 50) - rint(4, 10)));
           const t = z(pickR(e.family.bitFam), M, { familyMemberName: `${S.role}, ${S.name}` });
-          say(`My ${m(M)}, ${M.name}, bit my ${S.role}, ${S.name}.`), ee(M, t, "Biting");
+          say(`My ${m(M)}, ${M.name}, bit my ${S.role}, ${S.name}. There's a reason ${S.name} now knocks before entering the kitchen.`), ee(M, t, "Biting");
         }),
       state.age >= 6 &&
         state.age - (state.lastStray ?? -99) >= 10 &&
@@ -1818,7 +1818,7 @@
                     state.age < 15 && (t.owner = "family"),
                     state.pets.push(t),
                     say(
-                      `I took in a stray ${m(t)}${state.age < 15 ? " and my parents let me keep it" : ""}.`,
+                      `I took in a stray ${m(t)}${state.age < 15 ? " and my parents let me keep it" : ""}. It ate like it hadn't seen food in a week, which it probably hadn't.`,
                     ),
                     notice(
                       "New friend",
@@ -1831,14 +1831,14 @@
               [
                 "Take it to the shelter",
                 () => {
-                  say(`I took a stray ${m(t)} to the animal shelter.`),
+                  say(`I took a stray ${m(t)} to the animal shelter. It looked back once, and I've been thinking about that look all week.`),
                     notice("Good deed", `You dropped the stray ${m(t)} off at the animal shelter.`, null, !0);
                 },
               ],
               [
                 "Shoo it away",
                 () => {
-                  say(`I shooed away a stray ${m(t)}.`),
+                  say(`I shooed away a stray ${m(t)}. It left with the dignity of a creature that had been shooed before.`),
                     notice("Shoo", `The stray ${m(t)} slunk away.`, null, !0);
                 },
               ],
@@ -1877,10 +1877,10 @@
             if (!r.length && !n.length)
               return (
                 (a.health = t(a.health + rint(0, 4))),
-                say(`I took my ${m(a)}, ${a.name}, to the vet for a checkup.`),
+                say(`I took my ${m(a)}, ${a.name}, to the vet for a checkup. Clean bill of health, an empty wallet, and one very offended animal in a carrier.`),
                 notice("Clean bill of health", B(e.vet.healthy, a), null, !0)
               );
-            say(`I took my ${m(a)}, ${a.name}, to the vet.`);
+            say(`I took my ${m(a)}, ${a.name}, to the vet. ${a.name} screamed the entire way there and sulked the entire way back.`);
             const o = [
               ...r.map((e) => () => ce(a, e, o)),
               ...(n.length ? [() => notice("Hmm…", B(e.vet.unknown, a), c, !0)] : []),
@@ -1924,7 +1924,7 @@
             [
               "Refuse",
               () => {
-                say(`I refused to have my ${m(t)}, ${t.name}, put down.`),
+                say(`I refused to have my ${m(t)}, ${t.name}, put down. The vet said I was buying time, and I said that's exactly what I was doing.`),
                   notice(
                     "Not giving up",
                     `You took ${t.name} home. You'll care for ${r.him} as long as you can.`,
@@ -1955,7 +1955,7 @@
             () => {
               (a.managedTo = state.age),
                 (a.treatedAt = state.age),
-                say(`I chose to keep caring for my ${m(t)}, ${t.name}, through ${r.his} ${o}.`),
+                say(`I chose to keep caring for my ${m(t)}, ${t.name}, through ${r.his} ${o}. It won't be a cure, but ${t.name} doesn't have to face it alone.`),
                 notice("Comfort care", `${t.name} will get the best care you can give ${r.him}.`, d, !0);
             },
           ],
@@ -1974,7 +1974,7 @@
           "Do nothing",
           () => {
             (a.declined = state.age),
-              say(`I decided not to treat my ${m(t)}, ${t.name}'s ${o}.`),
+              say(`I decided not to treat my ${m(t)}, ${t.name}'s ${o}. I told myself it was about quality of life, and I almost believed it.`),
               notice("No treatment", `You took ${t.name} home without treatment.`, d, !0);
           },
         ],
@@ -1996,7 +1996,7 @@
       if (state.money < s)
         return (
           (i.declined = state.age),
-          say(`I couldn't afford treatment for my ${m(a)}, ${a.name}.`),
+          say(`I couldn't afford treatment for my ${m(a)}, ${a.name}. I carried ${a.name} home and pretended the whole way that this was a choice.`),
           notice("Flat broke", B(e.vet.broke, a, { treatmentCost: usd(s), diseaseName: l }), n, !0)
         );
       (state.money -= s), (a.spent += s), renderStats();
@@ -2158,7 +2158,7 @@
                   V(a),
                   W(a, 0.15)),
           say(
-            `I gave my ${m(a)}, ${a.name}, a bath.${"bite" === r ? ` ${i.He} attacked me.` : "escape" === r ? ` ${i.He} escaped halfway through.` : ""}`,
+            `I gave my ${m(a)}, ${a.name}, a bath.${"bite" === r ? ` ${i.He} attacked me.` : "escape" === r ? ` ${i.He} escaped halfway through.` : ""} The bathroom now looks like a crime scene, and I am the only witness.`,
           ),
           q(
             "bite" === r ? "Ouch!" : "good" === r ? "That's better" : "Bath time",
@@ -2213,13 +2213,13 @@
                             : "good",
           h = B(e.walk[d], a, { place: n, animal: o, object: c });
         if (((a.walkedAt = state.age), "escape" === d))
-          return say(`My ${m(a)}, ${a.name}, escaped during a walk.`), ae(a, h);
+          return say(`My ${m(a)}, ${a.name}, escaped during a walk. One second ${a.name} was at my heel, the next there was just an empty leash.`), ae(a, h);
         if ("attack" === d) {
           G(a, 0, rint(0, 3));
           const e = localPrice(rint(100, 600));
           return (
             (state.money = Math.max(0, state.money - e)),
-            say(`My ${m(a)}, ${a.name}, attacked another animal during our walk.`),
+            say(`My ${m(a)}, ${a.name}, attacked another animal during our walk. I apologized, paid for the vet, and walked home in silence.`),
             ee(a, h, "Attack")
           );
         }
@@ -2230,7 +2230,7 @@
           : "tired" === d
             ? (G(a, rint(1, 3), -rint(0, 3)), (a.health = t(a.health - rint(0, 3))))
             : G(a, rint(0, 3), rint(0, 4)),
-          say(`I took my ${m(a)}, ${a.name}, for a walk through ${n}.`);
+          say(`I took my ${m(a)}, ${a.name}, for a walk through ${n}. ${a.name} sniffed everything twice and came home happier than I've been all year.`);
         const p = rint(40, 100),
           u = "tired" === d ? rint(10, 45) : rint(55, 100);
         q(
@@ -2256,7 +2256,7 @@
             ? G(t, -rint(0, 3), 0)
             : (j(rint(5, 18)), G(t, -rint(2, 5), 0)),
           say(
-            `I went for a ride on my ${m(t)}, ${t.name}.${"fall" === s ? ` ${N(t).He} threw me off.` : ""}`,
+            `I went for a ride on my ${m(t)}, ${t.name}.${"fall" === s ? ` ${N(t).He} threw me off.` : ""} The neighbors watched the whole thing and did not offer to help.`,
           ),
           q("good" === s ? "Giddy up" : "fall" === s ? "Thrown off" : "Not today", r);
       },
@@ -2289,7 +2289,7 @@
             ? (G(t, -rint(1, 4), -rint(0, 3)), chance(0.3) && (j(rint(1, 6)), V(t)))
             : (G(t, rint(5, 12), rint(4, 10)), fx({ Happiness: 3 }, "")),
           u(t) && W(t, 0.06),
-          say(`I spent time with my ${m(t)}, ${t.name}.`),
+          say(`I spent time with my ${m(t)}, ${t.name}. ${t.name} fell asleep halfway through, which I'm choosing to read as trust.`),
           q(petRelTitle(t), n);
       },
       treat(t) {
@@ -2310,7 +2310,7 @@
           : "neutral" === o
             ? G(t, rint(1, 4), rint(1, 3))
             : "bad" === o && (G(t, rint(-2, 2), 0), /nipped|growled/.test(c) && j(rint(0, 2))),
-          say(`I gave my ${m(t)}, ${t.name}, ${s}.`),
+          say(`I gave my ${m(t)}, ${t.name}, ${s}. ${t.name} took it gently, then checked my hands for more.`),
           q("Just for you", c, O(`${a.His} Appreciation`, l));
       },
       vet: (e) => oe(e),
@@ -2324,7 +2324,7 @@
               (e.status = "released"),
               (e.goneAt = state.age),
               D().push(e),
-              say(`I released my ${m(e)}, ${e.name}, into the wild.`),
+              say(`I released my ${m(e)}, ${e.name}, into the wild. ${e.name} hesitated at the treeline, then chose the trees over me.`),
               q("Be free", `You released ${e.name} into the wild.`);
           },
         ),
@@ -2336,7 +2336,7 @@
             (e.goneAt = state.age),
             D().push(e),
             (state.shelterReturned = state.age),
-            say(`I returned my ${m(e)}, ${e.name}, to the animal shelter.`),
+            say(`I returned my ${m(e)}, ${e.name}, to the animal shelter. I filled out the paperwork, said goodbye, and didn't look back until the door.`),
             q("Goodbye", `You returned ${e.name} to the animal shelter.`);
         }),
       sell(e) {
@@ -2380,11 +2380,11 @@
                   (e.goneAt = state.age),
                   D().push(e),
                   (state.money += s),
-                  say(`I sold my ${m(e)}, ${e.name}, to a ${r} named ${n} for ${usd(s)}.`),
+                  say(`I sold my ${m(e)}, ${e.name}, to a ${r} named ${n} for ${usd(s)}. The money felt lighter than it should have.`),
                   q("Sold", `You sold ${e.name} to a ${r} named ${n} for ${usd(s)}.`);
               },
             ],
-            ["Never mind", () => say(`I decided not to sell my ${m(e)}, ${e.name}.`)],
+            ["Never mind", () => say(`I decided not to sell my ${m(e)}, ${e.name}. The offer was fair, and the answer was still no.`)],
           ],
         });
       },

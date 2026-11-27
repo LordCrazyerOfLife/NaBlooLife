@@ -12,9 +12,9 @@ global.state = { age: 30, jewelry: [ { id: "a", img: "cuban-01-gold", name: "Gol
 global.openAccessories = function () { sTitle.textContent = "ACCESSORIES"; html = '<div class="row" data-cat="0">x</div>'; };
 global.openSalon = noop; const salonCalls = []; global.SALON_OPEN = { barber: () => salonCalls.push("barber"), dye: () => salonCalls.push("dye"), shave: () => salonCalls.push("shave") };
 const worn = {}; global.FL_JEWEL_WEAR = {
-  slot: (it) => ({ chain: "neck", grillz: "mouth", watch: "wrist" }[it.noun] || null),
+  slot: (it) => ({ chain: "neck", grillz: "mouth", watch: "wrist", ring: "ring" }[it.noun] || null),
   worn: (it) => Object.values(worn).includes(it),
-  toggle: (it) => { const s = FL_JEWEL_WEAR.slot(it); if (worn[s] === it) delete worn[s]; else worn[s] = it; },
+  toggle: (it, done) => { const s = FL_JEWEL_WEAR.slot(it); if (worn[s] === it) delete worn[s]; else worn[s] = it; if (done) done(); },
   equipped: () => ({ ...worn }) };
 global.FL_BARBER = { price: (k) => ({ barber: 25, dye: 60, shave: 15 }[k]) };
 global.setTimeout = (f) => f();
@@ -45,3 +45,8 @@ handlers["mr:acc0"](); console.log("eyewear picker opened:", global.pickedAcc ==
 handlers["mr:slot:neck"](); console.log("neck slot screen:", sTitle.textContent, "| has live preview:", html.includes("flMirrorCv"));
 handlers["mr:barber"] && 0;
 FL_ACCPLUS.openMirror(); handlers["mr:barber"](); console.log("barber from mirror:", salonCalls[salonCalls.length - 1]);
+// rings: a "Rings" zone in the mirror + jewelry screen, listing owned rings
+state.jewelry.push({ id: "r1", img: "ring-yellow", name: "Gold Ring", noun: "ring", metal: "18K Gold" });
+FL_ACCPLUS.openMirror(); console.log("mirror has Rings row:", html.includes('data-mr="slot:ring"'));
+FL_ACCPLUS.openJewelry(); console.log("jewelry has Rings row:", html.includes('data-js="ring"'));
+FL_ACCPLUS.openSlot("ring"); console.log("rings screen lists Gold Ring:", sTitle.textContent, html.includes("Gold Ring"));

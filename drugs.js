@@ -868,7 +868,7 @@
                                 i(t ? "door-open.mp3" : "car-ignition.mp3", 0.7, 1, 0, 2),
                                 i("a16_sndLuxuryPurchaseAsset.wav", 0.6, 1, 400),
                                 say(
-                                  `I bought ${t ? "a" : "a beat-up RV to cook in, like a"} ${t ? n.n.toLowerCase() : "certain chemistry teacher"} for my drug operation.`,
+                                  `I bought ${t ? "a" : "a beat-up RV to cook in, like a"} ${t ? n.n.toLowerCase() : "certain chemistry teacher"} for my drug operation. It smells like bleach and bad decisions, but it's mine.`,
                                 ),
                                 ee(
                                   "New Lab",
@@ -1016,7 +1016,7 @@
                             s(t.cost),
                               n.books.push(t.id),
                               i("coins-change.mp3", 0.6),
-                              say(`I bought "${t.n}" on the dark web.`),
+                              say(`I bought "${t.n}" on the dark web. It arrived in a plain brown package with no return address, which is either reassuring or terrifying.`),
                               ee(
                                 "Bought",
                                 `"${t.n}" shows up in a plain brown package. Read it from Study.`,
@@ -1132,7 +1132,7 @@
           h < i)
         )
           return setTimeout(p, 70);
-        say(`I read "${e.n}". My ${s.n.toLowerCase()} knowledge is at ${i}%.`),
+        say(`I read "${e.n}". My ${s.n.toLowerCase()} knowledge is at ${i}%. Half of it went over my head, and the other half made me nervous.`),
           (n.querySelector("h4 span").textContent = "Finished"),
           (n.querySelector(".lead").innerHTML =
             i >= 100
@@ -1176,7 +1176,7 @@
     }
     return "dealer" === n && chance(0.06)
       ? (s(d),
-        say("A dealer ripped me off."),
+        say("A dealer ripped me off. I paid in advance, which is apparently not how any of this works."),
         ee(
           "Ripped Off",
           `The dealer took your ${o(d)} and never came back with the goods.`,
@@ -1186,7 +1186,7 @@
       : "dark" === n && chance(0.07)
         ? (s(d),
           K(6),
-          say("Customs seized a package I ordered on the dark web."),
+          say("Customs seized a package I ordered on the dark web. Somewhere in a warehouse, a very confused officer is reading my mail."),
           ee(
             "Package Seized",
             `Customs seized your package. You're out ${o(d)}, and someone may be looking at the address.`,
@@ -1384,7 +1384,7 @@
                         K(a),
                           i("a16_sndChaChing.wav", 1),
                           i("coins-change.mp3", 0.6, 1, 200),
-                          say(`I bought everything I needed to make ${t.n.toLowerCase()} for ${o(n)}.`),
+                          say(`I bought everything I needed to make ${t.n.toLowerCase()} for ${o(n)}. The receipt alone could put me away for a while.`),
                           ke(t);
                       },
                     ],
@@ -1520,12 +1520,12 @@
                               )
                                 return (
                                   say(
-                                    `My ${o.n.toLowerCase()} caught fire while I was cooking ${t.n.toLowerCase()}, and I didn't make it out.`,
+                                    `My ${o.n.toLowerCase()} caught fire while I was cooking ${t.n.toLowerCase()}, and I didn't make it out. The neighbors called it in after the second explosion.`,
                                   ),
                                   setTimeout(() => die("a fire in a drug lab"), 400)
                                 );
                               say(
-                                `My ${o.n.toLowerCase()} caught fire while I was cooking ${t.n.toLowerCase()}.`,
+                                `My ${o.n.toLowerCase()} caught fire while I was cooking ${t.n.toLowerCase()}. I got out with my eyebrows and most of my dignity.`,
                               ),
                                 jCard({
                                   tag: "Cook",
@@ -1551,7 +1551,7 @@
                   r.batches++,
                   (r.skill = clamp(r.skill + rint(2, 4))),
                   K(1 + Math.floor(o / 1e3)),
-                  say(`I ${t.grow ? "grew" : "cooked"} ${_(t, e)}.`),
+                  say(`I ${t.grow ? "grew" : "cooked"} ${_(t, e)}. The yield is decent, and my hands have stopped shaking.`),
                   i("paper-shuffle.mp3", 0.6, 1, 0, 1.6),
                   (f.querySelector("h4 span").textContent = t.grow ? "Harvested" : "Batch Done"),
                   (w.textContent = "Done!"),
@@ -1679,7 +1679,7 @@
                 return (
                   r(t, s),
                   (l.stash[t.k].n -= s),
-                  say("The dealers I was selling to robbed me."),
+                  say("The dealers I was selling to robbed me. They took the product and left me the bruises."),
                   (state.stats.Health = clamp(state.stats.Health - rint(5, 20))),
                   hurt(),
                   renderStats(),
@@ -1697,7 +1697,7 @@
                   i("siren.mp3", 0.4),
                   setTimeout(() => crimeSnd("Cops"), 400),
                   K(25),
-                  say("The dealers I sold to were working with the DEA."),
+                  say("The dealers I sold to were working with the DEA. I found out when the handcuffs came out."),
                   notice(
                     "Sting!",
                     "The buyers were working with the DEA. Agents swarm the deal.",
@@ -1716,7 +1716,7 @@
                   renderStats(),
                   i("paper-shuffle.mp3", 0.7, 1.1, 0, 1.3),
                   i("a16_sndChaChing.wav", 1, 1, 900),
-                  say(`I sold ${_(e, t)} ${r} for ${o(s)}.`),
+                  say(`I sold ${_(e, t)} ${r} for ${o(s)}. Cash in hand, no questions, no receipt.`),
                   ee("Sold", `You sold ${_(e, t)} ${r}.`, e.ico, Ae);
               })(t, s, s * n, "to other dealers");
             })(t, h, c),
@@ -1910,7 +1910,7 @@
                           return (
                             Oe(s, De(s) - e),
                             say(
-                              `I tried to sell ${t.n.toLowerCase()} to ${u.first} ${u.last} at ${o(y)} each. ${"f" === u.g ? "She" : "He"} said no.`,
+                              `I tried to sell ${t.n.toLowerCase()} to ${u.first} ${u.last} at ${o(y)} each. ${"f" === u.g ? "She" : "He"} said no. I smiled like it didn't matter and walked away counting the unsold grams.`,
                             ),
                             jCard({
                               tag: "The Street",
@@ -1940,7 +1940,7 @@
                             i("siren.mp3", 0.4),
                             setTimeout(() => crimeSnd("Cops"), 400),
                             say(
-                              `I sold ${t.n.toLowerCase()} to ${u.first} ${u.last}, who turned out to be an undercover cop.`,
+                              `I sold ${t.n.toLowerCase()} to ${u.first} ${u.last}, who turned out to be an undercover cop. The handcuffs were a clue.`,
                             ),
                             jCard({
                               tag: "The Street",
@@ -1971,14 +1971,14 @@
                         Oe(s, De(s) + x),
                           i("coins-change.mp3", 0.6),
                           i("a16_sndChaChing.wav", 1, 1, 300),
-                          say(`I sold ${_(t, $)} to ${u.first} ${u.last} for ${o(v)}.`);
+                          say(`I sold ${_(t, $)} to ${u.first} ${u.last} for ${o(v)}. ${u.first} paid in small bills and didn't count it in front of me.`);
                         let S = [];
                         if (c) {
                           const e = Ie();
                           (h.known = Math.min(Be, e + (De(s) >= 60 ? 2 : 1))),
                             (S = Array.from({ length: h.known - e }, (t, o) => Re(e + o))),
                             say(
-                              `${u.first} ${u.last} introduced me to ${S.map((e) => `${e.first} ${e.last}`).join(" and ")}.`,
+                              `${u.first} ${u.last} introduced me to ${S.map((e) => `${e.first} ${e.last}`).join(" and ")}. New customers, new problems, same margin.`,
                             );
                         }
                         const L = c ? Math.round($ * g * (1 + n / 100)) - v : 0;
@@ -2193,7 +2193,7 @@
         fire: () =>
           iosConfirm("Confirm", `Are you sure you want to fire ${s.first}?`, () => {
             Ze(s),
-              say(`I fired ${l}, my ${r.n.toLowerCase()}.`),
+              say(`I fired ${l}, my ${r.n.toLowerCase()}. Business is business, and business was bad.`),
               chance(s.rel < 30 ? 0.3 : 0.1) && K(10),
               ee(
                 "Fired",
@@ -2221,7 +2221,7 @@
                 (e.rel = clamp(e.rel + 10)),
                 screen.classList.remove("open"),
                 say(
-                  `I asked out my ${Je(e).n.toLowerCase()}, ${t}, and ${"f" === e.g ? "she" : "he"} said yes!`,
+                  `I asked out my ${Je(e).n.toLowerCase()}, ${t}, and ${"f" === e.g ? "she" : "he"} said yes! I'm not sure which of us is making the bigger mistake.`,
                 ),
                 notice(
                   "Love is in the air",
@@ -2239,7 +2239,7 @@
               return (
                 (e.rel = clamp(e.rel + rint(3, 8))),
                 screen.classList.remove("open"),
-                say(`I hooked up with my ${Je(e).n.toLowerCase()}, ${t}.`),
+                say(`I hooked up with my ${Je(e).n.toLowerCase()}, ${t}. We agreed it wouldn't complicate work, and then it immediately complicated work.`),
                 safeSexCard(
                   {
                     first: e.first,
@@ -2269,7 +2269,7 @@
                   (state.stats.Health = clamp(state.stats.Health - rint(10, 25))),
                   hurt(),
                   renderStats(),
-                  say(`I insulted my cartel guard, ${l}, and ${"f" === s.g ? "she" : "he"} hit me.`),
+                  say(`I insulted my cartel guard, ${l}, and ${"f" === s.g ? "she" : "he"} hit me. In hindsight, there's no good version of that sentence.`),
                   screen.classList.remove("open"),
                   notice(
                     "Bad Idea",
@@ -2321,7 +2321,7 @@
           const a = We()
             .filter((e) => e.k === t.k)
             .pop();
-          say(`I hired ${a.first} ${a.last} as a ${t.n.toLowerCase()} for my drug operation.`),
+          say(`I hired ${a.first} ${a.last} as a ${t.n.toLowerCase()} for my drug operation. ${a.first} starts immediately and asks fewer questions than I would.`),
             jCard({
               tag: "Workers",
               person: Qe(a),
@@ -2337,7 +2337,7 @@
           "Fire one",
           () => {
             (r.workers[t.k] = n - 1),
-              say(`I fired a ${t.n.toLowerCase()}.`),
+              say(`I fired a ${t.n.toLowerCase()}. Word gets around, and the next one will want to be paid upfront.`),
               chance(0.1) && K(10),
               ee(
                 "Fired",
@@ -2376,7 +2376,7 @@
     const t = a();
     (t.lowYear = state.age),
       (t.heat = Math.max(0, t.heat - rint(10, 20))),
-      say("I decided to lay low and stop dealing for a while."),
+      say("I decided to lay low and stop dealing for a while. The phone stays off, the door stays locked, and I sleep with one eye open anyway."),
       ee(
         "Laying Low",
         "You shut the lab down and keep your head down this year. Your heat will cool off faster.",
@@ -2398,7 +2398,7 @@
             (t.stash = {}),
               (t.heat = Math.max(0, t.heat - 10)),
               i("a16_sndFlashlightOn.wav", 0.6),
-              say("I burned my whole drug stash."),
+              say("I burned my whole drug stash. I watched a year of work go up in smoke and felt lighter than I have any right to."),
               ee("Burned", "It all goes up in smoke.", e("1f525"));
           },
         ],
@@ -2420,7 +2420,7 @@
             const e = a().heat;
             (state.drugEmpire = null),
               (a().heat = e),
-              say("I got out of the drug business."),
+              say("I got out of the drug business. I still check my mirrors out of habit, but at least the phone has stopped ringing."),
               screen.classList.remove("open"),
               notice("Out", "You walk away from the drug business.", null, !0);
           },
@@ -3445,7 +3445,7 @@
               .slice(0, e.kill);
       for (const e of o)
         Ze(e),
-          say(`My ${Je(e).n.toLowerCase()}, ${e.first} ${e.last}, was killed.`),
+          say(`My ${Je(e).n.toLowerCase()}, ${e.first} ${e.last}, was killed. ${e.first} knew the risks, which doesn't make the phone call any easier.`),
           n.push(["Killed", `<strong class="cf-no">${e.first} ${e.last} (${Je(e).n})</strong>`]);
     }
     if (e.hire) {
@@ -3502,7 +3502,7 @@
             ok: () => {
               if (state.stats.Health <= 0 || (s.die && chance(s.die)))
                 return (
-                  say("I was killed in the drug business."),
+                  say("I was killed in the drug business. The money was good right up until it wasn't worth anything at all."),
                   setTimeout(() => die("being shot by a rival drug crew"), 300)
                 );
               s.arrest && (screen.classList.remove("open"), busted(s.arrest));
@@ -3675,7 +3675,7 @@
             i("siren.mp3", 0.4),
               crimeSnd("Cops"),
               say(
-                `The DEA raided my ${p.n.toLowerCase()}${h ? ` after ${h.first} ${h.last} snitched` : ""}.`,
+                `The DEA raided my ${p.n.toLowerCase()}${h ? ` after ${h.first} ${h.last} snitched` : ""}. They came in before dawn and knew exactly which door to use.`,
               ),
               Object.assign(t, {
                 lab: null,
@@ -3730,7 +3730,7 @@
                   choices: e.map((e) => [
                     e,
                     () => {
-                      (a().alias = e), say(`I got into the drug business. They call me "${e}."`), Z();
+                      (a().alias = e), say(`I got into the drug business. They call me "${e}." It's a terrible nickname, but it's the first one anyone has ever given me.`), Z();
                     },
                   ]),
                 });

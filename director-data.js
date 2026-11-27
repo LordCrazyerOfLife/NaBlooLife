@@ -204,6 +204,29 @@
       ["Cut shooting days", { w: { prod: -5, edit: -2, bud: -4 } }],
       ["Put in your own cash", { cash: 0.05, w: { prod: 3 } }],
     ] },
+    { id: "cutbudget", t: "The money comes with strings", d: "The financiers will release the next payment only if you cut another 15% from the budget.", c: [
+      ["Shoot leaner", { w: { prod: -3, bud: -5 } }],
+      ["Fight the cut", { win: 0.5, w: { bud: -2, direction: 2 }, l: { bud: 8, prod: -5, issue: ["budget", 2, "The financiers are watching every receipt"] } }],
+      ["Find a co-financier", { win: 0.6, w: { bud: -7 }, l: { bud: 3, issue: ["studio", 1, "A new partner wants a say in the cut"] } }],
+    ] },
+    { id: "taxcredit", t: "A tax incentive lands", d: "The region approves a production rebate, but the paperwork has to be filed this week.", c: [
+      ["File for the rebate", { w: { bud: -7, prod: 1 } }],
+      ["Leave it to the producers", { win: 0.5, w: { bud: -4 }, l: { bud: 2, issue: ["budget", 1, "A paperwork error cost the rebate"] } }],
+    ] },
+    { id: "cameocash", t: "An investor wants a cameo", d: "A wealthy investor offers to cover a chunk of the budget if he gets a scene with the lead.", c: [
+      ["Take the money", { w: { bud: -6, acting: -4, issue: ["cast", 1, "A paid cameo feels out of place"] } }],
+      ["Protect the film", { w: { direction: 2 } }],
+      ["Give him a tiny background part", { win: 0.6, w: { bud: -4, acting: -2 }, l: { acting: -3, issue: ["cast", 1, "The investor cannot act"] } }],
+    ] },
+    { id: "supplier", t: "The set builder raises his price", d: "The workshop says lumber and labor went up. The main set is half built.", c: [
+      ["Pay the new price", { w: { bud: 6 } }],
+      ["Find a cheaper supplier", { win: 0.55, w: { bud: -3 }, l: { prod: -5, issue: ["budget", 1, "The cheap set looks cheap on camera"] } }],
+      ["Redesign the set", { w: { prod: -2, bud: -2, direction: 1 } }],
+    ] },
+    { id: "placement", t: "A brand waves a check", d: "A soft drink company will pay for the budget if the lead drinks their product on screen.", c: [
+      ["Take the deal", { w: { bud: -5, buzz: 2, issue: ["studio", 1, "The product placement is painfully obvious"] } }],
+      ["Say no", { w: { direction: 1, prod: 1 } }],
+    ] },
     { id: "improv", t: "An actor starts improvising", d: "An actor improvises a line that is not in the script. The room goes quiet.", c: [
       ["Keep rolling", { win: 0.6, w: { acting: 6, viral: 5, buzz: 3 }, l: { acting: -2, script: -2 } }],
       ["Cut and reset", { w: { direction: 1 } }],
@@ -230,6 +253,50 @@
       ["Expand the part", { win: 0.6, w: { acting: 4, viral: 4, script: 1 }, l: { script: -2 } }],
       ["Keep the schedule", { w: { direction: 1 } }],
     ] },
+  ];
+  // post-release events: [id, title, text, [[label, fx, result], ...]]
+  // fx: money = fraction of the film's budget you personally receive, rep, legacy, skill
+  const POST_EVENTS = [
+    ["streaming", "A streamer wants the film", "A streaming service offers a pile of cash for the exclusive rights to \"{title}\".", [
+      ["Sell the streaming rights", { money: 0.18, rep: 1 }, "The streamer paid up front. The film found a second life on every screen in the country."],
+      ["Keep it theatrical", { legacy: 3, rep: 1 }, "You turned it down. The film stayed a big-screen event, and the theaters remembered."],
+    ]],
+    ["merch", "The toys sell themselves", "A toy company wants to license the characters from \"{title}\" for a line of action figures.", [
+      ["License the characters", { money: 0.1, rep: 2 }, "The figures sold out before the holiday. Your name was on every box."],
+      ["Protect the film", { legacy: 2, rep: 1 }, "You passed. Some films are better without a cheap plastic version of themselves."],
+    ]],
+    ["feud", "A critic picks a fight", "A loud critic calls \"{title}\" the worst thing you have ever made, and keeps posting about it.", [
+      ["Fire back", { rep: 3, legacy: 1 }, "You answered with one perfect line. The internet sided with you for a week."],
+      ["Take the high road", { rep: 1, legacy: 2 }, "You said nothing. The silence made the critic look smaller than the film."],
+    ]],
+    ["convention", "A convention invites you", "A film convention wants you on a panel about \"{title}\". Fans are already lining up.", [
+      ["Go and sign autographs", { money: 0.03, rep: 4 }, "You stayed three hours longer than planned. The line still wrapped around the hall."],
+      ["Skip it", { rep: -2 }, "You stayed home. A few fans noticed, and said so online."],
+    ]],
+    ["piracy", "The film is online for free", "A clean copy of \"{title}\" shows up on pirate sites a month after release.", [
+      ["Ignore it", { legacy: 1 }, "You let it go. More people saw the film, though not one of them paid."],
+      ["Send takedowns", { money: -0.01, rep: 1 }, "The lawyers sent letters. Some links died. Others grew back overnight."],
+    ]],
+    ["awards", "Awards season is calling", "\"{title}\" is getting awards buzz. A publicist offers to run a full campaign for it.", [
+      ["Fund the campaign", { money: -0.08, legacy: 7, rep: 3 }, "You paid for the screenings and the ads. When the nominations came out, the film was on the list."],
+      ["Let the work speak", { legacy: 2 }, "You spent nothing. The film was remembered, if not rewarded."],
+    ]],
+    ["remake", "A studio wants the remake rights", "A big studio offers good money to remake \"{title}\" with a new director and a bigger budget.", [
+      ["Sell the remake rights", { money: 0.4, rep: -2 }, "The check cleared. Somewhere, a stranger is already rewriting your ending."],
+      ["Keep it", { legacy: 3 }, "You said no. Some stories should stay yours."],
+    ]],
+    ["mentor", "A young filmmaker writes to you", "A film student says \"{title}\" is the reason they picked up a camera. They ask for advice.", [
+      ["Take them under your wing", { rep: 5, legacy: 2 }, "You read their script and sent notes. Years later, their first film opened with your name in the thanks."],
+      ["You are too busy", { rep: -3 }, "You never wrote back. The email sat in your inbox for years."],
+    ]],
+    ["leadstar", "Your lead becomes a star", "The lead from \"{title}\" just got cast in a huge franchise. Every interview asks about your film.", [
+      ["Celebrate them publicly", { rep: 3, legacy: 1 }, "You praised them in every interview. They never forgot who gave them their first real role."],
+      ["Keep the credit", { rep: -1 }, "You mentioned the film was your discovery. It sounded smaller than you meant it to."],
+    ]],
+    ["midnight", "A midnight screening sells out", "A repertory theater programs \"{title}\" at midnight. The show sells out in an hour.", [
+      ["Show up and introduce it", { rep: 4, legacy: 2 }, "You stood in front of a packed room and told the story behind the film. They applauded before it started."],
+      ["Stay home", { legacy: 1 }, "You heard about it the next day. A full house, and you missed it."],
+    ]],
   ];
   // review one-liners by issue kind / strength (used by rating sites)
   const CRIT_ISSUE = {
@@ -270,5 +337,5 @@
   ];
   const BRANDS = ["Coca-Cola", "Nike", "Apple", "Samsung", "BMW", "Pepsi", "Adidas", "Rolex"];
 
-  window.FL_DIR_DATA = { GENRES, THEMES, TWISTS, GT_GOOD, GT_BAD, GW_GOOD, PREMISES, TITLE_A, TITLE_B, FIRST, LAST, ACTORS, STUDIOS, RANKS, BUDGETS, WRITERS, SLOTS, MARKETING, SITES, COMBOS, EVENTS, STYLES, CREW, RESEARCH, PLANS, BRANDS, CRIT_ISSUE, CRIT_GOOD, AUD_GOOD, AUD_BAD };
+  window.FL_DIR_DATA = { GENRES, THEMES, TWISTS, GT_GOOD, GT_BAD, GW_GOOD, PREMISES, TITLE_A, TITLE_B, FIRST, LAST, ACTORS, STUDIOS, RANKS, BUDGETS, WRITERS, SLOTS, MARKETING, SITES, COMBOS, EVENTS, POST_EVENTS, STYLES, CREW, RESEARCH, PLANS, BRANDS, CRIT_ISSUE, CRIT_GOOD, AUD_GOOD, AUD_BAD };
 })();

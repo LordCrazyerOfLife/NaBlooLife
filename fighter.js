@@ -615,7 +615,7 @@
       O(),
       a ||
         (say(
-          `I started training as ${"mma" === e ? "an MMA fighter" : "a boxer"} in the ${t.toLowerCase()} division.`,
+          `I started training as ${"mma" === e ? "an MMA fighter" : "a boxer"} in the ${t.toLowerCase()} division. The gym smelled like tape, sweat and other people's bad decisions, and I loved it immediately.`,
         ),
         N(),
         jCard({
@@ -664,7 +664,7 @@
                     "Quit your job?",
                     `You'll have to quit your job as ${state.job.t} to fight full-time.`,
                     () => {
-                      say(`I quit my job as ${state.job.t} to fight again.`), (state.job = null), D();
+                      say(`I quit my job as ${state.job.t} to fight again. My boss said I was throwing away a career with a pension, which is exactly what a man who has never been punched in the face would say.`), (state.job = null), D();
                     },
                   )
                 : D();
@@ -684,7 +684,7 @@
                 "Quit your job?",
                 `You'll have to quit your job as ${state.job.t} to fight full-time.`,
                 () => {
-                  say(`I quit my job as ${state.job.t} to become a fighter.`), (state.job = null), a();
+                  say(`I quit my job as ${state.job.t} to become a fighter. My boss said good luck, then wrote my last shift on the board like a eulogy.`), (state.job = null), a();
                 },
               );
             a();
@@ -707,7 +707,7 @@
       (e.offer = null),
       e.ladder && 3 === e.tier && !C() && e.ladder.push(M),
       O(),
-      say(t ? "I came out of retirement to fight again." : "I went back to fighting."),
+      say(t ? "I came out of retirement to fight again. My knees filed a complaint and my hands said they had missed it." : "I went back to fighting. The gym had not changed, but everybody in it had."),
       notice(
         t ? "The comeback" : "Back in the gym",
         t
@@ -953,7 +953,7 @@
           const n = o[t],
             r = a - e.ladder.indexOf(n);
           if (
-            (say(`I called out ${w(n)} in front of the cameras.`),
+            (say(`I called out ${w(n)} in front of the cameras. A man on the internet said I was disrespectful, and three sponsors called me with better offers.`),
             chance(Math.max(0.1, 0.75 - 0.12 * r + e.hype / 250)))
           )
             return (
@@ -993,7 +993,7 @@
                 (e.sk.pow = clamp(e.sk.pow + rint(2, 5))),
                 (e.sk.cardio = clamp(e.sk.cardio + rint(2, 5))),
                 renderStats(),
-                say("I started taking performance-enhancing drugs."),
+                say("I started taking performance-enhancing drugs. My recovery went up, my patience went down and my friends started asking different kinds of questions."),
                 notice("Juiced", "You feel stronger than ever. You also feel a little paranoid.", null, !0);
             },
             "dark",
@@ -1013,7 +1013,7 @@
       renderAvatar(),
       renderStats(),
       C() && (e.ladder.splice(I(), 1), (e.belts = [])),
-      say(`I retired from ${f().n.toLowerCase()} with a record of ${b(e.rec)}.`),
+      say(`I retired from ${f().n.toLowerCase()} with a record of ${b(e.rec)}. The gloves went in a drawer, and so did the version of me that fit into them.`),
       notice("Retired", `You hung up the gloves with a record of ${b(e.rec)}.`, window.openOccupation, !0);
   }
   const U = [
@@ -1057,7 +1057,7 @@
                     btn: "Set intensity",
                     onGo: (e) => {
                       (g().int = e),
-                        say(`I switched to ${["light", "normal", "hard"][e]} training.`),
+                        say(`I switched to ${["light", "normal", "hard"][e]} training. The first week is free and the rest is paid for with mornings you don't remember.`),
                         screen.classList.add("open"),
                         J();
                     },
@@ -1155,7 +1155,7 @@
                       return say(`I trained ${o[1].toLowerCase()}.`), le(pickR(T));
                     renderStats(),
                       O(),
-                      say(`I trained ${o[1].toLowerCase()}.`),
+                      say(`I trained ${o[1].toLowerCase()} until the drill made sense. Somewhere in the last round, the thing I was bad at stopped being a problem.`),
                       jCard({
                         tag: "Training",
                         iconSrc: o[2],
@@ -1187,7 +1187,7 @@
         (e.wc = n),
           (e.belts = []),
           o && ((e.ladder = W(e.disc, n, PG())), e.ladder.splice(rint(7, 11), 0, M)),
-          say(`I moved to the ${n.toLowerCase()} division.`),
+          say(`I moved to the ${n.toLowerCase()} division. The new weight class came with a new doctor, a new diet and a new set of people telling me I was too small for it.`),
           screen.classList.add("open"),
           N();
       },
@@ -1254,7 +1254,7 @@
                   e.sponsors.push({ n: a, pay: o, until: state.age + n }),
                     (state.money += o),
                     renderStats(),
-                    say(`I signed a sponsorship deal with ${a}.`),
+                    say(`I signed a sponsorship deal with ${a}. I read the contract twice, and neither time did it mention what happens if I lose.`),
                     notice(
                       "Sponsored",
                       `You're now sponsored by ${a}.`,
@@ -1361,7 +1361,7 @@
                   (e.streak = 0),
                   (e.offer = null),
                   O(),
-                  say(`I turned pro with ${f().promos[1]}.`),
+                  say(`I turned pro with ${f().promos[1]}. Somewhere there is a card with my name on it, printed small, under a poster of somebody else.`),
                   notice(
                     "Pro fighter",
                     `You signed with ${f().promos[1]}. Your professional record starts at 0-0.`,
@@ -1424,7 +1424,7 @@
           [
             "Decline",
             () => {
-              say(`I turned down a fight against ${w(o)}.`), (a.hype = clamp(a.hype - rint(0, 3)));
+              say(`I turned down a fight against ${w(o)}. It cost me hype, and it saved me a hospital bill, and I will never know which was the better trade.`), (a.hype = clamp(a.hype - rint(0, 3)));
             },
           ],
         ],
@@ -1446,7 +1446,7 @@
           () => {
             (o.hype = clamp(o.hype + rint(4, 9))),
               (e.mad = 1),
-              say(`I traded insults with ${w(a)} at the press conference.`),
+              say(`I traded insults with ${w(a)} at the press conference. He attacked my chin, I attacked his mother, and the clip did a million views by midnight.`),
               ae(e);
           },
         ],
@@ -1455,7 +1455,7 @@
           () => {
             (o.hype = clamp(o.hype + rint(0, 3))),
               (e.calm = 1),
-              say("I stayed classy at the press conference."),
+              say("I stayed classy at the press conference. The other guy did all the shouting, and I got all the headline because silence sells better than noise."),
               ae(e);
           },
         ],
@@ -1509,7 +1509,7 @@
         (e.penalty = 0.2),
         (e.drained = 1),
         (a.hype = clamp(a.hype - rint(2, 5))),
-        say(`I missed weight for my fight against ${w(e.opp)}.`),
+        say(`I missed weight for my fight against ${w(e.opp)}. I spent the morning in a sauna arguing with a scale, and the scale won.`),
         jCard({
           tag: "Weigh-In",
           iconSrc: t.cam,
@@ -1529,7 +1529,7 @@
   }
   function ne(e) {
     const t = re(e);
-    say(`I fought ${y(e.opp)}${e.title ? ` for the ${f().belts[0]}` : ""}.`), ie(e, t);
+    say(`I fought ${y(e.opp)}${e.title ? ` for the ${f().belts[0]}` : ""}. The walk to the ring is longer than it looks on television, and every step of it smells like somebody else's adrenaline.`), ie(e, t);
   }
   function re(e) {
     const t = g(),
@@ -2006,7 +2006,7 @@
         : l.includes("Decision")
           ? l.toLowerCase()
           : `${"KO" === l || "TKO" === l ? l : l.toLowerCase()} in round ${r.r}`;
-    say(`I ${P} ${w(n)}${s ? "" : ` by ${B}`}${v ? ` and earned ${usd(v)}` : ""}.`);
+    say(`I ${P} ${w(n)}${s ? "" : ` by ${B}`}${v ? ` and earned ${usd(v)}` : ""}. The crowd made a sound I will be chasing for the rest of my life.`);
     const W = [
         ["Result", i ? "Win" : s ? "Draw" : "Loss"],
         ["Method", "Submission" === l ? (i ? `${n.last} tapped out` : "You tapped out") : l],
@@ -2068,7 +2068,7 @@
       renderAvatar(),
       renderStats(),
       screen.classList.remove("open"),
-      say(`My fighting career ended after I suffered ${e}.`),
+      say(`My fighting career ended after I suffered ${e}. The doctor said the word retirement like it was a diagnosis, and my manager said it like it was a scheduling problem.`),
       jCard({
         tag: "Fighter",
         iconSrc: t.doc,

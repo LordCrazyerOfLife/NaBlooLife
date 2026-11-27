@@ -695,7 +695,7 @@
         z(),
         (SND.mfJoin.currentTime = 0),
         play("mfJoin"),
-        say(`I joined the ${n} family (${a[t].t}) as an associate.`);
+        say(`I joined the ${n} family (${a[t].t}) as an associate. Somebody wrote my name in a book that does not exist, and that was the whole ceremony.`);
       const o = j();
       B({
         tag: h(4, o.g, t),
@@ -712,7 +712,7 @@
         "Confirm",
         `Joining the ${n} family means leaving your job as ${e.t}. Continue?`,
         () => {
-          say(`I quit my job as ${e.t} at ${e.emp}.`), (state.job = null), o();
+          say(`I quit my job as ${e.t} at ${e.emp}. The manager looked relieved, which told me everything about how I was doing there.`), (state.job = null), o();
         },
       );
     }
@@ -911,7 +911,7 @@
                           return e.standing >= 55 && state.age - e.joined >= 1
                             ? we()
                             : (say(
-                                "I asked for a promotion, but the family said I need to prove myself first.",
+                                "I asked for a promotion and the family said I need to prove myself first. Nobody explained what proving it involved, which is usually a bad sign.",
                               ),
                               notice(
                                 "Not yet",
@@ -928,7 +928,7 @@
                             (state.stats.Health = clamp(state.stats.Health - rint(10, 25))),
                             hurt(),
                             renderStats(),
-                            say("I asked for a promotion. The family roughed me up for my nerve."),
+                            say("I asked for a promotion. The family roughed me up for my nerve, then told me to keep up the good work."),
                             notice(
                               "Know your place",
                               `${t ? v(t) : "Your superior"} didn't like your nerve and had you roughed up.`,
@@ -936,7 +936,7 @@
                               !0,
                             )
                           );
-                        say("I asked for a promotion, but I was turned down."),
+                        say("I asked for a promotion and got a speech about patience. Patience pays less and hurts about the same."),
                           notice(
                             "Denied",
                             n
@@ -1102,7 +1102,7 @@
                       (t.standing = g(t.standing + rint(10, 18))),
                       (t.notoriety = g(t.notoriety + 4)),
                       (t.heat = Math.max(0, t.heat - 40)),
-                      say(`I exposed ${a} as a police informant. The family took care of ${C(e)}.`),
+                      say(`I exposed ${a} as a police informant. The family took care of ${C(e)}, and nobody has to say out loud how.`),
                       "function" == typeof showAchievement &&
                         setTimeout(
                           () => showAchievement("Rat Spotter", "Expose a rat in your Mafia family"),
@@ -1118,7 +1118,7 @@
                   if (
                     ((e.rel = 0),
                     (t.standing = g(t.standing - rint(8, 15))),
-                    say(`I accused ${a} of being a rat, but ${T(e)} wasn't.`),
+                    say(`I accused ${a} of being a rat, but ${T(e)} wasn't. Now the family looks at me like the problem and ${T(e)} looks at me like the next job.`),
                     chance(0.3))
                   ) {
                     const e = j(),
@@ -1185,7 +1185,7 @@
                             play("mfShot"),
                             (t.notoriety = g(t.notoriety + rint(10, 18)));
                           const n = chance(0.3 + 0.08 * e.rank) && !e.rat;
-                          n && (t.standing = g(t.standing - rint(15, 30))), say(`I ${o}. ${S(e)} died.`);
+                          n && (t.standing = g(t.standing - rint(15, 30))), say(`I ${o}. ${S(e)} died. It was quiet, quick, and over before the coffee got cold.`);
                           const i = chance(0.12);
                           i && setTimeout(() => arrest("murder"), 900);
                           const r = t.rank < 4 ? j() || Y() : null,
@@ -1208,7 +1208,7 @@
                             !0,
                           );
                         }
-                        say(`I tried to whack ${a}, but ${T(e)} survived.`),
+                        say(`I tried to whack ${a}, but ${T(e)} survived. That is the kind of mistake that comes back wearing a nicer suit.`),
                           notice(
                             "Botched",
                             `You tried to whack ${a}, but ${T(e)} survived!`,
@@ -1317,7 +1317,7 @@
         F("Victory", `You fought off ${v(e)}.`, `I fought off ${v(e)}.`)
       );
     if (chance(0.12))
-      return say(`${v(e)} killed me.`), setTimeout(() => die(`being whacked by ${v(e)}`), 300);
+      return say(`${v(e)} killed me. I heard the door, then the street got very loud and then very quiet.`), setTimeout(() => die(`being whacked by ${v(e)}`), 300);
     const a = rint(15, 40);
     (state.stats.Health = clamp(state.stats.Health - a)),
       hurt(),
@@ -1390,7 +1390,7 @@
               (state.job.perf = o.standing),
               renderStats(),
               chaChing(),
-              say(`I contributed ${usd(t)} to the ${p()} and received ${usd(r)} for my work.`),
+              say(`I contributed ${usd(t)} to the ${p()} and received ${usd(r)} for my work. They counted the envelope twice and gave me a smile worth less than the paper it was wrapped in.`),
               notice(
                 "The Family",
                 `You handed the ${p()} ${usd(t)} and received ${usd(r)} for your work.`,
@@ -1408,7 +1408,7 @@
               (state.job.perf = o.standing),
               renderStats(),
               chaChing(),
-              say(`I kept ${usd(t)} from ${a} for myself instead of giving it to the ${p()}.`),
+              say(`I kept ${usd(t)} from ${a} for myself instead of giving it to the ${p()}. It is amazing how much money the family never misses until the night it does.`),
               notice(
                 "Greedy",
                 `You kept all ${usd(t)} for yourself. Hopefully the ${p()} doesn't notice.`,
@@ -1467,12 +1467,12 @@
             screen.classList.remove("open"),
             mischief(),
             state.gtaCount++,
-            say("I prowled the streets."),
+            say("I prowled the streets looking for something worth stealing, and settled for something worth shouting about."),
             chance(0.8))
           )
             return (
               crimeSnd("Car"),
-              say(`I stole a ${o}.`),
+              say(`I stole a ${o}. The alarm went off as I was already two streets away, which is the correct distance for an alarm.`),
               (i.notoriety = g(i.notoriety + rint(1, 3))),
               setTimeout(
                 () =>

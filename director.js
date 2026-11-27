@@ -55,6 +55,20 @@
     state.money = Math.max(0, (Number(state.money) || 0) + n);
     render();
   };
+  const fameNow = () => (state.art && state.art.fameOn ? Number(state.art.fame) || 0 : 0);
+  function addFame(n) {
+    const a = state.art;
+    if (!a || n <= 0) return 0;
+    const had = !!a.fameOn;
+    if (had) a.fame = cl((Number(a.fame) || 0) + n);
+    else {
+      a.fameOn = true;
+      a.fame = Math.max(4, Math.min(45, Math.round(n * 0.6)));
+      sayIt("People are starting to recognize me as a film director.");
+    }
+    render();
+    return n;
+  }
   // Production budget (any film with a budget set, except self-funded; it counts before financing is locked too): if you are broke, the film pays for its own costs out of what is left of the budget.
   const budgetLeft = () => {
     const p = state.dir && state.dir.proj;
@@ -95,6 +109,8 @@
   const stOf = (id) => DD().STUDIOS.find((s) => s[0] === id);
   const slOf = (id) => DD().SLOTS.find((s) => s[0] === id);
   const stars = (v) => "★".repeat(Math.max(1, Math.min(5, Math.round((v - 0.6) * 5))));
+  const WIN_LINES = ["That worked out.", "It went exactly as planned.", "The gamble paid off.", "Better than you expected.", "You pulled it off.", "It landed.", "Clean win.", "The room loved it."];
+  const LOSS_LINES = ["It did not go your way.", "That backfired.", "It went sideways.", "Not this time.", "The plan fell apart.", "It cost you.", "Wrong call.", "It will not be in the final cut."];
 
   // ------------------------------------------------------------------ state
   const R = () => {
@@ -383,8 +399,27 @@
           }
         }
         applyFx(p, win ? f.w : f.l || f.w);
-        const msg = win ? "That worked out." : "It did not go your way.";
+        const msg = win ? pick(WIN_LINES) : pick(LOSS_LINES);
         note(e.t, msg, next);
+      }]),
+    });
+  }
+  function runPostEvent(f, ev, next) {
+    const d = R();
+    const fill = (s) => String(s || "").replace(/\{title\}/g, f.title);
+    card({
+      title: ev[1],
+      lead: fill(ev[2]),
+      choices: ev[3].map((c) => [c[0], () => {
+        const fx = c[1] || {};
+        if (fx.money) addMoney(Math.round(f.B * fx.money));
+        if (fx.rep) d.rep = cl(d.rep + fx.rep);
+        if (fx.legacy) d.legacy = Math.max(0, d.legacy + fx.legacy);
+        if (fx.skill) d.skill = cl(d.skill + fx.skill);
+        f.post = f.post || [];
+        f.post.push({ t: ev[1], r: fill(c[2]) });
+        f.postEvent = ev[0];
+        note(ev[1], fill(c[2]), next);
       }]),
     });
   }
@@ -413,6 +448,10 @@
     d.proj = null;
     // legacy + rep + skill
     const mult = f.stream ? 0 : f.gross / Math.max(1, p.B);
+    const fameGain = Math.max(1, Math.min(25, Math.round(2 + ((f.critic + f.aud) / 2 - 45) / 7 + Math.min(6, mult * 1.4) + p.tier * 0.8)));
+    const wasFamous = !!(state.art && state.art.fameOn);
+    f.fameGain = addFame(fameGain);
+    f.fameUnlocked = !wasFamous && !!(state.art && state.art.fameOn);
     let lg = (f.critic - 50) / 6 + (f.aud - 50) / 10 + (mult >= 2 ? 3 : 0) + (mult >= 4 ? 4 : 0) + p.tier * 1.2 + (p.slot === "festival" && f.critic >= 70 ? 3 : 0);
     lg = Math.round(cl(lg, -4, 25));
     const before = rankIdx(d);
@@ -489,7 +528,7 @@
     const next = DD().RANKS[ri_ + 1];
     const pct = next ? Math.round(((d.legacy - DD().RANKS[ri_][1]) / (next[1] - DD().RANKS[ri_][1])) * 100) : 100;
     let h = sec(d.firm || "Indie Pictures");
-    h += `<div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px"><div style="display:flex;align-items:center;gap:10px"><img src="${ICON}" alt="" style="width:44px;height:44px;object-fit:contain"><div><b style="color:#fff">${esc(rankName(d))}</b><div style="font-size:12px;opacity:.75">${d.films.length} film${d.films.length === 1 ? "" : "s"} · ${d.legacy} legacy${next ? ` · next: ${esc(next[0])} at ${next[1]}` : ""}</div></div></div>` + bar("Rank progress", pct, "#6b2f8f") + bar("Reputation", d.rep, col(d.rep)) + bar("Directing skill", d.skill, col(d.skill)) + `</div>`;
+    h += `<div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px"><div style="display:flex;align-items:center;gap:10px"><img src="${ICON}" alt="" style="width:44px;height:44px;object-fit:contain"><div><b style="color:#fff">${esc(rankName(d))}</b><div style="font-size:12px;opacity:.75">${d.films.length} film${d.films.length === 1 ? "" : "s"} · ${d.legacy} legacy${next ? ` · next: ${esc(next[0])} at ${next[1]}` : ""}</div></div></div>` + bar("Rank progress", pct, "#6b2f8f") + bar("Reputation", d.rep, col(d.rep)) + bar("Directing skill", d.skill, col(d.skill)) + (fameNow() > 0 ? bar("Fame", fameNow(), "#f5b82e") : "") + `</div>`;
     h += sec("Work");
     const p = d.proj;
     if (p) h += row("proj", p.stage === "story" && !p.genre ? ICON : gOf(p.genre)[2], p.title || "New film", ready(p) ? "Ready to release" : "In production");
@@ -1137,13 +1176,14 @@
     if (!stu && !spend(total)) return note("Not enough money", `Your campaigns cost ${money(total)}. Drop some or raise the cash.`, () => openMkt());
     p.mktCost = stu ? Math.round(p.B * 0.3) : total;
     const f = mkRelease(p);
-    const lead = f.stream
+    let lead = f.stream
       ? `${f.studio === "Self-funded" || f.studio === "Film school grant" ? "Your film" : "On " + f.studio}: ${f.views}M viewers in the first week.`
       : `It opened to ${money(f.opening)}${f.crowded ? ", up against a giant release" : ""} and will end near ${money(f.gross)}.`;
+    if (f.fameUnlocked) lead += " People are starting to recognize you.";
     card({
       title: "Premiere: " + f.title,
       lead,
-      rows: [["Viral meter", f.viral + "/100"], ...f.combos.map((c) => [c.d > 0 ? "Boost" : "Drag", c.l + " (" + (c.d > 0 ? "+" : "") + c.d + ")"])],
+      rows: [["Viral meter", f.viral + "/100"], ...(f.fameGain ? [["Fame", "+" + f.fameGain]] : []), ...f.combos.map((c) => [c.d > 0 ? "Boost" : "Drag", c.l + " (" + (c.d > 0 ? "+" : "") + c.d + ")"])],
       choices: [["See the ratings", () => { if (f.rankUp) note("Promotion", `You are now a ${f.rankUp}.`, () => openFilm(f.id)); else openFilm(f.id); }]],
     });
   }
@@ -1179,6 +1219,11 @@
     h += f.issues.filter((i) => i.sev > 0).length ? f.issues.filter((i) => i.sev > 0).map((i) => `<div class="row"><div class="t"><b>${esc(i.text)}</b><span>${esc(({ script: "Script", cast: "Casting", chem: "Casting", direction: "Direction", budget: "Budget", vfx: "Effects", pace: "Pacing", edit: "Edit", score: "Score", studio: "Studio", weather: "Production", crew: "Production" })[i.k] || "Production")}</span></div></div>`).join("") : foot("A clean production.");
     h += sec("Cast");
     h += f.cast.map((c) => `<div class="row"><div class="t"><b>${esc(c.n)}</b><span>${esc(c.role)} · age ${c.age} at the time</span></div></div>`).join("");
+    if (f.post && f.post.length) {
+      h += sec("After the release");
+      h += f.post.map((x) => `<div class="row"><div class="t"><b>${esc(x.t)}</b><span>${esc(x.r)}</span></div></div>`).join("");
+    }
+    if (f.fameGain) h += sec("Fame") + `<div class="row"><div class="t"><b>+${f.fameGain} fame</b><span>People started recognizing you after this one.</span></div></div>`;
     if (f.awards && f.awards.length) {
       h += sec("Awards");
       h += f.awards.map((a) => `<div class="row"><img src="director/award.png" alt="" style="object-fit:contain"><div class="t"><b>${esc(a.cat)}</b><span>${a.won ? "Winner" : "Nominee"}</span></div></div>`).join("");
@@ -1236,6 +1281,14 @@
           d.rep = cl(d.rep + a.length + wins * 2);
           steps.push((next) => card({ title: "Awards night", lead: `"${esc(f.title)}" was in the race.`, rows: a.map((x) => [x.cat, x.won ? "Winner" : "Nominee"]), choices: [["Continue", next]] }));
         }
+      }
+    });
+    let postOpen = false;
+    d.films.forEach((f) => {
+      if (!postOpen && !f.postEvent && y - f.year >= 1 && ch(0.45)) {
+        postOpen = true;
+        const ev = pick(DD().POST_EVENTS);
+        steps.push((next) => runPostEvent(f, ev, next));
       }
     });
     if (d.films[0] && y - d.lastRelease >= 2) d.rep = cl(d.rep - 2);

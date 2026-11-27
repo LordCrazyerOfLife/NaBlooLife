@@ -943,8 +943,9 @@
       if (n.trainLeft <= 0) return note("No sessions left", "You are done for this year. Age up for more.");
       n.trainLeft--;
       n.sk[k] = cl(n.sk[k] + (ch(0.75) ? ri(1, 2) : 0), 15, 99);
-      n.fit = cl(n.fit - (n.inj ? 1 : 3));
-      stat("Health", 0);
+      n.fit = cl(n.fit + (n.inj ? 1 : ri(2, 4)));
+      stat("Health", ri(1, 2));
+      render();
       note("Training", `You put in the work on your ${nm.toLowerCase()}.`, () => openTrain());
     }));
     map.rest = () => {

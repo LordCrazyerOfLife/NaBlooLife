@@ -407,7 +407,7 @@
           [
             `Turn ${t.him} down`,
             () => {
-              say(`I turned down a vampire named ${l(e)} who wanted to convert me.`), G();
+              say(`I turned down a vampire named ${l(e)} who wanted to convert me. ${s(e.g).He} looked genuinely offended, like I'd refused a free meal.`), G();
             },
           ],
         ],
@@ -466,7 +466,7 @@
           H(),
           V(),
           renderStats(),
-          say(`I allowed a vampire named ${l(e)} to convert me.`),
+          say(`I allowed a vampire named ${l(e)} to convert me. The last thing I remember is the cold, and then the hunger.`),
           setTimeout(
             () =>
               (function (e) {
@@ -538,7 +538,7 @@
       ((t.lord = !0),
       (t.lordAge = state.age),
       play("vLifted"),
-      say(`I became a Vampire Lord. My blood curse (${t.curse}) was lifted.`),
+      say(`I became a Vampire Lord. My blood curse (${t.curse}) was lifted. The hunger stayed, but at least now it answers to me.`),
       F({
         iconSrc: a("council"),
         title: "Vampire Lord",
@@ -692,7 +692,7 @@
                     [
                       "Hunt together",
                       () => {
-                        say(`I went hunting with a vampire named ${l(o)}.`), ie(v(any(f)[1]), t, o);
+                        say(`I went hunting with a vampire named ${l(o)}. We didn't talk much, but we understood each other perfectly.`), ie(v(any(f)[1]), t, o);
                       },
                     ],
                     [
@@ -704,7 +704,7 @@
                             B(rint(15, 25)),
                             x(3),
                             play("vKill"),
-                            say(`I fought a vampire named ${l(o)} and drank ${r.his} essence.`),
+                            say(`I fought a vampire named ${l(o)} and drank ${r.his} essence. ${r.He} had been alive for centuries and still went down like anyone else.`),
                             N(
                               "Victory",
                               `You overpowered ${l(o)} and drank ${r.his} essence.`,
@@ -712,7 +712,7 @@
                             )
                           );
                         B(-rint(10, 20)),
-                          say(`A vampire named ${l(o)} beat me in a fight.`),
+                          say(`A vampire named ${l(o)} beat me in a fight. I crawled home with my pride and most of my essence missing.`),
                           N(
                             "Beaten",
                             `${l(o)} was too strong for you. You fled with your Essence drained.`,
@@ -746,7 +746,7 @@
                     () => {
                       const t = rint(3, 7);
                       B(t),
-                        say(`I drank the blood of ${o[0]}.`),
+                        say(`I drank the blood of ${o[0]}. It was warm, bitter, and barely worth the effort.`),
                         N(
                           "Better than nothing",
                           "Animal blood isn't very nourishing, but it'll do.",
@@ -761,7 +761,7 @@
           if (u < (p += r.none || 0.06))
             return (
               x(1),
-              say(`I went hunting at ${d}, but I didn't find anyone.`),
+              say(`I went hunting at ${d}, but I didn't find anyone. I spent the night lurking like an idiot and went home hungry.`),
               N("Slim pickings", `You prowled ${d} all night, but couldn't find a victim.`)
             );
           ie(v(o), d, n);
@@ -813,7 +813,7 @@
       return say(e), renderStats(), le(t, "hunt");
     }
     x("ambush" === a ? rint(6, 10) : rint(2, 5)),
-      say(`I tried to catch ${l(t)} at ${o}, but ${c.he} got away.`),
+      say(`I tried to catch ${l(t)} at ${o}, but ${c.he} got away. ${c.He} ran faster than anyone that pale has a right to.`),
       N(
         "Got away",
         "ambush" === a
@@ -840,7 +840,7 @@
                 B(a),
                 x(1),
                 renderStats(),
-                e.sipped || ((e.sipped = !0), say(`I drank ${l(e)}'s blood.`));
+                e.sipped || ((e.sipped = !0), say(`I drank ${l(e)}'s blood. Just a taste, enough to take the edge off without ending the evening early.`));
               play("vBat"), le(e, t);
             })(t, r),
         ],
@@ -874,7 +874,7 @@
                       a.progeny.push(r),
                       x(rint(2, 5)),
                       play("vConvert"),
-                      say(`I converted ${l(t)} into a vampire.`),
+                      say(`I converted ${l(t)} into a vampire. ${o.He} woke up confused, thirsty, and already looking at me like a parent.`),
                       N(
                         "New progeny",
                         `You bit ${l(t)} and turned ${o.him} into a vampire. ${o.He} is now one of your progeny.`,
@@ -897,7 +897,7 @@
                             chance(0.55 + a.essence / 250 - (S("Weak Thrall") ? 0.25 : 0))
                               ? void o()
                               : (x(2),
-                                say(`I failed to hypnotize ${l(t)}.`),
+                                say(`I failed to hypnotize ${l(t)}. ${o.He} blinked, shook ${o.his} head, and backed away from me.`),
                                 N("Resisted", `${l(t)} resisted your hypnosis and ran away.`)))
                           : le(t, "hunt");
                     F({
@@ -912,7 +912,7 @@
                           r("money", () => {
                             const e = 50 * rint(2, 400);
                             (state.money += e),
-                              say(`I hypnotized ${l(t)} into giving me ${usd(e)}.`),
+                              say(`I hypnotized ${l(t)} into giving me ${usd(e)}. ${o.He} handed it over with a smile, which is the unsettling part.`),
                               N("Easy money", `${l(t)} emptied ${o.his} wallet into your hands: ${usd(e)}.`);
                           }),
                         ],
@@ -927,7 +927,7 @@
                               "a flamingo",
                               "a pig",
                             ]);
-                            say(`I hypnotized ${l(t)} into believing ${o.he} is ${e}.`),
+                            say(`I hypnotized ${l(t)} into believing ${o.he} is ${e}. I watched ${o.him} peck at the sidewalk for ten minutes.`),
                               N("Mind games", `${l(t)} wandered off convinced ${o.he} is ${e}.`);
                           }),
                         ],
@@ -935,7 +935,7 @@
                           "Forget they ever saw you",
                           r("forget", () => {
                             x(-rint(3, 6)),
-                              say(`I made ${l(t)} forget we ever met.`),
+                              say(`I made ${l(t)} forget we ever met. ${o.He} walked past me the next day without a flicker of recognition.`),
                               N("Forgotten", `${l(t)} walked away with no memory of you.`);
                           }),
                         ],
@@ -947,7 +947,7 @@
                                 r("familiar", () => {
                                   (a.familiar = { ...t, loyalty: rint(55, 80) }),
                                     delete a.familiar.counted,
-                                    say(`I hypnotized ${l(t)} into becoming my familiar.`),
+                                    say(`I hypnotized ${l(t)} into becoming my familiar. ${s(t.g).He} follows me around now, eager and slightly vacant.`),
                                     N("New familiar", `${l(t)} will now serve you as your human familiar.`);
                                 }),
                               ],
@@ -960,7 +960,7 @@
         [
           "Let them go",
           () => {
-            say(`I let ${l(t)} go.`), x(1), N("Released", `You let ${l(t)} stumble off into the night.`);
+            say(`I let ${l(t)} go. ${o.He} stumbled off into the night without ever knowing how close it was.`), x(1), N("Released", `You let ${l(t)} stumble off into the night.`);
           },
         ],
       ];
@@ -983,7 +983,7 @@
     Z("drain", t),
       B(rint(15, 25) + Math.round(t.health / 10)),
       x(rint(4, 8)),
-      say(`I drained ${l(t)}${a ? " after drinking too much" : ""}. ${r.He} died.`),
+      say(`I drained ${l(t)}${a ? " after drinking too much" : ""}. ${r.He} died. I stood there afterward with the taste of iron and no excuse.`),
       o.victims.unshift({ name: l(t), job: t.job, age: state.age }),
       (o.victims.length = Math.min(o.victims.length, 30)),
       play("vKill"),
@@ -1003,15 +1003,15 @@
         ? (i.hunters++,
           x(rint(3, 6)),
           play("vKill"),
-          say(`I killed a vampire hunter named ${l(n)}.`),
+          say(`I killed a vampire hunter named ${l(n)}. ${s(n.g).He} came prepared for a monster and still wasn't prepared enough.`),
           N("Hunter slain", `You killed the vampire hunter ${l(n)} before ${s(n.g).he} could stake you.`))
         : chance(0.5)
-          ? (say(`A vampire hunter named ${l(n)} drove a wooden stake through my heart.`),
+          ? (say(`A vampire hunter named ${l(n)} drove a wooden stake through my heart. The last thing I heard was ${s(n.g).him} breathing hard and muttering a prayer.`),
             snapClose(),
             setTimeout(() => die("a wooden stake through the heart"), 300))
           : (B(-rint(15, 25)),
             x(-rint(5, 10)),
-            say(`A vampire hunter named ${l(n)} wounded me, but I escaped.`),
+            say(`A vampire hunter named ${l(n)} wounded me, but I escaped. I left a trail of blood for three blocks and haven't slept since.`),
             void N(
               "Wounded",
               `${l(n)} nearly staked you. You barely escaped with your unlife.`,
@@ -1039,10 +1039,10 @@
             if (chance(0.55 + i.essence / 400))
               return (
                 x(-rint(3, 8)),
-                say("I turned into my animal form and escaped a vampire hunter."),
+                say("I turned into my animal form and escaped a vampire hunter. Being a bat has its advantages, mostly the leaving."),
                 N("Escaped", `You turned into a ${i.form.toLowerCase()} and slipped away from ${l(n)}.`)
               );
-            say(`I couldn't escape a vampire hunter named ${l(n)}.`),
+            say(`I couldn't escape a vampire hunter named ${l(n)}. ${s(n.g).He} had me cornered before I could even change shape.`),
               notice("Cornered", `${l(n)} cut off your escape. You'll have to fight!`, d, !0);
           },
         ],
@@ -1053,7 +1053,7 @@
               ? (play("vHypno"),
                 chance(0.35 + i.essence / 300 - (S("Weak Thrall") ? 0.2 : 0))
                   ? (x(-rint(5, 10)),
-                    say("I hypnotized a vampire hunter into forgetting about me."),
+                    say(`I hypnotized a vampire hunter into forgetting about me. ${l(n)} lowered the crossbow and asked me for directions.`),
                     N(
                       "Mind wiped",
                       `${l(n)} lowered the crossbow and wandered away, forgetting why ${s(n.g).he} came.`,
@@ -1170,7 +1170,7 @@
               return (
                 B(r),
                 x(Math.ceil(c / 25)),
-                say(`I robbed ${t[a]} of ${c} units of ${o[i].toLowerCase()} blood.`),
+                say(`I robbed ${t[a]} of ${c} units of ${o[i].toLowerCase()} blood. Nobody saw my face, which is the only part of the plan that went well.`),
                 play("vContribute"),
                 N(
                   "Bloody good haul",
@@ -1180,7 +1180,7 @@
               );
             }
             x(rint(8, 15)),
-              say(`I tried to rob ${t[a]}, but security spotted me.`),
+              say(`I tried to rob ${t[a]}, but security spotted me. I got away empty-handed and now my face is on the evening news.`),
               N(
                 "Busted",
                 `Security spotted you at ${t[a]}. You escaped empty-handed, but the security footage is all over the news.`,
@@ -1195,7 +1195,7 @@
         x(-t),
           (m[e().power][0] || []).includes("Happiness") ||
             (state.stats.Happiness = n(state.stats.Happiness + rint(2, 6))),
-          say("I laid low in my coffin for a few months."),
+          say("I laid low in my coffin for a few months. The world kept turning without me, which was the point and also the problem."),
           N(
             "Lights out",
             `You closed the lid and laid low in your coffin for a few months. People have started to forget about you.<br><br>Notoriety −${t}%`,
@@ -1228,7 +1228,7 @@
                       const e = 100 * rint(10, 120);
                       (state.money += e),
                         (t.loyalty = n(t.loyalty - rint(2, 6))),
-                        say(`My familiar, ${l(t)}, brought me ${usd(e)}.`),
+                        say(`My familiar, ${l(t)}, brought me ${usd(e)}. ${o.He} didn't ask where it came from, and I didn't offer.`),
                         N("Tribute", `${l(t)} brought you ${usd(e)}.`);
                     },
                   ],
@@ -1245,11 +1245,11 @@
                         return (
                           (e().familiar = null),
                           Z("drain", t),
-                          say(`I drank too much of my familiar ${l(t)}'s blood. ${o.He} died.`),
+                          say(`I drank too much of my familiar ${l(t)}'s blood. ${o.He} died. ${o.He} trusted me right up until the end, which is the worst part.`),
                           play("vKill"),
                           N("Oops", `You drank too much of ${l(t)}'s blood. ${o.He} didn't survive.`)
                         );
-                      say(`I drank my familiar ${l(t)}'s blood.`),
+                      say(`I drank my familiar ${l(t)}'s blood. ${o.He} let me do it, and I've decided not to think about why.`),
                         N("Snack time", `You drank some of ${l(t)}'s blood.`, D(e().essence));
                     },
                   ],
@@ -1258,7 +1258,7 @@
                     "Release them",
                     () => {
                       (e().familiar = null),
-                        say(`I released ${l(t)} from being my familiar.`),
+                        say(`I released ${l(t)} from being my familiar. ${o.He} left without looking back, and I let ${o.him} go.`),
                         N("Released", `${l(t)} is no longer your familiar.`);
                     },
                   ],
@@ -1314,7 +1314,7 @@
                           passed: [],
                         }),
                           play("vContribute"),
-                          say("I joined the Vampire Council."),
+                          say("I joined the Vampire Council. Seven elders, one table, and a thousand years of grudges I now have to sit through."),
                           N(
                             "Welcome to the Council",
                             "The elders have accepted you into the Vampire Council.",
@@ -1345,11 +1345,11 @@
               if ((play("vHypno"), !chance(0.7 - (S("Weak Thrall") ? 0.25 : 0) + e().essence / 400)))
                 return (
                   x(2),
-                  say(`I failed to hypnotize ${l(t)} into becoming my familiar.`),
+                  say(`I failed to hypnotize ${l(t)} into becoming my familiar. ${s(t.g).He} blinked and walked away before I could try again.`),
                   N("Resisted", `${l(t)} resisted your hypnosis.`)
                 );
               (e().familiar = { ...t, loyalty: rint(55, 80) }),
-                say(`I hypnotized ${l(t)} into becoming my familiar.`),
+                say(`I hypnotized ${l(t)} into becoming my familiar. ${s(t.g).He} follows me around now, eager and slightly vacant.`),
                 N("New familiar", `${l(t)} will now serve you as your human familiar.`);
             }
           },
@@ -1375,7 +1375,7 @@
       }),
       (t.familiar = null),
       play("vConvert"),
-      say(`I converted my familiar, ${l(a)}, into a vampire.`),
+      say(`I converted my familiar, ${l(a)}, into a vampire. ${o.He} stopped being my servant and became something closer to an equal.`),
       N(
         "From servant to progeny",
         `You turned ${l(a)} into a vampire. ${o.He} is now one of your progeny, and you'll need a new familiar.`,
@@ -1415,7 +1415,7 @@
         }
         if (!r || !chance(0.85)) return N("Empty-handed", `${t.familiar.first} came back empty-handed.`);
         (t.familiar.loyalty = n(t.familiar.loyalty - rint(0, 3))),
-          say(`My familiar brought me ${l(r)} for a snack.`),
+          say(`My familiar brought me ${l(r)} for a snack. ${t.familiar.first} delivered ${l(r)} like a takeout order and waited for approval.`),
           le(r, "snack");
       },
     });
@@ -1469,7 +1469,7 @@
         const t = rint(6, 14);
         return (
           (e.rel = n(e.rel + t)),
-          say(`I bonded with my maker, ${l(e)}.`),
+          say(`I bonded with my maker, ${l(e)}. We traded stories from centuries we'd both rather forget.`),
           N(
             "Bonding",
             `You and ${e.first} spent a night trading stories from the centuries. ${s(e.g).He} is warming up to you.`,
@@ -1477,7 +1477,7 @@
         );
       }
       (e.rel = n(e.rel - rint(1, 4))),
-        say(`My maker, ${l(e)}, brushed me off.`),
+        say(`My maker, ${l(e)}, brushed me off. ${s(e.g).He} has had centuries of practice at being cold.`),
         N("Cold shoulder", `${e.first} isn't interested in being your friend. Yet.`);
     },
     hunt(e) {
@@ -1504,14 +1504,14 @@
                 x(rint(3, 6)),
                 Z("drain", t),
                 play("vKill"),
-                say(`I brought my maker, ${l(e)}, a human sacrifice: ${l(t)}.`),
+                say(`I brought my maker, ${l(e)}, a human sacrifice: ${l(t)}. ${e.first} drained ${l(t)} without a word and nodded at me once.`),
                 N("A worthy offering", `${e.first} drained ${l(t)} and is very pleased with you.`);
             },
           ],
           [
             "Let them go",
             () => {
-              say("I let a would-be sacrifice go."),
+              say("I let a would-be sacrifice go. My maker would not approve, but I'm the one who has to live with it."),
                 N("Mercy", `You let ${l(t)} go. ${e.first} would not approve.`);
             },
           ],
@@ -1568,7 +1568,7 @@
                           return N("Not again", `You already spent time with ${r.first} this year.`);
                         (r.seen = state.age),
                           (r.rel = n(r.rel + rint(4, 10))),
-                          say(`I spent time with my progeny, ${l(r)}.`),
+                          say(`I spent time with my progeny, ${l(r)}. We haunted the town together, and for a few hours it felt like family.`),
                           N("Family bonding", `You and ${r.first} haunted the town together.`);
                       },
                     ],
@@ -1576,7 +1576,7 @@
                       "Sever connection",
                       () => {
                         o.progeny.splice(t, 1),
-                          say(`I severed my connection with my progeny, ${l(r)}.`),
+                          say(`I severed my connection with my progeny, ${l(r)}. ${i.He} will have to figure out eternity without me.`),
                           N(
                             "Severed",
                             `You severed your bond with ${l(r)}. ${i.He} will have to fend for ${i.him}self.`,
@@ -1690,7 +1690,7 @@
     e.bath = state.age;
     const t = rint(5, 12);
     (e.rel = n(e.rel + t)),
-      say(`I shared a blood bath with ${l(e)} of the Vampire Council.`),
+      say(`I shared a blood bath with ${l(e)} of the Vampire Council. We soaked in warm blood and talked politics like it was a spa day.`),
       N("Blood Bath", `You and ${l(e)} soaked in a tub of warm blood and talked Council politics.`);
   }
   const Ce = {
@@ -1717,7 +1717,7 @@
           const a = ("strict" === t.stance) === (c ? !e : e);
           t.rel = n(t.rel + (a ? rint(1, 5) : -rint(1, 6)));
         }),
-          say(`I ${e ? "rewarded" : "punished"} ${l(t)} in a Crimson Audit.`),
+          say(`I ${e ? "rewarded" : "punished"} ${l(t)} in a Crimson Audit. The elders watched every word I said and remembered all of it.`),
           N(
             e ? "Rewarded" : "Punished",
             `You ${e ? "rewarded" : "punished"} ${l(t)}. Some of the elders ${c === !e ? "nodded in approval" : "exchanged dark looks"}.`,
@@ -1761,7 +1761,7 @@
             t.members.forEach((e) => {
               e.rel = n(e.rel + (chance(0.8) ? rint(1, i) : -rint(1, 3)));
             }),
-            say(`I threw ${/^[aeiou]/i.test(o) ? "an" : "a"} ${o.toLowerCase()} for the Vampire Council.`),
+            say(`I threw ${/^[aeiou]/i.test(o) ? "an" : "a"} ${o.toLowerCase()} for the Vampire Council. Someone brought a live donor, and the evening got away from us.`),
             N("Party of the century", `The elders are still talking about your ${o.toLowerCase()}.`);
         },
       });
@@ -1788,7 +1788,7 @@
           ((t.banUntil = state.age + 1),
           (c = "<br><br>The elders were so offended that they restricted your voting rights for two years.")),
           say(
-            `The Vampire Council ${s ? "passed" : "rejected"} the rule "${o}". I ${e ? "supported" : "denounced"} it.`,
+            `The Vampire Council ${s ? "passed" : "rejected"} the rule "${o}". I ${e ? "supported" : "denounced"} it, and the vote was closer than anyone wants to admit.`,
           ),
           N(
             s ? "Rule passed" : "Rule rejected",
@@ -1821,7 +1821,7 @@
           "Threaten them",
           () => {
             (t.loyalty = n(t.loyalty - rint(5, 12))),
-              say(`I threatened my familiar, ${l(t)}, for asking to be converted.`),
+              say(`I threatened my familiar, ${l(t)}, for asking to be converted. ${t.first} never asked again, and stopped meeting my eyes.`),
               N("Know your place", `${t.first} won't be asking again any time soon.`);
           },
         ],
@@ -1829,7 +1829,7 @@
           'Tell them "not yet"',
           () => {
             (t.loyalty = n(t.loyalty + rint(1, 4))),
-              say(`I told my familiar, ${l(t)}, that I'd convert ${o.him} someday.`),
+              say(`I told my familiar, ${l(t)}, that I'd convert ${o.him} someday. ${t.first} smiled, and I pretended not to notice how much it meant.`),
               N("Someday", `${t.first} is willing to wait.`);
           },
         ],
@@ -1843,7 +1843,7 @@
     B(-rint(6, 12) * (S("Bloodlust") ? 2 : 1)),
       a.essence <= 0
         ? ((state.stats.Health = Math.max(0, state.stats.Health - rint(20, 30))),
-          say("I am starving for blood."))
+          say("I am starving for blood. My hands shake, my thoughts go narrow, and everyone around me starts looking like a meal."))
         : (state.stats.Health = 100),
       x(-rint(3, 7)),
       S("Cold-Blooded") &&
@@ -1856,7 +1856,7 @@
       a.maker &&
         !a.maker.dead &&
         chance(0.02) &&
-        ((a.maker.dead = !0), say(`My maker, ${l(a.maker)}, was killed by vampire hunters.`)),
+        ((a.maker.dead = !0), say(`My maker, ${l(a.maker)}, was killed by vampire hunters. The one person who made sense of eternity is gone, and I'm still here.`)),
       a.familiar && !O("famask") && chance(0.12) && !state.prison && (R("famask"), queuePopup(Ae));
     const o = (a.notoriety >= 60 ? a.notoriety / 280 : a.notoriety / 700) * (S("Marked Soul") ? 2 : 1);
     !state.prison && chance(o) && queuePopup(() => de()), renderStats();

@@ -91,6 +91,15 @@
     screen.classList.add("open");
   };
   const condRow = (cond) => `<div class="rel">Condition <i><u style="width:${Math.max(2, cond)}%;background:${barColor(cond)}"></u></i></div>`;
+  // same price formula as the game's own car repair (game.html, "repair")
+  const carRepairCost = (c) => Math.max(400, Math.round(((Number(c.base) || 1000) * (100 - (Number(c.cond) || 100))) / 1000));
+  const vehRepairCost = (v) => Math.max(400, Math.round((base(v) * (100 - (Number(v.cond) || 100))) / 1000));
+  const repairable = () => [
+    ...(state.cars || []).filter((c) => (Number(c.cond) || 0) < 100).map((c) => ({ obj: c, cost: carRepairCost(c), name: `${c.make} ${c.model}` })),
+    ...fleet()
+      .filter((v) => v && v.kind !== "islands" && (Number(v.cond) || 0) < 100)
+      .map((v) => ({ obj: v, cost: vehRepairCost(v), name: v.name })),
+  ];
   const carRow = (e, i) =>
     `<div class="row" data-car="${i}"><img src="${typeof carImg === "function" ? carImg(e) : ""}"><div class="t"><b>${esc(e.make)} ${esc(e.model)} <em>(${esc((window.CAR_TYPE_NAME || {})[e.type] || "Car")})</em></b>${condRow(e.cond)}</div>${chev()}</div>`;
   const vehRow = (v, i) =>
@@ -105,6 +114,9 @@
     let h = `<div class="sec">Your vehicles</div>`;
     h += `<div class="row sm" style="cursor:default"><div class="t"><b style="font-weight:600">${total} vehicle${total === 1 ? "" : "s"}</b><span>${c.cars} car${c.cars === 1 ? "" : "s"} · ${c.bikes} motorcycle${c.bikes === 1 ? "" : "s"} · ${c.marina} boat${c.marina === 1 ? "" : "s"} · ${c.hangar} aircraft</span></div></div>`;
     if ((state.visited || []).length) h += `<div class="row sm" style="cursor:default"><div class="t"><b style="font-weight:600">${state.visited.length} countr${state.visited.length === 1 ? "y" : "ies"} visited by air</b><span>${state.visited.slice(-5).map((c) => esc(cname(c))).join(" · ")}</span></div></div>`;
+    const due = repairable();
+    const dueCost = due.reduce((n, x) => n + x.cost, 0);
+    h += `<div class="row${due.length ? "" : " dis"}" data-repairall="1"><img src="cars/ui-tools.png" alt=""><div class="t"><b>Repair all</b><span>${due.length ? `${due.length} vehicle${due.length === 1 ? "" : "s"} need work · ${usdf(dueCost)} total` : "Every car, motorcycle, boat and aircraft is in perfect condition"}</span></div>${due.length ? chev() : ""}</div>`;
     const carsList = state.cars || [];
     SECTIONS.forEach((s) => {
       const list = s.id === "cars" ? carsList : inSection(s);
@@ -115,6 +127,21 @@
     });
     openScreen("GARAGE", () => (typeof openAssets === "function" ? openAssets() : screen.classList.remove("open")), h);
     sList.querySelectorAll("[data-car]").forEach((el) => (el.onclick = () => openCar(state.cars[+el.dataset.car])));
+    const allBtn = sList.querySelector('[data-repairall="1"]');
+    if (allBtn)
+      allBtn.onclick = () => {
+        if (allBtn.classList.contains("dis")) return note("Repair all", "All your vehicles are already in perfect condition.", null, true);
+        const list = repairable(),
+          total = list.reduce((n, x) => n + x.cost, 0);
+        if (!list.length) return note("Repair all", "All your vehicles are already in perfect condition.", null, true);
+        if (state.money < total)
+          return note("Not enough", `Repairing all ${list.length} vehicle${list.length === 1 ? "" : "s"} costs ${usdf(total)}. You don't have enough money.`, null, true, broke(total));
+        state.money -= total;
+        list.forEach((x) => (x.obj.cond = 100));
+        refresh();
+        logLine(`I paid ${usdf(total)} to repair ${list.length} vehicle${list.length === 1 ? "" : "s"}: ${list.map((x) => x.name).join(", ")}.`);
+        note("Good as new", `The workshops repaired all ${list.length} of your vehicles for ${usdf(total)}.`, openGarage);
+      };
     sList.querySelectorAll("[data-veh]").forEach((el) => (el.onclick = () => openVehicle(fleet()[+el.dataset.veh])));
     sList.querySelectorAll("[data-shop]").forEach((el) => {
       el.onclick = () => {

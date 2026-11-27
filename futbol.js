@@ -563,6 +563,7 @@
     };
     add(T("Skill"), obj.skill, "%");
     add(T("Fitness"), obj.fit, "%");
+    add(T("Health"), obj.health);
     add(T("Fame"), obj.fame, "%");
     add(T("Form"), obj.form, "%");
     add(T("Happiness"), obj.hap);
@@ -592,6 +593,7 @@
     }
     if (obj.skill) f.skill = clampN(f.skill + obj.skill, 1, 99);
     if (obj.fit) f.fit = clampN(f.fit + obj.fit, 1, 99);
+    if (obj.health && state.stats) state.stats.Health = clampN((Number(state.stats.Health) || 70) + obj.health, 0, 100);
     if (obj.fame) f.fame = clampN(f.fame + obj.fame, 0, 100);
     if (obj.form) f.form = clampN(f.form + obj.form, 0, 100);
     if (obj.coach) f.coachRel = clampN(f.coachRel + obj.coach, 0, 100);
@@ -1302,9 +1304,9 @@
   // the season plan (Light / Normal / Hard). Hard work grows attributes faster but
   // piles up fatigue; high fatigue hurts form/fitness and raises injury risk.
   const INTENSITY = {
-    light: { n: "Light", mult: 0.6, fat: 6, inj: 0.02, fit: 1, note: "Safe and steady. Slow progress." },
-    normal: { n: "Normal", mult: 1, fat: 14, inj: 0.05, fit: 0, note: "Balanced work." },
-    hard: { n: "Hard", mult: 1.5, fat: 26, inj: 0.11, fit: -2, note: "Fast progress, heavy fatigue, injury risk." },
+    light: { n: "Light", mult: 0.6, fat: 6, inj: 0.02, fit: 2, note: "Safe and steady. Slow progress." },
+    normal: { n: "Normal", mult: 1, fat: 14, inj: 0.05, fit: 3, note: "Balanced work." },
+    hard: { n: "Hard", mult: 1.5, fat: 26, inj: 0.11, fit: 4, note: "Fast progress, heavy fatigue, injury risk." },
   };
   const LINKED = {
     shooting: "vision", passing: "vision", pace: "physical", physical: "pace", dribbling: "touch",
@@ -1333,7 +1335,7 @@
             const rows = [];
             if (tr.id === "recovery") {
               f.fatigue = clampN(f.fatigue - 30, 0, 100);
-              applyEffects(f, { fit: ri(3, 6), form: ri(2, 4), hap: 1, coach: f.pro ? -1 : 0 }, rows);
+              applyEffects(f, { fit: ri(3, 6), form: ri(2, 4), hap: 1, health: ri(1, 2), coach: f.pro ? -1 : 0 }, rows);
               sayIt(`I took ${blk.weeks.toLowerCase()} to recover.`);
             } else {
               const risk = inten.inj + Math.max(0, f.fatigue - 55) / 250 - (f.fit - 60) / 600;
@@ -1353,7 +1355,7 @@
                 const attrs = {};
                 if (gain) attrs[tr.id] = gain;
                 if (LINKED[tr.id] && rnd() < 0.15 * inten.mult) attrs[LINKED[tr.id]] = 1;
-                applyEffects(f, { attrs, fit: inten.fit, form: f.fatigue < 60 ? 2 : 0 }, rows);
+                applyEffects(f, { attrs, fit: inten.fit, health: ri(1, 3), form: f.fatigue < 60 ? 2 : 0 }, rows);
                 if (!gain) rows.push([T("Progress"), T("Nothing this block")]);
                 f.fatigue = clampN(f.fatigue + inten.fat, 0, 100);
                 sayIt(`I trained ${tr.n.toLowerCase()} in ${blk.n.toLowerCase()}.`);

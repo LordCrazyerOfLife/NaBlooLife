@@ -304,11 +304,12 @@
             [
               "Take the money",
               () => {
-                state.money += o;
+                const dirty = window.FL_LAUNDER ? FL_LAUNDER.dirty(o, "selling stolen goods", "blackmarket") : 0;
+                if (!dirty) state.money += o;
                 refresh();
                 b.items.splice(i, 1);
                 b.att[it.vendor] = cl(b.att[it.vendor] + 1);
-                logLine(`I sold a ${c.name.toLowerCase()} to a fence.`);
+                logLine(`I sold a ${c.name.toLowerCase()} to a fence${dirty ? " for dirty cash" : ""}.`);
                 openMine();
               },
             ],
