@@ -96,7 +96,7 @@
       id: "displayfix",
       name: "Display Fix (Scale + Safe Area)",
       icon: "emoji/1f4cf.png",
-      src: "displayfix.js?v=1",
+      src: "displayfix.js?v=2",
       desc: "Shrinks the whole phone screen down (default 85%, edit --ui-scale in game.html's style block to adjust). Turning this off takes effect the next time NaBlooLife loads. The notch / status-bar safe-area bar is always on now, built into the page itself.",
     },
     {

@@ -82,7 +82,7 @@
       ".phone .top-safe-mod {" +
       "flex: none;" +
       "background: #000;" +
-      "height: env(safe-area-inset-top, 0px);" +
+      "height: calc(env(safe-area-inset-top, 0px) / var(--ui-scale, 0.85));" +
       "}" +
       "html.pc .phone .top-safe-mod {" +
       "display: none;" +
