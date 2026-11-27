@@ -37,8 +37,8 @@
       id: "my-cartel",
       name: "My Cartel",
       icon: "cars/cartel-01.png",
-      src: "mycartel.js?v=8",
-      desc: "Found your own cartel in Activities: pick a name and a crest PNG from your device, invent your own drugs and cook them, recruit lookouts, mules, cooks, sicarios and lieutenants, buy guns and gear for them, and buy the armored cartel trucks (cartel-01 to cartel-12) for your fleet. 40 cartel events every year, from rival convoys and DEA planes to snitches, raids and betrayals. Its income is dirty money and goes through Money Laundering when that mod is on.",
+      src: "mycartel.js?v=9",
+      desc: "Found your own cartel in Activities: pick a name and a crest PNG from your device, invent your own drugs (the lab rolls the purity and the street price, and you can pay to clean a batch up), recruit lookouts, mules, cooks, sicarios and lieutenants, buy guns and gear for them, and buy the armored cartel trucks (cartel-01 to cartel-12) for your fleet. Move the product with camellos on the corners and with tunnels under the border into the US, where it sells for two to three times as much. 40+ cartel events every year, from rival convoys and DEA planes to snitches, raids, betrayals and people who recognize you in the street. Its income is dirty money and goes through Money Laundering when that mod is on.",
     },
     {
       id: "rich-life",
@@ -141,13 +141,6 @@
       icon: "cars/ui-license.png",
       src: "licenses.js?v=2",
       desc: "License Office in Activities: car, motorcycle, commercial (CDL), boat, private pilot, helicopter and firearm licenses, each with a written exam and a practical test. They unlock sport bikes, boats, planes, helicopters, legal guns and driver jobs.",
-    },
-    {
-      id: "mental-health",
-      name: "Mental Health",
-      icon: "emoji/1f9e0.png",
-      src: "mentalhealth.js?v=7",
-      desc: "A serious mental-health layer: depression, anxiety, ADHD, bipolar disorder and PTSD with hidden symptoms, evaluation, therapy, medication with side effects, and real effects on stats, work and relationships. Military combat can cause PTSD. Also adds a sadistic streak as a personality trait (not a disorder) that ties into Melon and Infamous Killers. Find it in Activities.",
     },
     {
       id: "nba-career",

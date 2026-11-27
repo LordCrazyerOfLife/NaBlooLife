@@ -2,7 +2,9 @@
  *
  * Occupation -> Cartel -> My Cartel (cartel.js calls FL_MYCARTEL.mount()). You pick a name and a crest (a PNG from your device, stored as a small
  * data URL in the save), and from there you:
- *   - invent your own drugs (name, price per unit, potency) and cook batches in your labs;
+ *   - invent your own drugs (the lab rolls the potency and the street price) and cook batches in your labs;
+ *   - clean a batch up to raise its purity and what the corners pay for it;
+ *   - move the product with camellos on the corners and with tunnels into the US;
  *   - recruit people (lookouts, mules, cooks, sicarios, lieutenants) with skill and loyalty;
  *   - buy guns and gear in the armory and hand them out to your crew;
  *   - buy the armored trucks from the cartel fleet (cars/cartel-01..12.png) once you are in a cartel.
@@ -186,6 +188,8 @@
     c.labs = Math.max(1, Number(c.labs) || 1);
     c.turf = c.turf && typeof c.turf === "object" ? c.turf : {};
     c.safe = Array.isArray(c.safe) ? c.safe : [];
+    c.dealers = Array.isArray(c.dealers) ? c.dealers : [];
+    c.tunnels = Array.isArray(c.tunnels) ? c.tunnels : [];
     return c;
   };
   const found = () => !!C();
@@ -391,6 +395,8 @@
         fleet: [],
         turf: {},
         safe: [],
+        dealers: [],
+        tunnels: [],
         seen: [],
         tickAge: -1,
         events: 0,
@@ -473,6 +479,7 @@
       ${row('data-mc="crew"', "special/gangbang.png", "Recruits", `${c.crew.length} on the payroll · loyalty ${loyaltyAvg(c)}%`)}
       ${row('data-mc="guns"', "guns/rifle.png", "Armory", `${Object.values(c.guns).reduce((s, n) => s + (Number(n) || 0), 0)} weapons and gear in the crates`)}
       ${row('data-mc="fleet"', "cars/cartel-01.png", "Armored Fleet", `${c.fleet.length ? `${c.fleet.length} armored truck${c.fleet.length === 1 ? "" : "s"} owned` : "Buy armored trucks for your people"}`)}
+      ${row('data-mc="distro"', "emoji/1f6b2.png", "Distribution", `${camellos(c).length} camello${camellos(c).length === 1 ? "" : "s"} on the corners · ${tunnels(c).length} tunnel${tunnels(c).length === 1 ? "" : "s"} to the US`)}
       <div class="sec">The street</div>
       ${row('data-mc="roads"', "emoji/1f6a7.png", "Block the roads", "Stop the traffic, charge the toll and make the police come look")}
       ${row('data-mc="chaos"', "emoji/1f525.png", "Cause some chaos", "Burn something, break something, remind the town who runs it")}
@@ -488,6 +495,7 @@
           snd("choice");
           const w = el.dataset.mc;
           if (w === "lab") openLab();
+          else if (w === "distro") openDistro();
           else if (w === "crew") openCrew();
           else if (w === "guns") openGuns();
           else if (w === "fleet") openFleet();
@@ -510,10 +518,11 @@
       .map(
         (d) => `<div class="row sm mcf">
           <b style="font-size:15px">${esc(d.name)}</b>
-          <span style="display:block;font-size:13px;color:#66707d">${usdf(d.price)}/unit · potency ${d.potency}% · ${d.units || 0} units in the stash</span>
-          <div style="display:flex;gap:8px;margin-top:8px">
-            <button class="jm-apply ev-btn" data-prod="${d.id}" style="flex:1">Cook a batch</button>
-            <button class="jm-apply ev-btn hr-green" data-sell="${d.id}" style="flex:1">Sell the stash</button>
+          <span style="display:block;font-size:13px;color:#66707d">${usdf(d.price)}/unit · ${gradeOf(d.potency)} potency ${d.potency}% · ${d.units || 0} units in the stash</span>
+          <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+            <button class="jm-apply ev-btn" data-prod="${d.id}" style="flex:1;min-width:110px">Cook a batch</button>
+            <button class="jm-apply ev-btn hr-green" data-sell="${d.id}" style="flex:1;min-width:110px">Sell the stash</button>
+            <button class="jm-apply ev-btn" data-improve="${d.id}" style="flex:1;min-width:130px">Improve quality (${usdf(upgradeCost(d))})</button>
           </div>
         </div>`,
       )
@@ -533,12 +542,8 @@
         <input id="mcDrug" maxlength="24" placeholder="Polvo de la Luna" style="${inputStyle}">
       </div>
       <div class="row sm mcf">
-        <b>Street price per unit ($)</b>
-        <input id="mcPrice" type="number" min="5" max="2000" value="120" style="${inputStyle}">
-      </div>
-      <div class="row sm mcf">
-        <b>Potency (1-100)</b>
-        <input id="mcPot" type="number" min="1" max="100" value="55" style="${inputStyle}">
+        <b>What comes out of the lab</b>
+        <span style="display:block;font-size:13px;color:#66707d">Nobody picks the purity or the price. The cook, the labs and the year decide: the first batch lands somewhere between 18% and 82% potency and the street decides what it pays for it. You can clean it up later, for money and with a risk of ruining the stash.</span>
       </div>
       <div class="row" id="mcNewDrug"><img src="emoji/1f52c.png" alt="" style="object-fit:contain"><div class="t"><b>Develop it</b><span>${usdf(50000)} of lab work · up to 4 products</span></div>${chev()}</div>`,
     );
@@ -546,6 +551,7 @@
       (b) => (b.onclick = () => cook(b.dataset.prod)),
     );
     sList.querySelectorAll("[data-sell]").forEach((b) => (b.onclick = () => sellDrug(b.dataset.sell)));
+    sList.querySelectorAll("[data-improve]").forEach((b) => (b.onclick = () => improve(b.dataset.improve)));
     const addLab = sList.querySelector('[data-mc="lab2"]');
     addLab &&
       (addLab.onclick = () => {
@@ -563,14 +569,23 @@
       });
     document.getElementById("mcNewDrug").onclick = () => {
       const name = String(document.getElementById("mcDrug").value || "").trim();
-      const price = Math.round(Number(document.getElementById("mcPrice").value) || 0);
-      const potency = clamp(Number(document.getElementById("mcPot").value) || 50, 1, 100);
       if (c.drugs.length >= 4) return note("The lab is full", "You already have four products. Sell one out before inventing another.");
       if (name.length < 2) return note("Give it a name", "Your product needs a name.");
-      if (price < 5) return note("Too cheap", "Set a street price of at least $5 per unit.");
       if (!pay(50000)) return note("Not enough money", `Developing a new product costs ${usdf(50000)}.`);
+      // nobody chooses the purity or the price: the cook, the labs and the year do
+      const cooks = c.crew.filter((r) => r.role === "cook").length;
+      const potency = clamp(ri(18, 82) + c.labs * 2 + cooks * 3);
+      const price = Math.round(ri(45, 260) * (0.8 + potency / 150));
       c.drugs.push({ id: "d" + Date.now().toString(36), name, price, potency, units: 0 });
-      say(`My cooks came up with ${name}. It sells itself if we price it right, and if nobody cuts it with something that makes the customers twitch.`);
+      say(
+        `My cooks came up with ${name}. The first batch came out ${gradeOf(potency)} at ${potency}% purity and the street is already offering around ${usdf(price)} a unit. ${
+          potency < 40
+            ? "Most of that price is packaging."
+            : potency > 75
+              ? "At this purity the customers stop haggling and start waiting in line."
+              : "Good enough to move, not good enough to brag about."
+        }`,
+      );
       refresh();
       save();
       openLab();
@@ -598,29 +613,245 @@
     save();
     openLab();
   }
+  function improve(id) {
+    const c = C();
+    if (!c) return;
+    const d = c.drugs.find((x) => x.id === id);
+    if (!d) return;
+    if ((Number(d.potency) || 0) >= 100)
+      return note(
+        "Nothing left to improve",
+        `${d.name} is already as pure as this lab can make it. Push it any further and it stops being a business and starts being a chemistry award.`,
+      );
+    const cost = upgradeCost(d);
+    if (!pay(cost)) return note("Not enough money", `Cleaning up a batch of ${d.name} costs ${usdf(cost)}.`);
+    if (ch(0.18)) {
+      const lost = Math.round((Number(d.units) || 0) * 0.3);
+      d.units = Math.max(0, (Number(d.units) || 0) - lost);
+      d.potency = clamp((Number(d.potency) || 0) - ri(4, 10));
+      addHeat(2);
+      note(
+        "Bad batch",
+        `The new process went wrong: ${d.name} dropped to ${d.potency}% purity${lost ? ` and ${lost} units had to be dumped in the drain` : ""}. The cook says it was the humidity, which is what they always say.`,
+      );
+      say(`I paid ${usdf(cost)} to clean up ${d.name} and the batch came out worse. The cook blamed the weather, the weather blamed the cook.`);
+    } else {
+      const gain = ri(6, 16);
+      d.potency = clamp((Number(d.potency) || 0) + gain);
+      d.price = Math.round((Number(d.price) || 0) * (1 + ri(2, 6) / 100));
+      addHeat(1);
+      note(
+        "Purer product",
+        `${d.name} is now ${gradeOf(d.potency)} at ${d.potency}% purity and the street pays ${usdf(d.price)} a unit. The customers notice without being told.`,
+      );
+      say(`We cleaned up ${d.name}. Same product, less filler, and now people are willing to pay for the difference.`);
+    }
+    refresh();
+    save();
+    openLab();
+  }
+
   function sellDrug(id) {
     const c = C();
     if (!c) return;
     const d = c.drugs.find((x) => x.id === id);
     if (!d) return;
-    const units = Math.max(0, Math.round(Number(d.units) || 0));
-    if (!units) return note("Nothing to sell", `${d.name} has an empty stash. Cook a batch first.`);
+    const stash = Math.max(0, Math.round(Number(d.units) || 0));
+    if (!stash) return note("Nothing to sell", `${d.name} has an empty stash. Cook a batch first.`);
+    // the corners can only absorb so much: camellos widen the street
+    const cap = Math.max(10, streetCapacity(c));
+    const units = Math.min(stash, cap);
+    const left = stash - units;
     const mult = 0.85 + d.potency / 300 + c.respect / 400;
     const gross = Math.round(units * d.price * mult);
-    d.units = 0;
+    d.units = left;
     addHeat(clamp(gross / 40000, 1, 25));
     addRespect(Math.min(4, Math.round(units / 80)));
     income(gross, `selling ${d.name}`, "cartel");
     say(
       `I moved ${units} units of ${d.name} for ${usdf(gross)}. ${
-        window.FL_LAUNDER
-          ? "It is dirty money now: I have to run it through something with a tax ID and a story that survives an audit."
-          : "The money is in my pocket, where it will stay until I do something stupid with it."
+        left
+          ? `The corners cannot absorb the other ${left} units. I need more camellos working the street, or a tunnel to move that much product.`
+          : window.FL_LAUNDER
+            ? "It is dirty money now: I have to run it through something with a tax ID and a story that survives an audit."
+            : "The money is in my pocket, where it will stay until I do something stupid with it."
       }`,
     );
     refresh();
     save();
     openLab();
+  }
+
+  // ------------------------------------------------------------------ distribution
+  const camelloUnits = (b) => 15 + Math.round((Number(b.skill) || 40) / 2);
+
+  function openDistro() {
+    const c = C();
+    if (!c) return openFound();
+    const boys = camellos(c);
+    const digs = tunnels(c);
+    open(
+      "DISTRIBUTION",
+      openMyCartel,
+      `<div class="row sm mcf">
+        <b>The corners move ${streetCapacity(c)} units per sale · ${productUnits(c)} in the stash</b>
+        <span style="display:block;font-size:13px;color:#66707d">Product sitting in a warehouse makes nothing. Camellos work the corners and take a cut; a tunnel under the border pays two to three times what the local street does.</span>
+      </div>
+      ${row('data-d="camello"', "emoji/1f6b2.png", "Hire a camello", `${usdf(camelloCost(c))} · works the corners, takes a 20% cut`, boys.length >= CAMELLO.max)}
+      ${
+        boys.length
+          ? boys
+              .map(
+                (b) => `<div class="row sm mcf"><b>${esc(b.name)}</b>
+          <span style="display:block;font-size:13px;color:#66707d">Corner boy · skill ${b.skill} · moves up to ${camelloUnits(b)} units a year · keeps 20%</span></div>`,
+              )
+              .join("")
+          : '<div class="row sm mcf">Nobody is selling for you yet. Without camellos you have to move everything yourself, one stash at a time.</div>'
+      }
+      <div class="sec">Tunnels to the US</div>
+      ${
+        digs.length
+          ? digs
+              .map(
+                (t) =>
+                  row(
+                    `data-tun="${t.id}"`,
+                    "emoji/1f6b0.png",
+                    t.name,
+                    `${t.cap + Math.round(c.respect) + c.fleet.length * 60} units a load · x${t.mult} the local price · ${t.age === state.age ? "already used this year" : "ready"}`,
+                  ),
+              )
+              .join("")
+          : '<div class="row sm mcf">No tunnel yet. Everything you sell has to cross the border the slow, expensive, checkpoints-every-ten-miles way.</div>'
+      }
+      ${TUNNELS.map((t) =>
+        row(
+          `data-dig="${t.kind}"`,
+          t.icon,
+          `Dig: ${t.name}`,
+          `${usdf(t.price)} · ${t.cap} units a load · x${t.mult} the local price${digs.some((x) => x.kind === t.kind) ? " · already yours" : ""}`,
+          digs.length >= 3 || digs.some((x) => x.kind === t.kind),
+        ),
+      ).join("")}`,
+    );
+    const hire = sList.querySelector('[data-d="camello"]');
+    hire &&
+      (hire.onclick = () => {
+        snd("choice");
+        if (camellos(c).length >= CAMELLO.max) return note("No more corners", "You already have eight camellos. Any more and they start selling each other's product.");
+        const cost = camelloCost(c);
+        if (!pay(cost)) return note("Not enough money", `A camello wants ${usdf(cost)} up front.`);
+        c.dealers.push({
+          id: "b" + Date.now().toString(36) + Math.floor(rnd() * 1e3).toString(36),
+          name: nameOf(),
+          skill: ri(25, 85),
+          since: state.age,
+        });
+        say("I put another kid on a corner with a pocket full of product and a phone that only has my number in it.");
+        refresh();
+        save();
+        openDistro();
+      });
+    sList.querySelectorAll("[data-tun]").forEach(
+      (el) =>
+        (el.onclick = () => {
+          snd("choice");
+          tunnelCard(el.dataset.tun);
+        }),
+    );
+    sList.querySelectorAll("[data-dig]").forEach(
+      (el) =>
+        (el.onclick = () => {
+          snd("choice");
+          if (digs.length >= 3) return note("Enough tunnels", "Three tunnels is already more than the border can explain.");
+          if (digs.some((x) => x.kind === el.dataset.dig)) return note("Already yours", "You already have that tunnel. Digging a second one next to it just makes the first one easier to find.");
+          const cat = TUNNELS.find((x) => x.kind === el.dataset.dig);
+          if (!cat) return;
+          if (!pay(cat.price)) return note("Not enough money", `That tunnel costs ${usdf(cat.price)}.`);
+          c.tunnels.push({ id: "t" + Date.now().toString(36), kind: cat.kind, name: cat.name, cap: cat.cap, mult: cat.mult, risk: cat.risk, age: -1 });
+          addHeat(-4);
+          say(`The men finished the ${cat.name.toLowerCase()}. Two months, a lot of concrete and three families who think they were building a drainage ditch.`);
+          refresh();
+          save();
+          openDistro();
+        }),
+    );
+  }
+
+  function tunnelCard(id) {
+    const c = C();
+    if (!c) return openFound();
+    const t = tunnels(c).find((x) => x.id === id);
+    if (!t) return openDistro();
+    const stash = productUnits(c);
+    const cap = t.cap + Math.round(c.respect) + c.fleet.length * 60;
+    const move = Math.min(stash, cap);
+    const price = avgPrice(c);
+    const risk = Math.min(0.6, t.risk + heatOf() / 400);
+    jCard({
+      tag: "Distribution",
+      iconSrc: "emoji/1f6b0.png",
+      title: t.name,
+      lead: `A hole under the border, a driver who does not ask questions and a buyer in the US who pays in dollars and complaints. Trucks in your fleet make a load bigger: ${c.fleet.length} in the garage right now.`,
+      rows: [
+        ["Product in the stash", `${stash} units`],
+        ["This load", `${move} units`],
+        ["Price in the US", `${usdf(Math.round(price * t.mult))}/unit`],
+        ["Estimated take", usdf(Math.round(move * price * t.mult))],
+        ["Risk of losing it", `${Math.round(risk * 100)}%`],
+      ],
+      choices: [
+        [t.age === state.age ? "Already used this year" : "Run the load", () => (t.age === state.age ? openDistro() : runTunnel(id))],
+        ["Back", () => openDistro(), "gray"],
+      ],
+    });
+  }
+
+  function runTunnel(id) {
+    const c = C();
+    if (!c) return;
+    const t = tunnels(c).find((x) => x.id === id);
+    if (!t) return openDistro();
+    if (t.age === state.age) return note("Already used", `${t.name} already moved a load this year. Give the men at both ends time to act like nothing happened.`);
+    const stash = productUnits(c);
+    if (!stash) return note("Nothing to move", "The stash is empty. Cook a batch first, or the tunnel has nothing to carry.");
+    const cap = t.cap + Math.round(c.respect) + c.fleet.length * 60;
+    const move = Math.min(stash, cap);
+    const price = avgPrice(c);
+    const gross = Math.round(move * price * t.mult);
+    const risk = Math.min(0.6, t.risk + heatOf() / 400);
+    t.age = state.age;
+    const moved = takeProduct(c, move);
+    if (ch(risk)) {
+      addHeat(12);
+      addRespect(-3);
+      if (ch(0.45)) {
+        say(`The load never came out the other side: ${moved} units, a driver and a tunnel that will not be safe to use again for a while.`);
+        notice(
+          "The tunnel is blown",
+          `${moved} units are gone and somebody at the far end is talking to the border patrol.`,
+          () => {
+            try {
+              arrest("drug trafficking");
+            } catch (e) {
+              warn("arrest", e);
+            }
+          },
+          true,
+        );
+      } else {
+        say(`Border patrol was waiting at the far end. ${moved} units disappeared into an evidence locker.`);
+        note("Seized", `${moved} units were seized at the exit of the tunnel. Nobody was arrested, which is the only good news of the day.`);
+      }
+    } else {
+      income(gross, "tunnel shipment", "cartel");
+      addHeat(6);
+      addRespect(3);
+      say(`The load went through the tunnel and came out the other side as money: ${moved} units for ${usdf(gross)}. The man at the far end counted it twice and complained the whole time.`);
+    }
+    refresh();
+    save();
+    openDistro();
   }
 
   // ------------------------------------------------------------------ recruits
@@ -947,6 +1178,13 @@
     { id: "ranch", name: "Ranch outside town", sprite: "home-05.png", price: 210000, hide: 10 },
     { id: "mansion", name: "Mansion on the hill", sprite: "mansion-04.png", price: 420000, hide: 16 },
   ];
+  // distribution: the corners need boys to work them and the good money is across the border
+  const CAMELLO = { max: 8, base: 4500, step: 2500 };
+  const TUNNELS = [
+    { kind: "sewer", name: "Sewer tunnel", icon: "emoji/1f6b0.png", price: 260000, cap: 120, mult: 2, risk: 0.16, d: "Twelve hundred yards of wet pipe under the river. Slow, dark and very hard to find." },
+    { kind: "border", name: "Border tunnel", icon: "emoji/1f6a7.png", price: 460000, cap: 240, mult: 2.3, risk: 0.2, d: "Lights, rails and a man at each end who owes you a favor he will never finish paying." },
+    { kind: "freight", name: "Freight tunnel", icon: "emoji/1f30a.png", price: 780000, cap: 420, mult: 2.6, risk: 0.24, d: "Wide enough for a pallet jack and a truck axle. The kind of thing ground radar is built to find." },
+  ];
   const ROADS = [
     { id: "toll", name: "The highway toll", icon: "emoji/1f6a7.png", take: [120000, 220000], heat: 10, people: 6, guard: 0.3 },
     { id: "bridge", name: "The bridge into town", icon: "emoji/1f6a8.png", take: [60000, 110000], heat: 7, people: 4, guard: 0.2 },
@@ -962,6 +1200,38 @@
   const turfTake = (c) => (c ? TURF.reduce((s, t) => s + Math.round((t.income * turfCtl(c, t.id)) / 100), 0) : 0);
   const cornersHeld = (c) => TURF.filter((t) => turfCtl(c, t.id) >= 50).length;
   const hideRate = (c) => (c ? c.safe.reduce((s, id) => s + (Number(safeOf(id).hide) || 0), 0) : 0);
+
+  // ------------------------------------------------------------------ distribution
+  const camellos = (c) => (c && Array.isArray(c.dealers) ? c.dealers : []);
+  const camelloCost = (c) => CAMELLO.base + camellos(c).length * CAMELLO.step;
+  const tunnels = (c) => (c && Array.isArray(c.tunnels) ? c.tunnels : []);
+  const streetCapacity = (c) =>
+    c ? 25 + camellos(c).length * 30 + Math.round((Number(c.respect) || 0) / 2) : 0;
+  const avgPrice = (c) => {
+    const units = productUnits(c);
+    if (!c || !units) return 0;
+    return c.drugs.reduce((s, d) => s + (Number(d.price) || 0) * (Number(d.units) || 0), 0) / units;
+  };
+  const takeProduct = (c, n) => {
+    if (!c || !(n > 0)) return 0;
+    let left = Math.round(n),
+      taken = 0;
+    const order = [...c.drugs].sort((a, b) => (Number(b.units) || 0) - (Number(a.units) || 0));
+    for (const d of order) {
+      if (left <= 0) break;
+      const have = Math.max(0, Number(d.units) || 0);
+      const q = Math.min(have, left);
+      d.units = have - q;
+      left -= q;
+      taken += q;
+    }
+    return taken;
+  };
+  const gradeOf = (p) => {
+    const v = Number(p) || 0;
+    return v >= 85 ? "premium" : v >= 65 ? "good" : v >= 40 ? "street" : "cut";
+  };
+  const upgradeCost = (d) => Math.round(35000 + (Number(d.potency) || 0) * 1600);
 
   // every action answers with the game's event card (jCard) and the game's stat bars
   function outcome(title, lead, rows, back) {
@@ -1948,6 +2218,45 @@
         ["Promote him and keep him close", { loyalty: 12, respect: 4 }, "You give him a plaza of his own. He is too busy running it to plot against you."],
       ],
     },
+    {
+      id: "recognized",
+      icon: "emoji/1f9d1.png",
+      title: "Somebody recognized you on the street",
+      lead: "You stop for cigarettes at a gas station and the kid behind the counter freezes, points at you and says your cartel's name out loud. Two people in the line turn around.<br><br>What will you do?",
+      minRespect: 15,
+      choices: [
+        [
+          "Sign an autograph and walk out",
+          { respect: 4, heat: 4 },
+          "You sign a receipt for him. By the time you are back in the car there are three phones out and your face is on the internet.",
+          {
+            p: 0.3,
+            fx: { heat: 8 },
+            msg: "The kid posted the photo. A detective saved it next to the file he already had on you.",
+          },
+        ],
+        [
+          "Tell him he has the wrong guy",
+          { heat: -4, respect: -3 },
+          "You deny it flatly. He nods, unconvinced, and the rumor grows taller without you.",
+        ],
+        [
+          "Pay him to forget your face",
+          { money: -4000, heat: -8 },
+          "Two hundred dollars and a very serious face. He swears he never saw you, and he means it.",
+        ],
+        [
+          "Take him aside and explain who you are",
+          { respect: 2, heat: 10 },
+          "You tell him exactly what he just did and who else is allowed to hear it. He goes pale and stops talking altogether.",
+          {
+            p: 0.35,
+            fx: { heat: 8, respect: -2 },
+            msg: "The woman behind him already had 911 dialed. Now she has a statement to go with it.",
+          },
+        ],
+      ],
+    },
   ];
 
   function applyFx(fx) {
@@ -2104,6 +2413,30 @@
         const v = Number(c.turf[t.id]) || 0;
         if (v > 0 && ch(0.5)) c.turf[t.id] = clamp(v - (c.heat >= 60 ? 2 : 1));
       });
+      const boys = camellos(c);
+      if (boys.length) {
+        const unitPrice = avgPrice(c);
+        let moved = 0,
+          gross = 0;
+        boys.forEach((b) => {
+          if (!ch(0.85)) return; // a slow year on that corner
+          const q = takeProduct(c, camelloUnits(b));
+          if (!q) return;
+          moved += q;
+          gross += q * unitPrice * 0.8;
+        });
+        if (moved) {
+          income(Math.round(gross), "camellos", "cartel");
+          addHeat(ri(1, 3));
+          say(`The camellos moved ${moved} units off the corners for ${usdf(Math.round(gross))}. Half of them rounded down what they owe me and all of them swore the street is slow.`);
+        }
+        if (ch(0.06 + c.heat / 500)) {
+          const gone = boys[Math.floor(rnd() * boys.length)];
+          c.dealers = boys.filter((x) => x !== gone);
+          addHeat(4);
+          say(`${gone.name} got picked up on his corner with product in his sock. The rest of the boys are suddenly very polite about their percentages.`);
+        }
+      }
       c.crew.forEach((r) => {
         if (ch(0.15)) r.loyalty = clamp(r.loyalty - 3);
         if (ch(0.1)) r.skill = clamp(r.skill + 2);
@@ -2196,6 +2529,7 @@
     fire: () => fireEvent(true),
     tick,
     fleet: openFleet,
+    distro: openDistro,
     truck: openTruck,
     buyTruckCard: truckBuyCard,
     roads: openRoads,
