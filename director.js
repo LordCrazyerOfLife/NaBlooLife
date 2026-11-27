@@ -63,12 +63,15 @@
   };
   const canPay = (n) => (Number(state.money) || 0) >= n || budgetLeft() >= n;
   const spend = (n) => {
-    if ((Number(state.money) || 0) < n) {
+    const pj = state.dir && state.dir.proj;
+    const financed = !!(pj && pj.done && pj.done.fund && pj.fund !== "self");
+    if (financed ? budgetLeft() >= n : (Number(state.money) || 0) < n) {
       if (budgetLeft() < n) return false;
       state.dir.proj.bUsed = (Number(state.dir.proj.bUsed) || 0) + n;
       render();
       return true;
     }
+    if ((Number(state.money) || 0) < n) return false;
     state.money -= n;
     render();
     return true;
