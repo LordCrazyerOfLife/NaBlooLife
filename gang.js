@@ -798,7 +798,7 @@
       el.src = src;
       document.head.append(el);
     };
-    if (!window.FL_ARMS) load("arms.js?v=15");
+    if (!window.FL_ARMS) load("arms.js?v=16");
     if (!window.FL_GANGWARS) load("gangwars.js?v=5");
     if (!window.FL_ARMS_EVENTS) load("arms-events.js?v=1");
     if (!window.FL_SHOOTER) load("minigame-shooter.js?v=2");

@@ -175,7 +175,7 @@
   };
   const slotsOf = (def) => (def.grp ? SLOTS_BY[def.grp].filter((s) => !(def.mini && s === "stock")) : []);
 
-  const ATTACH_ON = false; // attachments (optics, suppressors, switches, sears) y kits: apagados
+  const ATTACH_ON = true; // attachments y kits (flag por si hay que apagarlos)
   const ALL = ["glock", "ak", "ar", "smg"];
   const PARTS = {
     reddot: { n: T("Red Dot Sight", "Mira de punto rojo", "Mira de ponto vermelho"), slot: "optic", grps: ALL, price: 150, power: 0.02, heat: 0, icon: "guns/attachments/red-dot.png?v=2" },

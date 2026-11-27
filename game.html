@@ -69768,8 +69768,8 @@
           achAll.has(e) ||
             (achAll.add(e),
             saveAchAll(),
-            achQueue.push([e, t]),
-            1 === achQueue.length && showAchievementNow(e, t));
+            (window.FL_ACH_POPUPS === !0) && achQueue.push([e, t]),
+            window.FL_ACH_POPUPS === !0 && 1 === achQueue.length && showAchievementNow(e, t));
       }
       function achievementDone() {
         achQueue.shift(), achQueue.length && setTimeout(() => showAchievementNow(...achQueue[0]), 150);
