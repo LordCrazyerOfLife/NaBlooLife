@@ -175,6 +175,7 @@
   };
   const slotsOf = (def) => (def.grp ? SLOTS_BY[def.grp].filter((s) => !(def.mini && s === "stock")) : []);
 
+  const ATTACH_ON = false; // attachments (optics, suppressors, switches, sears) y kits: apagados
   const ALL = ["glock", "ak", "ar", "smg"];
   const PARTS = {
     reddot: { n: T("Red Dot Sight", "Mira de punto rojo", "Mira de ponto vermelho"), slot: "optic", grps: ALL, price: 150, power: 0.02, heat: 0, icon: "guns/attachments/red-dot.png?v=2" },
@@ -431,7 +432,7 @@
         html += `<div class="sec">${T("Magazines", "Cargadores", "Pentes")}</div>`;
         for (const k of d.mags) html += item("m", k, MAGS[k], MAGS[k].icon, MAGS[k].illegal ? PIECE(T("Illegal", "Ilegal", "Ilegal")) : "");
       }
-      if (d.parts) {
+      if (ATTACH_ON && d.parts) {
         html += `<div class="sec">${T("Attachments", "Accesorios", "Acessórios")}</div>`;
         for (const k of d.parts) {
           const p = PARTS[k];
@@ -440,7 +441,7 @@
         }
       }
     }
-    if (d.kits) {
+    if (ATTACH_ON && d.kits) {
       html += `<div class="sec">${T("Ready-Made (with attachments)", "Ya armadas (con accesorios)", "Já montadas (com acessórios)")}</div>`;
       for (const k of d.kits) {
         const kit = KITS[k];
@@ -543,8 +544,8 @@
       html += `<div class="sec">${T("Magazine", "Cargador", "Pente")}</div>`;
       const m = gun.mag && MAGS[gun.mag];
       html += row("gMag", m ? m.icon : MAG_ICON, m ? m.n : STD[d.grp], T("Tap to change", "Toca para cambiarlo", "Toque para trocar"));
-      html += `<div class="sec">${T("Attachments", "Accesorios", "Acessórios")}</div>`;
-      for (const sl of slotsOf(d)) {
+      if (ATTACH_ON) html += `<div class="sec">${T("Attachments", "Accesorios", "Acessórios")}</div>`;
+      if (ATTACH_ON) for (const sl of slotsOf(d)) {
         const at = gun.att[sl];
         html += row(`gS_${sl}`, at ? partIcon(at) : BLANK, at ? PARTS[at.id].n : SLOTS[sl], at ? `${PIECE(SLOTS[sl])}${at.color ? " · " + PIECE(colorName(at.color)) : ""}` : T("Empty. Tap to install", "Vacío. Toca para instalar", "Vazio. Toque para instalar"));
       }
