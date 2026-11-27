@@ -5,6 +5,39 @@
     <meta name="google" content="notranslate" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <script>
+      /* [perf] iOS lag: the whole-tree MutationObservers (body/.phone + subtree) fired a callback after every DOM change.
+         Coalesce them to one callback per frame (same records, just batched). Small/targeted observers are untouched. */
+      (function () {
+        var Native = window.MutationObserver;
+        if (!Native || Native.__flBatched) return;
+        var isHeavy = function (t, o) {
+          return !!(o && o.subtree && t && (t === document.body || t === document.documentElement || t === document || (t.classList && t.classList.contains("phone"))));
+        };
+        function FLMO(cb) {
+          var self = this, raf = 0, batched = false;
+          this._p = [];
+          this._set = function () { batched = true; };
+          this._flush = function () {
+            raf = 0;
+            if (!self._p.length) return;
+            var r = self._p;
+            self._p = [];
+            try { cb.call(self, r, self); } catch (e) { console.error(e); }
+          };
+          this._n = new Native(function (recs) {
+            if (!batched) return cb.call(self, recs, self);
+            self._p.push.apply(self._p, recs);
+            if (!raf) raf = requestAnimationFrame(self._flush);
+          });
+        }
+        FLMO.prototype.observe = function (t, o) { if (isHeavy(t, o)) this._set(); return this._n.observe(t, o); };
+        FLMO.prototype.disconnect = function () { this._p = []; return this._n.disconnect(); };
+        FLMO.prototype.takeRecords = function () { var r = this._p.concat(this._n.takeRecords()); this._p = []; return r; };
+        FLMO.__flBatched = true;
+        window.MutationObserver = FLMO;
+      })();
+    </script>
     <title>NaBlooLife</title>
     <link rel="icon" type="image/png" sizes="64x64" href="freelife/favicon-64.png?v=1" />
     <link rel="icon" type="image/png" sizes="256x256" href="freelife/favicon-256.png?v=1" />
