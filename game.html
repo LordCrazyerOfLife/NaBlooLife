@@ -11059,6 +11059,20 @@
         z-index: 2147483647;
         pointer-events: none;
       }
+      /* [fix iOS] the phone frame starts at y=0, under the status bar / notch, so the fixed
+         #topSafeBar was covering the topbar and the top of every full-screen menu. Push the
+         whole frame (menus and popups included, they are absolute inside .phone) below the
+         safe area, and take that height out of the frame so the bottom still fits. The
+         division by --ui-scale compensates for the zoom applied to .phone. */
+      .phone.ui-scaled {
+        margin-top: calc(env(safe-area-inset-top, 0px) / var(--ui-scale, 0.85));
+        height: calc((100vh - env(safe-area-inset-top, 0px)) / var(--ui-scale, 0.85));
+        height: calc((100dvh - env(safe-area-inset-top, 0px)) / var(--ui-scale, 0.85));
+      }
+      html.pc .phone.ui-scaled {
+        margin-top: 0;
+        height: calc(100dvh / var(--ui-scale, 0.85));
+      }
       html.pc #topSafeBar {
         display: none;
       }
@@ -11490,7 +11504,7 @@
     <script src="devtools.js?v=1"></script>
     <script src="countries.js"></script>
     <script src="cities.js"></script>
-    <script src="jobs.js?v=10"></script>
+    <script src="jobs.js?v=11"></script>
     <script src="milev-general.js?v=1"></script>
     <script src="milev-greenberets.js?v=1"></script>
     <script src="milev-rangers.js?v=1"></script>
@@ -13086,7 +13100,7 @@
                   ? `${e}.png?v=9`
                   : /^(hair|tattoo)\//.test(e)
                     ? `${e}.png?v=10`
-                    : `faces/${e}.png`);
+                    : `faces/${e}.png?v=1`);
           })),
         HAIR_PACK = [
           ...[1, 2, 3, 4, 5].map((e) => [`hhc${e}`, `Hip-Hop Hair ${e}`]),
@@ -27575,6 +27589,7 @@
           return t ? Math.max(0, socYear() - t) : 99;
         },
         socReach = (e, t) => {
+          if (!Number.isFinite(+t) || +t <= 0) return 0;
           const a = socAge(e);
           return Math.round(Math.min(5e3 * 12 ** Math.min(a, 6), t * Math.min(1, ((a + 1) / 8) ** 2)));
         };
@@ -28295,9 +28310,25 @@
           break;
         }
       }
+      function socHeal(s) {
+        if (!s || "object" != typeof s) return s;
+        const num = (v) => (Number.isFinite(+v) ? +v : 0),
+          whole = (v) => Math.max(0, Math.round(num(v)));
+        (s.subs = whole(s.subs)),
+          (s.fake = Math.min(whole(s.fake), s.subs)),
+          (s.views = whole(s.views)),
+          (s.viewsYear = whole(s.viewsYear)),
+          (s.posts = whole(s.posts)),
+          (s.postsYear = whole(s.postsYear)),
+          (s.momentum = Math.max(0, Math.min(10, num(s.momentum))));
+        return s;
+      }
       function socialPost(e, t) {
         const [, a, o, n] = socOf(e),
           s = state.social[e];
+        // heal any account whose counters went NaN/undefined (old saves, or a bugged fame boost):
+        // otherwise subs-fake/momentum feed NaN into every "views and likes" line forever.
+        socHeal(s);
         if (s.stolen) return stolenPost(e, t);
         s.posts++, s.postsYear++, (s.momentum = Math.min(10, s.momentum + 0.6));
         const r = Math.max(0, s.subs - s.fake),
@@ -47184,7 +47215,13 @@
                   (state.suits = state.suits.filter((t) => t !== e));
                 const d = Math.max(
                     0.05,
-                    Math.min(0.92, e.strength + [0, 0.12, 0.22][r] - [0, 0.05, 0.1, 0.18, 0.28][i]),
+                    Math.min(
+                      0.95,
+                      e.strength +
+                        (window.FL_LAWYERS && FL_LAWYERS.civilBonus ? FL_LAWYERS.civilBonus() : 0) +
+                        [0, 0.12, 0.22][r] -
+                        [0, 0.05, 0.1, 0.18, 0.28][i],
+                    ),
                   ),
                   u = `${/^(your|my) /i.test(e.who) ? "" : "your "}${e.who.toLowerCase()}, ${e.name}`;
                 if ((say(`I hired ${a[r]} for ${usd(l)} to sue ${e.name} for ${e.reason}.`), !chance(d)))
@@ -49055,6 +49092,12 @@
             ["Public Defender", 0, 0.12],
           ];
         }
+        // [mod lawyers] a retained lawyer joins the case for free
+        if (!isOldEra() && !e.retainerOpt && window.FL_LAWYERS && FL_LAWYERS.retained && FL_LAWYERS.retained()) {
+          const lw = FL_LAWYERS.retained();
+          e.retainerOpt = !0;
+          e.opts.unshift([`${lw.name} (on retainer)`, 0, Math.min(0.86, 0.42 + lw.skill / 250)]);
+        }
         const t = state.fugitive;
         e.said ||
           ((e.said = !0),
@@ -49128,7 +49171,16 @@
         const a = state.fugitive,
           o = a ? rint(2, 5) : 0;
         let n = null;
-        if (mods.alwaysWinCourt || ("not" === t && chance(Math.max(0.03, Math.min(0.85, e.q + e.lean))))) {
+        if (
+          mods.alwaysWinCourt ||
+          ("not" === t &&
+            chance(
+              Math.max(
+                0.03,
+                Math.min(0.9, e.q + e.lean + (window.FL_LAWYERS && FL_LAWYERS.bonus ? FL_LAWYERS.bonus() : 0)),
+              ),
+            ))
+        ) {
           const o = "not" !== t;
           if (
             (say(o ? `The judge dismissed my ${e.crime} case!` : `I was found not guilty of ${e.crime}!`), !a)
@@ -49153,7 +49205,12 @@
         n ||
           ((s = rint(e.lo, e.hi)),
           "guilty" === t ? (s *= 0.6) : "nc" === t && (s *= 0.75),
-          (s = Math.max(1, Math.round(s * (1 - 0.35 * e.q - e.lean)))),
+          (s = Math.max(
+            1,
+            Math.round(
+              s * (1 - 0.35 * e.q - e.lean - (window.FL_LAWYERS && FL_LAWYERS.sentenceCut ? FL_LAWYERS.sentenceCut() : 0)),
+            ),
+          )),
           (r =
             e.dp &&
             chance(
@@ -70231,7 +70288,7 @@
             accurateCars: !1,
             extendedCars: !1,
             goldenNeko: !1,
-            noMentalHealth: !1,
+            noMentalHealth: !0,
             modLoader: !0,
           },
           (() => {
@@ -70243,6 +70300,13 @@
           })(),
         );
       btShow && (mods.birthTraits = !0);
+      // [mod] Mental Health is off by default now: force it once on existing saves too, then respect the player's toggle.
+      try {
+        localStorage.getItem("bitlifepp-mh-off-default") ||
+          ((mods.noMentalHealth = !0),
+          localStorage.setItem("bitlifepp-mh-off-default", "1"),
+          localStorage.setItem(MODS_KEY, JSON.stringify(mods)));
+      } catch {}
       try {
         localStorage.getItem("bitlifepp-expjobs-default") ||
           ((mods.expandedJobs = !0),
@@ -70257,7 +70321,7 @@
       if (mods.modLoader && !window.__modLoaderInjected) {
         window.__modLoaderInjected = !0;
         const _ml = document.createElement("script");
-        (_ml.src = "modloader.js?v=48"), document.body.appendChild(_ml);
+        (_ml.src = "modloader.js?v=58"), document.body.appendChild(_ml);
       }
       const saveMods = () => {
         try {
@@ -88834,6 +88898,7 @@
         },
         mbBar = (e, t, a) =>
           `<b>${e}</b><i><u style="width:${Math.max(t, 2)}%;background:${a || barCol(t)}"></u></i>`;
+      const MB_CARD = new Set(["book", "diet", "gym", "instrument", "martial", "model", "space", "walk"]);
       function mbRes(e, t, { rows: a = [], bars: o = [], log: n, after: s } = {}) {
         // [mod] come back to where you were: when an activity opened from Mind & Body ends (and has no follow-up of its
         // own), keep the Mind & Body list open and reopen the same activity card on OK (Activities > Mind & Body > Martial Arts).
@@ -88843,12 +88908,15 @@
             mbKey &&
             "function" == typeof MB_DO[mbKey] &&
             screen.classList.contains("open") &&
-            "MIND & BODY" === sTitle.textContent;
+            "MIND & BODY" === sTitle.textContent,
+          // only the activities that open a chooser card get reopened on OK; the ones that resolve
+          // straight into mbRes (meditate, garden, library, memory) would re-run forever -> popup loop.
+          reopen = stay && MB_CARD.has(mbKey);
         stay || snapClose(), renderStats(), n && say(n);
         notice(
           e,
           t,
-          stay
+          reopen
             ? () => {
                 state.dead || ("MIND & BODY" === sTitle.textContent && screen.classList.contains("open") && MB_DO[mbKey]());
               }
@@ -89555,10 +89623,10 @@
         updateDockTab(),
         snapLife();
     </script>
-    <script src="church.js?v=12"></script>
-    <script src="mafia.js?v=11"></script>
+    <script src="church.js?v=13"></script>
+    <script src="mafia.js?v=12"></script>
     <script src="cliques.js?v=2"></script>
-    <script src="jewelry.js?v=19"></script>
+    <script src="jewelry.js?v=20"></script>
     <script src="jewel-robbery.js?v=1"></script>
     <script src="family-drama.js?v=6"></script>
     <script src="first-date.js?v=4"></script>
@@ -89592,26 +89660,26 @@
     <script src="kids-media.js?v=1"></script>
     <script src="acting.js?v=24"></script>
     <script src="police-events.js?v=1"></script>
-    <script src="marriage.js?v=6"></script>
+    <script src="marriage.js?v=7"></script>
     <script src="rentals.js?v=15"></script>
     <script src="arttheft.js?v=73"></script>
     <script src="counterfeit.js?v=8"></script>
     <script src="smuggling.js?v=9"></script>
-    <script src="cartel.js?v=13"></script>
-    <script src="drugs.js?v=9"></script>
+    <script src="cartel.js?v=15"></script>
+    <script src="drugs.js?v=10"></script>
     <script src="mods.js?v=34"></script>
     <script src="elite-life.js?v=11"></script>
     <script src="vip.js?v=8"></script>
-    <script src="basketball.js?v=30"></script>
-    <script src="fighter.js?v=8"></script>
-    <script src="vampire.js?v=10"></script>
+    <script src="basketball.js?v=31"></script>
+    <script src="fighter.js?v=9"></script>
+    <script src="vampire.js?v=11"></script>
     <script src="serial-clues.js?v=2"></script>
-    <script src="serial-killer.js?v=41"></script>
+    <script src="serial-killer.js?v=42"></script>
     <script src="special-crime.js?v=2"></script>
     <script src="sim-swapping.js?v=16"></script>
     <script src="family-divorce.js?v=6"></script>
     <script src="pet-dialogs.js?v=1"></script>
-    <script src="pets-plus.js?v=17"></script>
+    <script src="pets-plus.js?v=18"></script>
     <script src="careers.js?v=4"></script>
     <script src="career-dock.js?v=1"></script>
     <script src="event-rules.js?v=3"></script>
@@ -89632,13 +89700,14 @@
     <script src="mobile-fix.js?v=3"></script>
     <script src="juice-plus.js?v=3"></script>
     <script src="easy-stats.js?v=1"></script>
-    <script src="jewelry-wear.js?v=6"></script>
+    <script src="jewelry-wear.js?v=7"></script>
     <script src="family-gifts.js?v=1"></script>
     <script src="landlord.js?v=2"></script>
     <script src="bizempire.js?v=7"></script>
     <script src="penalty.js?v=2"></script>
-    <script src="garage.js?v=6"></script>
-    <script src="accessories-plus.js?v=2"></script>
+    <script src="garage.js?v=7"></script>
+    <script src="lawyers.js?v=1"></script>
+    <script src="accessories-plus.js?v=3"></script>
     <script src="barber-all.js?v=1"></script>
   <script>
 /* [mod] tall popups: the base CSS forces overflow:visible on any popup with an X button (so the X is not clipped),
