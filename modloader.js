@@ -45,7 +45,7 @@
       id: "gang-bang",
       name: "Gang Bang",
       icon: "special/gangbang.png",
-      src: "gang.js?v=12",
+      src: "gang.js?v=20",
       desc: "Join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
     },
     {
@@ -75,7 +75,7 @@
       id: "special-life",
       name: "Special Life: Racer, Judge & Artist",
       icon: "emoji/1f3ce-fe0f.png",
-      src: "special-life.js?v=3",
+      src: "special-life.js?v=4",
       desc: "Three special careers: illegal street racer with nationwide police heat and an underground exotic-car auction, judge with evidence, sentences, bribes and revenge, and artist with a real drawing canvas whose pieces persist in localStorage.",
     },
     {
@@ -147,7 +147,7 @@
       id: "movie-director",
       name: "Movie Director",
       icon: "director/clap.png",
-      src: "director.js?v=4",
+      src: "director.js?v=8",
       deps: ["director-data.js?v=1"],
       desc: "Special Careers, Movie Director (18+). Write, finance, cast, shoot and release your own films. Pick genre, theme, plot twist and story; fix script problems; get a studio like Sony or Warner to fund and publicize you (or pay for it yourself); hire real actors who age with the years; survive casting, direction and budget problems; then watch Rotten Tomatoes, IMDb, Metacritic, Letterboxd, CinemaScore and the box office rate you. Viral combos, awards, sequels and a rank from Film Student to Hollywood Legend.",
     },

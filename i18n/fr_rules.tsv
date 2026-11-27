@@ -1,0 +1,360 @@
+^Age: (\d+) years? \((\d+)\)$	Âge : $1 ans ($2)
+^Age: (\d+) years?$	Âge : $1 ans
+^Age (\d+)$	Âge $1
+^\(Age (\d+)\)$	(Âge $1)
+^(\d+) Weeks?$	$1 semaines
+^Died at (\d+)$	Mort à $1 ans
+^\(Died at (\d+)\)$	(Mort à $1 ans)
+^Died (\d+) years? ago$	Mort il y a $1 ans
+^Died about ([\d,]+) years ago$	Mort il y a environ $1 ans
+^born (\d+)–(\d+)$	nés entre $1 et $2
+^≈ ([\d,]+) generations later$	≈ $1 générations plus tard
+^c\. ([\d,]+) BC$	v. $1 av. J.-C.
+^c\. ([\d,]+) BC · Mammoth Clan$	v. $1 av. J.-C. · Clan du Mammouth
+^c\. ([\d,–]+) BC$	v. $1 av. J.-C.
+^family members ·$	membres de la famille ·
+^living · the$	vivants · les
+^bloodline$	(lignée)
+^(\d+)(?:st|nd|rd|th) Great-Grandparents$	$1e arrière-grands-parents
+^(\d+)(?:st|nd|rd|th) Great-Grandfather$	$1e arrière-grand-père
+^(\d+)(?:st|nd|rd|th) Great-Grandmother$	$1e arrière-grand-mère
+^(\d+)(?:st|nd|rd|th) Great-$	$1e arrière-
+^Great-$	Arrière-
+^Inherited from (.+)$	Hérité de $1
+^Veteran of (.+)$	Vétéran de $1
+^Hooked on (.+)$	Accro à $1
+^\((.+)\)$	($1)
+^(.+) \((\d+)\)$	$1 ($2)
+^Work on your chess \((\d) left this year\)$	Entraîne-toi aux échecs (il te reste $1 cette année)
+^Puzzle rating (\d+) · (\d+) solved$	Rating de problèmes $1 · $2 résolus
+^peak (\d+)$	pic $1
+^(\d+)/5 games for a rating$	$1/5 parties pour être classé
+^Norms IM (\d)/3 GM (\d)/3$	Normes MI $1/3 GM $2/3
+^Age (\d+)\+$	Âge $1+
+^Under (\d+) only$	Réservé aux moins de $1 ans
+^Invitation only \((\d+)\+\)$	Sur invitation seulement ($1+)
+^(\d+) rounds · invited$	$1 rondes · sur invitation
+^(\d+) rounds · parents pay the fee$	$1 rondes · tes parents paient l'inscription
+^(\d+) rounds · fee (\S+) \+ travel$	$1 rondes · inscription $2 + voyage
+^(\d+) rounds · fee (\S+)$	$1 rondes · inscription $2
+^Earn (\S+)/hour$	Gagne $1/heure
+^Rapid 5\+3 vs a real opponent · (\d+\??)$	Rapide 5+3 contre un vrai adversaire · $1
+^([\d,]+) followers$	$1 abonnés
+^(.+): you have ([\d.]+)/(\d+) going into the last round\.$	$1 : tu as $2/$3 avant la dernière ronde.
+^Your opponent is (.+) \((\d+)\)\.$	Ton adversaire est $1 ($2).
+^(.+) · Round (\d+)$	$1 · Ronde $2
+^You won the (.+)!$	Tu as gagné le $1 !
+^A solid tournament at the (.+)\.$	Un bon tournoi au $1.
+^A rough tournament at the (.+)\.$	Un tournoi difficile au $1.
+^First rating: (\d+)$	Premier rating : $1
+^(\d+)(?:st|nd|rd|th)$	$1e
+^(IM|GM) norm \((\d)/3\)$	Norme $1 ($2/3)
+^I played the (.+) and scored ([\d.]+)/(\d+), finishing (\d+)(?:st|nd|rd|th)\. I won (.+)\.$	J'ai joué le $1, fait $2/$3 et terminé $4e. J'ai gagné $5.
+^I played the (.+) and scored ([\d.]+)/(\d+), finishing (\d+)(?:st|nd|rd|th)\.$	J'ai joué le $1, fait $2/$3 et terminé $4e.
+^I earned an? (IM|GM) norm!$	J'ai obtenu une norme $1 !
+^I earned the title of (.+)!$	J'ai reçu le titre de $1 !
+^FIDE has awarded you the title of (.+) \((\w+)\)\.$	La FIDE t'a décerné le titre de $1 ($2).
+^I became the World Chess Champion after tiebreaks! I earned (.+)\.$	Je suis devenu champion du monde d'échecs après les départages ! J'ai gagné $1.
+^I became the World Chess Champion! I earned (.+)\.$	Je suis devenu champion du monde d'échecs ! J'ai gagné $1.
+^I lost the World Championship match after tiebreaks\. I still earned (.+)\.$	J'ai perdu le match du championnat du monde après les départages. J'ai quand même gagné $1.
+^I lost the World Championship match\. I still earned (.+)\.$	J'ai perdu le match du championnat du monde. J'ai quand même gagné $1.
+^([\d.]+) – ([\d.]+) after tiebreaks$	$1 – $2 après départage
+^Current: (.+)$	Actuel : $1
+^(.+) \((\S+)/yr\) \(current\)$	$1 ($2/an) (actuel)
+^(.+) \((\S+)/yr\)$	$1 ($2/an)
+^(.+) \(current\)$	$1 (actuel)
+^I hired a new chess coach \((.+)\)\.$	J'ai embauché un nouvel entraîneur d'échecs ($1).
+^I gave (\d+) hours of chess lessons and earned (.+)\.$	J'ai donné $1 heures de cours d'échecs et j'ai gagné $2.
+^You taught (\d+) hours of lessons this year and earned (.+)\.$	Tu as donné $1 heures de cours cette année et tu as gagné $2.
+^You need (.+) to enter \(fee \+ travel\)\.$	Tu as besoin de $1 pour t'inscrire (inscription + voyage).
+^You need (.+) to enter \(fee\)\.$	Tu as besoin de $1 pour t'inscrire.
+^You've already played (\d+) tournaments this year\. Rest up!$	Tu as déjà joué $1 tournois cette année. Repose-toi !
+^I played (\d+) (bullet|blitz|rapid) games on Pawnder \((\d+)W (\d+)D (\d+)L\)\.$	J'ai joué $1 parties de $2 sur Pawnder ($3G $4N $5P).
+^(Bullet|Blitz|Rapid) session$	Séance de $1
+^You played (\d+) (bullet|blitz|rapid) games\.$	Tu as joué $1 parties de $2.
+^(\d+)W (\d+)D (\d+)L$	$1G $2N $3P
+^I played Pawnder Titled Tuesday and scored ([\d.]+)/11, winning (.+)\.$	J'ai joué le Titled Tuesday de Pawnder, fait $1/11 et gagné $2.
+^I played Pawnder Titled Tuesday and scored ([\d.]+)/11\.$	J'ai joué le Titled Tuesday de Pawnder et fait $1/11.
+^I streamed chess on Pawnder and gained ([\d,]+) followers\.$	J'ai streamé des échecs sur Pawnder et gagné $1 abonnés.
+^You gained ([\d,]+) followers\. You have ([\d,]+) now\.$	Tu as gagné $1 abonnés. Tu en as $2 maintenant.
+^Puzzle · rated (\d+)$	Problème · niveau $1
+^Your puzzle rating: (\d+)$	Ton rating de problèmes : $1
+^Puzzle rating: (\d+) → (\d+)$	Rating de problèmes : $1 → $2
+^Rapid rating: (\d+) → (\d+)$	Rating de rapides : $1 → $2
+^Wrong move\. The answer was (\S+)\.$	Mauvais coup. La réponse était $1.
+^Not quite\. The answer was (\S+)\.$	Pas tout à fait. La réponse était $1.
+^Banned until age (\d+)$	Suspendu jusqu'à $1 ans
+^FIDE suspended you until age (\d+)\.$	La FIDE t'a suspendu jusqu'à $1 ans.
+^(\d+) years$	$1 ans
+^(.+) per year$	$1 par an
+^Game (\d+)$	Partie $1
+^Tiebreak game (\d+)$	Partie de départage $1
+^World Championship · (.+)$	Championnat du monde · $1
+^Match score: ([\d.]+) – ([\d.]+)$	Score du match : $1 – $2
+^World Championship match vs (.+) \((\d+)\)\.$	Match du championnat du monde contre $1 ($2).
+^(.+) with a firearm$	$1 avec une arme à feu
+^(.+) and illegal firearm possession$	$1 et possession illégale d'une arme à feu
+^(.+) and possession of an automatic weapon$	$1 et possession d'une arme automatique
+^attempted purchase of an illegal firearm$	tentative d'achat d'arme à feu illégale
+^You have to be at least (\d+) years old to buy that\.$	Tu dois avoir au moins $1 ans pour acheter ça.
+^Power (\d+%)$	Puissance $1
+^Police heat \+(\d+)$	Pression policière +$1
+^Magazines (\d+)$	Chargeurs $1
+^Parts (\d+)$	Pièces $1
+^Price: (.+)$	Prix : $1
+^(.+) ×(\d+)$	$1 ×$2
+^Switch \((.+)\)$	Switch ($1)
+^Rep (\d+)$	Réputation $1
+^Heat (\d+)$	Pression $1
+^Requires rank: (.+)$	Rang requis : $1
+^(.+) · (Prospect|Soldier|Enforcer|Lieutenant|Shot Caller|Boss)$	$1 · $2
+^Bond (\d+)$	Lien $1
+^(\d+) members$	$1 membres
+^Buy · (.+)$	Acheter · $1
+^Term (\d+)–(\d+) · Election in (\d+) years?$	Mandat $1–$2 · Élection dans $3 ans
+^(\d{4})–(\d{4}) · Election in 1 year$	$1–$2 · Élection dans 1 an
+^(\d{4})–(\d{4}) · Election in (\d+) years?$	$1–$2 · Élection dans $3 ans
+^(\d{4})–(\d{4}) · Election this year$	$1–$2 · Élection cette année
+^(\d{4}) · (\d+) years?$	$1 · $2 ans
+^Term (\d+)–(\d+) · Election this year$	Mandat $1–$2 · Élection cette année
+^Campaign Actions \((\d+) left\)$	Actions de campagne ($1 restantes)
+^Actions \((\d+) left\)$	Actions ($1 restantes)
+^Election in 1 year$	Élection dans 1 an
+^Election in (\d+) years?$	Élection dans $1 ans
+^(.+) · Approval (\d+)%$	$1 · Approbation $2%
+^Candidate for (.+)$	Candidat à $1
+^Running for (.+)$	Candidat à $1
+^Run for (.+)$	Se présenter à $1
+^Term (\d+) years$	Mandat de $1 ans
+^(.+)/year$	$1/an
+^Your share (\d+)%$	Ta part $1%
+^Opponent share (\d+)%$	Part du rival $1%
+^Personal money: (.+)$	Argent perso : $1
+^The ball drops to you in the box in the 89th minute\. (.+) needs a win\. The defender is closing, the keeper is off his line\.$	Le ballon t'arrive dans la surface à la 89e minute. $1 a besoin d'une victoire. Le défenseur se rapproche, le gardien est sorti de sa ligne.
+^(.+) is one point above the drop\. The opponents are fighting for the same thing\. The pitch is a swamp\.$	$1 est à un point au-dessus de la zone de relégation. Les adversaires se battent pour la même chose. Le terrain est un marécage.
+^The anthem plays, the lights go down, and the away side is a European giant\. (.+) has never gone further than this\.$	L'hymne retentit, les lumières s'éteignent et l'équipe adverse est un géant européen. $1 n'est jamais allé aussi loin.
+^I took (.+) to recover\.$	J'ai pris $1 pour récupérer.
+^I got hurt during (.+) training\.$	Je me suis blessé pendant l'entraînement de $1.
+^I trained (.+) in (.+)\.$	J'ai entraîné $1 en $2.
+^I signed for the (.+) academy\.$	J'ai signé à l'académie de $1.
+^You are now a (.+) academy player\. The first team is a long way up, but the door is open\.$	Tu es maintenant joueur à l'académie de $1. L'équipe première est loin au-dessus, mais la porte est ouverte.
+^(.+) will not offer you a professional contract\. Your agent finds a trial at (.+)\.$	$1 ne te proposera pas de contrat pro. Ton agent t'obtient un essai à $2.
+^I signed a one-year deal with (.+) after being released\.$	J'ai signé un contrat d'un an avec $1 après avoir été libéré.
+^It is not the fairytale, but it is a contract\. (.+) believes in you enough to give you a year\.$	C'est pas le conte de fées, mais c'est un contrat. $1 croit assez en toi pour t'accorder un an.
+^I moved abroad to start my career at (.+)\.$	Je suis parti à l'étranger pour commencer ma carrière à $1.
+^You pack one suitcase and sign for (.+)\. Nobody here knows your name yet\.$	Tu fais une valise et tu signes à $1. Ici, personne ne connaît encore ton nom.
+^(.+) wants to promote you to the first team\. Your agent has the paperwork\. Your body has opinions\.$	$1 veut te faire monter en équipe première. Ton agent a les papiers. Ton corps a des avis.
+^I signed my first professional contract with (.+)\.$	J'ai signé mon premier contrat pro avec $1.
+^You are a first-team footballer\. The academy kids are already asking for your shirt\.$	Tu es footballeur en équipe première. Les gamins de l'académie te demandent déjà ton maillot.
+^I signed pro terms and went on loan to (.+)\.$	J'ai signé pro et je suis parti en prêt à $1.
+^You sign for (.+) and immediately join (.+) on loan\. Regular minutes are the plan\.$	Tu signes à $1 et tu rejoins direct $2 en prêt. Le plan, c'est du temps de jeu régulier.
+^I won the (.+) with my country\.$	J'ai gagné le $1 avec mon pays.
+^We won the (.+)!$	On a gagné le $1 !
+^I moved to (.+) to keep playing\.$	Je suis déménagé à $1 pour continuer à jouer.
+^You join (.+)\. Less pressure, more minutes, and a chance to finish properly\.$	Tu rejoins $1. Moins de pression, plus de minutes, et une occasion de finir correctement.
+^I signed a new contract with (.+)\.$	J'ai signé un nouveau contrat avec $1.
+^You stay at (.+)\. The wage goes up (\d+)% and the release clause goes with it\.$	Tu restes à $1. Le salaire monte de $2% et la clause de rescision suit.
+^I transferred from (.+) to (.+)\.$	J'ai été transféré de $1 à $2.
+^You are a (.+) player\. New city, new dressing room, same hunger\.$	Tu es joueur à $1. Nouvelle ville, nouveau vestiaire, même faim.
+^I helped beat (.+) (\d+)-(\d+) in a derby\.$	J'ai aidé à battre $1 $2-$3 en derby.
+^We drew (\d+)-(\d+) with (.+)\.$	On a fait match nul $1-$2 contre $3.
+^We lost (\d+)-(\d+) to (.+)\.$	On a perdu $1-$2 contre $3.
+^Finish in the top (\d+)$	Terminer dans le top $1
+^Average rating ([\d.]+) or better$	Note moyenne $1 ou mieux
+^I started my football career as a (.+)\.$	J'ai commencé ma carrière de foot en tant que $1.
+^(.+) · Reputation (\d+)$	$1 · Réputation $2
+^Won the (.+)$	Gagné le $1
+^Out in the (.+)$	Éliminé en $1
+^Qualified for the (.+) · play it week by week$	Qualifié pour $1 · à jouer semaine après semaine
+^(.+) Golden Boot$	Soulier d'or de $1
+^(.+) Golden Ball$	Ballon d'or de $1
+^You must be at least (\d+) years old\.$	Tu dois avoir au moins $1 ans.
+^You need the (.+) first\.$	Il te faut d'abord $1.
+^You are now licensed: (.+)\. (.+)$	Tu as maintenant ta licence : $1. $2
+^The exam costs (.+) and you can't afford it\.$	L'examen coûte $1 et tu n'as pas de quoi le payer.
+^(\d+)/(\d+) correct\. Now the practical test\.$	$1/$2 justes. Maintenant l'épreuve pratique.
+^You got (\d+)/(\d+)\. You needed (\d+)\. Retaking costs (.+)\.$	Tu as eu $1/$2. Il te fallait $3. Repasser coûte $4.
+^The practical retake costs (.+)\.$	Repasser l'épreuve pratique coûte $1.
+^(\d+)/(\d+) good attempts, (\d+) needed\. Your written exam is still valid\. A retake costs (.+)\.$	$1/$2 bonnes tentatives, $3 nécessaires. Ton examen écrit reste valable. Repasser coûte $4.
+^Take the written exam \((.+)\)$	Passer l'examen écrit ($1)
+^(\d+)/(\d+) correct$	$1/$2 justes
+^(\d+)/(\d+) licenses: driving, boats, planes, guns$	$1/$2 licences : conduite, bateaux, avions, armes
+^I got my (.+)!$	J'ai obtenu mon $1 !
+^I failed the written exam for my (.+)\.$	J'ai raté l'examen écrit de mon $1.
+^I failed the practical test for my (.+)\.$	J'ai raté l'épreuve pratique de mon $1.
+^You won (.+) at (.+)!$	Tu as gagné $1 à $2 !
+^You lost (.+) at (.+)\.$	Tu as perdu $1 à $2.
+^You broke even at (.+)\.$	Tu es quitte à $1.
+^You have (.+) riding on this bet\.$	Tu as $1 en jeu sur ce pari.
+^Higher \(x([\d.]+)\)$	Plus haut (x$1)
+^Lower \(x([\d.]+)\)$	Plus bas (x$1)
+^Cash out (.+)$	Encaisser $1
+^Bet (.+)$	Parier $1
+^Call (.+)$	Suivre $1
+^Draw! \((.+)\)$	Tirage ! ($1)
+^Picked (\d+)/10 · top prize x([\d.]+)$	Choisi $1/10 · gros lot x$2
+^Ball (\d+)/20 · hits: (\d+)$	Boule $1/20 · réussites : $2
+^(\d+) hits! x([\d.]+)$	$1 réussites ! x$2
+^(\d+) hit\. No prize$	$1 réussite. Pas de prix
+^(\d+) hits\. No prize$	$1 réussites. Pas de prix
+^The point is (\d+)\. Roll it again before a 7\.$	Le point est $1. Relance avant un 7.
+^Rolled (\d+)\. Point is (\d+)\.$	Tu as fait $1. Le point est $2.
+^(\d+)! The point is made\.$	$1 ! Le point est fait.
+^Full time: (.+)$	Fin du match : $1
+^GOAL! (.+) \((\d+)'\)$	BUT ! $1 ($2')
+^The dealer bets (.+)\.$	Le croupier mise $1.
+^Which local casino will you visit to play (.+)\?$	Quel casino local choisiras-tu pour jouer $1 ?
+^Again \((.+)\)$	Encore ($1)
+^(\d{4}) catalogue$	Catalogue $1
+^Bid (.+)$	Enchérir $1
+^Jump bid (.+)$	Grosse enchère $1
+^Statement bid (.+)$	Enchère décisive $1
+^Pay for authentication \((.+)\)$	Payer l'authentification ($1)
+^The experts say the (.+) is a fake\. The house withdraws the lot\. Your (.+) fee bought you a good escape\.$	Les experts disent que $1 est un faux. La maison retire le lot. Tes frais de $2 t'ont acheté une belle sortie.
+^The (.+) didn't reach its reserve and was withdrawn\.$	$1 n'a pas atteint son prix de réserve et a été retiré.
+^(.+) bids (.+)\.$	$1 enchérit $2.
+^You bid (.+)\.$	Tu as enchéri $1.
+^I won the (.+) at auction for (.+)\.$	J'ai gagné $1 aux enchères pour $2.
+^I lost the (.+) at auction\.$	J'ai perdu $1 aux enchères.
+^I sold my (.+) at auction for (.+)\.$	J'ai vendu mon $1 aux enchères pour $2.
+^(\d+) lots this year · bid, sell, invest$	$1 lots cette année · enchéris, vends, investis
+^(\d+)-year old (.+)$	$1 ans d'âge · $2
+^Oil on canvas by (.+)$	Huile sur toile de $1
+^(.+) watch$	Montre $1
+^(.+) chain$	Chaîne $1
+^Donate (.+)$	Donner $1
+^Ape in with (.+)$	All-in avec $1
+^You invested (.+) in \$SILLY\. The developer stopped updating it on (.+)\. Your investment is now worth \$0\.00\.$	Tu as investi $1 dans $SILLY. Le développeur a arrêté les mises à jour le $2. Ton investissement vaut maintenant $0.00.
+^I invested (.+) in \$SILLY\.$	J'ai investi $1 dans $SILLY.
+^I paid (.+) at a charity gala auction\.$	J'ai payé $1 lors d'une vente de gala caritatif.
+^"Owned by (.+)" - fame multiplies the price \(x([\d.]+)\)\.$	"Possédé par $1" : la célébrité multiplie le prix (x$2).
+^Notorious provenance: macabre-memorabilia collectors are circling \(x([\d.]+)\)\.$	Provenance douteuse : les collectionneurs de souvenirs macabres rôdent (x$1).
+^My family put (\d+) of my things up for auction and raised (.+)\.(.*)$	Ma famille a vendu $1 de mes affaires aux enchères et a récolté $2.$3
+^ My name made everything sell for more\.$	Mon nom a fait vendre tout plus cher.
+^(.+) · est\. (.+) · (.+)$	$1 · est. $2 · $3
+^with provenance ~(.+)$	avec provenance ~$1
+^Wear (.+) on your (.+)$	Porter $1 sur ton $2
+^(.+) is loaded now\.$	$1 est chargé maintenant.
+^(.+) will be off the next time YourLife loads\.$	$1 sera désactivé la prochaine fois que tu lanceras YourLife.
+^(.+) will be skipped the next time YourLife loads\.$	$1 sera ignoré la prochaine fois que tu lanceras YourLife.
+^BIDDING WAR! (.+) bids (.+)\.$	GUERRE DES ENCHÈRES ! $1 enchérit $2.
+^Keeping up my lifestyle cost me (.+) this year \(staff, security, memberships\)\.$	Maintenir mon train de vie m'a coûté $1 cette année (personnel, sécurité, abonnements).
+^Happiness \+(\d+)\.$	Bonheur +$1.
+^The shell company washed the money: police heat -(\d+)\.$	La société écran a blanchi l'argent : pression policière -$1.
+^The house appraised it at (.+)\.$	La maison l'a estimé à $1.
+^You have lifetime casino earnings of (.+)\.$	Tu as $1 de gains de casino à vie.
+^You have lifetime casino losses of (.+)\.$	Tu as $1 de pertes de casino à vie.
+^You have (.+) on the line\.$	Tu as $1 en jeu.
+^Cost: (.+)$	Coût : $1
+^This costs (.+) and you don't have it\.$	Ça coûte $1 et tu ne l'as pas.
+^It cost me (.+)\.$	Ça m'a coûté $1.
+^(Footballer|NBA player|Celebrity|Tycoon|Local millionaire) (.+) buys a (.+) worth (.+)$	$1 $2 achète un $3 d'une valeur de $4
+^(Footballer|NBA player|Celebrity|Tycoon|Local millionaire) (.+) falls for a fake investment scam$	$1 $2 se fait avoir par une arnaque d'investissement bidon
+^(Footballer|NBA player|Celebrity|Tycoon|Local millionaire) (.+) is audited by the tax office$	$1 $2 est contrôlé par le fisc
+^Attitude: (.+)$	Attitude : $1
+^(\d+) items? in your collection · (.+)$	$1 objets dans ta collection · $2
+^(\d+) items? · (.+) appraised$	$1 objets · $2 estimés
+^(\d+) items?$	$1 objets
+^(.+) · haggled$	$1 · marchandé
+^Fake · worth (.+)$	Faux · vaut $1
+^Authentic · worth (.+)$	Authentique · vaut $1
+^Paid (.+) · not appraised$	Payé $1 · non estimé
+^I bought a (.+) on the black market\.$	J'ai acheté un $1 sur le marché noir.
+^I sold a (.+) to a fence\.$	J'ai vendu un $1 à un receleur.
+^You get a ticket and a speech about your future\. Fine: (.+)\.$	Tu écopes d'une amende et d'un discours sur ton avenir. Amende : $1.
+^The judges cannot split you and (.+)\. Both cars go again, one corner, winner takes it\.$	Les juges ne peuvent pas te départager d'avec $1. Les deux bagnoles repartent, un virage, le gagnant rafle tout.
+^(Lead run|Chase run) · (.+)$	$1 · $2
+^You lead and set the pace\. (.+)$	Tu es devant et tu imposes le rythme. $1
+^You chase (.+) as close as you can\. (.+)$	Tu poursuis $1 au plus près. $2
+^(.+) "(.+)"$	$1 « $2 »
+^(.+) "(.+)" flashes his lights at the meet: tandem battle at (.+)\.$	$1 « $2 » te fait des appels de phares au meet : bataille en tandem à $3.
+^(.+) "(.+)" wants to settle it\. Tandem battle, no prize but pride\.$	$1 « $2 » veut en découdre. Bataille en tandem, pas de lot, juste l'honneur.
+^(.+) "(.+)" is waiting at the top of the course\.$	$1 « $2 » attend en haut du parcours.
+^(.+) "(.+)" is the best driver here this week\.$	$1 « $2 » est le meilleur pilote ici cette semaine.
+^(.+) flashes his hazards in respect\. (.+)$	$1 met ses warnings en signe de respect. $2
+^(.+) takes it\. The crowd cheers for him and you walk back to the car\.$	$1 rafle la mise. La foule l'acclame et tu retournes à la voiture.
+^I won a tandem battle against (.+) at (.+)\.$	J'ai gagné une bataille en tandem contre $1 à $2.
+^I lost a tandem battle against (.+)\.$	J'ai perdu une bataille en tandem contre $1.
+^(Pro league|Local tournament) · (.+)$	$1 · $2
+^You win the tournament at (.+)\. The trophy is bigger than the passenger seat\.$	Tu gagnes le tournoi à $1. Le trophée est plus grand que le siège passager.
+^Through to the (.+)$	Qualifié pour $1
+^You beat (.+)\. The next battle starts soon\.$	Tu as battu $1. La prochaine bataille commence bientôt.
+^I am now a (.+)\.$	Je suis maintenant $1.
+^You are now a (.+)\. (.+)$	Tu es maintenant $1. $2
+^(.+)'s garage$	Le garage de $1
+^Your mechanic knows your car and your bad habits\. Trust: (.+)%\.$	Ton mécano connaît ta caisse et tes mauvaises habitudes. Confiance : $1%.
+^Repair the car \((.+)\)$	Réparer la voiture ($1)
+^The repair costs (.+)\.$	La réparation coûte $1.
+^Tuning · (.+)$	Tuning · $1
+^Rating (.+)/100\. Every level adds grip, control or power, up to 5\.$	Rating $1/100. Chaque niveau ajoute de l'adhérence, du contrôle ou de la puissance, jusqu'à 5.
+^(.+) (\d)/5 — (.+)$	$1 $2/5 — $3
+^(.+) level (\d) costs (.+)\.$	Passer $1 au niveau $2 coûte $3.
+^(.+) level (\d) installed\. (.+)\.$	$1 niveau $2 installé. $3.
+^I upgraded my (.+): (.+)\.$	J'ai amélioré mon $1 : $2.
+^(.+) \(rating (\d+)\)$	$1 (rating $2)
+^(.+) is now your drift car\.$	$1 est maintenant ta voiture de drift.
+^The (.+) is yours\. The tyres are already scared\.$	$1 est à toi. Les pneus ont déjà peur.
+^(.+) \(rough\)$	$1 (abîmé)
+^(.+) \(clean\)$	$1 (impeccable)
+^It costs (.+)\.$	Ça coûte $1.
+^(.+) is in the garage\. (.+)$	$1 est au garage. $2
+^(.+) wants your logo on the car\. They want at least (\d+) wins? per year\.$	$1 veut ton logo sur ta caisse. Ils exigent au moins $2 victoires par an.
+^(.+) did not like the attitude and left\. Maybe next year\.$	$1 n'a pas aimé l'attitude et s'est tiré. Peut-être l'année prochaine.
+^(.+) agrees to your price\. Yearly pay: (.+)\.$	$1 accepte ton prix. Paiement annuel : $2.
+^(.+) welcomes you to the family\. Yearly pay: (.+)\.$	$1 t'accueille dans la famille. Paie annuelle : $2.
+^Drop (.+)$	Lâcher $1
+^You parted ways with (.+)\.$	Tu t'es séparé de $1.
+^(.+)/yr · (\d+) wins?$	$1/an · $2 victoires
+^Co-driver: (.+) \(fire\)$	Copilote : $1 (virer)
+^Hire a co-driver \((.+)/yr\)$	Embaucher un copilote ($1/an)
+^(.+) joins as co-driver\. Your battles get a little easier\.$	$1 devient copilote. Tes batailles deviennent un peu plus faciles.
+^Mechanic: (.+) \(fire\)$	Mécano : $1 (virer)
+^Hire (.+) as team mechanic \((.+)/yr\)$	Embaucher $1 comme mécano de l'équipe ($2/an)
+^(.+) joins the team: repairs and parts get cheaper\.$	$1 rejoint l'équipe : les réparations et les pièces coûtent moins cher.
+^A plane ticket, a hotel and a rental trailer: (.+)\. Where to\?$	Un billet d'avion, un hôtel et une remorque de location : $1. Direction ?
+^The trip costs (.+)\.$	Le voyage coûte $1.
+^I trained at (.+)\.$	Je me suis entraîné à $1.
+^(.+) wanted (\d+) wins? and you did not deliver\. They cut the contract\.$	$1 voulait $2 victoires et tu n'as pas livré. Ils ont rompu le contrat.
+^(.+) · rating (\d+) · (\d+)W/(\d+)L · (\d+) titles?$	$1 · rating $2 · $3V/$4D · $5 titres
+^(\d+) activities left this year · ([\d.,]+) followers · skill (\d+)$	$1 activités restantes cette année · $2 abonnés · skill $3
+^(Co-driver|no co-driver) · (mechanic|no mechanic)$	$1 · $2
+^(.+) · (\d+) wins$	$1 · $2 victoires
+^(.+)/yr$	$1/an
+^This part costs (.+)\.$	Cette pièce coûte $1.
+^Fit on (.+)$	Installer sur $1
+^Slot: (.+)\. A new part in this slot replaces the old one\. (.+)$	Emplacement : $1. Une nouvelle pièce dans cet emplacement remplace l'ancienne. $2
+^, and crashes hurt the car less$	, et les accidents abîment moins la voiture
+^, and crashes hurt you less$	, et les accidents te font moins mal
+^\+([\d.]+) drift rating$	+$1 de rating de drift
+^([\d.]+) parts? · rating (\d+)$	$1 pièces · rating $2
+^(\d+) parts?$	$1 pièces
+^(\d+) cars? in your garage$	$1 voitures dans ton garage
+^(\d+) cars? · tap to (?:open|close) the list$	$1 voitures · touche pour ouvrir ou fermer la liste
+^Cars in stock for (\d+)$	Voitures en stock en $1
+^\((Used|New) · (\d+)% · (.+)\)$	($1 · $2% · $3)
+^You need (.+) for the (.+)\.$	Il te faut $1 pour le $2.
+^The (.+) is in your garage\.$	$1 est dans ton garage.
+^A used one in (.+): (\d+)% condition, so it is cheaper and needs some love\.$	Un d'occasion couleur $1 : $2% d'état, donc moins cher et il demande un peu d'attention.
+^A clean (.+) one straight off the boat\. Perfect for sliding\.$	Un modèle $1 impeccable, tout droit sorti du bateau. Parfait pour déraper.
+^I bought a (.+) at JDM Mods\.$	J'ai acheté un $1 chez JDM Mods.
+^I fitted (.+) on my (.+)\.$	J'ai monté $1 sur mon $2.
+^I bought a (.+) to start drifting\.$	J'ai acheté un $1 pour me lancer dans le drift.
+^I found a (.+)\.$	J'ai trouvé un $1.
+^I won a drift tournament at (.+)\.$	J'ai gagné un tournoi de drift à $1.
+^(Parking lot practice|Track day|Simulator|Study replays & pros|Reflexes & fitness|Car meet|Street takeover|Post your clips) costs (.+)\.$	$1 coûte $2.
+^The (.+) costs (.+[0-9].*)\.$	$1 coûte $2.
+^Chase him · bet (.+)$	Poursuis-le · mise $1
+^Take the bet · (.+)$	Accepter le pari · $1
+^Pit and cool it down · (.+)$	Pit et laisser refroidir · $1
+^Local Circuit · (.+)$	Circuit local · $1
+^A session at the circuit costs (.+)\.$	Une session sur le circuit coûte $1.
+^Tandem vs (.+)$	Tandem vs $1
+^Lap ([0-9]+)$	Tour $1
+^([0-9]) of ([0-9]+)$	$1 sur $2
+^(.+) joins as co-driver\. Battles get easier \(\+5 skill, better odds on every move\) and on the track he calls the bends and you score 10% more\.$	$1 devient copilote. Les batailles deviennent plus faciles (+5 de skill, de meilleures chances à chaque action) et sur la piste il t'annonce les virages et tu marques 10% de plus.
+^The judges cannot split you and (.+)\. Settle it yourself on the track, or let the car do the talking\.$	Les juges ne peuvent pas te départager d'avec $1. Règle ça toi-même sur la piste, ou laisse la voiture parler.
+^Hard left · (.+)$	Gauche serrée · $1
+^Hard right · (.+)$	Droite serrée · $1
+^left · (.+)$	Gauche · $1
+^right · (.+)$	Droite · $1
+^(.+) · beat ([0-9.,]+)$	$1 · battre $2

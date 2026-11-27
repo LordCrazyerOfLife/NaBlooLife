@@ -48,7 +48,7 @@
         name: "Gang Bang",
         icon: "special/gangbang.png",
         desc: "A new special career: join a street gang, rise from Prospect to Boss, hustle, fight for turf and keep the police heat down. Find it in Occupation, Special Careers.",
-        src: "gang.js?v=11",
+        src: "gang.js?v=19",
       },
       // [mod] carrera política (politician.js)
       17760704: {
@@ -69,7 +69,7 @@
         name: "Mod Loader",
         icon: "ui/gear.png",
         desc: "Loads extra mod scripts from a simple list in modloader.js, no 8-digit code needed per mod. Also on by default via Settings -> Mod Workshop -> Mods.",
-        src: "modloader.js?v=26",
+        src: "modloader.js?v=38",
       },
     },
     t = "bitlifepp-ported",

@@ -534,7 +534,7 @@
     return rN(C_(c).startup * K() * [8, 30, 100][c.stage]);
   }
   function stageReq(c) {
-    return [[4, 0], [15, 50], [50, 65]][c.stage];
+    return [[3, 0], [15, 50], [50, 65]][c.stage];
   }
   function expandCard(c) {
     const lc = locCost(c);

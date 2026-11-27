@@ -61,13 +61,18 @@
   const price = (n) => (!n ? 0 : typeof localPrice === "function" ? localPrice(n) : n);
 
   // Nombres de pandillas que eligió el usuario. Su gente es 100% ficticia (generada al unirte), sin personas reales.
+  // nation: folk (azul/negro, lado derecho) | people (rojo/negro, lado izquierdo) | indie (cliques sin alianza). Como en Chicago.
   const GANGS = [
-    { name: "Gangster Disciples", short: "GDs", icon: E("1f48e") },
-    { name: "Black Disciples", short: "BDs", icon: E("1f5a4") },
-    { name: "Slime Gang", short: "Slime", icon: E("1f40d") },
-    { name: "Toss Gang", short: "Toss", icon: E("1f3b2") },
-    { name: "95 Mob", short: "95", icon: E("1f4af") },
-    { name: "Bloodhounds", short: "Hounds", icon: E("1f415") },
+    { name: "Gangster Disciples", short: "GDs", icon: E("1f48e"), nation: "folk" },
+    { name: "Black Disciples", short: "BDs", icon: E("1f5a4"), nation: "folk" },
+    { name: "Slime Gang", short: "Slime", icon: E("1f40d"), nation: "indie" },
+    { name: "Toss Gang", short: "Toss", icon: E("1f3b2"), nation: "indie" },
+    { name: "95 Mob", short: "95", icon: E("1f4af"), nation: "indie" },
+    { name: "Bloodhounds", short: "Hounds", icon: E("1f415"), nation: "indie" },
+    { name: "Vice Lords", short: "VLs", icon: E("1f451"), nation: "people" },
+    { name: "Latin Kings", short: "Kings", icon: E("1f981"), nation: "people" },
+    { name: "Black P Stones", short: "Stones", icon: E("1f3d4-fe0f"), nation: "people" },
+    { name: "Four Corner Hustlers", short: "4CH", icon: E("1f4b5"), nation: "people" },
   ];
 
   // ---------------------------------------------------------------- la gente de la pandilla (ficticia)
@@ -116,23 +121,27 @@
   ];
   const MAX_ACTS = 4;
 
-  // ---------------------------------------------------------------- armas (íconos propios en guns/)
-  const WEAPONS = [
-    { id: "glock", name: T("Glock", "Glock", "Glock"), price: 1200, power: 0.08, heat: 3, rank: 0 },
-    // el switch ya no es un arma aparte: es un accesorio de la Glock (Gun Dealers)
-    // ARP retirada: la pandilla solo vende la Glock y la Draco nuevas
-    { id: "draco", name: T("Draco", "Draco", "Draco"), price: 4000, power: 0.22, heat: 10, rank: 2 },
-  ];
-  const GUN_AGE = 16;
-  const gunIcon = (w) => { const sw = w.att && w.att.trigger && w.att.trigger.id === "switch" ? w.att.trigger.color || "red" : null; return sw ? `guns/switch-${sw}.png?v=3` : `guns/${w.id}.png?v=3`; };
-  const weaponDef = (id) => WEAPONS.find((w) => w.id === id);
-  // el arma que llevas encima (o null)
-  const carried = (g) => (g.guns && g.carry != null && g.guns[g.carry] ? g.guns[g.carry] : null);
-  const gunPower = (g) => {
-    const c = carried(g);
-    const ar = window.FL_ARMS ? window.FL_ARMS.power() : 0; // arma de arms.js (dealers)
-    return Math.max(c && weaponDef(c.id) ? weaponDef(c.id).power : 0, ar);
-  };
+  // ---------------------------------------------------------------- armas (todas viven en arms.js / Gun Dealers)
+  // el arma que llevas encima: la de arms.js (o null)
+  const carried = () => (window.FL_ARMS ? window.FL_ARMS.carried() : null);
+  const gunPower = () => (window.FL_ARMS ? window.FL_ARMS.power() : 0);
+  // saves viejos: la "Strap" de la pandilla (g.guns) pasa al arsenal de arms.js
+  function migrateOldGuns(g) {
+    if (!(g.guns && g.guns.length)) return;
+    try {
+      const a = (state.arms ||= { v: 4, guns: [], carry: null, mags: {}, parts: [], uid: 1, license: false, yr: { age: -1, hunts: 0 } });
+      for (let i = 0; i < g.guns.length; i++) {
+        const x = g.guns[i];
+        const uid = a.uid++;
+        a.guns.push({ uid, id: x.id === "draco" ? "draco" : "glock07", mag: null, att: x.att || {} });
+        if (g.carry === i) a.carry = uid;
+      }
+    } catch (e) {
+      console.warn("[gang] migrate guns", e);
+    }
+    g.guns = [];
+    g.carry = null;
+  }
 
   // textos sueltos que arma el código (para el i18n)
   T("Gang", "Pandilla", "Gangue");
@@ -153,10 +162,14 @@
     if (!g.v) Object.assign(g, { v: 1, member: false, gang: null, rank: 0, rep: 0, heat: 0, earned: 0, years: 0, evDone: {} });
     if (g.v < 2) {
       // saves viejos: "switch" pasa a ser una Glock con switch instalado y se van las armas retiradas (ARP)
-      const ok = new Set(WEAPONS.map((w) => w.id));
+      const ok = new Set(["glock", "draco"]);
       g.guns = (g.guns || []).flatMap((x) => (x.id === "switch" ? [{ id: "glock", att: { trigger: { id: "switch", color: "red" } } }] : ok.has(x.id) ? [x] : []));
       if (g.carry != null && !g.guns[g.carry]) g.carry = g.guns.length ? 0 : null;
       g.v = 2;
+    }
+    if (g.v < 3) {
+      migrateOldGuns(g);
+      g.v = 3;
     }
     if (!g.yr || g.yr.age !== state.age) g.yr = { age: state.age, acts: 0 };
     return g;
@@ -192,22 +205,21 @@
     return rows;
   }
 
+  // gasta una acción del año (lo hace el click de la acción, salvo las que eligen algo antes con pre())
+  function spendAct(g) {
+    g.yr.acts++;
+    const ah = window.FL_ARMS ? window.FL_ARMS.heat() : 0;
+    if (ah) g.heat = clampN(g.heat + ah, 0, 100);
+  }
+
   // Riesgo de arresto: base de la acción + el calor acumulado
   function busted(g, base, crime) {
     if (rnd() < base + g.heat / 400) {
       g.heat = 0;
-      const gun = carried(g);
       let charge = crime, years = null;
-      // arma de los dealers (arms.js): cargo extra siempre, legal o ilegal
+      // arma de los dealers (arms.js): cargo extra siempre, legal o ilegal; la policía te la quita
       const ar = window.FL_ARMS ? window.FL_ARMS.busted(crime) : null;
       if (ar) (charge = ar.charge), (years = ar.years);
-      else if (gun) {
-        // te quitan el arma; la mitad de las veces el cargo es por el arma (más años)
-        g.guns.splice(g.carry, 1);
-        g.carry = g.guns.length ? 0 : null;
-        say(T("The police confiscated my gun.", "La policía me quitó el arma.", "A polícia apreendeu minha arma."));
-        if (rnd() < 0.5) (charge = T("possession of an illegal firearm", "posesión ilegal de arma de fuego", "porte ilegal de arma de fogo")), (years = gun.id === "draco" ? [3, 8] : [2, 6]);
-      }
       setTimeout(() => typeof arrest === "function" && (years ? arrest(charge, years) : arrest(charge)), 50);
       return true;
     }
@@ -225,7 +237,7 @@
       tag: CAREER,
       icon: ICON,
       title: T("Join a Gang", "Unirte a una pandilla", "Entrar para uma gangue"),
-      lead: T("Three crews run the streets in your city. Which one do you want to roll with?", "Tres pandillas controlan las calles de tu ciudad. ¿Con cuál quieres andar?", "Três gangues mandam nas ruas da sua cidade. Com qual você quer andar?"),
+      lead: T("Crews run the streets in your city, some under the Folks, some under the People, some on their own. Which one do you want to roll with?", "Las pandillas controlan las calles de tu ciudad, unas con los Folks, otras con los People y otras por su cuenta. ¿Con cuál quieres andar?", "As gangues mandam nas ruas da sua cidade, umas com os Folks, outras com os People e outras por conta própria. Com qual você quer andar?"),
       label: T("Gang:", "Pandilla:", "Gangue:"),
       opts: GANGS.map((x) => x.name),
       btn: T("Approach them", "Acercarte a ellos", "Chegar neles"),
@@ -254,6 +266,7 @@
   function join(g, i, f, text) {
     if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Gang member")) return;
     Object.assign(g, { member: true, gang: i, rank: 0, rep: 0, heat: 0, years: 0, left: false, crew: makeCrew() });
+    window.FL_GANGWARS && window.FL_GANGWARS.onJoin(g);
     const rows = fx(g, f);
     say(T("I joined a street gang.", "Me uní a una pandilla callejera.", "Entrei para uma gangue de rua."));
     card(T("Welcome to the crew", "Bienvenido a la pandilla", "Bem-vindo à gangue"), text, [["Gang", GANGS[i].name], ...rows], openGang);
@@ -278,7 +291,9 @@
       s: T("Spray your colors on the walls", "Pintar tus colores en las paredes", "Pichar suas cores nos muros"),
       run: (g) => {
         if (busted(g, 0.06, "vandalism")) return;
-        const rows = fx(g, { rep: 5, heat: 5 });
+        // marcar territorio da reputación: más mientras más cuadras controle tu pandilla (gangwars.js)
+        const held = window.FL_GANGWARS ? window.FL_GANGWARS.blocksHeld(g) : 2;
+        const rows = fx(g, { rep: 8 + clampN(held - 2, 0, 4), heat: 5 });
         say(T("I tagged my gang's territory.", "Marqué el territorio de mi pandilla.", "Marquei o território da minha gangue."));
         card(T("Tag Territory", "Marcar territorio", "Marcar território"), T("Everybody on the block knows whose streets these are now.", "Ahora todo el barrio sabe de quién son estas calles.", "Agora todo o bairro sabe de quem são essas ruas."), rows, openGang);
       },
@@ -314,14 +329,33 @@
       id: "rumble", icon: E("270a"), min: 1,
       t: T("Turf War", "Guerra por territorio", "Guerra por território"),
       s: T("Fight a rival crew for a block", "Pelear con otra pandilla por una cuadra", "Brigar com outra gangue por um quarteirão"),
-      run: (g) => {
+      pre: (g) => {
+        if (!window.FL_SHOOTER || state.age < 16) return true;
+        const go = (play) => {
+          spendAct(g);
+          const a = ACTIONS.find((x) => x.id === "rumble");
+          if (!play) return a.run(g);
+          window.FL_SHOOTER.play({ ...(window.FL_GANGWARS ? window.FL_GANGWARS.shooterOpts(g, { map: "warehouse" }) : { enemies: 4, waves: 1, map: "warehouse" }), onEnd: (r) => a.run(g, !!r.win) });
+        };
+        jCard({
+          tag: CAREER, iconSrc: ICON, title: T("Turf War", "Guerra por territorio", "Guerra por território"),
+          lead: T("Your crew is rolling on a rival block tonight. Fight it yourself, or let the crew handle it?", "Tu pandilla va a caerle a una cuadra rival esta noche. ¿Peleas tú mismo o lo deja a la gente?", "Sua gangue vai cair num quarteirão rival hoje. Você luta por conta própria ou deixa a turma resolver?"),
+          choices: [[T("Fight it yourself", "Pelear tú mismo", "Lutar você mesmo"), () => go(true)], [T("Let the crew handle it", "Que lo haga la gente", "Deixar a turma resolver"), () => go(false)], [T("Back", "Volver", "Voltar"), () => {}]],
+        });
+        return false;
+      },
+      run: (g, forced) => {
         if (busted(g, 0.1, "assault")) return;
-        if (rnd() < 0.5 + g.rank * 0.05 + gunPower(g)) {
+        if (forced != null ? forced : rnd() < 0.5 + g.rank * 0.05 + gunPower(g)) {
           const rows = fx(g, { rep: 12, He: -10, heat: 15 });
+          const blk = window.FL_GANGWARS ? window.FL_GANGWARS.turfWon(g) : null;
+          if (blk) rows.push([T("Block taken", "Cuadra tomada", "Quarteirão tomado"), blk]);
           say(T("My gang won a turf war.", "Mi pandilla ganó una guerra por territorio.", "Minha gangue venceu uma guerra por território."));
           return card(T("Turf War", "Guerra por territorio", "Guerra por território"), T("Your crew took the block. You've got bruises, but it was worth it.", "Tu pandilla se quedó con la cuadra. Quedaste golpeado, pero valió la pena.", "Sua gangue ficou com o quarteirão. Você ficou machucado, mas valeu a pena."), rows, openGang);
         }
         const rows = fx(g, { rep: -8, He: -25, heat: 10 });
+        const lost = window.FL_GANGWARS ? window.FL_GANGWARS.turfLost(g) : null;
+        if (lost) rows.push([T("Block lost", "Cuadra perdida", "Quarteirão perdido"), lost]);
         say(T("My gang lost a turf war.", "Mi pandilla perdió una guerra por territorio.", "Minha gangue perdeu uma guerra por território."));
         card(T("Turf War", "Guerra por territorio", "Guerra por território"), T("The other crew had more people. You ended up in the hospital.", "La otra pandilla tenía más gente. Terminaste en el hospital.", "A outra gangue tinha mais gente. Você foi parar no hospital."), rows, openGang);
       },
@@ -369,6 +403,7 @@
         const rows = fx(g, hard ? { He: -30, H: -10 } : { H: 5 });
         g.member = false;
         g.left = true;
+        window.FL_GANGWARS && window.FL_GANGWARS.onLeave(g);
         say(T("I left my gang.", "Me salí de mi pandilla.", "Saí da minha gangue."));
         card(
           T("Out of the Gang", "Fuera de la pandilla", "Fora da gangue"),
@@ -387,6 +422,12 @@
     return `<div class="row${dis ? " dis" : ""}" id="${id}"><img src="${icon}"><div class="t"><b>${title}</b><span>${sub}</span></div>${dis ? "" : tail || (typeof DOTS !== "undefined" ? DOTS : "")}</div>`;
   }
 
+  const gunSub = () => {
+    const c = carried();
+    const n = window.FL_ARMS && window.FL_ARMS.state() ? (window.FL_ARMS.state().guns || []).length : 0;
+    return c ? `${T("Carrying", "Llevas", "Levando")}: ${c.name}` : n ? `${n} ${T("guns in your arsenal", "armas en tu arsenal", "armas no seu arsenal")}` : T("Legal store, street dealers, attachments and mags", "Tienda legal, dealers de la calle, accesorios y cargadores", "Loja legal, dealers da rua, acessórios e pentes");
+  };
+
   function openGang() {
     const g = G();
     if (state.prison) return notice(CAREER, T("You can't do that from prison.", "No puedes hacer eso desde la cárcel.", "Você não pode fazer isso da prisão."), null, !0);
@@ -400,37 +441,22 @@
     sBack.innerHTML = typeof BACK_ICON !== "undefined" ? BACK_ICON : "‹";
     sBack.onclick = () => (typeof openOccupation === "function" ? openOccupation() : screen.classList.remove("open"));
     const left = MAX_ACTS - g.yr.acts;
+    const wm = window.FL_GANGWARS ? window.FL_GANGWARS.menu(g) : null; // gangwars.js: relaciones, territorio, cuerpos
     const piece = (p) => `<em style="font-style:normal">${p}</em>`;
     sList.innerHTML =
       `<div class="sec">${T("My Gang", "Mi pandilla", "Minha gangue")}</div>` +
       row("gStat", GANGS[g.gang].icon, gangName(g), [piece(rankName(g)), piece(`Rep ${g.rep}`), piece(`Heat ${g.heat}`)].join(" · "), false, " ") +
       row("gCrew", E("1f91d"), T("The Crew", "La gente", "A rapaziada"), [piece(`${g.crew.length} ${T("members", "miembros", "membros")}`)].join(""), false, typeof CHEV !== "undefined" ? CHEV : "") +
+      (wm ? wm.html : "") +
       `<div class="sec">${T("Street Business", "Negocios de la calle", "Negócios da rua")}</div>` +
       ACTIONS.map((a) => {
         const locked = g.rank < a.min;
         const sub = locked ? `${T("Requires rank", "Requiere rango", "Requer patente")}: ${RANKS[a.min].t}` : !a.free && left <= 0 ? T("Done for this year", "Ya no más este año", "Chega por este ano") : a.s;
         return row(`gA_${a.id}`, a.icon, a.t, sub, locked || (!a.free && left <= 0));
       }).join("") +
-      WEAPONS.map((w) => {
-        const idx = (g.guns || []).findIndex((x) => x.id === w.id);
-        const own = idx >= 0;
-        const on = own && g.carry === idx;
-        const lockedRank = g.rank < w.rank;
-        const young = state.age < GUN_AGE;
-        const sub = on
-          ? T("Carrying it", "La llevas encima", "Está com você")
-          : own
-            ? T("Tap to carry it", "Toca para llevarla", "Toque para levar")
-            : young
-              ? `${T("Age", "Edad", "Idade")} ${GUN_AGE}+`
-              : lockedRank
-                ? `${T("Requires rank", "Requiere rango", "Requer patente")}: ${RANKS[w.rank].t}`
-                : `${T("Buy", "Comprar", "Comprar")} · ${money(price(w.price))}`;
-        const icon = own ? gunIcon(g.guns[idx]) : gunIcon({ id: w.id });
-        return row(`gW_${w.id}`, icon, w.name, sub, !own && (young || lockedRank));
-      }).join("") +
-      row("gDealers", E("1f3ea"), T("Gun Dealers", "Vendedores de armas", "Vendedores de armas"), T("Legal store, street dealers, attachments and mags", "Tienda legal, dealers de la calle, accesorios y cargadores", "Loja legal, dealers da rua, acessórios e pentes"), false, typeof CHEV !== "undefined" ? CHEV : "") +
-      (carried(g) ? row("gHolster", E("1f45c"), T("Put It Away", "Guardarla", "Guardar"), T("Stop carrying a gun", "Dejar de andar armado", "Parar de andar armado")) : "") +
+      `<div class="sec">${T("Guns", "Armas", "Armas")}</div>` +
+      row("gDealers", E("1f3ea"), T("Gun Dealers", "Vendedores de armas", "Vendedores de armas"), gunSub(), false, typeof CHEV !== "undefined" ? CHEV : "") +
+      (carried() ? row("gHolster", E("1f45c"), T("Put It Away", "Guardarla", "Guardar"), T("Stop carrying a gun", "Dejar de andar armado", "Parar de andar armado")) : "") +
       `<div class="sec">${T("Get Out", "Salirte", "Sair")}</div>` +
       row("gLeave", E("1f6aa"), T("Leave the Gang", "Salirte de la pandilla", "Sair da gangue"), T("Walk away from the life", "Dejar esta vida", "Largar essa vida"));
     for (const a of ACTIONS) {
@@ -438,60 +464,24 @@
       if (el && !el.classList.contains("dis"))
         el.onclick = () => {
           typeof play === "function" && play("choice");
+          if (a.pre && a.pre(g) === false) return; // p. ej. "Spin" sin arma: no gasta la acción
           if (!a.free) g.yr.acts++;
           // andar armado calienta más a la policía
-          const gun = carried(g);
-          if (gun && !a.free) g.heat = clampN(g.heat + weaponDef(gun.id).heat, 0, 100);
           const ah = window.FL_ARMS ? window.FL_ARMS.heat() : 0;
           if (ah && !a.free) g.heat = clampN(g.heat + ah, 0, 100);
           a.run(g);
         };
     }
-    for (const w of WEAPONS) {
-      const el = document.getElementById(`gW_${w.id}`);
-      if (el && !el.classList.contains("dis")) el.onclick = () => (typeof play === "function" && play("choice"), weaponTap(w));
-    }
     const dl = document.getElementById("gDealers");
     if (dl) dl.onclick = () => (typeof play === "function" && play("choice"), window.FL_ARMS && window.FL_ARMS.open(openGang));
     const hol = document.getElementById("gHolster");
-    if (hol) hol.onclick = () => ((g.carry = null), openGang());
+    if (hol) hol.onclick = () => (window.FL_ARMS && window.FL_ARMS.stow(), openGang());
+    wm && wm.bind();
     document.getElementById("gLeave").onclick = () => (typeof play === "function" && play("choice"), leaveGang());
     document.getElementById("gCrew").onclick = () => (typeof play === "function" && play("choice"), openCrew());
     sList.scrollTop = 0;
   }
 
-  // ---------------------------------------------------------------- armas: comprar / llevar
-  function weaponTap(w) {
-    const g = G();
-    g.guns ||= [];
-    const idx = g.guns.findIndex((x) => x.id === w.id);
-    window.FL_ARMS && window.FL_ARMS.stow(); // una sola arma a la vez
-    if (idx >= 0) {
-      g.carry = idx;
-      say(T("I started carrying a different gun.", "Empecé a andar con otra arma.", "Comecei a andar com outra arma."));
-      return openGang();
-    }
-    const cost = price(w.price);
-    if (state.money < cost) return notice(CAREER, T("You don't have enough money for that.", "No te alcanza para eso.", "Você não tem dinheiro para isso."), null, !0);
-    const buy = () => {
-      state.money -= cost;
-      g.guns.push({ id: w.id });
-      g.carry = g.guns.length - 1;
-      typeof renderStats === "function" && renderStats();
-      say(T("I bought a gun on the street.", "Compré un arma en la calle.", "Comprei uma arma na rua."));
-      jCard({
-        tag: CAREER,
-        iconSrc: gunIcon(g.guns[g.carry]),
-        title: w.name,
-        lead: T("You got it from a guy who knows a guy. Now you're carrying it.", "Te la consiguió un pana de un pana. Ahora la llevas encima.", "Você conseguiu com um conhecido de um conhecido. Agora está com ela."),
-        rows: [["Money", `-${money(cost)}`]],
-        choices: [["OK", openGang]],
-      });
-    };
-    buy();
-  }
-
-  // ---------------------------------------------------------------- la gente
   const ORDER = ["og", "big", "rapper", "hustler", "homie", "lil"];
   const fullName = (m) => `${m.first} "${m.nick}" ${m.last}`;
 
@@ -737,6 +727,12 @@
       say(T("I got promoted in my gang.", "Me ascendieron en la pandilla.", "Fui promovido na gangue."));
       q(() => card(T("Promotion", "Ascenso", "Promoção"), T("The crew respects you more than ever.", "La pandilla te respeta más que nunca.", "A gangue te respeita mais do que nunca."), [["Rank", next.t]]));
     }
+    // gangwars.js: relaciones, territorio, retaliación, aliados
+    try {
+      window.FL_GANGWARS && window.FL_GANGWARS.yearTick(g, q, last);
+    } catch (e) {
+      console.warn("[gang] gangwars", e);
+    }
     // evento del año
     if (rnd() < (last.acts ? 0.5 : 0.2)) {
       const ok = EVENTS.filter((e) => {
@@ -792,14 +788,21 @@
       }, 0),
     );
     window.FL_GANG = { open: openGang, state: () => state.gangLife, tick: yearTick };
+    // API para gangwars.js / arms-events.js (comparten el estado, las tarjetas y las acciones de esta carrera)
+    window.FL_GANG_API = { G, fx, card, busted, openGang, GANGS, ACTIONS, EVENTS, RANKS, ROLES, E, rnd, ri, pick, clampN, money, price, row, gunPower, carried, fullName, CAREER, ICON, MAX_ACTS, fxGun: () => (screenShake(), setBloodScreen(), playSound("augh")) };
     window.FL_GANG_STOW = () => {
       if (state.gangLife) state.gangLife.carry = null; // arms.js saca el arma vieja de la mano
     };
-    if (!window.FL_ARMS) {
+    const load = (src) => {
       const el = document.createElement("script");
-      el.src = "arms.js?v=11";
+      el.src = src;
       document.head.append(el);
-    }
+    };
+    if (!window.FL_ARMS) load("arms.js?v=14");
+    if (!window.FL_GANGWARS) load("gangwars.js?v=5");
+    if (!window.FL_ARMS_EVENTS) load("arms-events.js?v=1");
+    if (!window.FL_SHOOTER) load("minigame-shooter.js?v=2");
+    if (!window.FL_LIVE) load("golive.js?v=3");
   }
   boot();
 })();

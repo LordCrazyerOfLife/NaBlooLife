@@ -1,0 +1,27 @@
+// node dev/career_dock_test.js C:/Users/Mxzzy/Downloads/FreeLife
+const root = process.argv[2], noop = () => {}, cards = [], notices = [];
+global.window = global;
+let html = ""; const els = {};
+global.sList = { insertAdjacentHTML: (w, h) => { html = h + html; }, set innerHTML(v) { html = v; } };
+global.state = { age: 25, gangLife: { member: true, gang: 0, rank: 2 }, dir: { active: false } };
+global.openOccupation = function () { html = '<div class="sec">Your Job</div>'; };
+global.FL_GANG = { open: () => (global.opened = "gang") }; global.FL_GANG_API = { GANGS: [{ name: "Gangster Disciples" }], RANKS: [{ t: "Prospect" }, { t: "Soldier" }, { t: "Enforcer" }] };
+global.FL_DIR = { open: () => (global.opened = "dir"), rankName: () => "Indie Director" };
+global.notice = (t, b) => notices.push([t, b]); global.jCard = (o) => cards.push(o); global.iosConfirm = (t, b, cb) => cb(); global.play = noop; global.say = noop;
+global.setTimeout = (f) => f();
+global.document = { getElementById: (id) => (html.includes('id="' + id + '"') ? (els[id] ||= {}) : null) };
+require(root + "/career-dock.js");
+const ok = (c, m) => (console.log((c ? "OK   " : "FAIL ") + m), c || (process.exitCode = 1));
+ok(FL_CAREERS.base && FL_CAREERS.list().join() === "Gang member", "list: " + FL_CAREERS.list());
+ok(FL_CAREERS.canStart("Drift Boy") === false && /already a Gang member/.test(notices.pop()[1]), "starting another career while in a gang is blocked");
+ok(FL_CAREERS.canStart("Gang member") === true, "your own career is not blocked by itself");
+openOccupation();
+ok(html.includes("Special Career") && html.includes("Gangster Disciples · Enforcer") && html.indexOf("Special Career") < html.indexOf("Your Job"), "dock shows Gang Bang under the character, above Your Job");
+els["fldock_gang"].onclick(); ok(global.opened === "gang", "tapping the dock opens Gang Bang");
+state.gangLife.member = false; state.dir.active = true;
+ok(FL_CAREERS.canStart("Gang member") === false && /Movie Director/.test(notices.pop()[1]), "Movie Director now blocks other careers");
+openOccupation();
+ok(html.includes("Indie Director") && html.includes("fldock_dir"), "dock shows Movie Director");
+els["fldock_dir"].onclick(); const c = cards.pop();
+ok(c.choices.map((x) => x[0]).join("|") === "Open|Quit this career|Back", "director card has Open / Quit / Back");
+c.choices[1][1](); ok(state.dir.active === false && FL_CAREERS.canStart("Gang member") === true, "quitting frees you to start another career");

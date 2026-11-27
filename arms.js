@@ -1,6 +1,6 @@
 /* [mod] Vendedores de armas para NaBlooLife (mod local). Lo carga gang.js (código 13131313).
- * Tienda legal (pistolas, escopetas, armas de caza) + dealers de la calle (Draco, Mini Draco, switches,
- * accesorios y cargadores sueltos). Estado: state.arms (JSON puro, por vida).
+ * Tienda legal (Glocks, pistolas, revólveres, escopeta, rifles de caza) + dealers de la calle (Lil Ray: Glocks custom, Ortiz: AK/Draco,
+ * Viper: subfusiles y rifles de asalto, Ghost: piezas y cargadores). Sprites y catálogo salen de _art-src/armas/build_guns.py. Estado: state.arms (JSON puro, por vida).
  * Usar un arma en algo ilegal suma un cargo extra al arresto (busted()). Se conecta a la pandilla con window.FL_ARMS.
  * Textos: T("english", "español", "português"); add_chess_i18n.py los pasa al ui.tsv.
  * REGLA: los textos de T() van entre comillas dobles, sin template literals.
@@ -17,79 +17,146 @@
   const TITLE = T("Gun Dealers", "Vendedores de armas", "Vendedores de armas");
   const PIECE = (p) => `<em style="font-style:normal">${p}</em>`;
   // iconos PNG: cargador generico y hueco vacio (pixel transparente, sin dibujo vectorial)
-  const MAG_ICON = "guns/glock-parts/mag-extended-01-icon.png?v=2";
   const BLANK = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==";
 
-  // ---------------------------------------------------------------- íconos dibujados en SVG (data URI)
-  const svg = (body) =>
-    "data:image/svg+xml;utf8," +
-    encodeURIComponent(
-      `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><defs>` +
-        `<linearGradient id="m" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a606b"/><stop offset=".5" stop-color="#2b2f36"/><stop offset="1" stop-color="#15171b"/></linearGradient>` +
-        `<linearGradient id="w" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9824f"/><stop offset="1" stop-color="#6e4421"/></linearGradient>` +
-        `</defs>${body}</svg>`,
-    );
-  const M = 'fill="url(#m)" stroke="#0e0f12" stroke-width="2"';
-  const W = 'fill="url(#w)" stroke="#47280f" stroke-width="2"';
-  const ICONS = {
-    shotgun: svg(`<rect x="8" y="50" width="74" height="7" rx="3" ${M}/><rect x="8" y="58" width="60" height="5" rx="2" ${M}/><rect x="40" y="63" width="26" height="9" rx="4" ${W}/><rect x="64" y="48" width="26" height="18" rx="4" ${M}/><path d="M88 50 L112 58 L108 82 L88 68 Z" ${W}/>`),
-    tactical: svg(`<rect x="8" y="52" width="70" height="8" rx="3" ${M}/><rect x="34" y="61" width="28" height="9" rx="4" ${M}/><rect x="60" y="48" width="26" height="18" rx="4" ${M}/><path d="M86 50 L110 54 L108 76 L86 66 Z" ${M}/>`),
-    double: svg(`<rect x="8" y="48" width="74" height="6" rx="3" ${M}/><rect x="8" y="55" width="74" height="6" rx="3" ${M}/><rect x="46" y="62" width="30" height="8" rx="4" ${W}/><rect x="66" y="46" width="20" height="18" rx="4" ${M}/><path d="M84 48 L112 58 L108 84 L84 68 Z" ${W}/>`),
-    rifle: svg(`<rect x="6" y="56" width="66" height="5" rx="2" ${M}/><rect x="62" y="50" width="30" height="13" rx="3" ${M}/><rect x="40" y="41" width="40" height="7" rx="3" ${M}/><circle cx="43" cy="44" r="5" ${M}/><path d="M90 52 L114 58 L110 80 L90 66 Z" ${W}/><rect x="30" y="62" width="34" height="7" rx="3" ${W}/>`),
-    small: svg(`<rect x="6" y="57" width="60" height="4" rx="2" ${M}/><rect x="60" y="52" width="26" height="11" rx="3" ${M}/><path d="M84 53 L112 59 L108 78 L84 66 Z" ${W}/><rect x="28" y="62" width="32" height="6" rx="3" ${W}/>`),
-    bow: svg(`<path d="M46 14 C92 30 92 90 46 106" fill="none" stroke="#8a5a2b" stroke-width="7" stroke-linecap="round"/><path d="M46 14 L46 106" stroke="#e8e2d0" stroke-width="2"/><path d="M30 60 L96 60" stroke="#c9b48a" stroke-width="3"/><path d="M96 60 L84 54 M96 60 L84 66" stroke="#c9b48a" stroke-width="3"/>`),
-    mag: svg(`<path d="M44 20 L74 20 L80 100 L52 104 Z" ${M}/><rect x="42" y="14" width="34" height="8" rx="2" ${M}/><path d="M50 40 H72 M50 56 H73 M51 72 H75" stroke="#7b818c" stroke-width="2"/>`),
-    drum: svg(`<rect x="50" y="8" width="26" height="26" rx="3" ${M}/><circle cx="62" cy="72" r="34" ${M}/><circle cx="62" cy="72" r="18" fill="#15171b" stroke="#7b818c" stroke-width="2"/><circle cx="62" cy="72" r="5" fill="#7b818c"/>`),
-    reddot: svg(`<rect x="30" y="48" width="60" height="30" rx="6" ${M}/><rect x="40" y="54" width="40" height="18" rx="3" fill="#1b2a33" stroke="#0e0f12" stroke-width="2"/><circle cx="60" cy="63" r="4" fill="#ff2a2a"/><rect x="38" y="78" width="44" height="8" rx="2" ${M}/>`),
-    scope: svg(`<rect x="12" y="50" width="96" height="20" rx="9" ${M}/><circle cx="20" cy="60" r="14" ${M}/><circle cx="20" cy="60" r="8" fill="#1b2a33"/><circle cx="102" cy="60" r="10" ${M}/><rect x="40" y="70" width="12" height="14" ${M}/><rect x="72" y="70" width="12" height="14" ${M}/>`),
-    laser: svg(`<rect x="26" y="46" width="48" height="28" rx="5" ${M}/><circle cx="76" cy="60" r="5" fill="#ff2a2a"/><path d="M82 60 H114" stroke="#ff2a2a" stroke-width="3" stroke-linecap="round"/>`),
-    light: svg(`<path d="M80 40 L112 24 L112 96 L80 80 Z" fill="#ffe27a" opacity=".55"/><rect x="24" y="42" width="58" height="36" rx="6" ${M}/><rect x="74" y="38" width="12" height="44" rx="4" ${M}/><circle cx="80" cy="60" r="6" fill="#fff6c4"/>`),
-    supp: svg(`<rect x="14" y="44" width="92" height="32" rx="8" ${M}/><path d="M34 46 V74 M52 46 V74 M70 46 V74 M88 46 V74" stroke="#7b818c" stroke-width="2"/><circle cx="106" cy="60" r="5" fill="#0e0f12"/>`),
-    comp: svg(`<rect x="30" y="46" width="60" height="28" rx="6" ${M}/><path d="M44 48 V72 M56 48 V72 M68 48 V72" stroke="#0e0f12" stroke-width="4"/>`),
-    vgrip: svg(`<rect x="22" y="22" width="76" height="14" rx="4" ${M}/><path d="M50 36 H72 L76 98 Q76 106 68 106 H56 Q48 106 48 98 Z" ${M}/><path d="M54 52 H70 M54 66 H71 M54 80 H72" stroke="#7b818c" stroke-width="2"/>`),
-    brace: svg(`<rect x="12" y="46" width="30" height="14" rx="3" ${M}/><path d="M40 44 L108 36 L108 82 L40 66 Z" ${M}/><path d="M60 52 L100 48 M60 62 L100 62" stroke="#7b818c" stroke-width="2"/>`),
-    sear: svg(`<rect x="26" y="34" width="68" height="52" rx="6" ${M}/><rect x="36" y="44" width="48" height="32" rx="3" fill="#8a6a1a" stroke="#0e0f12" stroke-width="2"/><path d="M44 52 H76 M44 60 H76 M44 68 H76" stroke="#ffd45a" stroke-width="2"/>`),
-  };
-
   // ---------------------------------------------------------------- catálogo
-  // grp = familia de cargadores/accesorios: glock | ak (Draco)
+  // grp = familia de cargadores/accesorios: glock | ak | ar | smg (las armas sin grp no llevan cargador ni accesorios)
+  // <<GUNS-GENERATED (_art-src/armas/build_guns.py: no editar a mano, edita el script y corre --splice)
+  // grp = familia de cargadores/accesorios: glock | ak | ar | smg. sec = título de sección en el dealer. glk = capas del Glock modular.
   const GUNS = {
-    // ---- legales (tienda)
-    g19: { n: T("Glock 19", "Glock 19", "Glock 19"), cat: "pistol", price: 550, power: 0.06, grp: "glock", icon: "guns/glock.png?v=3", age: 21 },
-    rev: { n: T("Revolver .38", "Revólver .38", "Revólver .38"), cat: "pistol", price: 400, power: 0.05, icon: E("1f52b"), age: 21 },
-    p45: { n: T(".45 Pistol", "Pistola .45", "Pistola .45"), cat: "pistol", price: 650, power: 0.07, icon: E("1f52b"), age: 21 },
-    pump: { n: T("Pump Shotgun", "Escopeta de bombeo", "Escopeta pump"), cat: "shotgun", price: 450, power: 0.12, icon: ICONS.shotgun, age: 18, hunt: 1 },
-    dbl: { n: T("Double-Barrel Shotgun", "Escopeta de dos cañones", "Escopeta de dois canos"), cat: "shotgun", price: 600, power: 0.12, icon: ICONS.double, age: 18, hunt: 1 },
-    tact: { n: T("Tactical Shotgun", "Escopeta táctica", "Escopeta tática"), cat: "shotgun", price: 800, power: 0.16, icon: ICONS.tactical, age: 18 },
-    r22: { n: T(".22 Rifle", "Rifle .22", "Rifle .22"), cat: "hunting", price: 250, power: 0.04, icon: ICONS.small, age: 18, hunt: 1 },
-    deer: { n: T("Deer Rifle .308", "Rifle de venado .308", "Rifle de veado .308"), cat: "hunting", price: 700, power: 0.1, icon: ICONS.rifle, age: 18, hunt: 2 },
-    bow: { n: T("Hunting Bow", "Arco de caza", "Arco de caça"), cat: "hunting", price: 300, power: 0.03, icon: ICONS.bow, age: 16, hunt: 1 },
-    // ---- ilegales (calle)
-    sg19: { n: T("Street Glock", "Glock de la calle", "Glock da rua"), price: 900, power: 0.08, heat: 4, illegal: 1, grp: "glock", icon: "guns/glock.png?v=3" },
-    draco: { n: T("Draco", "Draco", "Draco"), price: 4000, power: 0.2, heat: 9, illegal: 1, grp: "ak", icon: "guns/draco.png?v=3" },
-    mdraco: { n: T("Mini Draco", "Mini Draco", "Mini Draco"), price: 3200, power: 0.17, heat: 8, illegal: 1, grp: "ak", mini: 1, icon: "guns/draco.png?v=3" },
-    // ARP retirada del catálogo: solo quedan la Glock y la Draco nuevas
-    // Mini ARP retirada del catálogo
+    // ---- Glocks modulares (cargadores intercambiables que se ven en el arma)
+    glock01: { n: T("Glock 17", "Glock 17", "Glock 17"), cat: "glock", price: 580, power: 0.06, grp: "glock", glk: "glock01", icon: "guns/glock/glock01-icon.png?v=1", age: 21 },
+    glock02: { n: T("Glock 19 Gen 4", "Glock 19 Gen 4", "Glock 19 Gen 4"), cat: "glock", price: 550, power: 0.06, grp: "glock", glk: "glock02", icon: "guns/glock/glock02-icon.png?v=1", age: 21 },
+    glock03: { n: T("Glock 26", "Glock 26", "Glock 26"), cat: "glock", price: 500, power: 0.06, grp: "glock", glk: "glock03", icon: "guns/glock/glock03-icon.png?v=1", age: 21 },
+    glock04: { n: T("Glock 43", "Glock 43", "Glock 43"), cat: "glock", price: 450, power: 0.06, grp: "glock", glk: "glock04", icon: "guns/glock/glock04-icon.png?v=1", age: 21 },
+    glock05: { n: T("Glock 34 · Ported", "Glock 34 · Con puertos", "Glock 34 · Com portas"), cat: "glock", price: 1100, power: 0.08, heat: 4, illegal: 1, grp: "glock", glk: "glock05", icon: "guns/glock/glock05-icon.png?v=1", dealer: "ray" },
+    glock06: { n: T("Glock 19X · Coyote", "Glock 19X · Coyote", "Glock 19X · Coyote"), cat: "glock", price: 900, power: 0.08, heat: 4, illegal: 1, grp: "glock", glk: "glock06", icon: "guns/glock/glock06-icon.png?v=1", dealer: "ray" },
+    glock07: { n: T("Glock 19", "Glock 19", "Glock 19"), cat: "glock", price: 550, power: 0.06, grp: "glock", glk: "glock07", icon: "guns/glock/glock07-icon.png?v=1", age: 21 },
+    glock08: { n: T("Glock 17 Gen 5", "Glock 17 Gen 5", "Glock 17 Gen 5"), cat: "glock", price: 620, power: 0.06, grp: "glock", glk: "glock08", icon: "guns/glock/glock08-icon.png?v=1", age: 21 },
+    glock09: { n: T("Glock 19 · Red Trigger", "Glock 19 · Gatillo rojo", "Glock 19 · Gatilho vermelho"), cat: "glock", price: 950, power: 0.08, heat: 4, illegal: 1, grp: "glock", glk: "glock09", icon: "guns/glock/glock09-icon.png?v=1", dealer: "ray" },
+    glock10: { n: T("Glock 17 · Optic", "Glock 17 · Con mira", "Glock 17 · Com mira"), cat: "glock", price: 1200, power: 0.08, heat: 4, illegal: 1, grp: "glock", glk: "glock10", icon: "guns/glock/glock10-icon.png?v=1", dealer: "ray" },
+    glock11: { n: T("Glock 19 · Silver Slide", "Glock 19 · Corredera plateada", "Glock 19 · Ferrolho prateado"), cat: "glock", price: 1000, power: 0.08, heat: 4, illegal: 1, grp: "glock", glk: "glock11", icon: "guns/glock/glock11-icon.png?v=1", dealer: "ray" },
+    glock12: { n: T("Glock 42", "Glock 42", "Glock 42"), cat: "glock", price: 400, power: 0.06, grp: "glock", glk: "glock12", icon: "guns/glock/glock12-icon.png?v=1", age: 21 },
+    // ---- armas sueltas (legales: tienda; ilegales: dealers de la calle)
+    m1911: { n: T("M1911", "M1911", "M1911"), cat: "pistol", price: 700, power: 0.07, age: 21, icon: "guns/pistols/m1911.png?v=1" },
+    m1911w: { n: T("M1911 · Wood Grips", "M1911 · Cachas de madera", "M1911 · Cabos de madeira"), cat: "pistol", price: 750, power: 0.07, age: 21, icon: "guns/pistols/m1911w.png?v=1" },
+    m1911c: { n: T("M1911 · Custom", "M1911 · Custom", "M1911 · Custom"), cat: "pistol", price: 900, power: 0.075, age: 21, icon: "guns/pistols/m1911c.png?v=1" },
+    b92: { n: T("Beretta 92FS", "Beretta 92FS", "Beretta 92FS"), cat: "pistol", price: 650, power: 0.065, age: 21, icon: "guns/pistols/b92.png?v=1" },
+    b92b: { n: T("Beretta 92", "Beretta 92", "Beretta 92"), cat: "pistol", price: 600, power: 0.065, age: 21, icon: "guns/pistols/b92b.png?v=1" },
+    b92c: { n: T("Beretta 92 · Black", "Beretta 92 · Negra", "Beretta 92 · Preta"), cat: "pistol", price: 620, power: 0.065, age: 21, icon: "guns/pistols/b92c.png?v=1" },
+    deagle: { n: T("Desert Eagle", "Desert Eagle", "Desert Eagle"), cat: "pistol", price: 1500, power: 0.11, age: 21, icon: "guns/pistols/deagle.png?v=1" },
+    p08: { n: T("Luger P08", "Luger P08", "Luger P08"), cat: "pistol", price: 800, power: 0.06, age: 21, icon: "guns/pistols/p08.png?v=1" },
+    c96: { n: T("Mauser C96", "Mauser C96", "Mauser C96"), cat: "pistol", price: 850, power: 0.06, age: 21, icon: "guns/pistols/c96.png?v=1" },
+    ppk: { n: T("Walther PPK", "Walther PPK", "Walther PPK"), cat: "pistol", price: 450, power: 0.045, age: 21, icon: "guns/pistols/ppk.png?v=1" },
+    cz75: { n: T("CZ 75", "CZ 75", "CZ 75"), cat: "pistol", price: 600, power: 0.065, age: 21, icon: "guns/pistols/cz75.png?v=1" },
+    p226: { n: T("SIG P226", "SIG P226", "SIG P226"), cat: "pistol", price: 750, power: 0.07, age: 21, icon: "guns/pistols/p226.png?v=1" },
+    usp: { n: T("HK USP", "HK USP", "HK USP"), cat: "pistol", price: 700, power: 0.07, age: 21, icon: "guns/pistols/usp.png?v=1" },
+    mak: { n: T("Makarov", "Makarov", "Makarov"), cat: "pistol", price: 400, power: 0.05, age: 21, icon: "guns/pistols/mak.png?v=1" },
+    python: { n: T("Colt Python .357", "Colt Python .357", "Colt Python .357"), cat: "revolver", price: 800, power: 0.085, age: 21, icon: "guns/pistols/python.png?v=1" },
+    magnum: { n: T("Magnum Revolver .357", "Revólver Magnum .357", "Revólver Magnum .357"), cat: "revolver", price: 850, power: 0.09, age: 21, icon: "guns/pistols/magnum.png?v=1" },
+    snub: { n: T("Snub-Nose .38", "Revólver corto .38", "Revólver curto .38"), cat: "revolver", price: 400, power: 0.05, age: 21, icon: "guns/pistols/snub.png?v=1" },
+    pump: { n: T("Pump Shotgun", "Escopeta de bombeo", "Escopeta pump"), cat: "shotgun", price: 450, power: 0.12, age: 18, hunt: 1, icon: "guns/rifles/pump.png?v=1" },
+    m14: { n: T("M14 Rifle", "Rifle M14", "Rifle M14"), cat: "hunting", price: 900, power: 0.11, age: 18, hunt: 2, icon: "guns/rifles/m14.png?v=1" },
+    awm: { n: T("AWM Sniper .308", "Francotirador AWM .308", "Sniper AWM .308"), cat: "hunting", price: 1800, power: 0.14, age: 18, hunt: 2, icon: "guns/rifles/awm.png?v=1" },
+    svd: { n: T("SVD Dragunov", "SVD Dragunov", "SVD Dragunov"), cat: "hunting", price: 1500, power: 0.13, age: 18, hunt: 2, icon: "guns/rifles/svd.png?v=1" },
+    draco: { n: T("Draco", "Draco", "Draco"), cat: "ak", price: 4000, power: 0.2, heat: 9, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/draco.png?v=1" },
+    mdraco: { n: T("Mini Draco", "Mini Draco", "Mini Draco"), cat: "ak", price: 3200, power: 0.17, heat: 8, illegal: 1, grp: "ak", mini: 1, dealer: "ortiz", icon: "guns/ak/mdraco.png?v=1" },
+    akm: { n: T("AKM", "AKM", "AKM"), cat: "ak", price: 3000, power: 0.18, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akm.png?v=1" },
+    akml: { n: T("AKM · Laminate", "AKM · Laminado", "AKM · Laminado"), cat: "ak", price: 3200, power: 0.18, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akml.png?v=1" },
+    akmd: { n: T("AKM · Dark Wood", "AKM · Madera oscura", "AKM · Madeira escura"), cat: "ak", price: 3100, power: 0.18, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akmd.png?v=1" },
+    akms: { n: T("AKMS · Under-Folder", "AKMS · Plegable abajo", "AKMS · Dobrável embaixo"), cat: "ak", price: 3500, power: 0.18, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akms.png?v=1" },
+    akmsw: { n: T("AKMS · Wood Folder", "AKMS · Plegable de madera", "AKMS · Dobrável de madeira"), cat: "ak", price: 3500, power: 0.18, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akmsw.png?v=1" },
+    ak74p: { n: T("AK-74 · Plum", "AK-74 · Ciruela", "AK-74 · Ameixa"), cat: "ak", price: 3300, power: 0.19, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/ak74p.png?v=1" },
+    ak74p2: { n: T("AK-74 · Plum Mag", "AK-74 · Cargador ciruela", "AK-74 · Pente ameixa"), cat: "ak", price: 3300, power: 0.19, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/ak74p2.png?v=1" },
+    ak74: { n: T("AK-74 · Black", "AK-74 · Negro", "AK-74 · Preto"), cat: "ak", price: 3400, power: 0.19, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/ak74.png?v=1" },
+    ak74f: { n: T("AK-74 · Folding", "AK-74 · Plegable", "AK-74 · Dobrável"), cat: "ak", price: 3600, power: 0.19, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/ak74f.png?v=1" },
+    ak74m: { n: T("AK-74M", "AK-74M", "AK-74M"), cat: "ak", price: 3800, power: 0.2, heat: 9, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/ak74m.png?v=1" },
+    aks74u: { n: T("AKS-74U", "AKS-74U", "AKS-74U"), cat: "ak", price: 3600, power: 0.18, heat: 9, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/aks74u.png?v=1" },
+    aks74uw: { n: T("AKS-74U · Wood", "AKS-74U · Madera", "AKS-74U · Madeira"), cat: "ak", price: 3600, power: 0.18, heat: 9, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/aks74uw.png?v=1" },
+    akth: { n: T("AK · Thumbhole", "AK · Culata agujero", "AK · Coronha vazada"), cat: "ak", price: 3700, power: 0.19, heat: 8, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akth.png?v=1" },
+    ak12: { n: T("AK-12", "AK-12", "AK-12"), cat: "ak", price: 4600, power: 0.22, heat: 10, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/ak12.png?v=1" },
+    ak103: { n: T("AK-103 · Folding", "AK-103 · Plegable", "AK-103 · Dobrável"), cat: "ak", price: 4200, power: 0.2, heat: 9, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/ak103.png?v=1" },
+    akt: { n: T("AK · Tactical", "AK · Táctico", "AK · Tático"), cat: "ak", price: 4400, power: 0.21, heat: 10, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akt.png?v=1" },
+    akmod: { n: T("AK · Modern", "AK · Moderno", "AK · Moderno"), cat: "ak", price: 4500, power: 0.21, heat: 10, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akmod.png?v=1" },
+    akr: { n: T("AK · Rail", "AK · Con riel", "AK · Com trilho"), cat: "ak", price: 4400, power: 0.21, heat: 10, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akr.png?v=1" },
+    akrec: { n: T("AK · Suppressed Recon", "AK · Reconocimiento silenciado", "AK · Reconhecimento silenciado"), cat: "ak", price: 5200, power: 0.22, heat: 7, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/akrec.png?v=1" },
+    rpk: { n: T("RPK", "RPK", "RPK"), cat: "ak", price: 5200, power: 0.24, heat: 10, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/rpk.png?v=1" },
+    rpkb: { n: T("RPK · Bipod", "RPK · Con bípode", "RPK · Com bipé"), cat: "ak", price: 5400, power: 0.24, heat: 10, illegal: 1, grp: "ak", dealer: "ortiz", icon: "guns/ak/rpkb.png?v=1" },
+    mp40: { n: T("MP40", "MP40", "MP40"), cat: "smg", price: 2600, power: 0.15, heat: 8, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/mp40.png?v=1" },
+    mp38: { n: T("MP38", "MP38", "MP38"), cat: "smg", price: 2500, power: 0.15, heat: 8, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/mp38.png?v=1" },
+    tommy: { n: T("Thompson M1928", "Thompson M1928", "Thompson M1928"), cat: "smg", price: 3000, power: 0.16, heat: 8, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/tommy.png?v=1" },
+    ppsh: { n: T("PPSh-41", "PPSh-41", "PPSh-41"), cat: "smg", price: 2800, power: 0.16, heat: 8, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/ppsh.png?v=1" },
+    uzi: { n: T("Uzi", "Uzi", "Uzi"), cat: "smg", price: 2700, power: 0.15, heat: 8, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/uzi.png?v=1" },
+    mac10: { n: T("MAC-10 · Suppressed", "MAC-10 · Silenciada", "MAC-10 · Silenciada"), cat: "smg", price: 2300, power: 0.14, heat: 6, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/mac10.png?v=1" },
+    mp5: { n: T("MP5", "MP5", "MP5"), cat: "smg", price: 3400, power: 0.17, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/mp5.png?v=1" },
+    mp5k: { n: T("MP5K", "MP5K", "MP5K"), cat: "smg", price: 3200, power: 0.16, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/mp5k.png?v=1" },
+    mp7: { n: T("MP7", "MP7", "MP7"), cat: "smg", price: 3800, power: 0.17, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/mp7.png?v=1" },
+    p90: { n: T("P90", "P90", "P90"), cat: "smg", price: 4200, power: 0.18, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/p90.png?v=1" },
+    vector: { n: T("Kriss Vector", "Kriss Vector", "Kriss Vector"), cat: "smg", price: 4300, power: 0.18, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/vector.png?v=1" },
+    ump: { n: T("UMP45", "UMP45", "UMP45"), cat: "smg", price: 3600, power: 0.17, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/ump.png?v=1" },
+    scorpion: { n: T("Scorpion EVO", "Scorpion EVO", "Scorpion EVO"), cat: "smg", price: 3500, power: 0.17, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/scorpion.png?v=1" },
+    mpx: { n: T("MPX", "MPX", "MPX"), cat: "smg", price: 4000, power: 0.18, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/mpx.png?v=1" },
+    vityaz: { n: T("Vityaz SMG", "Vityaz SMG", "Vityaz SMG"), cat: "smg", price: 3300, power: 0.17, heat: 9, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/vityaz.png?v=1" },
+    b93: { n: T("Beretta 93R · Stock", "Beretta 93R · Con culata", "Beretta 93R · Com coronha"), cat: "smg", price: 2400, power: 0.12, heat: 7, illegal: 1, grp: "smg", dealer: "viper", icon: "guns/smg/b93.png?v=1" },
+    m4: { n: T("M4A1", "M4A1", "M4A1"), cat: "ar", price: 5200, power: 0.24, heat: 11, illegal: 1, grp: "ar", dealer: "viper", icon: "guns/ar/m4.png?v=1" },
+    m16: { n: T("M16A1", "M16A1", "M16A1"), cat: "ar", price: 4800, power: 0.23, heat: 11, illegal: 1, grp: "ar", dealer: "viper", icon: "guns/ar/m16.png?v=1" },
+    hk416: { n: T("HK416", "HK416", "HK416"), cat: "ar", price: 6000, power: 0.26, heat: 12, illegal: 1, grp: "ar", dealer: "viper", icon: "guns/ar/hk416.png?v=1" },
+    famas: { n: T("FAMAS", "FAMAS", "FAMAS"), cat: "ar", price: 5600, power: 0.25, heat: 11, illegal: 1, grp: "ar", dealer: "viper", icon: "guns/ar/famas.png?v=1" },
+    tavor: { n: T("Tavor · Suppressed", "Tavor · Silenciado", "Tavor · Silenciado"), cat: "ar", price: 5800, power: 0.25, heat: 9, illegal: 1, grp: "ar", dealer: "viper", icon: "guns/ar/tavor.png?v=1" },
+    saw: { n: T("M249 SAW", "M249 SAW", "M249 SAW"), cat: "ar", price: 9500, power: 0.34, heat: 15, illegal: 1, grp: "ar", dealer: "viper", icon: "guns/ar/saw.png?v=1" },
   };
+  const GLOCK_LAYERS = {"glock01":{"base":[45,4,262,174],"mags":{"std":[60,174,56,12],"m01":[43,167,81,21],"m02":[41,167,82,45],"m03":[39,167,83,59],"m04":[39,167,82,125],"m05":[39,167,82,81],"m06":[39,167,81,124],"m07":[38,167,82,149],"m08":[20,167,136,151],"m09":[38,167,82,148],"m10":[44,167,76,87],"m11":[39,167,82,129],"m12":[18,167,138,128]}},"glock02":{"base":[45,4,251,167],"mags":{"std":[59,163,57,17],"m01":[42,155,81,26],"m02":[38,155,83,50],"m03":[35,155,84,65],"m04":[30,155,90,131],"m05":[33,155,86,87],"m06":[30,155,89,130],"m07":[27,155,93,155],"m08":[12,155,138,155],"m09":[26,155,93,154],"m10":[41,155,78,91],"m11":[29,155,91,134],"m12":[12,155,140,133]}},"glock03":{"base":[45,4,229,143],"mags":{"std":[47,137,77,38],"m01":[42,136,85,20],"m02":[38,136,87,46],"m03":[35,136,88,60],"m04":[30,136,93,130],"m05":[34,136,88,84],"m06":[31,136,91,129],"m07":[28,136,94,155],"m08":[5,136,144,156],"m09":[27,136,96,154],"m10":[42,136,80,88],"m11":[29,136,94,134],"m12":[5,136,147,133]}},"glock04":{"base":[45,4,228,154],"mags":{"std":[46,148,68,18],"m01":[42,146,77,21],"m02":[38,147,79,44],"m03":[35,146,80,58],"m04":[30,146,85,123],"m05":[33,146,82,80],"m06":[30,147,85,121],"m07":[28,147,87,145],"m08":[5,147,133,144],"m09":[27,147,88,144],"m10":[41,147,74,83],"m11":[29,147,86,125],"m12":[4,147,137,123]}},"glock05":{"base":[45,4,277,163],"mags":{"std":[58,164,55,11],"m01":[42,155,78,22],"m02":[40,155,80,46],"m03":[39,155,80,59],"m04":[39,155,78,122],"m05":[39,155,78,80],"m06":[39,155,77,121],"m07":[38,155,79,145],"m08":[21,155,130,146],"m09":[38,155,79,144],"m10":[43,155,74,86],"m11":[38,155,79,126],"m12":[20,155,132,124]}},"glock06":{"base":[45,4,252,175],"mags":{"std":[60,172,63,12],"m01":[42,164,84,22],"m02":[41,164,84,47],"m03":[40,164,85,61],"m04":[40,164,83,128],"m05":[40,164,83,84],"m06":[40,164,83,127],"m07":[39,164,83,152],"m08":[19,164,138,153],"m09":[39,164,83,151],"m10":[44,164,78,89],"m11":[39,164,84,132],"m12":[18,164,140,130]}},"glock07":{"base":[45,4,252,173],"mags":{"std":[59,175,58,11],"m01":[43,166,81,21],"m02":[41,166,83,46],"m03":[40,166,83,60],"m04":[40,166,82,127],"m05":[40,166,82,83],"m06":[40,166,82,126],"m07":[40,166,81,151],"m08":[22,166,136,152],"m09":[40,166,81,150],"m10":[44,166,77,88],"m11":[40,166,82,131],"m12":[20,166,139,129]}},"glock08":{"base":[45,4,269,176],"mags":{"std":[59,177,59,13],"m01":[42,170,84,21],"m02":[41,170,85,47],"m03":[40,170,85,62],"m04":[40,170,83,131],"m05":[40,170,83,85],"m06":[40,170,83,130],"m07":[39,170,83,156],"m08":[18,170,142,157],"m09":[39,170,83,155],"m10":[44,170,78,91],"m11":[39,170,84,135],"m12":[16,170,145,133]}},"glock09":{"base":[45,4,261,170],"mags":{"std":[59,166,57,16],"m01":[42,158,84,26],"m02":[38,158,86,51],"m03":[35,158,87,65],"m04":[29,158,93,132],"m05":[33,158,89,87],"m06":[30,158,92,131],"m07":[26,158,96,155],"m08":[10,158,138,155],"m09":[25,158,97,154],"m10":[41,158,81,91],"m11":[28,158,94,135],"m12":[9,158,141,133]}},"glock10":{"base":[45,4,261,200],"mags":{"std":[60,200,59,10],"m01":[46,199,86,12],"m02":[43,199,90,39],"m03":[42,199,91,54],"m04":[43,199,91,126],"m05":[43,199,90,78],"m06":[43,199,91,125],"m07":[43,199,91,152],"m08":[16,199,149,158],"m09":[43,199,92,151],"m10":[46,199,84,84],"m11":[43,199,90,130],"m12":[14,199,151,133]}},"glock11":{"base":[45,3,253,170],"mags":{"std":[56,164,61,16],"m01":[41,156,81,26],"m02":[37,156,83,50],"m03":[35,156,84,64],"m04":[29,156,90,129],"m05":[33,156,85,86],"m06":[30,156,88,128],"m07":[27,156,92,152],"m08":[13,156,134,152],"m09":[26,156,92,151],"m10":[41,156,77,89],"m11":[28,156,91,132],"m12":[12,156,137,130]}},"glock12":{"base":[44,4,221,151],"mags":{"std":[45,145,66,18],"m01":[42,144,74,21],"m02":[38,144,76,43],"m03":[36,144,76,56],"m04":[30,144,82,119],"m05":[34,144,78,78],"m06":[31,144,81,118],"m07":[28,144,84,141],"m08":[6,144,130,141],"m09":[27,144,85,141],"m10":[41,144,71,81],"m11":[29,144,83,122],"m12":[6,144,132,120]}}};
+  const GMAGS = [
+    ["glock:m01", T("Glock Mag (15 rounds)", "Cargador de Glock (15 balas)", "Pente de Glock (15 balas)"), 40, 0.0, 0, 0],
+    ["glock:m02", T("Glock Pinky Mag (17 rounds)", "Cargador de Glock con meñique (17 balas)", "Pente de Glock com mindinho (17 balas)"), 60, 0.005, 0, 0],
+    ["glock:m03", T("Glock Extended Mag +3 (19 rounds)", "Cargador extendido +3 de Glock (19 balas)", "Pente estendido +3 de Glock (19 balas)"), 80, 0.01, 0, 0],
+    ["glock:m04", T("Glock Extended Mag +5 (22 rounds)", "Cargador extendido +5 de Glock (22 balas)", "Pente estendido +5 de Glock (22 balas)"), 100, 0.015, 1, 0],
+    ["glock:m05", T("Glock Short Extended Mag (20 rounds)", "Cargador extendido corto de Glock (20 balas)", "Pente estendido curto de Glock (20 balas)"), 90, 0.012, 0, 0],
+    ["glock:m06", T("Glock Extended Mag +7 (24 rounds)", "Cargador extendido +7 de Glock (24 balas)", "Pente estendido +7 de Glock (24 balas)"), 120, 0.02, 1, 0],
+    ["glock:m07", T("Glock Stick Mag (33 rounds)", "Cargador largo de Glock (33 balas)", "Pente longo de Glock (33 balas)"), 140, 0.025, 1, 0],
+    ["glock:m08", T("Glock Drum Mag (50 rounds)", "Cargador de tambor de Glock (50 balas)", "Pente tambor de Glock (50 balas)"), 350, 0.05, 3, 1],
+    ["glock:m09", T("Glock Clear Mag (22 rounds)", "Cargador transparente de Glock (22 balas)", "Pente transparente de Glock (22 balas)"), 110, 0.015, 1, 0],
+    ["glock:m10", T("Glock Grip-Sleeve Mag (21 rounds)", "Cargador con funda de Glock (21 balas)", "Pente com capa de Glock (21 balas)"), 100, 0.012, 0, 0],
+    ["glock:m11", T("Glock Red Plate Mag (22 rounds)", "Cargador placa roja de Glock (22 balas)", "Pente placa vermelha de Glock (22 balas)"), 110, 0.015, 1, 0],
+    ["glock:m12", T("Glock Dual Drum Mag (100 rounds)", "Cargador doble tambor de Glock (100 balas)", "Pente tambor duplo de Glock (100 balas)"), 700, 0.08, 4, 1],
+  ];
+  // GUNS-GENERATED>>
   const CATS = [
+    ["glock", T("Glocks", "Glocks", "Glocks")],
     ["pistol", T("Pistols", "Pistolas", "Pistolas")],
+    ["revolver", T("Revolvers", "Revólveres", "Revólveres")],
     ["shotgun", T("Shotguns", "Escopetas", "Escopetas")],
     ["hunting", T("Hunting", "Caza", "Caça")],
   ];
+  // secciones de los dealers de la calle
+  const SECS = {
+    glock: T("Glocks", "Glocks", "Glocks"),
+    ak: T("AK Rifles", "Rifles AK", "Rifles AK"),
+    smg: T("Submachine Guns", "Subfusiles", "Submetralhadoras"),
+    ar: T("Assault Rifles & Machine Gun", "Rifles de asalto y ametralladora", "Fuzis de assalto e metralhadora"),
+  };
+  const legalKeys = () => Object.keys(GUNS).filter((k) => !GUNS[k].illegal && !GUNS[k].dealer);
+  const byDealer = (id) => Object.keys(GUNS).filter((k) => GUNS[k].dealer === id);
+  // íconos de los cargadores sueltos (sprites del sheet de cargadores de Glock)
+  const MAG_ICON = "guns/glock/mags/m07.png?v=1";
+  const DRUM_ICON = "guns/glock/mags/m08.png?v=1";
 
   // cargadores sueltos: se compran aparte y se le cargan a un arma compatible
-  const MAGS = {
-    "glock:ext": { n: T("Glock Extended Mag (33 rounds)", "Cargador extendido de Glock (33 balas)", "Pente estendido de Glock (33 balas)"), grp: "glock", price: 120, power: 0.02, heat: 1, icon: "guns/glock-parts/mag-extended-01-icon.png?v=2" },
-    "glock:drum": { n: T("Glock Drum Mag (50 rounds)", "Cargador de tambor de Glock (50 balas)", "Pente tambor de Glock (50 balas)"), grp: "glock", price: 350, power: 0.05, heat: 3, illegal: 1, icon: "guns/glock-parts/mag-drum-01-icon.png?v=2" },
-    "ak:ext": { n: T("Draco Extended Mag (40 rounds)", "Cargador extendido de Draco (40 balas)", "Pente estendido de Draco (40 balas)"), grp: "ak", price: 150, power: 0.02, heat: 1, icon: "guns/glock-parts/mag-extended-01-icon.png?v=2" },
-    "ak:drum": { n: T("Draco Drum Mag (75 rounds)", "Cargador de tambor de Draco (75 balas)", "Pente tambor de Draco (75 balas)"), grp: "ak", price: 400, power: 0.06, heat: 3, illegal: 1, icon: "guns/glock-parts/mag-drum-01-icon.png?v=2" },
-
-
-  };
+  const MAGS = {};
+  for (const [k, n, price, power, heat, ill] of GMAGS) MAGS[k] = { n, grp: "glock", price, power, heat, icon: `guns/glock/mags/${k.split(":")[1]}.png?v=1`, ...(ill ? { illegal: 1 } : {}) };
+  Object.assign(MAGS, {
+    "ak:ext": { n: T("AK Extended Mag (40 rounds)", "Cargador extendido de AK (40 balas)", "Pente estendido de AK (40 balas)"), grp: "ak", price: 150, power: 0.02, heat: 1, icon: MAG_ICON },
+    "ak:drum": { n: T("AK Drum Mag (75 rounds)", "Cargador de tambor de AK (75 balas)", "Pente tambor de AK (75 balas)"), grp: "ak", price: 400, power: 0.06, heat: 3, illegal: 1, icon: DRUM_ICON },
+    "ar:ext": { n: T("AR Extended Mag (40 rounds)", "Cargador extendido de AR (40 balas)", "Pente estendido de AR (40 balas)"), grp: "ar", price: 170, power: 0.02, heat: 1, icon: MAG_ICON },
+    "ar:drum": { n: T("AR Drum Mag (100 rounds)", "Cargador de tambor de AR (100 balas)", "Pente tambor de AR (100 balas)"), grp: "ar", price: 500, power: 0.07, heat: 4, illegal: 1, icon: DRUM_ICON },
+    "smg:ext": { n: T("SMG Extended Mag (50 rounds)", "Cargador extendido de subfusil (50 balas)", "Pente estendido de submetralhadora (50 balas)"), grp: "smg", price: 140, power: 0.02, heat: 1, icon: MAG_ICON },
+    "smg:drum": { n: T("SMG Drum Mag (100 rounds)", "Cargador de tambor de subfusil (100 balas)", "Pente tambor de submetralhadora (100 balas)"), grp: "smg", price: 450, power: 0.06, heat: 3, illegal: 1, icon: DRUM_ICON },
+  });
   const STD = {
     glock: T("Standard mag (17 rounds)", "Cargador estándar (17 balas)", "Pente padrão (17 balas)"),
     ak: T("Standard mag (30 rounds)", "Cargador estándar (30 balas)", "Pente padrão (30 balas)"),
     ar: T("Standard mag (30 rounds)", "Cargador estándar (30 balas)", "Pente padrão (30 balas)"),
+    smg: T("Standard mag (30 rounds)", "Cargador estándar (30 balas)", "Pente padrão (30 balas)"),
   };
 
   const SLOTS = {
@@ -104,15 +171,16 @@
     glock: ["optic", "muzzle", "trigger"],
     ak: ["optic", "muzzle", "trigger"],
     ar: ["optic", "muzzle", "trigger"],
+    smg: ["optic", "muzzle", "trigger"],
   };
   const slotsOf = (def) => (def.grp ? SLOTS_BY[def.grp].filter((s) => !(def.mini && s === "stock")) : []);
 
-  const ALL = ["glock", "ak", "ar"];
+  const ALL = ["glock", "ak", "ar", "smg"];
   const PARTS = {
     reddot: { n: T("Red Dot Sight", "Mira de punto rojo", "Mira de ponto vermelho"), slot: "optic", grps: ALL, price: 150, power: 0.02, heat: 0, icon: "guns/attachments/red-dot.png?v=2" },
     supp: { n: T("Suppressor", "Silenciador", "Silenciador"), slot: "muzzle", grps: ALL, price: 900, power: 0, heat: -4, illegal: 1, icon: "guns/attachments/suppressor.png?v=2" },
-    switch: { n: T("Switch", "Switch", "Switch"), slot: "trigger", grps: ["glock"], price: 600, power: 0.12, heat: 6, illegal: 1, auto: 1, color: 1, icon: "guns/switch-red.png?v=3" },
-    sear: { n: T("Auto Sear", "Auto sear", "Auto sear"), slot: "trigger", grps: ["ak"], price: 1100, power: 0.12, heat: 7, illegal: 1, auto: 1, icon: "guns/glock-parts/control-part-04.png?v=2" },
+    switch: { n: T("Switch", "Switch", "Switch"), slot: "trigger", grps: ["glock"], price: 600, power: 0.12, heat: 6, illegal: 1, auto: 1, color: 1, icon: "guns/switch/switch-red.png?v=1" },
+    sear: { n: T("Auto Sear", "Auto sear", "Auto sear"), slot: "trigger", grps: ["ak"], price: 1100, power: 0.12, heat: 7, illegal: 1, auto: 1, icon: "guns/attachments/auto-sear.png?v=1" },
   };
   const COLORS = [
     ["red", T("Red", "Rojo", "Vermelho")], ["blue", T("Blue", "Azul", "Azul")], ["green", T("Green", "Verde", "Verde")],
@@ -120,24 +188,64 @@
     ["orange", T("Orange", "Naranja", "Laranja")], ["white", T("White", "Blanco", "Branco")],
   ];
   const colorName = (id) => (COLORS.find((c) => c[0] === id) || COLORS[0])[1];
-  const partIcon = (p) => (p.id === "switch" ? `guns/switch-${p.color || "red"}.png?v=3` : PARTS[p.id].icon);
+  const partIcon = (p) => (p.id === "switch" ? `guns/switch/switch-${p.color || "red"}.png?v=1` : PARTS[p.id].icon);
 
-  // ---------------------------------------------------------------- ícono compuesto: el arma con lo que le instalaste
-  // ---------------------------------------------------------------- icono del arma (solo PNG nuevo)
-  // Si lleva switch montado se usa el PNG del switch en su color; si no, el PNG del arma.
-  // No se dibuja ninguna pieza a mano encima.
+  // ---------------------------------------------------------------- ícono del arma
+  // Las Glocks son modulares: la pistola (sin placa) + la capa del cargador que lleve puesto, en el mismo plano (el cargador va
+  // ENCIMA, con las capas recortadas de guns/glock y sus offsets en GLOCK_LAYERS). Se pega en un canvas y se usa como data URL.
+  // Mientras las capas cargan (o si el canvas falla) se usa guns/glock/glockNN-icon.png (con su placa original).
+  const IMGS = {};
+  const PICS = {};
+  let curView = null, curTitle = "", refreshT = 0;
+  function refreshSoon() {
+    clearTimeout(refreshT);
+    refreshT = setTimeout(() => {
+      try {
+        if (curView && typeof screen !== "undefined" && screen.classList.contains("open") && sTitle.textContent === curTitle) curView();
+      } catch (e) {}
+    }, 80);
+  }
+  const loadImg = (u) => {
+    let i = IMGS[u];
+    if (!i) {
+      i = IMGS[u] = new Image();
+      i.onload = refreshSoon;
+      i.src = u;
+    }
+    return i;
+  };
+  function glockPic(id, mag, fallback) {
+    const key = id + ":" + mag;
+    if (PICS[key]) return PICS[key];
+    const L = GLOCK_LAYERS[id];
+    const mk = L.mags[mag] ? mag : "std";
+    const bb = L.base, mb = L.mags[mk];
+    const ib = loadImg(`guns/glock/${id}.png?v=1`), im = loadImg(`guns/glock/${id}-${mk}.png?v=1`);
+    if (!(ib.complete && ib.naturalWidth && im.complete && im.naturalWidth)) return fallback;
+    try {
+      const x0 = Math.min(bb[0], mb[0]), y0 = Math.min(bb[1], mb[1]);
+      const c = document.createElement("canvas");
+      c.width = Math.max(bb[0] + bb[2], mb[0] + mb[2]) - x0;
+      c.height = Math.max(bb[1] + bb[3], mb[1] + mb[3]) - y0;
+      const g = c.getContext("2d");
+      g.drawImage(ib, bb[0] - x0, bb[1] - y0);
+      g.drawImage(im, mb[0] - x0, mb[1] - y0);
+      return (PICS[key] = c.toDataURL("image/png"));
+    } catch (e) {
+      return fallback;
+    }
+  }
   function pic(gun) {
     const d = GUNS[gun.id];
-    const t = (gun.att || {}).trigger;
-    if (t && t.id === "switch") return `guns/switch-${t.color || "red"}.png?v=3`;
+    if (d.glk) return glockPic(d.glk, gun.mag ? String(gun.mag).split(":")[1] : "std", d.icon);
     return d.icon;
   }
 
   // armas ya armadas con accesorios (vienen instalados; cuestan un 10% menos que comprarlo todo por separado)
   const KITS = {
-    kg19: { n: T("Glock 19 · Tactical", "Glock 19 · Táctica", "Glock 19 · Tática"), base: "g19", att: { optic: { id: "reddot" } } },
-    kglock: { n: T("Glock · Switched", "Glock · Con switch", "Glock · Com switch"), base: "sg19", att: { trigger: { id: "switch", color: "red" } }, mag: "glock:ext" },
-    kglock2: { n: T("Glock · Full Kit", "Glock · Kit completo", "Glock · Kit completo"), base: "sg19", att: { trigger: { id: "switch", color: "purple" }, muzzle: { id: "supp" }, optic: { id: "reddot" } }, mag: "glock:drum" },
+    kg19: { n: T("Glock 19 · Tactical", "Glock 19 · Táctica", "Glock 19 · Tática"), base: "glock07", att: { optic: { id: "reddot" } } },
+    kglock: { n: T("Glock · Switched", "Glock · Con switch", "Glock · Com switch"), base: "glock05", att: { trigger: { id: "switch", color: "red" } }, mag: "glock:m07" },
+    kglock2: { n: T("Glock · Full Kit", "Glock · Kit completo", "Glock · Kit completo"), base: "glock10", att: { trigger: { id: "switch", color: "purple" }, muzzle: { id: "supp" }, optic: { id: "reddot" } }, mag: "glock:m08" },
     kdraco1: { n: T("Draco · Optic Pack", "Draco · Paquete con mira", "Draco · Pacote com mira"), base: "draco", att: { optic: { id: "reddot" } }, mag: "ak:ext" },
     kdraco2: { n: T("Draco · Full Auto", "Draco · Automático", "Draco · Automático"), base: "draco", att: { trigger: { id: "sear" }, muzzle: { id: "supp" } }, mag: "ak:drum" },
     kmdraco: { n: T("Mini Draco · Compact Kit", "Mini Draco · Kit compacto", "Mini Draco · Kit compacto"), base: "mdraco", att: { optic: { id: "reddot" } }, mag: "ak:ext" },
@@ -148,18 +256,26 @@
   const sameLoadout = (gun, k) => JSON.stringify(gun.att || {}) === JSON.stringify(k.att) && (gun.mag || null) === (k.mag || null);
   const gunName = (gun) => (gun.kit && KITS[gun.kit] && sameLoadout(gun, KITS[gun.kit]) ? KITS[gun.kit].n : GUNS[gun.id].n);
 
-  // dealers
+  // dealers (las armas de cada dealer de la calle salen del campo dealer de GUNS)
+  const glockMags = () => Object.keys(MAGS).filter((k) => MAGS[k].grp === "glock");
   const DEALERS = {
-    store: { n: T("Gun Store", "Tienda de armas", "Loja de armas"), icon: E("1f3ea"), legal: 1, kits: ["kg19"], sub: T("Pistols, shotguns and hunting gear. Everything legal.", "Pistolas, escopetas y armas de caza. Todo legal.", "Pistolas, escopetas e armas de caça. Tudo legal.") },
-    ray: { n: T("Lil Ray", "Lil Ray", "Lil Ray"), icon: E("1f9e2"), guns: ["sg19"], kits: ["kglock", "kglock2"], mags: ["glock:ext", "glock:drum"], parts: ["switch"], sub: T("Corner guy. Glocks, switches and Glock mags.", "El de la esquina. Glocks, switches y cargadores de Glock.", "O cara da esquina. Glocks, switches e pentes de Glock.") },
-    ortiz: { n: T("Mr. Ortiz", "Don Ortiz", "Seu Ortiz"), icon: E("1f3a9"), guns: ["draco", "mdraco"], kits: ["kdraco1", "kdraco2", "kmdraco"], mags: ["ak:ext", "ak:drum"], parts: ["sear"], sub: T("Gun runner. Dracos, big and mini.", "Traficante de armas. Dracos, grandes y mini.", "Traficante de armas. Dracos, grandes e mini."), minRank: 1 },
+    store: { n: T("Gun Store", "Tienda de armas", "Loja de armas"), icon: E("1f3ea"), legal: 1, kits: ["kg19"], sub: T("Glocks, pistols, revolvers, shotguns and hunting rifles. Everything legal.", "Glocks, pistolas, revólveres, escopetas y rifles de caza. Todo legal.", "Glocks, pistolas, revólveres, escopetas e rifles de caça. Tudo legal.") },
+    ray: { n: T("Lil Ray", "Lil Ray", "Lil Ray"), icon: E("1f9e2"), guns: byDealer("ray"), kits: ["kglock", "kglock2"], mags: glockMags(), parts: ["switch"], sub: T("Corner guy. Custom Glocks, switches and Glock mags.", "El de la esquina. Glocks custom, switches y cargadores de Glock.", "O cara da esquina. Glocks custom, switches e pentes de Glock.") },
+    ortiz: { n: T("Mr. Ortiz", "Don Ortiz", "Seu Ortiz"), icon: E("1f3a9"), guns: byDealer("ortiz"), kits: ["kdraco1", "kdraco2", "kmdraco"], mags: ["ak:ext", "ak:drum"], parts: ["sear"], sub: T("Gun runner. Dracos and every AK you can think of.", "Traficante de armas. Dracos y todos los AK que se te ocurran.", "Traficante de armas. Dracos e todos os AK que você imaginar."), minRank: 1 },
+    viper: { n: T("Viper", "Viper", "Viper"), icon: E("1f40d"), guns: byDealer("viper"), mags: ["smg:ext", "smg:drum", "ar:ext", "ar:drum"], sub: T("Imports. SMGs, assault rifles and a machine gun.", "Importaciones. Subfusiles, rifles de asalto y una ametralladora.", "Importações. Submetralhadoras, fuzis de assalto e uma metralhadora."), minRank: 1 },
     ghost: { n: T("Ghost", "Ghost", "Ghost"), icon: E("1f9d4"), mags: Object.keys(MAGS), parts: ["reddot", "supp"], sub: T("Parts guy. Attachments and magazines for everything.", "El de las piezas. Accesorios y cargadores para todo.", "O cara das peças. Acessórios e pentes para tudo.") },
   };
 
   // ---------------------------------------------------------------- estado
   const A = () => {
     const a = (state.arms ||= { v: 1, guns: [], carry: null, mags: {}, parts: [], uid: 1, license: false, yr: { age: -1, hunts: 0 } });
-    if (!a.v || a.v < 3) {
+    if (!a.v || a.v < 4) {
+      // v4: catálogo nuevo (sprites nuevos). Lo viejo se cambia por su equivalente; lo que no tiene equivalente se quita
+      const OLD_GUN = { g19: "glock07", sg19: "glock05", rev: "snub", p45: "m1911", pump: "pump", dbl: "pump", tact: "pump", r22: "m14", deer: "awm" };
+      const OLD_MAG = { "glock:ext": "glock:m07", "glock:drum": "glock:m08" };
+      for (const g of a.guns || []) if (g && OLD_GUN[g.id]) g.id = OLD_GUN[g.id];
+      for (const g of a.guns || []) if (g && OLD_MAG[g.mag]) g.mag = OLD_MAG[g.mag];
+      for (const k of Object.keys(a.mags || {})) if (OLD_MAG[k]) ((a.mags[OLD_MAG[k]] = (a.mags[OLD_MAG[k]] || 0) + a.mags[k]), delete a.mags[k]);
       // limpieza: fuera armas, piezas y cargadores que ya no existen en el catalogo
       a.guns = (a.guns || []).filter((g) => g && GUNS[g.id]);
       for (const g of a.guns) {
@@ -172,7 +288,7 @@
       for (const k of Object.keys(a.mags)) if (!MAGS[k] || !(a.mags[k] > 0)) delete a.mags[k];
       if (a.carry != null && !a.guns.some((g) => g.uid === a.carry)) a.carry = null;
       a.uid = Math.max(1, a.uid || 1);
-      a.v = 3;
+      a.v = 4;
     }
     return a;
   };
@@ -207,8 +323,18 @@
   const statusTxt = (s) => (s.auto ? T("Automatic", "Automática", "Automática") : s.illegal ? T("Illegal", "Ilegal", "Ilegal") : T("Legal", "Legal", "Legal"));
 
   // ---------------------------------------------------------------- pantallas
+  // las armas son anchas: en las filas el cuadro de 36x36 de .row img las aplastaba. Ahora llevan class="gunpic" (cuadro ancho, contain),
+  // igual que los autos (object-fit: contain), y en el título de los popups también.
+  try {
+    const st = document.createElement("style");
+    st.textContent =
+      '.row img.gunpic{width:76px;height:46px;object-fit:contain;margin-right:12px}' +
+      '.jcw h4 img[src^="guns/"],.jcw h4 img[src^="data:image/png"]{width:64px;height:38px;object-fit:contain}';
+    document.head.appendChild(st);
+  } catch (e) {}
+  const GUNPIC = /^guns\/(pistols|rifles|ak|smg|ar)\/|^guns\/glock\/glock|^data:image\/png/;
   const row = (id, icon, title, sub, dis, tail) =>
-    `<div class="row${dis ? " dis" : ""}" id="${id}"><img src="${icon}"><div class="t"><b>${title}</b><span>${sub}</span></div>${dis ? "" : tail || (typeof DOTS !== "undefined" ? DOTS : "")}</div>`;
+    `<div class="row${dis ? " dis" : ""}" id="${id}"><img${GUNPIC.test(icon) ? ' class="gunpic"' : ""} src="${icon}"><div class="t"><b>${title}</b><span>${sub}</span></div>${dis ? "" : tail || (typeof DOTS !== "undefined" ? DOTS : "")}</div>`;
   const chev = () => (typeof CHEV !== "undefined" ? CHEV : "");
   const tap = (id, fn) => {
     const el = document.getElementById(id);
@@ -221,6 +347,8 @@
     if (state.prison) return false;
     screen.classList.add("open");
     sTitle.textContent = String(title).toUpperCase();
+    curTitle = sTitle.textContent;
+    curView = null;
     sSub.style.display = "none";
     sBack.innerHTML = typeof BACK_ICON !== "undefined" ? BACK_ICON : "‹";
     sBack.onclick = back;
@@ -233,11 +361,12 @@
     const a = A();
     const g = state.gangLife && state.gangLife.member ? state.gangLife : null;
     frame(TITLE, () => (origin ? origin() : typeof openActivities === "function" ? openActivities() : screen.classList.remove("open")));
+    curView = () => openArms(origin);
     const young = state.age < 16;
     let html = `<div class="sec">${T("Legal", "Legal", "Legal")}</div>`;
     html += row("aD_store", DEALERS.store.icon, DEALERS.store.n, state.age < 16 ? `${T("Age", "Edad", "Idade")} 16+` : DEALERS.store.sub, state.age < 16, chev());
     html += `<div class="sec">${T("Street Dealers", "Dealers de la calle", "Dealers da rua")}</div>`;
-    for (const id of ["ray", "ortiz", "ghost"]) {
+    for (const id of ["ray", "ortiz", "viper", "ghost"]) {
       const d = DEALERS[id];
       const lock = young ? `${T("Age", "Edad", "Idade")} 16+` : d.sub;
       html += row(`aD_${id}`, d.icon, d.n, lock, young, chev());
@@ -272,6 +401,7 @@
     const d = DEALERS[id];
     const a = A();
     frame(d.n, () => openArms(origin));
+    curView = () => openShop(id);
     const pr = premium(d);
     let html = "";
     if (pr > 1) html += `<div class="sec">${T("He doesn't know you. Prices are 40% higher.", "No te conoce. Los precios están 40% más altos.", "Ele não te conhece. Os preços estão 40% mais altos.")}</div>`;
@@ -281,16 +411,21 @@
     };
     if (d.legal) {
       for (const [cat, label] of CATS) {
+        const ks = legalKeys().filter((x) => GUNS[x].cat === cat);
+        if (!ks.length) continue;
         html += `<div class="sec">${label}</div>`;
-        for (const k of Object.keys(GUNS).filter((x) => GUNS[x].cat === cat)) {
+        for (const k of ks) {
           const def = GUNS[k];
           html += item("g", k, def, def.icon, PIECE(`${T("Power", "Poder", "Poder")} ${pct(def.power)}`) + (state.age < def.age ? ` · ${PIECE(`${T("Age", "Edad", "Idade")} ${def.age}+`)}` : ""));
         }
       }
     } else {
       if (d.guns) {
-        html += `<div class="sec">${T("Guns", "Armas", "Armas")}</div>`;
-        for (const k of d.guns) html += item("g", k, GUNS[k], GUNS[k].icon, `${PIECE(`${T("Power", "Poder", "Poder")} ${pct(GUNS[k].power)}`)} · ${PIECE(T("Illegal", "Ilegal", "Ilegal"))}`);
+        let last = "";
+        for (const k of d.guns) {
+          if (GUNS[k].cat !== last) ((last = GUNS[k].cat), (html += `<div class="sec">${SECS[last] || T("Guns", "Armas", "Armas")}</div>`));
+          html += item("g", k, GUNS[k], GUNS[k].icon, `${PIECE(`${T("Power", "Poder", "Poder")} ${pct(GUNS[k].power)}`)} · ${PIECE(T("Illegal", "Ilegal", "Ilegal"))}`);
+        }
       }
       if (d.mags) {
         html += `<div class="sec">${T("Magazines", "Cargadores", "Pentes")}</div>`;
@@ -300,7 +435,7 @@
         html += `<div class="sec">${T("Attachments", "Accesorios", "Acessórios")}</div>`;
         for (const k of d.parts) {
           const p = PARTS[k];
-          const fits = p.grps.length === 3 ? T("Fits everything", "Sirve para todas", "Serve em todas") : p.grps[0] === "glock" ? T("Glocks", "Glocks", "Glocks") : T("Dracos", "Dracos", "Dracos");
+          const fits = p.grps.length === ALL.length ? T("Fits everything", "Sirve para todas", "Serve em todas") : p.grps[0] === "glock" ? T("Glocks", "Glocks", "Glocks") : T("AK rifles", "Rifles AK", "Rifles AK");
           html += item("p", k, p, p.icon, `${PIECE(SLOTS[p.slot])} · ${PIECE(fits)}`);
         }
       }
@@ -316,7 +451,7 @@
     sList.innerHTML = html;
     sList.scrollTop = 0;
     for (const k of d.kits || []) tap(`aB_k_${k}`, () => buy(id, "k", k));
-    for (const k of d.guns || Object.keys(GUNS).filter((x) => d.legal && GUNS[x].cat)) tap(`aB_g_${k}`, () => buy(id, "g", k));
+    for (const k of d.guns || (d.legal ? legalKeys() : [])) tap(`aB_g_${k}`, () => buy(id, "g", k));
     for (const k of d.mags || []) tap(`aB_m_${k}`, () => buy(id, "m", k));
     for (const k of d.parts || []) tap(`aB_p_${k}`, () => buy(id, "p", k));
   }
@@ -398,6 +533,7 @@
     const d = gunDef(gun);
     const s = stats(gun);
     frame(gunName(gun), () => openArms(origin));
+    curView = () => openGun(uid);
     const on = a.carry === uid;
     let html = `<div class="sec">${gunName(gun)}</div>`;
     html += `<div style="text-align:center;padding:6px 0 2px"><img src="${pic(gun)}" alt="" style="width:200px;height:180px;object-fit:contain;margin:0"></div>`;
@@ -624,6 +760,30 @@
       A().carry = null;
     },
     busted,
+    // ---- API para otros mods (gangwars.js, arms-events.js)
+    catalog: () => GUNS,
+    def: (id) => GUNS[id] || null,
+    owned: () => A().guns.slice(),
+    carriedRaw: carriedGun,
+    stats,
+    name: gunName,
+    pic,
+    legalGuns: legalKeys,
+    // regalar / quitar cosas (devuelven el uid o true)
+    give: (id) => (GUNS[id] ? (A().guns.push({ uid: A().uid++, id, mag: null, att: {} }), A().uid - 1) : null),
+    giveMag: (k) => (MAGS[k] ? ((A().mags[k] = (A().mags[k] || 0) + 1), true) : false),
+    givePart: (id, color) => (PARTS[id] ? (A().parts.push(color ? { id, color } : { id }), true) : false),
+    take: (uid) => {
+      const a = A(), g = a.guns.find((x) => x.uid === uid);
+      if (!g) return false;
+      a.guns.splice(a.guns.indexOf(g), 1);
+      if (a.carry === uid) a.carry = null;
+      return true;
+    },
+    carry: (uid) => {
+      const a = A();
+      if (a.guns.some((x) => x.uid === uid)) a.carry = uid;
+    },
   };
 
   // ---------------------------------------------------------------- arranque

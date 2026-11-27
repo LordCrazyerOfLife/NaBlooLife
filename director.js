@@ -464,7 +464,7 @@
       card({
         title: "Movie Director",
         lead: "Start a career behind the camera. You will write, finance, cast and shoot your own films, and the world will rate them on every site that matters. Your first short is on a student budget.",
-        choices: [["Become a director", () => { d.active = true; d.firm = d.firm || "Indie Pictures"; sayIt("I decided to become a film director."); openHub(); }], ["Not now", () => {}]],
+        choices: [["Become a director", () => { if (window.FL_CAREERS && !window.FL_CAREERS.canStart("Movie Director")) return; d.active = true; d.firm = d.firm || "Indie Pictures"; sayIt("I decided to become a film director."); openHub(); }], ["Not now", () => {}]],
       });
       return;
     }
@@ -484,7 +484,7 @@
     h += row("studios", "emoji/1f3e2.png", "Studios", "Who wants your genre, and how they treat you");
     h += row("awards", "director/award.png", "Awards", `${d.awards.filter((a) => a.won).length} won · ${d.awards.length} nominations`);
     sList.innerHTML = h;
-    wire({ proj: () => openProject(), new: () => startNew(), films: () => openFilms(), talent: () => openTalent(null), studios: () => openStudios(), awards: () => openAwards() });
+    wire({ proj: () => (d.proj && !d.proj.genre && !d.proj.done.story ? storyGenre() : openProject()), new: () => startNew(), films: () => openFilms(), talent: () => openTalent(null), studios: () => openStudios(), awards: () => openAwards() });
   }
   const bestFilm = (d) => {
     const b = d.films.slice().sort((a, c) => c.critic + c.aud - (a.critic + a.aud))[0];
@@ -570,6 +570,7 @@
     const d = R();
     const p = d.proj;
     if (!p) return openHub();
+    if (!p.genre && !p.done.story && p.stage === "story") return storyGenre(); // proyecto nuevo sin género: abre el flujo de "new film", no el dashboard vacío
     if (!openScreen((p.title || "NEW FILM").toUpperCase(), back2hub)) return;
     let h = filmCard(p) + sec("Departments");
     h += DEPTS.map(([id, name, , ic]) => row("d_" + id, ic, name, deptLine(p, id))).join("");
@@ -696,7 +697,8 @@
   function storyGenre() {
     const p = R().proj;
     if (!p) return openHub();
-    listScreen("GENRE", back2dash, DD().GENRES.map((g) => [g[0], g[2], g[1], gSub(g)]), (id) => { p.genre = id; storyTheme(); });
+    // sin concepto todavía no hay nada más que hacer: atrás vuelve al hub (si no, atrás -> dashboard -> género en bucle)
+    listScreen("GENRE", p.title ? back2dash : back2hub, DD().GENRES.map((g) => [g[0], g[2], g[1], gSub(g)]), (id) => { p.genre = id; storyTheme(); });
   }
   function storyTheme() {
     const p = R().proj;
@@ -777,7 +779,7 @@
         if (ok) { p.flaws.shift(); p.sq = cl(p.sq + 2); }
         note("Rewrite", ok ? "You found the fix. One problem less." : "Weeks of work and the same problem is still there.", openScript);
       },
-      lock: () => { p.done.script = true; openDash(); },
+      lock: () => { p.done.script = true; curDept = "money"; openFund(); }, // "Move on to financing": va a financiar (antes volvía a Development, la misma pantalla)
     });
   }
 
@@ -811,8 +813,8 @@
     sList.innerHTML = h;
     wire((id) => () => {
       if (id === "rebudget") return pickBudget();
-      if (id === "self") { p.fund = "self"; p.done.fund = true; return note("Financing", "It is your money on the line.", openDash); }
-      if (id === "grant") { p.fund = "grant"; p.done.fund = true; return note("Financing", "The film school fund covers the shoot. You keep half of whatever it earns.", openDash); }
+      if (id === "self") { p.fund = "self"; p.done.fund = true; return note("Financing", "It is your money on the line.", () => openDept("crew")); }
+      if (id === "grant") { p.fund = "grant"; p.done.fund = true; return note("Financing", "The film school fund covers the shoot. You keep half of whatever it earns.", () => openDept("crew")); }
       const s = stOf(id.slice(3));
       pitch(p, s, d);
     });
@@ -830,7 +832,7 @@
     p.done.fund = true;
     d.studioRel[s[0]] = (d.studioRel[s[0]] || 0) + 3;
     const fee = Math.round(p.B * (0.04 + rankIdx(d) * 0.005));
-    card({ iconSrc: "director/st_" + s[0] + ".png", title: s[1] + " is in", lead: `${esc(s[1])} will finance "${esc(p.title)}" and release it. They take the revenue, you earn a director's fee and a share of the profit. ${s[0] === "nfx" ? "It is a flat deal: no box office, a fee and a bonus if it plays well." : ""}`, rows: [["Director's fee", money(fee)], ["Marketing power", s[5] + "/10"]], choices: [["Sign the deal", () => { addMoney(fee); sayIt(`${s[1]} agreed to finance my film.`); openDash(); }]] });
+    card({ iconSrc: "director/st_" + s[0] + ".png", title: s[1] + " is in", lead: `${esc(s[1])} will finance "${esc(p.title)}" and release it. They take the revenue, you earn a director's fee and a share of the profit. ${s[0] === "nfx" ? "It is a flat deal: no box office, a fee and a bonus if it plays well." : ""}`, rows: [["Director's fee", money(fee)], ["Marketing power", s[5] + "/10"]], choices: [["Sign the deal", () => { addMoney(fee); sayIt(`${s[1]} agreed to finance my film.`); openDept("crew"); }]] });
   }
   function pickBudget() {
     const d = R();
@@ -902,7 +904,7 @@
       p.miscast = Object.values(p.cast).some((c) => c && c.fit < 0.65);
       if (p.miscast) p.issues.push({ k: "cast", sev: 1, text: "A role nobody believes" });
       p.done.cast = true;
-      note("Cast locked", `${Object.values(p.cast).filter(Boolean).length} actors signed${p.chem > 0 ? ". The leads clicked at the table read." : p.chem < 0 ? ". The leads did not click at the table read." : "."}`, openDash);
+      note("Cast locked", `${Object.values(p.cast).filter(Boolean).length} actors signed${p.chem > 0 ? ". The leads clicked at the table read." : p.chem < 0 ? ". The leads did not click at the table read." : "."}`, () => openDept("shoot"));
     });
   }
   function openTalent(role, page) {
@@ -1016,7 +1018,7 @@
       } else d.rep = cl(d.rep - 3);
     }
     p.done.shoot = true;
-    note("That's a wrap", `The shoot is over${over > 15 ? " and it ran " + over + "% over budget" : ""}. Time for the edit.`, openDash);
+    note("That's a wrap", `The shoot is over${over > 15 ? " and it ran " + over + "% over budget" : ""}. Time for the edit.`, () => openDept("post"));
   }
 
   // ---- 6 post
@@ -1067,7 +1069,7 @@
         if (p.score === "top") { p.q.edit = cl(p.q.edit + 5); p.buzz += 2; }
         p.q.edit = cl(p.q.edit + gauss() * 3);
         p.done.post = true;
-        note("Locked", p.cutLong ? "Your cut runs close to three hours. Some people will love it." : "The picture is locked.", openProject);
+        note("Locked", p.cutLong ? "Your cut runs close to three hours. Some people will love it." : "The picture is locked.", () => openDept("mkt"));
       },
     });
   }

@@ -1108,7 +1108,8 @@
     if (state.job && state.job.athlete) out.push("Pro Athlete");
     return out.filter((n) => n !== except);
   }
-  window.FL_CAREERS = {
+  // la versión base (career-dock.js) ya cubre todas las carreras; esta solo queda como respaldo si el dock no cargó
+  if (!(window.FL_CAREERS && window.FL_CAREERS.base)) window.FL_CAREERS = {
     list: () => careerNames(),
     canStart(name) {
       const busy = careerNames(name);
