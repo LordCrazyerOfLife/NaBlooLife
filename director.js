@@ -55,8 +55,20 @@
     state.money = Math.max(0, (Number(state.money) || 0) + n);
     render();
   };
+  // Production budget (studio / grant films): if you are broke, the film pays for its own costs out of what is left of the budget.
+  const budgetLeft = () => {
+    const p = state.dir && state.dir.proj;
+    if (!p || p.tier == null || !p.done || !p.done.fund || p.fund === "self") return 0;
+    return Math.max(0, (Number(p.B) || 0) - castCost(p) - (Number(p.bUsed) || 0));
+  };
+  const canPay = (n) => (Number(state.money) || 0) >= n || budgetLeft() >= n;
   const spend = (n) => {
-    if ((Number(state.money) || 0) < n) return false;
+    if ((Number(state.money) || 0) < n) {
+      if (budgetLeft() < n) return false;
+      state.dir.proj.bUsed = (Number(state.dir.proj.bUsed) || 0) + n;
+      render();
+      return true;
+    }
     state.money -= n;
     render();
     return true;
@@ -753,7 +765,7 @@
     let h = "";
     if (!p.writer) {
       h += sec("Who writes it?");
-      h += DD().WRITERS.map((w, i) => row("w" + i, ICON, w[0], `${w[3]} ${WRITER_COST[i] ? money(wCost(i)) : "Free"}`, state.money < wCost(i))).join("");
+      h += DD().WRITERS.map((w, i) => row("w" + i, ICON, w[0], `${w[3]} ${WRITER_COST[i] ? money(wCost(i)) : "Free"}`, !canPay(wCost(i)))).join("");
       sList.innerHTML = h;
       wire((id) => () => {
         const i = +id.slice(1);
@@ -767,7 +779,7 @@
     }
     h += `<div class="row" style="flex-direction:column;align-items:stretch;height:auto;padding:10px 14px">${bar("Script quality", p.sq, col(p.sq))}<div style="font-size:12px;opacity:.8;margin-top:4px">Writer: ${esc(p.writer)}${p.flaws.length ? " · open problems: " + esc(p.flaws.map((f) => f.text).join(", ")) : " · no open problems"}</div></div>`;
     h += sec("Notes");
-    h += row("doc", "emoji/1f9d1-200d-1f4bb.png", "Hire a script doctor", `Fixes up to 2 problems. ${money(loc(50000))}`, !p.flaws.length || state.money < loc(50000));
+    h += row("doc", "emoji/1f9d1-200d-1f4bb.png", "Hire a script doctor", `Fixes up to 2 problems. ${money(loc(50000))}`, !p.flaws.length || !canPay(loc(50000)));
     h += row("rew", "emoji/270d-fe0f.png", "Rewrite it yourself", `A Smarts check. ${2 - p.rewrites} rewrites left`, !p.flaws.length || p.rewrites >= 2);
     h += row("lock", "emoji/1f512.png", "Lock the script", "Move on to financing");
     sList.innerHTML = h;
@@ -1036,8 +1048,8 @@
     h += sec("Optional");
     h += row("score", "emoji/1f3b5.png", "Score and sound", p.score ? (p.score === "top" ? "Top composer hired" : "Library music") : "Hire a composer or save the money", lockedMsg || !!p.score);
     const fixable = p.issues.filter((i) => i.k !== "script" && i.sev > 0 && !i.fixed);
-    h += row("polish", "emoji/1f527.png", "Reshoots and polish", p.polish ? "Done" : fixable.length ? `Fix "${fixable[0].text}" · ${money(pc(p, 0.03))}` : "Nothing to fix", lockedMsg || p.polish || !fixable.length || state.money < pc(p, 0.03));
-    h += row("screen", "emoji/1f39e-fe0f.png", "Test screening", p.screened ? "Done" : `${money(pc(p, 0.01))} · find out what a real audience thinks, then fix it`, lockedMsg || p.screened || state.money < pc(p, 0.01));
+    h += row("polish", "emoji/1f527.png", "Reshoots and polish", p.polish ? "Done" : fixable.length ? `Fix "${fixable[0].text}" · ${money(pc(p, 0.03))}` : "Nothing to fix", lockedMsg || p.polish || !fixable.length || !canPay(pc(p, 0.03)));
+    h += row("screen", "emoji/1f39e-fe0f.png", "Test screening", p.screened ? "Done" : `${money(pc(p, 0.01))} · find out what a real audience thinks, then fix it`, lockedMsg || p.screened || !canPay(pc(p, 0.01)));
     h += row("lock", "emoji/1f512.png", lockedMsg ? "The film is locked" : "Lock the film", lockedMsg ? "On to marketing" : p.cutKind ? "No more changes after this" : "Choose a final cut first", lockedMsg || !p.cutKind);
     sList.innerHTML = h;
     wire({
