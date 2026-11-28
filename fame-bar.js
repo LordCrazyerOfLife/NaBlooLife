@@ -23,7 +23,12 @@
   function draw() {
     try {
       if (state.dead || !document.getElementById("stats")) return;
-      if (state.art && state.art.fameOn) return; // the game's own Fame bar is already there
+      if (state.art && state.art.fameOn) {
+        // repair a bad fame value so the game's own bar never prints NaN%
+        if (typeof state.art.fame !== "number" || !isFinite(state.art.fame))
+          state.art.fame = 0;
+        return; // the game's own Fame bar is already there
+      }
       if (typeof statBar !== "function") return;
       const v = Math.max(0, Math.min(100, fameNow()));
       const el = document.getElementById("stats");
